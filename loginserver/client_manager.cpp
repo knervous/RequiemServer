@@ -8,6 +8,8 @@ extern bool        run_server;
 #include "../common/misc.h"
 #include "../common/path_manager.h"
 
+#include "../webtransport/web.h"
+
 ClientManager::ClientManager()
 {
 	int titanium_port = server.config.GetVariableInt("client_configuration", "titanium_port", 5998);
@@ -88,6 +90,46 @@ ClientManager::ClientManager()
 			clients.push_back(c);
 		}
 	);
+
+	int web_port = server.config.GetVariableInt("client_configuration", "web_port", 7775);
+
+	EQStreamManagerInterfaceOptions web_opts(web_port, false, false);
+
+	web_stream = new EQ::Net::EQWebStreamManager(web_opts);
+	web_ops    = new RegularOpcodeManager;
+
+	opcodes_path = fmt::format(
+		"{}/{}",
+		path.GetServerPath(),
+		server.config.GetVariableString(
+			"client_configuration",
+			"web_opcodes",
+			"assets/opcodes/login_opcodes.conf"
+		)
+	);
+
+	if (!web_ops->LoadOpcodes(opcodes_path.c_str())) {
+		LogError(
+			"ClientManager fatal error: couldn't load opcodes for SoD file {0}",
+			server.config.GetVariableString("client_configuration", "sod_opcodes", "login_opcodes.conf").c_str()
+		);
+
+		run_server = false;
+	}
+
+	web_stream->OnNewConnection(
+		[this](std::shared_ptr<EQ::Net::EQWebStream> stream) {
+			LogInfo(
+				"New SoD+ client connection from [{0}:{1}]",
+				long2ip(stream->GetRemoteIP()),
+				stream->GetRemotePort()
+			);
+
+			stream->SetOpcodeManager(&web_ops);
+			auto *c = new Client(stream, cv_web);
+			clients.push_back(c);
+		}
+	);
 }
 
 ClientManager::~ClientManager()
@@ -106,6 +148,14 @@ ClientManager::~ClientManager()
 
 	if (sod_ops) {
 		delete sod_ops;
+	}
+
+	if (web_stream) {
+		delete web_stream;
+	}
+
+	if (web_ops) {
+		delete web_ops;
 	}
 }
 

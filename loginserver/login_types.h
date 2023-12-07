@@ -23,6 +23,7 @@ struct LoginHandShakeReply_Struct {
 	char                         unknown[1]; // variable length string
 };
 
+
 // variable length, can use directly if not serializing strings
 struct PlayerLoginReply_Struct {
 	// base header excluded to make struct data easier to encrypt
@@ -83,7 +84,8 @@ struct PlayEverquestResponse_Struct {
 
 enum LSClientVersion {
 	cv_titanium,
-	cv_sod
+	cv_sod,
+	cv_web
 };
 
 enum LSClientStatus {

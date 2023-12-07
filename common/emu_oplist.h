@@ -303,6 +303,7 @@ N(OP_LoadSpellSet),
 N(OP_LocInfo),
 N(OP_LockoutTimerInfo),
 N(OP_Login),
+N(OP_LoginWeb),
 N(OP_LoginAccepted),
 N(OP_LoginComplete),
 N(OP_LoginExpansionPacketData), //added for Rof2 client to send expansion data packet.  Requires login_opcodes_sod.conf to be updated.
@@ -589,4 +590,5 @@ N(OP_ZoneSpawns),
 N(OP_ZoneUnavail),
 N(OP_ResetAA),
 N(OP_UnderWorld),
+N(OP_WebIniniateConnection),
 // mail and chat opcodes located in ../mail_oplist.h

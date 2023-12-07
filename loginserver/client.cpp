@@ -3,6 +3,7 @@
 #include "../common/misc_functions.h"
 #include "../common/eqemu_logsys.h"
 #include "../common/strings.h"
+#include "../common/patches/web_structs.h"
 #include "encryption.h"
 #include "account_management.h"
 
@@ -40,12 +41,17 @@ bool Client::Process()
 			app = m_connection->PopPacket();
 			continue;
 		}
-
+		auto opcode = app->GetOpcode();
+		auto mine = OP_LoginWeb;
 		switch (app->GetOpcode()) {
 			case OP_SessionReady: {
 				LogInfo("Session ready received from client account {}", GetClientDescription());
 				Handle_SessionReady((const char *) app->pBuffer, app->Size());
 				break;
+			}
+			case OP_LoginWeb: {
+				Handle_WebLogin((const char *) app->pBuffer, app->Size());
+				break;		
 			}
 			case OP_Login: {
 				if (app->Size() < 20) {
@@ -118,6 +124,93 @@ void Client::Handle_SessionReady(const char *data, unsigned int size)
 
 	m_connection->QueuePacket(outapp);
 	delete outapp;
+}
+
+/**
+ * Verifies web login and send a reply
+ *
+ * @param data
+ * @param size
+ */
+void Client::Handle_WebLogin(const char *data, unsigned int size) 
+{
+	const auto& web_login = (Web::structs::WebLogin_Struct*)((void*)data);
+	auto user = web_login->username;
+	auto cred = web_login->password;
+
+	std::string db_loginserver = "local";
+	std::string db_account_password_hash;
+	unsigned int db_account_id = 0;
+
+	const auto& WebLoginSuccess = [&](){
+		server.client_manager->RemoveExistingClient(db_account_id, db_loginserver);
+
+		in_addr in{};
+		in.s_addr = m_connection->GetRemoteIP();
+
+		server.db->UpdateLSAccountData(db_account_id, std::string(inet_ntoa(in)));
+		GenerateKey();
+		
+		int outsize = sizeof(Web::structs::WebLoginReply_Struct);
+		Web::structs::WebLoginReply_Struct login_reply;
+		login_reply.lsid = db_account_id;
+		login_reply.success = true;
+		login_reply.show_player_count = server.options.IsShowPlayerCountEnabled();
+		login_reply.error_str_id = 101;
+		login_reply.key = m_key.data();
+	
+		auto outapp = std::make_unique<EQApplicationPacket>(OP_LoginAccepted, outsize);
+		outapp->WriteData(&login_reply, sizeof(login_reply));
+
+		m_connection->QueuePacket(outapp.get());
+
+		m_client_status = cs_logged_in;
+	};
+
+	const auto& WebLoginFailure = [&](){
+		int outsize = sizeof(Web::structs::WebLoginReply_Struct);
+		Web::structs::WebLoginReply_Struct login_reply;
+		login_reply.success = false;
+		login_reply.error_str_id = 105;
+		auto outapp = std::make_unique<EQApplicationPacket>(OP_LoginAccepted, outsize);
+		outapp->WriteData(&login_reply, sizeof(login_reply));
+
+		m_connection->QueuePacket(outapp.get());
+
+		m_client_status = cs_failed_to_login;
+	};
+
+	if (server.db->GetLoginDataFromAccountInfo(user, db_loginserver, db_account_password_hash, db_account_id)) {
+		auto result = VerifyLoginHash(user, db_loginserver, cred, db_account_password_hash);
+		if (result) {
+			LogInfo(
+				"login [{0}] user [{1}] Login succeeded",
+				db_loginserver,
+				user
+			);
+
+			WebLoginSuccess();
+		}
+		else {
+			LogInfo(
+				"login [{0}] user [{1}] Login failed",
+				db_loginserver,
+				user
+			);
+
+			WebLoginFailure();
+		}
+	}
+	else {
+		if (server.options.CanAutoCreateAccounts() && db_loginserver == "local") {
+			LogInfo("CanAutoCreateAccounts enabled, attempting to creating account [{0}]", user);
+			CreateLocalAccount(user, cred);
+			return;
+		}
+
+		WebLoginFailure();
+	}
+	return;
 }
 
 /**

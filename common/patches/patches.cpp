@@ -26,6 +26,7 @@
 #include "sod.h"
 #include "rof.h"
 #include "rof2.h"
+#include "web.h"
 
 
 void RegisterAllPatches(EQStreamIdentifier &into)
@@ -36,6 +37,7 @@ void RegisterAllPatches(EQStreamIdentifier &into)
 	UF::Register(into);
 	RoF::Register(into);
 	RoF2::Register(into);
+	Web::Register(into);
 }
 
 void ReloadAllPatches()
@@ -46,4 +48,5 @@ void ReloadAllPatches()
 	UF::Reload();
 	RoF::Reload();
 	RoF2::Reload();
+	Web::Reload();
 }

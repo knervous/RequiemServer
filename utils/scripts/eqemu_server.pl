@@ -1201,6 +1201,7 @@ sub opcodes_fetch
         6 => [ "Underfoot", $eqemu_repository_request_url . "utils/patches/patch_UF.conf" ],
         7 => [ "Rain of Fear", $eqemu_repository_request_url . "utils/patches/patch_RoF.conf" ],
         8 => [ "Rain of Fear 2", $eqemu_repository_request_url . "utils/patches/patch_RoF2.conf" ],
+        9 => [ "Web", $eqemu_repository_request_url . "utils/patches/patch_Web.conf" ],
     );
     my $loop = 1;
     while ($opcodes{$loop}[0]) {

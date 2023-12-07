@@ -53,6 +53,14 @@ public:
 	void Handle_Login(const char *data, unsigned int size);
 
 	/**
+	 * Verifies login and send a reply
+	 *
+	 * @param data
+	 * @param size
+	 */
+	void Handle_WebLogin(const char *data, unsigned int size);
+
+	/**
 	* Sends the expansion data packet
 	*
 	* Titanium uses the encrypted data block to contact the expansion (You own xxx:) and the max expansions (of yyy)

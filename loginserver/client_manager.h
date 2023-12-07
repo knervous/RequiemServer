@@ -4,6 +4,7 @@
 #include "../common/global_define.h"
 #include "../common/opcodemgr.h"
 #include "../common/net/eqstream.h"
+#include "../webtransport/web.h"
 #include "client.h"
 #include <list>
 
@@ -55,6 +56,8 @@ private:
 	EQ::Net::EQStreamManager *titanium_stream;
 	OpcodeManager            *sod_ops;
 	EQ::Net::EQStreamManager *sod_stream;
+	OpcodeManager            *web_ops;
+	EQ::Net::EQWebStreamManager *web_stream;
 };
 
 #endif
