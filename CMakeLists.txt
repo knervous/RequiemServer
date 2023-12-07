@@ -352,7 +352,7 @@ MESSAGE(STATUS "**************************************************")
 SET(SERVER_LIBS common ${DATABASE_LIBRARY_LIBS} ${ZLIB_LIBRARY_LIBS} ${Boost_LIBRARIES} uv_a fmt RecastNavigation::Detour)
 
 IF(NOT MSVC)
-	SET(SERVER_LIBS webtransport)
+	SET(SERVER_LIBS ${SERVER_LIBS} webtransport)
 ENDIF()
 
 INCLUDE_DIRECTORIES(SYSTEM "${DATABASE_LIBRARY_INCLUDE}")
