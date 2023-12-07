@@ -110,8 +110,8 @@ ClientManager::ClientManager()
 
 	if (!web_ops->LoadOpcodes(opcodes_path.c_str())) {
 		LogError(
-			"ClientManager fatal error: couldn't load opcodes for SoD file {0}",
-			server.config.GetVariableString("client_configuration", "sod_opcodes", "login_opcodes.conf").c_str()
+			"ClientManager fatal error: couldn't load opcodes for Web file {0}",
+			server.config.GetVariableString("client_configuration", "web_opcodes", "login_opcodes.conf").c_str()
 		);
 
 		run_server = false;

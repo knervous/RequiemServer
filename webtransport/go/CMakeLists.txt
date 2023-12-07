@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.0)
 
 set(TARGET wt_go)
-set(SRCS web.go bridge.go EQMessage.pb.go)
+set(SRCS web.go bridge.go)
 set(LIB web_go.a)
 
 add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${LIB}
   DEPENDS ${SRCS}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMAND protoc ./EQMessage.proto --go_out=. --go_opt=paths=source_relative
   COMMAND go build -buildmode=c-archive
   -o "${CMAKE_CURRENT_SOURCE_DIR}/${LIB}"
-  ${CMAKE_GO_FLAGS} ${SRCS}
+  ${CMAKE_GO_FLAGS} ${SRCS} EQMessage.pb.go
   COMMAND openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -x509 -nodes -days 10 -out ./certificate.pem -keyout ./certificate.key -subj '/CN=Test Certificate' -addext "subjectAltName = DNS:localhost"
   COMMAND openssl x509 -in certificate.pem | openssl dgst -sha256 -binary | openssl enc -base64 | tee hash.txt
   COMMENT "Building Go library")

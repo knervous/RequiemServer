@@ -41,8 +41,6 @@ bool Client::Process()
 			app = m_connection->PopPacket();
 			continue;
 		}
-		auto opcode = app->GetOpcode();
-		auto mine = OP_LoginWeb;
 		switch (app->GetOpcode()) {
 			case OP_SessionReady: {
 				LogInfo("Session ready received from client account {}", GetClientDescription());
