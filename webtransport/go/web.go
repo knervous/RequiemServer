@@ -136,7 +136,6 @@ func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.
 			ListenAddr: fmt.Sprintf(":%d", port),
 			TLSCert:    webtransport.CertFile{Path: "certificate.pem"},
 			TLSKey:     webtransport.CertFile{Path: "certificate.key"},
-			// AllowedOrigins: []string{"googlechrome.github.io", "127.0.0.1:8000", "localhost:8000", "new-tab-page", ""},
 			QuicConfig: &webtransport.QuicConfig{
 				KeepAlive:      true,
 				MaxIdleTimeout: 30 * time.Second,

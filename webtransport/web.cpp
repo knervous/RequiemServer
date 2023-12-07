@@ -42,7 +42,7 @@ extern "C"
 	void Go_OnNewConnection(void *webstream_manager, int session_id, void* web_session_ptr)
 	{
 		auto *manager = reinterpret_cast<EQ::Net::EQWebStreamManager *>(webstream_manager);
-		auto *web_session = reinterpret_cast<Web::structs::WebSession_Struct *>(web_session_ptr);
+		auto *web_session = reinterpret_cast<WebSession_Struct *>(web_session_ptr);
 		manager->WebNewConnection(session_id, web_session);
 	}
 	void Go_OnConnectionClosed(void *webstream_manager, int session_id)
@@ -77,7 +77,7 @@ void EQ::Net::EQWebStreamManager::SetOptions(const EQStreamManagerInterfaceOptio
 	m_options = options;
 }
 
-void EQ::Net::EQWebStreamManager::WebNewConnection(int connection, Web::structs::WebSession_Struct* web_session)
+void EQ::Net::EQWebStreamManager::WebNewConnection(int connection, WebSession_Struct* web_session)
 {
 	std::shared_ptr<EQWebStream> stream(new EQWebStream(this, connection, web_session));
 	m_streams.emplace(std::make_pair(connection, stream));

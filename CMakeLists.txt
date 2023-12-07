@@ -349,7 +349,11 @@ MESSAGE(STATUS "* zlib:                                  ${ZLIB_LIBRARY_TYPE} *"
 MESSAGE(STATUS "**************************************************")
 
 #setup server libs and headers
-SET(SERVER_LIBS common webtransport ${DATABASE_LIBRARY_LIBS} ${ZLIB_LIBRARY_LIBS} ${Boost_LIBRARIES} uv_a fmt RecastNavigation::Detour)
+SET(SERVER_LIBS common ${DATABASE_LIBRARY_LIBS} ${ZLIB_LIBRARY_LIBS} ${Boost_LIBRARIES} uv_a fmt RecastNavigation::Detour)
+
+IF(NOT MSVC)
+	SET(SERVER_LIBS webtransport)
+ENDIF()
 
 INCLUDE_DIRECTORIES(SYSTEM "${DATABASE_LIBRARY_INCLUDE}")
 INCLUDE_DIRECTORIES(SYSTEM "${ZLIB_LIBRARY_INCLUDE}")
@@ -457,9 +461,10 @@ IF(EQEMU_BUILD_SERVER)
 	ADD_SUBDIRECTORY(ucs)
 	ADD_SUBDIRECTORY(queryserv)
 	ADD_SUBDIRECTORY(eqlaunch)
-	IF(UNIX)
-	ADD_SUBDIRECTORY(webtransport)
-	ENDIF(UNIX)
+	## MSVC cannot link go static libs
+	IF(NOT MSVC)
+		ADD_SUBDIRECTORY(webtransport)
+	ENDIF()
 ENDIF(EQEMU_BUILD_SERVER)
 
 IF(EQEMU_BUILD_LOGIN)

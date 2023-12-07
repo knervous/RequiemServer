@@ -17,6 +17,8 @@ add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${LIB}
 
 add_custom_target(${TARGET} DEPENDS ${LIB} ${HEADER})
 
+## Cert generation as part of build for dev possibly
+
 # add_custom_command(
 #   TARGET ${TARGET} POST_BUILD
 #   COMMAND ${CMAKE_COMMAND} -E copy
