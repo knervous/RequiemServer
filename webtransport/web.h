@@ -77,6 +77,7 @@ namespace EQ
 			virtual Stats GetStats() const;
 			virtual void ResetStats();
 			virtual EQStreamManagerInterface *GetManager() const;
+			virtual const bool IsWebstream() const { return true; }
 
 		private:
 			void SendDatagram(uint16 opcode, EQApplicationPacket *p);

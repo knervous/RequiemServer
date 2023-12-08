@@ -102,6 +102,7 @@ public:
 	virtual void SetOpcodeManager(OpcodeManager **opm) = 0;
 	virtual OpcodeManager* GetOpcodeManager() const = 0;
 	virtual const EQ::versions::ClientVersion ClientVersion() const { return EQ::versions::ClientVersion::Unknown; }
+	virtual const bool IsWebstream() const { return false; }
 	virtual Stats GetStats() const = 0;
 	virtual void ResetStats() = 0;
 	virtual EQStreamManagerInterface* GetManager() const = 0;

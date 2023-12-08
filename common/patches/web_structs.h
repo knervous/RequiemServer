@@ -3401,6 +3401,11 @@ namespace Web
 			const char *password;
 		};
 
+		struct WebLoginServerRequest_Struct
+		{
+			uint32_t sequence;
+		};
+
 		struct WebLoginReply_Struct
 		{
 			char *key;
@@ -3409,6 +3414,26 @@ namespace Web
 			int32_t lsid;
 			bool success;
 			bool show_player_count;
+		};
+
+		struct WebLoginWorldServer_Struct
+		{
+			char buffer[16];
+			char ip[16];
+			char long_name[64];
+			char country_code[3];
+			char language_code[3];
+			uint32_t server_type;
+			uint32_t server_id;
+			uint32_t status;
+			uint32_t players_online;
+			struct WebLoginWorldServer_Struct* next;
+		};
+
+		struct WebLoginServerResponse_Struct
+		{
+			int32_t server_count;
+			struct WebLoginWorldServer_Struct* servers;
 		};
 
 		// Go interop

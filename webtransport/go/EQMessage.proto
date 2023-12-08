@@ -3,6 +3,8 @@ package eq;
 
 option go_package="./main";
 
+// Login Messages
+
 message LoginMessage {
     string username = 1;
     string password = 2;
@@ -17,6 +19,25 @@ message LoginReply {
   bool show_player_count = 6;
 }
 
+message LoginRequest {
+    int32 sequence = 1;
+}
+
+message WorldServer {
+    string ip = 1;
+    int32 server_type = 2;
+    int32 server_id = 3;
+    string long_name = 4;
+    string country_code = 5;
+    string language_code = 6;
+    int32 status = 7;
+    int32 players_online = 8;
+}
+
+message LoginServerResponse {
+  int32 server_count = 1;
+  repeated WorldServer servers = 2;
+}
 
 // Op Codes
 

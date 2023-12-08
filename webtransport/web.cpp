@@ -33,13 +33,14 @@
 #include "../../common/eq_packet.h"
 #include "../../common/op_codes.h"
 #include "../../common/platform.h"
+#include "../../loginserver/login_types.h"
 #include "strings.h"
 
 using namespace Web::structs;
 
 extern "C"
 {
-	void Go_OnNewConnection(void *webstream_manager, int session_id, void* web_session_ptr)
+	void Go_OnNewConnection(void *webstream_manager, int session_id, void *web_session_ptr)
 	{
 		auto *manager = reinterpret_cast<EQ::Net::EQWebStreamManager *>(webstream_manager);
 		auto *web_session = reinterpret_cast<WebSession_Struct *>(web_session_ptr);
@@ -77,7 +78,7 @@ void EQ::Net::EQWebStreamManager::SetOptions(const EQStreamManagerInterfaceOptio
 	m_options = options;
 }
 
-void EQ::Net::EQWebStreamManager::WebNewConnection(int connection, WebSession_Struct* web_session)
+void EQ::Net::EQWebStreamManager::WebNewConnection(int connection, WebSession_Struct *web_session)
 {
 	std::shared_ptr<EQWebStream> stream(new EQWebStream(this, connection, web_session));
 	m_streams.emplace(std::make_pair(connection, stream));
@@ -114,11 +115,18 @@ void EQ::Net::EQWebStreamManager::WebPacketRecv(int connection, uint16 opcode, v
 		auto dyn_packet = EQ::Net::DynamicPacket();
 		switch (stream->GetOpcodeManager()->EQToEmu(opcode))
 		{
-		default:
 		case OP_LoginWeb:
 		{
 			size = sizeof(WebLogin_Struct);
+			break;
 		}
+		case OP_ServerListRequest:
+		{
+			size = sizeof(WebLoginServerRequest_Struct);
+			break;
+		}
+		default:
+			break;
 		}
 		dyn_packet.Reserve(2 + size);
 		dyn_packet.PutUInt16(0, opcode);
@@ -153,7 +161,9 @@ void EQ::Net::EQWebStream::FastQueuePacket(EQApplicationPacket **p, bool ack_req
 
 void EQ::Net::EQWebStream::SendDatagram(uint16 opcode, EQApplicationPacket *p)
 {
+	EmuOpcode emu_op = (*m_opcode_manager)->EQToEmu(opcode);
 	SendPacket(m_connection, opcode, p->pBuffer);
+	
 	delete p;
 	p = nullptr;
 }

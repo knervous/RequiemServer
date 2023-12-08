@@ -5,6 +5,7 @@
 #include "../common/net/servertalk_server_connection.h"
 #include "../common/servertalk.h"
 #include "../common/packet_dump.h"
+#include "../common/patches/web_structs.h"
 #include "database.h"
 #include "../common/event/timer.h"
 #include <string>
@@ -148,7 +149,7 @@ public:
 
 	bool HandleNewLoginserverRegisteredOnly(Database::DbWorldRegistration &world_registration);
 	bool HandleNewLoginserverInfoUnregisteredAllowed(Database::DbWorldRegistration &world_registration);
-
+	void SerializeForWebClientServerList(Web::structs::WebLoginWorldServer_Struct &out, bool use_local_ip) const;
 	void SerializeForClientServerList(class SerializeBuffer& out, bool use_local_ip) const;
 
 private:

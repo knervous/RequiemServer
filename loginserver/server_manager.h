@@ -39,6 +39,15 @@ public:
 	);
 
 	/**
+	 * Creates a server list packet for the web client
+	 *
+	 * @param client
+	 * @param sequence
+	 * @return
+	 */
+	std::unique_ptr<EQApplicationPacket> CreateServerListPacketWeb(Client *client, uint32 sequence);
+
+	/**
 	 * Creates a server list packet for the client
 	 *
 	 * @param client

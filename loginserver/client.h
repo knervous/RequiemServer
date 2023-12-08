@@ -207,6 +207,10 @@ private:
 	std::string m_stored_user;
 	std::string m_stored_pass;
 	static bool ProcessHealthCheck(std::string username);
+
+	bool IsWebConnection() const {
+		return m_connection->IsWebstream();
+	};
 };
 
 #endif

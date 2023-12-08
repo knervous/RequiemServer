@@ -56,6 +56,43 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 		}
 		messageBytes = append(messageBytes, bytes...)
 		break
+	case OpCodes_OP_ServerListResponse:
+		serverResponse := (*C.struct_WebLoginServerResponse_Struct)(structPtr)
+		serverCount := int32(serverResponse.server_count)
+
+		loginServerResponse := LoginServerResponse{
+			ServerCount: serverCount,
+		}
+
+		if serverCount > 0 {
+			p := (*C.struct_WebLoginWorldServer_Struct)(serverResponse.servers)
+			for {
+				worldServer := WorldServer{
+					Ip:            C.GoString(&p.ip[0]),
+					ServerType:    int32(p.server_type),
+					ServerId:      int32(p.server_id),
+					LongName:      C.GoString(&p.long_name[0]),
+					CountryCode:   C.GoString(&p.country_code[0]),
+					LanguageCode:  C.GoString(&p.language_code[0]),
+					Status:        int32(p.status),
+					PlayersOnline: int32(p.players_online),
+				}
+				loginServerResponse.Servers = append(loginServerResponse.Servers, &worldServer)
+				if p.next == nil {
+					break
+				}
+				p = (*C.struct_WebLoginWorldServer_Struct)(p.next)
+			}
+		}
+
+		bytes, err := proto.Marshal(&loginServerResponse)
+		if err != nil {
+			fmt.Printf("err.Error(): %v\n", err.Error())
+			return
+		}
+		messageBytes = append(messageBytes, bytes...)
+
+		break
 	default:
 		break
 	}
@@ -111,15 +148,25 @@ func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.
 					if err := proto.Unmarshal(restBytes, loginMessage); err != nil {
 						log.Fatalln("Failed to parse address book:", err)
 					}
-					loginStruct := C.struct_WebLogin_Struct{
+					eqStruct := C.struct_WebLogin_Struct{
 						username: C.CString(loginMessage.Username),
 						password: C.CString(loginMessage.Password),
 					}
 
-					defer C.free(unsafe.Pointer(loginStruct.username))
-					defer C.free(unsafe.Pointer(loginStruct.password))
-					forward_packet(unsafe.Pointer(&loginStruct))
+					defer C.free(unsafe.Pointer(eqStruct.username))
+					defer C.free(unsafe.Pointer(eqStruct.password))
+					forward_packet(unsafe.Pointer(&eqStruct))
 
+					break
+				case OpCodes_OP_ServerListRequest:
+					loginRequest := &LoginRequest{}
+					if err := proto.Unmarshal(restBytes, loginRequest); err != nil {
+						log.Fatalln("Failed to parse address book:", err)
+					}
+					eqStruct := C.struct_WebLoginServerRequest_Struct{
+						sequence: C.uint(loginRequest.Sequence),
+					}
+					forward_packet(unsafe.Pointer(&eqStruct))
 					break
 				default:
 					break

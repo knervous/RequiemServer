@@ -3,9 +3,10 @@ cmake_minimum_required(VERSION 3.0)
 set(TARGET wt_go)
 set(SRCS web.go bridge.go)
 set(LIB web_go.a)
+set(DEPS ${SRCS} ../../common/patches/web_structs.h EQMessage.proto)
 
 add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${LIB}
-  DEPENDS ${SRCS}
+  DEPENDS ${DEPS}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   COMMAND protoc ./EQMessage.proto --go_out=. --go_opt=paths=source_relative
   COMMAND go build -buildmode=c-archive

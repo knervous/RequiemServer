@@ -383,7 +383,8 @@ void Client::Handle_Play(const char *data)
  */
 void Client::SendServerListPacket(uint32 seq)
 {
-	auto app = server.server_manager->CreateServerListPacket(this, seq);
+	auto app = IsWebConnection() ? 
+		server.server_manager->CreateServerListPacketWeb(this, seq) : server.server_manager->CreateServerListPacket(this, seq);
 
 	m_connection->QueuePacket(app.get());
 }

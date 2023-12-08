@@ -73,6 +73,76 @@ ServerManager::ServerManager()
 
 ServerManager::~ServerManager() = default;
 
+std::unique_ptr<EQApplicationPacket> ServerManager::CreateServerListPacketWeb(Client *client, uint32 sequence)
+{
+	unsigned int server_count = 0;
+	in_addr      in{};
+	in.s_addr = client->GetConnection()->GetRemoteIP();
+	std::string client_ip = inet_ntoa(in);
+
+	LogDebug("ServerManager::CreateServerListPacket via client address [{0}]", client_ip);
+
+	for (const auto& world_server : m_world_servers)
+	{
+		if (world_server->IsAuthorized()) {
+			++server_count;
+		}
+	}
+	auto login_server_size = sizeof(Web::structs::WebLoginServerResponse_Struct) + server_count * sizeof(Web::structs::WebLoginWorldServer_Struct);
+	
+	Web::structs::WebLoginServerResponse_Struct login_server_response {
+		.server_count = server_count,
+	};
+
+	int count = 0;
+	std::vector<Web::structs::WebLoginWorldServer_Struct> servers;
+	for (const auto& world_server : m_world_servers)
+	{
+		if (!world_server->IsAuthorized()) {
+			LogDebug(
+				"ServerManager::CreateServerListPacket | Server [{}] via IP [{}] is not authorized to be listed",
+				world_server->GetServerLongName(),
+				world_server->GetConnection()->Handle()->RemoteIP()
+			);
+			continue;
+		}
+
+		bool use_local_ip = false;
+
+		std::string world_ip = world_server->GetConnection()->Handle()->RemoteIP();
+		if (world_ip == client_ip || IpUtil::IsIpInPrivateRfc1918(client_ip)) {
+			use_local_ip = true;
+		}
+
+		LogDebug(
+			"CreateServerListPacket | Building list entry | WebClient [{}] IP [{}] Server Long Name [{}] Server IP [{}] ({})",
+			client->GetAccountName(),
+			client_ip,
+			world_server->GetServerLongName(),
+			use_local_ip ? world_server->GetLocalIP() : world_server->GetRemoteIP(),
+			use_local_ip ? "Local" : "Remote"
+		);
+
+		
+		Web::structs::WebLoginWorldServer_Struct server;
+		world_server->SerializeForWebClientServerList(server, use_local_ip);
+		count++;
+		if (!servers.empty()) {
+			servers.end()->next = &server;
+		} else if (count == server_count) {
+			server.next = nullptr;
+		}
+		servers.push_back(server);
+		
+	}
+	login_server_response.servers = &servers[0];
+	auto outapp = std::make_unique<EQApplicationPacket>(OP_ServerListResponse, login_server_size);
+	outapp->WriteData(&login_server_response, login_server_size);
+
+	return outapp;
+}
+
+
 /**
  * @param client
  * @param sequence
