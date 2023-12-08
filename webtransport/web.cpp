@@ -161,9 +161,7 @@ void EQ::Net::EQWebStream::FastQueuePacket(EQApplicationPacket **p, bool ack_req
 
 void EQ::Net::EQWebStream::SendDatagram(uint16 opcode, EQApplicationPacket *p)
 {
-	EmuOpcode emu_op = (*m_opcode_manager)->EQToEmu(opcode);
 	SendPacket(m_connection, opcode, p->pBuffer);
-	
 	delete p;
 	p = nullptr;
 }
