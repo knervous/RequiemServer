@@ -113,7 +113,7 @@ void EQ::Net::EQWebStreamManager::WebPacketRecv(int connection, uint16 opcode, v
 		auto &stream = iter->second;
 		size_t size = 0;
 		auto dyn_packet = EQ::Net::DynamicPacket();
-		switch (stream->GetOpcodeManager()->EQToEmu(opcode))
+		switch ((EmuOpcode)opcode)
 		{
 		case OP_LoginWeb:
 		{
@@ -123,6 +123,11 @@ void EQ::Net::EQWebStreamManager::WebPacketRecv(int connection, uint16 opcode, v
 		case OP_ServerListRequest:
 		{
 			size = sizeof(WebLoginServerRequest_Struct);
+			break;
+		}
+		case OP_PlayEverquestRequest:
+		{
+			size = sizeof(WebPlayEverquestRequest_Struct);
 			break;
 		}
 		default:
@@ -155,8 +160,7 @@ void EQ::Net::EQWebStream::FastQueuePacket(EQApplicationPacket **p, bool ack_req
 	if (pack == nullptr)
 		return;
 
-	uint16 opcode = (*m_opcode_manager)->EmuToEQ(pack->GetOpcode());
-	SendDatagram(opcode, pack);
+	SendDatagram(pack->GetOpcode(), pack);
 }
 
 void EQ::Net::EQWebStream::SendDatagram(uint16 opcode, EQApplicationPacket *p)
@@ -178,7 +182,7 @@ EQApplicationPacket *EQ::Net::EQWebStream::PopPacket()
 		auto &p = m_packet_queue.front();
 
 		uint16 opcode = p->GetUInt16(0);
-		EmuOpcode emu_op = (*m_opcode_manager)->EQToEmu(opcode);
+		EmuOpcode emu_op = (EmuOpcode)opcode;
 		m_packet_recv_count[static_cast<int>(emu_op)]++;
 
 		EQApplicationPacket *ret = new EQApplicationPacket(emu_op, (unsigned char *)p->Data() + m_owner->GetOptions().opcode_size, p->Length() - m_owner->GetOptions().opcode_size);

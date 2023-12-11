@@ -3436,6 +3436,11 @@ namespace Web
 			struct WebLoginWorldServer_Struct* servers;
 		};
 
+		struct WebPlayEverquestRequest_Struct
+		{
+			uint32_t server_id;
+		};
+
 		// Go interop
 		struct WebSession_Struct
 		{

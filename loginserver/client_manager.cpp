@@ -120,7 +120,7 @@ ClientManager::ClientManager()
 	web_stream->OnNewConnection(
 		[this](std::shared_ptr<EQ::Net::EQWebStream> stream) {
 			LogInfo(
-				"New SoD+ client connection from [{0}:{1}]",
+				"New WebTransport client connection from [{0}:{1}]",
 				long2ip(stream->GetRemoteIP()),
 				stream->GetRemotePort()
 			);

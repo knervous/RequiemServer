@@ -74,6 +74,10 @@ bool Client::Process()
 				break;
 			}
 			case OP_PlayEverquestRequest: {
+				if (IsWebConnection()) {
+
+					break;
+				}
 				if (app->Size() < sizeof(PlayEverquestRequest_Struct)) {
 					LogError("Play received but it is too small, discarding");
 					break;
