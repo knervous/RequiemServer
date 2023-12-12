@@ -14,6 +14,7 @@ import (
 	"net"
 	"net/http"
 	reflect "reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -33,8 +34,8 @@ type webSession struct {
 }
 
 var sessionMap map[int]webSession = map[int]webSession{}
-
 var stopServer context.CancelFunc = nil
+var fixedCharPattern *regexp.Regexp = regexp.MustCompile("\\[(\\d+)\\]")
 
 func Ip2Int(ip net.IP) *big.Int {
 	i := big.NewInt(0)
@@ -69,6 +70,7 @@ func mapServerToClientOpCode(opcode OpCodes, structPtr unsafe.Pointer) (protoMes
 		enumOptions := OpCodes.Descriptor(opcode).Values().ByNumber(opcode.Enum().Number()).Options()
 		pbtype, err := protoregistry.GlobalTypes.FindMessageByName(protoreflect.FullName(proto.GetExtension(enumOptions, E_MessageType).(string)))
 		if err != nil {
+			fmt.Println("Missing map proto message for op code", OpCodes_name[int32(opcode)])
 			return nil, reflect.ValueOf(nil), err
 		}
 		return pbtype.New().Interface(), reflect.ValueOf(eqStruct).Elem(), nil
@@ -76,6 +78,11 @@ func mapServerToClientOpCode(opcode OpCodes, structPtr unsafe.Pointer) (protoMes
 	switch (OpCodes)(opcode) {
 	case OpCodes_OP_LoginAccepted:
 		return tie((*C.struct_WebLoginReply_Struct)(structPtr))
+	case OpCodes_OP_ServerListResponse:
+		return tie((*C.struct_WebLoginServerResponse_Struct)(structPtr))
+	// Nested structs
+	case OpCodes_Nested_WorldServer:
+		return tie((*C.struct_WebLoginWorldServer_Struct)(structPtr))
 	}
 	return nil, reflect.ValueOf(nil), errors.New("OpCode not found for server to client")
 }
@@ -91,41 +98,84 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 
 	protoMessage, reflectEQStruct, err := mapServerToClientOpCode((OpCodes)(opcode), structPtr)
 	if err != nil {
+		fmt.Println("Got an error or unhandled op code", OpCodes_name[int32(opcode)])
 		return
 	}
 
-	fields := protoMessage.ProtoReflect().Descriptor().Fields()
-	for i := 0; i < fields.Len(); i++ {
-		field := fields.Get(i)
-		fieldName := field.Name()
-		originalName := (string)(fieldName)
-		rf := reflectEQStruct.FieldByName(originalName)
-		if rf.IsValid() {
-			rf = reflect.NewAt(rf.Type(), unsafe.Pointer(rf.UnsafeAddr())).Elem()
+	var applyFields func(reflect.Value, protoreflect.ProtoMessage)
+	applyFields = func(reflectEQStruct reflect.Value, protoMessage protoreflect.ProtoMessage) {
+		fields := protoMessage.ProtoReflect().Descriptor().Fields()
+		for i := 0; i < fields.Len(); i++ {
+			field := fields.Get(i)
+			fieldName := field.Name()
+			originalName := (string)(fieldName)
+			rf := reflectEQStruct.FieldByName(originalName)
+			if rf.IsValid() {
+				// Map of flexible pointer in C struct to proto repeated field
+				mapNestedStructToRepeated := func(nestedOpcode OpCodes) {
+					enumOptions := OpCodes.Descriptor(nestedOpcode).Values().ByNumber(nestedOpcode.Enum().Number()).Options()
+					arrFieldName := proto.GetExtension(enumOptions, E_RepeatedField).(string)
+					nestedField := protoMessage.ProtoReflect().Descriptor().Fields().ByName(protoreflect.Name(arrFieldName))
+					next := rf.UnsafePointer()
+					for {
+						if next == nil {
+							break
+						}
+						nestedMessage, reflectEQStruct, err := mapServerToClientOpCode(nestedOpcode, next)
+						if err != nil {
+							fmt.Println("Err in nested struct", err)
+						}
+						applyFields(reflectEQStruct, nestedMessage)
+						arr := protoMessage.ProtoReflect().Mutable(nestedField).List()
+						arr.Append(protoreflect.ValueOf(nestedMessage.ProtoReflect()))
+						next = reflectEQStruct.FieldByName("next").UnsafePointer()
+					}
+				}
+				unsafePtr := unsafe.Pointer(rf.UnsafeAddr())
+				rf = reflect.NewAt(rf.Type(), unsafePtr).Elem()
+				cType := fmt.Stringer.String(rf.Type())
 
-			cType := fmt.Stringer.String(rf.Type())
-			fmt.Println("Setting field for type", originalName, cType)
-			switch cType {
-			case "*main._Ctype_char":
-				protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(C.GoString(rf.Interface().(*C.char))))
-				break
-			case "main._Ctype_int":
-				protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(int32(rf.Int())))
-				break
-			case "main._Ctype_uint":
-				protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(int32(rf.Uint())))
-				break
-			case "main._Ctype__Bool":
-				protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(rf.Bool()))
-				break
-			default:
-				fmt.Println("Unhandled c type", cType)
+				switch cType {
+				case "*main._Ctype_char":
+					protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(C.GoString(rf.Interface().(*C.char))))
+					break
+				case "main._Ctype_int":
+					protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(int32(rf.Int())))
+					break
+				case "main._Ctype_uint":
+					protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(int32(rf.Uint())))
+					break
+				case "main._Ctype__Bool":
+					protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(rf.Bool()))
+					break
+
+				// Linked list flexible pointers--need concrete types so each need their own case
+				case "*main._Ctype_struct_WebLoginWorldServer_Struct":
+					mapNestedStructToRepeated(OpCodes_Nested_WorldServer)
+					break
+
+				default:
+					// Fixed char array
+					if strings.Contains(cType, "]main._Ctype_char") {
+						str := fixedCharPattern.FindStringSubmatch(cType)[1]
+						length, err := strconv.Atoi(str)
+						if err != nil {
+							break
+						}
+						slice := (*[1 << 28]C.char)(unsafePtr)[:length:length]
+						protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(C.GoString(&slice[0])))
+						break
+					}
+					fmt.Println("Unhandled c type", cType)
+				}
+
+			} else {
+				fmt.Println("Invalid field for server to client proto message", originalName)
 			}
-
-		} else {
-			fmt.Println("Invalid field for server to client proto message", originalName)
 		}
 	}
+
+	applyFields(reflectEQStruct, protoMessage)
 
 	bytes, err := proto.Marshal(protoMessage)
 	if err != nil {
@@ -133,63 +183,6 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 	}
 	messageBytes = append(messageBytes, bytes...)
 	session.session.SendMessage(messageBytes)
-	// switch (OpCodes)(opcode) {
-	// case OpCodes_OP_LoginAccepted:
-	// 	loginReply := (*C.struct_WebLoginReply_Struct)(structPtr)
-	// 	loginMessage := LoginReply{
-	// 		Key:             C.GoString(loginReply.key),
-	// 		ErrorStrId:      int32(loginReply.error_str_id),
-	// 		Lsid:            int32(loginReply.lsid),
-	// 		Success:         bool(loginReply.success),
-	// 		ShowPlayerCount: bool(loginReply.show_player_count),
-	// 	}
-	// 	bytes, err := proto.Marshal(&loginMessage)
-	// 	if err != nil {
-	// 		return
-	// 	}
-	// 	messageBytes = append(messageBytes, bytes...)
-	// 	break
-	// case OpCodes_OP_ServerListResponse:
-	// 	serverResponse := (*C.struct_WebLoginServerResponse_Struct)(structPtr)
-	// 	serverCount := int32(serverResponse.server_count)
-
-	// 	loginServerResponse := LoginServerResponse{
-	// 		ServerCount: serverCount,
-	// 	}
-
-	// 	if serverCount > 0 {
-	// 		p := (*C.struct_WebLoginWorldServer_Struct)(serverResponse.servers)
-	// 		for {
-	// 			worldServer := WorldServer{
-	// 				Ip:            C.GoString(&p.ip[0]),
-	// 				ServerType:    int32(p.server_type),
-	// 				ServerId:      int32(p.server_id),
-	// 				LongName:      C.GoString(&p.long_name[0]),
-	// 				CountryCode:   C.GoString(&p.country_code[0]),
-	// 				LanguageCode:  C.GoString(&p.language_code[0]),
-	// 				Status:        int32(p.status),
-	// 				PlayersOnline: int32(p.players_online),
-	// 			}
-	// 			loginServerResponse.Servers = append(loginServerResponse.Servers, &worldServer)
-	// 			if p.next == nil {
-	// 				break
-	// 			}
-	// 			p = (*C.struct_WebLoginWorldServer_Struct)(p.next)
-	// 		}
-	// 	}
-
-	// 	bytes, err := proto.Marshal(&loginServerResponse)
-	// 	if err != nil {
-	// 		fmt.Printf("err.Error(): %v\n", err.Error())
-	// 		return
-	// 	}
-	// 	messageBytes = append(messageBytes, bytes...)
-
-	// 	break
-	// default:
-	// 	break
-	// }
-	// session.session.SendMessage(messageBytes)
 }
 
 func handleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, onClientPacket C.OnClientPacket) {

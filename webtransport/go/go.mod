@@ -1,10 +1,10 @@
-module starling/webtransport-bridge
+module knervous/webtransport-bridge
 
 go 1.18
 
 require (
 	github.com/adriancable/webtransport-go v0.1.0
-	github.com/barweiss/go-tuple v1.1.2
+	github.com/golang/protobuf v1.5.2
 	google.golang.org/protobuf v1.26.0
 )
 
@@ -17,11 +17,10 @@ require (
 	github.com/marten-seemann/qtls-go1-16 v0.1.4 // indirect
 	github.com/marten-seemann/qtls-go1-17 v0.1.0 // indirect
 	github.com/marten-seemann/qtls-go1-18 v0.1.0-beta.1 // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/onsi/ginkgo v1.16.4 // indirect
+	github.com/stretchr/testify v1.8.4 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
-	golang.org/x/exp v0.0.0-20220314205449-43aec2f8a4e7 // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.16.0 // indirect
 	golang.org/x/sys v0.14.0 // indirect

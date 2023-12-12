@@ -3397,8 +3397,8 @@ namespace Web
 
 		struct WebLogin_Struct
 		{
-			const char *username;
-			const char *password;
+			char *username;
+			char *password;
 		};
 
 		struct WebLoginServerRequest_Struct

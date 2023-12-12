@@ -4,7 +4,8 @@ package eq;
 import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.EnumValueOptions {
-  optional string messageType = 51234;
+  optional string messageType = 4500;
+  optional string repeatedField = 4501;
 }
 
 option go_package = "./main";
@@ -48,7 +49,13 @@ message PlayEverquest {
 }
 
 enum OpCodes {
+  
   OP_Unknown = 0;
+
+    // Nested structs
+    Nested_WorldServer = 1000 [(messageType) = "eq.WorldServer", (repeatedField) = "servers"];
+
+// EQEmu OP Codes
   OP_ExploreUnknown = 1;
   OP_0x0193 = 2;
   OP_0x0347 = 3;
@@ -507,7 +514,7 @@ enum OpCodes {
   OP_SenseHeading = 456;
   OP_SenseTraps = 457;
   OP_ServerListRequest = 458 [(messageType) = "eq.LoginRequest"];
-  OP_ServerListResponse = 459;
+  OP_ServerListResponse = 459 [(messageType) = "eq.LoginServerResponse"];
   OP_SessionReady = 460;
   OP_SetChatServer = 461;
   OP_SetChatServer2 = 462;

@@ -11,3 +11,4 @@ void bridge_client_packet(void* webstream_manager, int session_id, uint16_t opco
 void bridge_error(void* webstream_manager, char* bytes, OnError f);
 
 void * ptr_at(void **ptr, int idx);
+
