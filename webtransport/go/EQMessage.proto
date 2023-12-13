@@ -10,6 +10,8 @@ extend google.protobuf.EnumValueOptions {
 
 option go_package = "./main";
 
+// Login
+
 message LoginMessage {
   string username = 1;
   string password = 2;
@@ -48,14 +50,32 @@ message PlayEverquest {
   int32 server_id = 1;
 }
 
+message PlayEverquestResponse {
+  int32 server_id = 1;
+  bool success = 2;
+  int32 error_str_id = 3;
+}
+
+// World
+
+message WebInitiateConnection {
+  bool login = 1;
+}
+
+message LoginInfo {
+  string name = 1;
+  string password = 2;
+  int32 zoning = 3;
+}
+
 enum OpCodes {
   
   OP_Unknown = 0;
 
-    // Nested structs
-    Nested_WorldServer = 1000 [(messageType) = "eq.WorldServer", (repeatedField) = "servers"];
+  // Nested structs
+  Nested_WorldServer = 1000 [(messageType) = "eq.WorldServer", (repeatedField) = "servers"];
 
-// EQEmu OP Codes
+  // EQEmu OP Codes
   OP_ExploreUnknown = 1;
   OP_0x0193 = 2;
   OP_0x0347 = 3;
@@ -441,7 +461,7 @@ enum OpCodes {
   OP_PlayerStateAdd = 383;
   OP_PlayerStateRemove = 384;
   OP_PlayEverquestRequest = 385 [(messageType) = "eq.PlayEverquest"];
-  OP_PlayEverquestResponse = 386;
+  OP_PlayEverquestResponse = 386 [(messageType) = "eq.PlayEverquestResponse"];
   OP_PlayMP3 = 387;
   OP_Poll = 388;
   OP_PollResponse = 389;
@@ -503,7 +523,7 @@ enum OpCodes {
   OP_SendExpZonein = 445;
   OP_SendFindableNPCs = 446;
   OP_SendGuildTributes = 447;
-  OP_SendLoginInfo = 448;
+  OP_SendLoginInfo = 448 [(messageType) = "eq.LoginInfo"];
   OP_SendMaxCharacters = 449;
   OP_SendMembership = 450;
   OP_SendMembershipDetails = 451;
@@ -646,5 +666,5 @@ enum OpCodes {
   OP_ZoneUnavail = 588;
   OP_ResetAA = 589;
   OP_UnderWorld = 590;
-  OP_WebIniniateConnection = 591;
+  OP_WebInitiateConnection = 591 [(messageType) = "eq.WebInitiateConnection"];
 }

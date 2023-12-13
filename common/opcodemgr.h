@@ -139,6 +139,19 @@ public:
 	virtual void SetOpcode(EmuOpcode emu_op, uint16 eq_op) {}
 };
 
+// No patch, just reflect values
+class PassthroughOpcodeManager : public MutableOpcodeManager {
+public:
+	PassthroughOpcodeManager() {};
+
+	virtual bool LoadOpcodes(const char *filename, bool report_errors = false) { return true; }
+	virtual bool ReloadOpcodes(const char *filename, bool report_errors = false) { return true; }
+	virtual uint16 EmuToEQ(const EmuOpcode emu_op) { return (uint16)emu_op; };
+	virtual EmuOpcode EQToEmu(const uint16 eq_op) { return (EmuOpcode)eq_op; };
+
+	virtual void SetOpcode(EmuOpcode emu_op, uint16 eq_op) {}
+};
+
 //starts as NullOpcodeManager, but remembers any mappings set
 //could prolly have been implemented with an extension to regular,
 //by overriding its load methods to be empty.

@@ -10,7 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"math/big"
 	"net"
 	"net/http"
 	reflect "reflect"
@@ -21,6 +20,7 @@ import (
 	"unsafe"
 
 	"github.com/adriancable/webtransport-go"
+	"github.com/praserx/ipconv"
 	"google.golang.org/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
@@ -37,12 +37,7 @@ var sessionMap map[int]webSession = map[int]webSession{}
 var stopServer context.CancelFunc = nil
 var fixedCharPattern *regexp.Regexp = regexp.MustCompile("\\[(\\d+)\\]")
 
-func Ip2Int(ip net.IP) *big.Int {
-	i := big.NewInt(0)
-	i.SetBytes(ip)
-	return i
-}
-
+// CLIENT -> SERVER
 func mapClientToServerOpCode(opcode OpCodes) (reflect.Value, protoreflect.ProtoMessage) {
 	tie := func(eqStruct interface{}) (reflect.Value, protoreflect.ProtoMessage) {
 		enumOptions := OpCodes.Descriptor(opcode).Values().ByNumber(opcode.Enum().Number()).Options()
@@ -60,11 +55,16 @@ func mapClientToServerOpCode(opcode OpCodes) (reflect.Value, protoreflect.ProtoM
 		return tie(&C.struct_WebLoginServerRequest_Struct{})
 	case OpCodes_OP_PlayEverquestRequest:
 		return tie(&C.struct_WebPlayEverquestRequest_Struct{})
+	case OpCodes_OP_WebInitiateConnection:
+		return tie(&C.struct_WebInitiateConnection_Struct{})
+	case OpCodes_OP_SendLoginInfo:
+		return tie(&C.struct_LoginInfo_Struct{})
 	}
 	fmt.Println("Got unknown op code map", opcode)
 	return reflect.ValueOf(""), nil
 }
 
+// SERVER -> CLIENT
 func mapServerToClientOpCode(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage proto.Message, fieldVal reflect.Value, err error) {
 	tie := func(eqStruct interface{}) (protoMessage proto.Message, fieldVal reflect.Value, err error) {
 		enumOptions := OpCodes.Descriptor(opcode).Values().ByNumber(opcode.Enum().Number()).Options()
@@ -80,6 +80,8 @@ func mapServerToClientOpCode(opcode OpCodes, structPtr unsafe.Pointer) (protoMes
 		return tie((*C.struct_WebLoginReply_Struct)(structPtr))
 	case OpCodes_OP_ServerListResponse:
 		return tie((*C.struct_WebLoginServerResponse_Struct)(structPtr))
+	case OpCodes_OP_PlayEverquestResponse:
+		return tie((*C.struct_WebPlayEverquestResponse_Struct)(structPtr))
 	// Nested structs
 	case OpCodes_Nested_WorldServer:
 		return tie((*C.struct_WebLoginWorldServer_Struct)(structPtr))
@@ -185,6 +187,7 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 	session.session.SendMessage(messageBytes)
 }
 
+// CLIENT -> SERVER
 func handleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, onClientPacket C.OnClientPacket) {
 	opcode := binary.LittleEndian.Uint16(msg[0:2])
 	restBytes := msg[2:len(msg)]
@@ -194,33 +197,59 @@ func handleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, o
 	proto.Unmarshal(restBytes, protoMessage)
 	cleanupFuncs := []func(){}
 	fields := protoMessage.ProtoReflect().Descriptor().Fields()
+	size := 0
 	for i := 0; i < fields.Len(); i++ {
 		fieldName := fields.Get(i).Name()
 		originalName := (string)(fieldName)
 		rf := reflectEQStruct.FieldByName(originalName)
 		if rf.IsValid() {
 			rf = reflect.NewAt(rf.Type(), unsafe.Pointer(rf.UnsafeAddr())).Elem()
-			val := reflect.ValueOf(protoMessage.ProtoReflect().Get(fields.ByName(fieldName)).String())
+			val := protoMessage.ProtoReflect().Get(fields.ByName(fieldName))
+
 			fmt.Println("Setting value for original", originalName, val, fmt.Stringer.String(rf.Type()))
 			cType := fmt.Stringer.String(rf.Type())
 			switch cType {
 			case "*main._Ctype_char":
-				strVal := C.CString(val.Interface().(string))
+				strVal := C.CString(reflect.ValueOf(val.String()).Interface().(string))
 				cleanupFuncs = append(cleanupFuncs, func() { C.free(unsafe.Pointer(strVal)) })
 				rf.Set(reflect.ValueOf(strVal))
+				size += int(C.ptr_size())
 				break
-			case "main._Cuint":
-				rf.Set(reflect.ValueOf(C.uint(val.Interface().(int))))
-
+			case "main._Ctype_uint":
+				rf.Set(reflect.ValueOf(C.uint(reflect.ValueOf(val.Int()).Interface().(int64))))
+				size += 4
+				break
+			case "main._Ctype__Bool":
+				rf.Set(reflect.ValueOf(C.bool(reflect.ValueOf(val.Bool()).Interface().(bool))))
+				size += 1
+				break
+			case "main._Ctype_uchar":
+				rf.Set(reflect.ValueOf(C.uchar(reflect.ValueOf(val.Int()).Interface().(int64))))
+				size += 1
 				break
 			default:
-				fmt.Sprintln("Unhandled c type: %s", cType)
+				// Fixed char array
+				if strings.Contains(cType, "]main._Ctype_char") {
+					str := fixedCharPattern.FindStringSubmatch(cType)[1]
+					length, err := strconv.Atoi(str)
+					if err != nil {
+						break
+					}
+					strVal := reflect.ValueOf(val.String()).Interface().(string)
+					slice := (*[1 << 28]C.char)(unsafe.Pointer(rf.UnsafeAddr()))[:length:length]
+					for i := 0; i < len(strVal) && i < length; i++ { // leave element 256 at zero
+						slice[i] = C.char(strVal[i])
+					}
+					size += length
+					break
+				}
+				fmt.Println("Unhandled c type client -> server", cType)
 			}
 
 		}
 	}
 
-	C.bridge_client_packet(webstreamManager, C.int(sessionId), C.ushort(opcode), reflectEQStruct.Addr().UnsafePointer(), onClientPacket)
+	C.bridge_client_packet(webstreamManager, C.int(sessionId), C.ushort(opcode), reflectEQStruct.Addr().UnsafePointer(), C.int(size), onClientPacket)
 
 	// for _, fn := range cleanupFuncs {
 	// 	fn()
@@ -235,7 +264,10 @@ func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.
 		sessionId := int(session.StreamID())
 		sessionMap[sessionId] = webSession{ip: r.RemoteAddr, port: r.URL.Port(), session: session, webstreamManager: webstreamManager}
 		split := strings.Split(r.RemoteAddr, ":")
-		ip := Ip2Int(net.ParseIP(split[0])).Int64()
+		ip, ipErr := ipconv.IPv4ToInt(net.ParseIP(split[0]))
+		if ipErr != nil {
+			ip = 0
+		}
 		port, portErr := strconv.Atoi(split[1])
 		if portErr != nil {
 			port = 0

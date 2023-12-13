@@ -71,14 +71,7 @@ namespace Web
 		auto Config = EQEmuConfig::get();
 		//create our opcode manager if we havent already
 		if (opcodes == nullptr) {
-			std::string opfile = fmt::format("{}/patch_{}.conf", path.GetPatchPath(), name);
-			//load up the opcode manager.
-			//TODO: figure out how to support shared memory with multiple patches...
-			opcodes = new RegularOpcodeManager();
-			if (!opcodes->LoadOpcodes(opfile.c_str())) {
-				LogNetcode("[OPCODES] Error loading opcodes file [{}]. Not registering patch [{}]", opfile.c_str(), name);
-				return;
-			}
+			opcodes = new PassthroughOpcodeManager();
 		}
 
 		//ok, now we have what we need to register.
@@ -90,13 +83,13 @@ namespace Web
 		pname = std::string(name) + "_world";
 		signature.ignore_eq_opcode = 0;
 		signature.first_length = 1;
-		signature.first_eq_opcode = opcodes->EmuToEQ(OP_WebIniniateConnection);
+		signature.first_eq_opcode = opcodes->EmuToEQ(OP_WebInitiateConnection);
 		into.RegisterPatch(signature, pname.c_str(), &opcodes, &struct_strategy);
 
 		//register our zone signature.
 		pname = std::string(name) + "_zone";
 		signature.first_length = 1;
-		signature.first_eq_opcode = opcodes->EmuToEQ(OP_WebIniniateConnection);
+		signature.first_eq_opcode = opcodes->EmuToEQ(OP_WebInitiateConnection);
 		into.RegisterPatch(signature, pname.c_str(), &opcodes, &struct_strategy);
 
 
@@ -106,18 +99,7 @@ namespace Web
 
 	void Reload()
 	{
-		//we have a big problem to solve here when we switch back to shared memory
-		//opcode managers because we need to change the manager pointer, which means
-		//we need to go to every stream and replace it's manager.
 
-		if (opcodes != nullptr) {
-			std::string opfile = fmt::format("{}/patch_{}.conf", path.GetPatchPath(), name);
-			if (!opcodes->ReloadOpcodes(opfile.c_str())) {
-				LogNetcode("[OPCODES] Error reloading opcodes file [{}] for patch [{}]", opfile.c_str(), name);
-				return;
-			}
-			LogNetcode("[OPCODES] Reloaded opcodes for patch [{}]", name);
-		}
 	}
 
 	Strategy::Strategy() : StructStrategy()
@@ -1836,6 +1818,23 @@ namespace Web
 	}
 
 // DECODE methods
+	DECODE(OP_SendLoginInfo) {
+		// DECODE_LENGTH_EXACT(structs::LoginInfo_Struct);
+		SETUP_DIRECT_DECODE(LoginInfo_Struct, structs::LoginInfo_Struct);
+		std::string name(eq->name);
+		std::string pw(eq->password);
+		int idx = 0;
+		for (int i = 0; i < name.length(); i++, idx++) { 
+			emu->login_info[idx] = name[idx];
+		}
+		emu->login_info[idx++] = '\0';
+		for (int i = 0; i < pw.length(); i++, idx++) { 
+			emu->login_info[idx] = pw[idx];
+		}
+		IN(zoning);
+
+		FINISH_DIRECT_DECODE();
+	}
 	DECODE(OP_AdventureMerchantSell)
 	{
 		DECODE_LENGTH_EXACT(structs::Adventure_Sell_Struct);

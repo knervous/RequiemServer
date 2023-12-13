@@ -75,7 +75,7 @@ bool Client::Process()
 			}
 			case OP_PlayEverquestRequest: {
 				if (IsWebConnection()) {
-
+					Handle_WebPlay((const char *) app->pBuffer);
 					break;
 				}
 				if (app->Size() < sizeof(PlayEverquestRequest_Struct)) {
@@ -378,6 +378,32 @@ void Client::Handle_Play(const char *data)
 
 	m_play_server_id   = (unsigned int) play->server_number;
 	m_play_sequence_id = sequence_in;
+	m_play_server_id   = server_id_in;
+	server.server_manager->SendUserToWorldRequest(server_id_in, m_account_id, m_loginserver_name);
+}
+
+/**
+ * Sends a packet to the requested server to see if the web client is allowed or not
+ *
+ * @param data
+ */
+void Client::Handle_WebPlay(const char *data)
+{
+	if (m_client_status != cs_logged_in) {
+		LogError("Client sent a web play request when they were not logged in, discarding");
+		return;
+	}
+
+	const auto *play        = (const Web::structs::WebPlayEverquestRequest_Struct *) data;
+	auto       server_id_in = (unsigned int) play->server_id;
+
+	LogInfo(
+		"[Handle_Play] Play received from client [{}] server number [{}]",
+		GetAccountName(),
+		server_id_in
+	);
+
+	m_play_server_id   = (unsigned int) play->server_id;
 	m_play_server_id   = server_id_in;
 	server.server_manager->SendUserToWorldRequest(server_id_in, m_account_id, m_loginserver_name);
 }

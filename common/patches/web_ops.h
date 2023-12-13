@@ -80,7 +80,10 @@ E(OP_WearChange)
 E(OP_ZoneEntry)
 E(OP_ZoneServerReady)
 E(OP_ZoneSpawns)
+
+
 // incoming packets that require a DECODE translation:
+D(OP_SendLoginInfo)
 D(OP_AdventureMerchantSell)
 D(OP_ApplyPoison)
 D(OP_AugmentItem)

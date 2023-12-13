@@ -63,7 +63,8 @@ namespace Web
 
 		struct LoginInfo_Struct
 		{
-			char login_info[64];
+			char* name;
+			char* password;
 			uint8 zoning; // 01 if zoning, 00 if not
 		};
 
@@ -3439,6 +3440,18 @@ namespace Web
 		struct WebPlayEverquestRequest_Struct
 		{
 			uint32_t server_id;
+		};
+
+		struct WebPlayEverquestResponse_Struct
+		{
+			uint32_t server_id;
+			bool success;
+			int32_t error_str_id;
+		};
+
+		struct WebInitiateConnection_Struct
+		{
+			bool login;
 		};
 
 		// Go interop

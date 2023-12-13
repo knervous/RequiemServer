@@ -51,10 +51,10 @@ extern "C"
 		auto *manager = reinterpret_cast<EQ::Net::EQWebStreamManager *>(webstream_manager);
 		manager->WebConnectionStateChange(session_id, EQ::Net::DbProtocolStatus::StatusConnected, EQ::Net::DbProtocolStatus::StatusDisconnected);
 	}
-	void Go_OnClientPacket(void *webstream_manager, int session_id, uint16 opcode, void *struct_ptr)
+	void Go_OnClientPacket(void *webstream_manager, int session_id, uint16 opcode, void *struct_ptr, int size)
 	{
 		auto *manager = reinterpret_cast<EQ::Net::EQWebStreamManager *>(webstream_manager);
-		manager->WebPacketRecv(session_id, opcode, struct_ptr);
+		manager->WebPacketRecv(session_id, opcode, struct_ptr, size);
 	}
 
 	void Go_OnError(void *webstream_manager, char *bytes)
@@ -105,34 +105,13 @@ void EQ::Net::EQWebStreamManager::WebConnectionStateChange(int connection, DbPro
 	}
 }
 
-void EQ::Net::EQWebStreamManager::WebPacketRecv(int connection, uint16 opcode, void *struct_ptr)
+void EQ::Net::EQWebStreamManager::WebPacketRecv(int connection, uint16 opcode, void *struct_ptr, int size)
 {
 	auto iter = m_streams.find(connection);
 	if (iter != m_streams.end())
 	{
 		auto &stream = iter->second;
-		size_t size = 0;
 		auto dyn_packet = EQ::Net::DynamicPacket();
-		switch ((EmuOpcode)opcode)
-		{
-		case OP_LoginWeb:
-		{
-			size = sizeof(WebLogin_Struct);
-			break;
-		}
-		case OP_ServerListRequest:
-		{
-			size = sizeof(WebLoginServerRequest_Struct);
-			break;
-		}
-		case OP_PlayEverquestRequest:
-		{
-			size = sizeof(WebPlayEverquestRequest_Struct);
-			break;
-		}
-		default:
-			break;
-		}
 		dyn_packet.Reserve(2 + size);
 		dyn_packet.PutUInt16(0, opcode);
 		dyn_packet.PutData(2, struct_ptr, size);
@@ -212,7 +191,7 @@ uint16 EQ::Net::EQWebStream::GetRemotePort() const
 };
 EQStreamInterface::MatchState EQ::Net::EQWebStream::CheckSignature(const Signature *sig)
 {
-	return sig->first_eq_opcode == OP_WebIniniateConnection ? MatchSuccessful : MatchNotReady;
+	return sig->first_eq_opcode == OP_WebInitiateConnection ? MatchSuccessful : MatchNotReady;
 }
 EQStreamState EQ::Net::EQWebStream::GetState()
 {

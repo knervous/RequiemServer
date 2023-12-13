@@ -24,7 +24,7 @@ namespace EQ
 			void OnConnectionStateChange(std::function<void(std::shared_ptr<EQWebStream>, DbProtocolStatus, DbProtocolStatus)> func) { m_on_connection_state_change = func; }
 			void WebNewConnection(int connection, Web::structs::WebSession_Struct* web_session);
 			void WebConnectionStateChange(int connection, DbProtocolStatus from, DbProtocolStatus to);
-			void WebPacketRecv(int connection, uint16 opcode, void *struct_ptr);
+			void WebPacketRecv(int connection, uint16 opcode, void *struct_ptr, int size);
 
 		private:
 			std::function<void(std::shared_ptr<EQWebStream>)> m_on_new_connection;

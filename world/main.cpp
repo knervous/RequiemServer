@@ -60,6 +60,7 @@
 #endif
 
 #include "../common/patches/patches.h"
+#include "../webtransport/web.h"
 #include "zoneserver.h"
 #include "login_server.h"
 #include "login_server_list.h"
@@ -353,6 +354,19 @@ int main(int argc, char **argv)
 
 	eqsm.OnNewConnection(
 		[&stream_identifier](std::shared_ptr<EQ::Net::EQStream> stream) {
+			stream_identifier.AddStream(stream);
+			LogInfo(
+				"New [EverQuest Client] connection from IP [{}:{}]",
+				long2ip(stream->GetRemoteIP()),
+				ntohs(stream->GetRemotePort())
+			);
+		}
+	);
+
+	EQStreamManagerInterfaceOptions web_opts(9500, false, false);
+	EQ::Net::EQWebStreamManager eqWebStreamManager(web_opts);
+	eqWebStreamManager.OnNewConnection(
+		[&stream_identifier](std::shared_ptr<EQ::Net::EQWebStream> stream) {
 			stream_identifier.AddStream(stream);
 			LogInfo(
 				"New [EverQuest Client] connection from IP [{}:{}]",

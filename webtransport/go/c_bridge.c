@@ -10,9 +10,9 @@ void bridge_connection_closed(void *webstream_manager, int session_id, OnConnect
 {
    f(webstream_manager, session_id);
 }
-void bridge_client_packet(void *webstream_manager, int session_id, uint16_t opcode, void *struct_ptr, OnClientPacket f)
+void bridge_client_packet(void *webstream_manager, int session_id, uint16_t opcode, void *struct_ptr, int size, OnClientPacket f)
 {
-   f(webstream_manager, session_id, opcode, struct_ptr);
+   f(webstream_manager, session_id, opcode, struct_ptr, size);
 }
 
 void bridge_error(void *webstream_manager, char *bytes, OnError f)
@@ -23,4 +23,8 @@ void bridge_error(void *webstream_manager, char *bytes, OnError f)
 // Helper functions
 void * ptr_at(void **ptr, int idx) {
     return ptr[idx];
+}
+
+int ptr_size() {
+   return sizeof(void*);
 }

@@ -79,6 +79,13 @@ public:
 	 */
 	void Handle_Play(const char *data);
 
+	/**	
+	 * Sends a packet to the requested server to see if the web client is allowed or not
+	 *
+	 * @param data
+	 */
+	void Handle_WebPlay(const char *data);
+
 	/**
 	 * Sends a server list packet to the client
 	 *
@@ -183,6 +190,10 @@ public:
 		const std::string &password_hash
 	);
 
+	bool IsWebConnection() const {
+		return m_connection->IsWebstream();
+	};
+
 	void DoSuccessfulLogin(const std::string& in_account_name, int db_account_id, const std::string &db_loginserver);
 	void CreateLocalAccount(const std::string &username, const std::string &password);
 	void CreateEQEmuAccount(const std::string &in_account_name, const std::string &in_account_password, unsigned int loginserver_account_id);
@@ -208,9 +219,6 @@ private:
 	std::string m_stored_pass;
 	static bool ProcessHealthCheck(std::string username);
 
-	bool IsWebConnection() const {
-		return m_connection->IsWebstream();
-	};
 };
 
 #endif
