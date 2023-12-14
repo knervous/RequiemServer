@@ -76,6 +76,8 @@ uint32 EQ::versions::ConvertClientVersionToClientVersionBit(ClientVersion client
 		return bitRoF;
 	case ClientVersion::RoF2:
 		return bitRoF2;
+	case ClientVersion::Web:
+		return bitWeb;
 	default:
 		return bitUnknown;
 	}
@@ -96,6 +98,8 @@ EQ::versions::ClientVersion EQ::versions::ConvertClientVersionBitToClientVersion
 		return ClientVersion::RoF;
 	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::RoF2) - 1)) :
 		return ClientVersion::RoF2;
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::Web) - 1)) :
+		return ClientVersion::Web;
 	default:
 		return ClientVersion::Unknown;
 	}

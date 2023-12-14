@@ -152,6 +152,10 @@ void Client::Handle_WebLogin(const char *data, unsigned int size)
 
 		server.db->UpdateLSAccountData(db_account_id, std::string(inet_ntoa(in)));
 		GenerateKey();
+
+		m_account_id       = db_account_id;
+		m_account_name     = user;
+		m_loginserver_name = db_loginserver;
 		
 		int outsize = sizeof(Web::structs::WebLoginReply_Struct);
 		Web::structs::WebLoginReply_Struct login_reply;
@@ -159,7 +163,7 @@ void Client::Handle_WebLogin(const char *data, unsigned int size)
 		login_reply.success = true;
 		login_reply.show_player_count = server.options.IsShowPlayerCountEnabled();
 		login_reply.error_str_id = 101;
-		login_reply.key = m_key.data();
+		memcpy(login_reply.key, m_key.c_str(), m_key.size());
 	
 		auto outapp = std::make_unique<EQApplicationPacket>(OP_LoginAccepted, outsize);
 		outapp->WriteData(&login_reply, sizeof(login_reply));

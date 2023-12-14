@@ -982,8 +982,9 @@ namespace Web
 		OUT(hairstyle);
 		OUT(beard);
 		for (r = EQ::textures::textureBegin; r < EQ::textures::materialCount; r++) {
-			OUT(item_material.Slot[r].Material);
-			OUT(item_tint.Slot[r].Color);
+			
+			// OUT(item_material.Slot[r].Material);
+			// OUT(item_tint.Slot[r].Color);
 		}
 		for (r = 0; r < structs::MAX_PP_AA_ARRAY; r++) {
 			OUT(aa_array[r].AA);
@@ -1384,83 +1385,52 @@ namespace Web
 		emu_ptr += sizeof(CharacterSelect_Struct);
 		CharacterSelectEntry_Struct *emu_cse = (CharacterSelectEntry_Struct *)nullptr;
 
-		for (size_t index = 0; index < 10; ++index) {
-			memset(eq->Name[index], 0, 64);
-		}
-
 		size_t char_index = 0;
+		std::vector<Web::structs::CharacterSelectEntry_Struct> characters;
 		for (; char_index < emu->CharCount && char_index < 8; ++char_index) {
 			emu_cse = (CharacterSelectEntry_Struct *)emu_ptr;
+			Web::structs::CharacterSelectEntry_Struct character {
+				.name = "",
+				.char_class = emu_cse->Class,
+				.race = emu_cse->Race > 473 ? 1 : emu_cse->Race,
+				.level = emu_cse->Level,
+				.zone = emu_cse->Zone,
+				.instance = emu_cse->Instance,
+				.gender = emu_cse->Gender,
+				.face = emu_cse->Face,
+				.equip = {},
+				.deity = emu_cse->Deity,
+				.primary_id_file = emu_cse->PrimaryIDFile,
+				.secondary_id_file = emu_cse->SecondaryIDFile,
+				.go_home = emu_cse->GoHome,
+				.enabled = emu_cse->Enabled,
+				.last_login = emu_cse->LastLogin,
+				.next = nullptr,
+			};
 
-			eq->Race[char_index] = emu_cse->Race;
-			if (eq->Race[char_index] > 473)
-				eq->Race[char_index] = 1;
+			memcpy(character.name, emu_cse->Name, 64);
 
 			for (int index = 0; index < EQ::textures::materialCount; ++index) {
-				eq->CS_Colors[char_index].Slot[index].Color = emu_cse->Equip[index].Color;
+				auto color = emu_cse->Equip[index].Color;
+				character.equip[index].color = {
+					.blue = (uint8)(color >> 24),
+					.green = (uint8)(color >> 16),
+					.red = (uint8)(color >> 8),
+					.use_tint = (uint8)(color),
+				};
+				character.equip[index].material = emu_cse->Equip[index].Material;
 			}
 
-			eq->BeardColor[char_index] = emu_cse->BeardColor;
-			eq->HairStyle[char_index] = emu_cse->HairStyle;
-
-			for (int index = 0; index < EQ::textures::materialCount; ++index) {
-				eq->Equip[char_index].Slot[index].Material = emu_cse->Equip[index].Material;
+			if (!characters.empty()) {
+				characters.back().next = &character;
 			}
 
-			eq->SecondaryIDFile[char_index] = emu_cse->SecondaryIDFile;
-			eq->Deity[char_index] = emu_cse->Deity;
-			eq->GoHome[char_index] = emu_cse->GoHome;
-			eq->Tutorial[char_index] = emu_cse->Tutorial;
-			eq->Beard[char_index] = emu_cse->Beard;
-			eq->PrimaryIDFile[char_index] = emu_cse->PrimaryIDFile;
-			eq->HairColor[char_index] = emu_cse->HairColor;
-			eq->Zone[char_index] = emu_cse->Zone;
-			eq->Class[char_index] = emu_cse->Class;
-			eq->Face[char_index] = emu_cse->Face;
-
-			memcpy(eq->Name[char_index], emu_cse->Name, 64);
-
-			eq->Gender[char_index] = emu_cse->Gender;
-			eq->EyeColor1[char_index] = emu_cse->EyeColor1;
-			eq->EyeColor2[char_index] = emu_cse->EyeColor2;
-			eq->Level[char_index] = emu_cse->Level;
+			characters.push_back(character);
 
 			emu_ptr += sizeof(CharacterSelectEntry_Struct);
 		}
-
-		for (; char_index < 10; ++char_index) {
-			eq->Race[char_index] = 0;
-
-			for (int index = 0; index < EQ::textures::materialCount; ++index) {
-				eq->CS_Colors[char_index].Slot[index].Color = 0;
-			}
-
-			eq->BeardColor[char_index] = 0;
-			eq->HairStyle[char_index] = 0;
-
-			for (int index = 0; index < EQ::textures::materialCount; ++index) {
-				eq->Equip[char_index].Slot[index].Material = 0;
-			}
-
-			eq->SecondaryIDFile[char_index] = 0;
-			eq->Deity[char_index] = 0;
-			eq->GoHome[char_index] = 0;
-			eq->Tutorial[char_index] = 0;
-			eq->Beard[char_index] = 0;
-			eq->PrimaryIDFile[char_index] = 0;
-			eq->HairColor[char_index] = 0;
-			eq->Zone[char_index] = 0;
-			eq->Class[char_index] = 0;
-			eq->Face[char_index] = 0;
-
-			strncpy(eq->Name[char_index], "<none>", 6);
-
-			eq->Gender[char_index] = 0;
-			eq->EyeColor1[char_index] = 0;
-			eq->EyeColor2[char_index] = 0;
-			eq->Level[char_index] = 0;
-		}
-
+		eq->characters = &characters[0];
+		eq->character_count = characters.size();
 		FINISH_ENCODE();
 	}
 
@@ -1693,7 +1663,7 @@ namespace Web
 
 		OUT(spawn_id);
 		OUT(material);
-		OUT(color.Color);
+		//OUT(color.Color);
 		OUT(wear_slot_id);
 
 		FINISH_ENCODE();
@@ -1771,8 +1741,8 @@ namespace Web
 			eq->petOwnerId = emu->petOwnerId;
 			eq->guildrank = emu->guildrank;
 			for (k = EQ::textures::textureBegin; k < EQ::textures::materialCount; k++) {
-				eq->equipment.Slot[k].Material = emu->equipment.Slot[k].Material;
-				eq->equipment_tint.Slot[k].Color = emu->equipment_tint.Slot[k].Color;
+			//	eq->equipment.Slot[k].Material = emu->equipment.Slot[k].Material;
+			//	eq->equipment_tint.Slot[k].Color = emu->equipment_tint.Slot[k].Color;
 			}
 			for (k = 0; k < 8; k++) {
 				eq->set_to_0xFF[k] = 0xFF;
@@ -1825,11 +1795,11 @@ namespace Web
 		std::string pw(eq->password);
 		int idx = 0;
 		for (int i = 0; i < name.length(); i++, idx++) { 
-			emu->login_info[idx] = name[idx];
+			emu->login_info[idx] = name[i];
 		}
 		emu->login_info[idx++] = '\0';
 		for (int i = 0; i < pw.length(); i++, idx++) { 
-			emu->login_info[idx] = pw[idx];
+			emu->login_info[idx] = pw[i];
 		}
 		IN(zoning);
 
@@ -2432,7 +2402,7 @@ namespace Web
 
 		IN(spawn_id);
 		IN(material);
-		IN(color.Color);
+		//IN(color.Color);
 		IN(wear_slot_id);
 		emu->elite_material = 0;
 		emu->hero_forge_model = 0;

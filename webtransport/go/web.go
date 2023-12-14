@@ -35,7 +35,21 @@ type webSession struct {
 
 var sessionMap map[int]webSession = map[int]webSession{}
 var stopServer context.CancelFunc = nil
-var fixedCharPattern *regexp.Regexp = regexp.MustCompile("\\[(\\d+)\\]")
+var fixedArraySizePattern *regexp.Regexp = regexp.MustCompile("\\[(\\d+)\\]")
+
+var opcodeTypeMap map[string]OpCodes = map[string]OpCodes{
+	"_Ctype_struct_WebLoginWorldServer_Struct":  OpCodes_Nested_WorldServer,
+	"_Ctype_struct_CharacterSelectEntry_Struct": OpCodes_Nested_CharacterSelectEntry,
+	"_Ctype_struct_CharSelectEquip_Struct":      OpCodes_Nested_CharSelectEquip,
+	"_Ctype_struct_Tint_Struct":                 OpCodes_Nested_Tint,
+}
+
+func nestedStructToOpCode(cType string) (OpCodes, bool, bool) {
+	strSplit := strings.Split(cType, "main.")
+	str := strSplit[len(strSplit)-1]
+	val, ok := opcodeTypeMap[str]
+	return val, ok, strings.Contains(cType, "*")
+}
 
 // CLIENT -> SERVER
 func mapClientToServerOpCode(opcode OpCodes) (reflect.Value, protoreflect.ProtoMessage) {
@@ -76,15 +90,25 @@ func mapServerToClientOpCode(opcode OpCodes, structPtr unsafe.Pointer) (protoMes
 		return pbtype.New().Interface(), reflect.ValueOf(eqStruct).Elem(), nil
 	}
 	switch (OpCodes)(opcode) {
+	// Login
 	case OpCodes_OP_LoginAccepted:
 		return tie((*C.struct_WebLoginReply_Struct)(structPtr))
 	case OpCodes_OP_ServerListResponse:
 		return tie((*C.struct_WebLoginServerResponse_Struct)(structPtr))
 	case OpCodes_OP_PlayEverquestResponse:
 		return tie((*C.struct_WebPlayEverquestResponse_Struct)(structPtr))
-	// Nested structs
+	// World
+	case OpCodes_OP_SendCharInfo:
+		return tie((*C.struct_CharacterSelect_Struct)(structPtr))
+		// Nested structs
 	case OpCodes_Nested_WorldServer:
 		return tie((*C.struct_WebLoginWorldServer_Struct)(structPtr))
+	case OpCodes_Nested_CharacterSelectEntry:
+		return tie((*C.struct_CharacterSelectEntry_Struct)(structPtr))
+	case OpCodes_Nested_CharSelectEquip:
+		return tie((*C.struct_CharSelectEquip_Struct)(structPtr))
+	case OpCodes_Nested_Tint:
+		return tie((*C.struct_Tint_Struct)(structPtr))
 	}
 	return nil, reflect.ValueOf(nil), errors.New("OpCode not found for server to client")
 }
@@ -144,28 +168,78 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 				case "main._Ctype_int":
 					protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(int32(rf.Int())))
 					break
-				case "main._Ctype_uint":
+				case "main._Ctype_uint",
+					"main._Ctype_uchar",
+					"main._Ctype_ushort":
 					protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(int32(rf.Uint())))
 					break
 				case "main._Ctype__Bool":
 					protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(rf.Bool()))
 					break
 
-				// Linked list flexible pointers--need concrete types so each need their own case
-				case "*main._Ctype_struct_WebLoginWorldServer_Struct":
-					mapNestedStructToRepeated(OpCodes_Nested_WorldServer)
-					break
-
 				default:
 					// Fixed char array
 					if strings.Contains(cType, "]main._Ctype_char") {
-						str := fixedCharPattern.FindStringSubmatch(cType)[1]
+						str := fixedArraySizePattern.FindStringSubmatch(cType)[1]
 						length, err := strconv.Atoi(str)
 						if err != nil {
 							break
 						}
 						slice := (*[1 << 28]C.char)(unsafePtr)[:length:length]
 						protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(C.GoString(&slice[0])))
+						break
+					}
+
+					// Linked list flexible pointers
+					flexOpCode, found, isPtr := nestedStructToOpCode(cType)
+					if found && isPtr {
+						mapNestedStructToRepeated(flexOpCode)
+						break
+					}
+
+					// Fixed struct array
+					if strings.Contains(cType, "]main._Ctype_struct") {
+						str := fixedArraySizePattern.FindStringSubmatch(cType)[1]
+						length, err := strconv.Atoi(str)
+						if err != nil {
+							break
+						}
+
+						nestedOpCode, found, _ := nestedStructToOpCode(cType)
+						if !found {
+							fmt.Println("Not found nested fixed struct array", originalName, cType)
+						}
+
+						enumOptions := OpCodes.Descriptor(nestedOpCode).Values().ByNumber(nestedOpCode.Enum().Number()).Options()
+						arrFieldName := proto.GetExtension(enumOptions, E_RepeatedField).(string)
+						nestedField := protoMessage.ProtoReflect().Descriptor().Fields().ByName(protoreflect.Name(arrFieldName))
+						arr := protoMessage.ProtoReflect().Mutable(nestedField).List()
+
+						for i := 0; i < length; i++ {
+							reflectEQStruct := rf.Index(i)
+							nestedMessage, _, err := mapServerToClientOpCode(nestedOpCode, reflectEQStruct.Addr().UnsafePointer())
+							if err != nil {
+								fmt.Println("Err in nested struct static array", err, originalName)
+								return
+							}
+							applyFields(reflectEQStruct, nestedMessage)
+							arr.Append(protoreflect.ValueOf(nestedMessage.ProtoReflect()))
+						}
+						break
+					}
+
+					// Single struct
+					if strings.Contains(cType, "main._Ctype_struct") {
+						nestedOpCode, found, _ := nestedStructToOpCode(cType)
+						if !found {
+							fmt.Println("Not found nested single struct", originalName, cType)
+						}
+						nestedMessage, reflectEQStruct, err := mapServerToClientOpCode(nestedOpCode, reflectEQStruct.Addr().UnsafePointer())
+						if err != nil {
+							fmt.Println("Err in nested struct single", err, originalName)
+							return
+						}
+						applyFields(reflectEQStruct, nestedMessage)
 						break
 					}
 					fmt.Println("Unhandled c type", cType)
@@ -230,7 +304,7 @@ func handleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, o
 			default:
 				// Fixed char array
 				if strings.Contains(cType, "]main._Ctype_char") {
-					str := fixedCharPattern.FindStringSubmatch(cType)[1]
+					str := fixedArraySizePattern.FindStringSubmatch(cType)[1]
 					length, err := strconv.Atoi(str)
 					if err != nil {
 						break

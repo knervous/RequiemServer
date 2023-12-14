@@ -11,7 +11,6 @@ extend google.protobuf.EnumValueOptions {
 option go_package = "./main";
 
 // Login
-
 message LoginMessage {
   string username = 1;
   string password = 2;
@@ -57,7 +56,6 @@ message PlayEverquestResponse {
 }
 
 // World
-
 message WebInitiateConnection {
   bool login = 1;
 }
@@ -68,14 +66,77 @@ message LoginInfo {
   int32 zoning = 3;
 }
 
+message Tint {
+  int32 blue = 1;
+  int32 green = 2;
+  int32 red = 3;
+  int32 use_tint = 4;
+}
+
+message CharSelectEquip
+{
+  int32 material = 1;
+  Tint color = 2;
+};
+
+message CharacterSelectEntry
+{
+  string name = 1;
+  int32 char_class = 2;
+  int32 race = 3;
+  int32 level = 4;
+  int32 zone = 5;
+  int32 instance = 6;
+  int32 gender = 7;
+  int32 face = 8;
+  repeated CharSelectEquip equip = 9;
+  int32 deity = 10;
+  int32 primary_id_file = 11;
+  int32 secondary_id_file = 12;
+  int32 go_home = 13;
+  int32 enabled = 14;
+  int32 last_login = 15;
+};
+
+
+message CharacterSelect
+{
+  int32 character_count = 1;
+  repeated CharacterSelectEntry characters = 2;
+};
+
+
 enum OpCodes {
-  
   OP_Unknown = 0;
 
-  // Nested structs
-  Nested_WorldServer = 1000 [(messageType) = "eq.WorldServer", (repeatedField) = "servers"];
+  //////////////////////
+  // Handled OP Codes //
+  //////////////////////
 
-  // EQEmu OP Codes
+  // Login
+  OP_LoginWeb = 304 [(messageType) = "eq.LoginMessage"];
+  OP_LoginAccepted = 305 [(messageType) = "eq.LoginReply"];
+  OP_PlayEverquestRequest = 385 [(messageType) = "eq.PlayEverquest"];
+  OP_PlayEverquestResponse = 386 [(messageType) = "eq.PlayEverquestResponse"];
+  OP_ServerListRequest = 458 [(messageType) = "eq.LoginRequest"];
+  OP_ServerListResponse = 459 [(messageType) = "eq.LoginServerResponse"];
+
+  // World
+  OP_SendLoginInfo = 448 [(messageType) = "eq.LoginInfo"];
+  OP_WebInitiateConnection = 591 [(messageType) = "eq.WebInitiateConnection"];
+  OP_SendCharInfo = 444  [(messageType) = "eq.CharacterSelect"];
+
+  ////////////////////
+  // Nested Structs //
+  ////////////////////
+
+  // World
+  Nested_WorldServer = 1000 [(messageType) = "eq.WorldServer", (repeatedField) = "servers"];
+  Nested_CharacterSelectEntry = 1001 [(messageType) = "eq.CharacterSelectEntry", (repeatedField) = "characters"];
+  Nested_CharSelectEquip = 1002 [(messageType) = "eq.CharSelectEquip", (repeatedField) = "equip"];
+  Nested_Tint = 1003 [(messageType) = "eq.Tint"];
+  
+  // EQEmu OP Codes Unhandled
   OP_ExploreUnknown = 1;
   OP_0x0193 = 2;
   OP_0x0347 = 3;
@@ -379,8 +440,6 @@ enum OpCodes {
   OP_LocInfo = 301;
   OP_LockoutTimerInfo = 302;
   OP_Login = 303;
-  OP_LoginWeb = 304 [(messageType) = "eq.LoginMessage"];
-  OP_LoginAccepted = 305 [(messageType) = "eq.LoginReply"];
   OP_LoginComplete = 306;
   OP_LoginExpansionPacketData = 307;
   OP_LoginUnknown1 = 308;
@@ -460,8 +519,7 @@ enum OpCodes {
   OP_PlayerProfile = 382;
   OP_PlayerStateAdd = 383;
   OP_PlayerStateRemove = 384;
-  OP_PlayEverquestRequest = 385 [(messageType) = "eq.PlayEverquest"];
-  OP_PlayEverquestResponse = 386 [(messageType) = "eq.PlayEverquestResponse"];
+
   OP_PlayMP3 = 387;
   OP_Poll = 388;
   OP_PollResponse = 389;
@@ -519,11 +577,9 @@ enum OpCodes {
   OP_SelectTribute = 441;
   OP_SendAAStats = 442;
   OP_SendAATable = 443;
-  OP_SendCharInfo = 444;
   OP_SendExpZonein = 445;
   OP_SendFindableNPCs = 446;
   OP_SendGuildTributes = 447;
-  OP_SendLoginInfo = 448 [(messageType) = "eq.LoginInfo"];
   OP_SendMaxCharacters = 449;
   OP_SendMembership = 450;
   OP_SendMembershipDetails = 451;
@@ -533,8 +589,6 @@ enum OpCodes {
   OP_SendZonepoints = 455;
   OP_SenseHeading = 456;
   OP_SenseTraps = 457;
-  OP_ServerListRequest = 458 [(messageType) = "eq.LoginRequest"];
-  OP_ServerListResponse = 459 [(messageType) = "eq.LoginServerResponse"];
   OP_SessionReady = 460;
   OP_SetChatServer = 461;
   OP_SetChatServer2 = 462;
@@ -666,5 +720,4 @@ enum OpCodes {
   OP_ZoneUnavail = 588;
   OP_ResetAA = 589;
   OP_UnderWorld = 590;
-  OP_WebInitiateConnection = 591 [(messageType) = "eq.WebInitiateConnection"];
 }

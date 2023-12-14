@@ -104,7 +104,15 @@ static const EQ::constants::LookupEntry constants_static_lookup_entries[EQ::vers
 		RoF2::constants::EXPANSIONS_MASK,
 		RoF2::constants::CHARACTER_CREATION_LIMIT,
 		RoF2::constants::SAY_LINK_BODY_SIZE
-	)
+	),
+	/*[ClientVersion::Web] =*/
+	EQ::constants::LookupEntry(
+		Web::constants::EXPANSION,
+		Web::constants::EXPANSION_BIT,
+		Web::constants::EXPANSIONS_MASK,
+		Web::constants::CHARACTER_CREATION_LIMIT,
+		Web::constants::SAY_LINK_BODY_SIZE
+	),
 };
 
 static bool constants_dictionary_init = false;
@@ -1202,7 +1210,20 @@ static const EQ::spells::LookupEntry spells_static_lookup_entries[EQ::versions::
 		RoF2::spells::NPC_BUFFS,
 		RoF2::spells::PET_BUFFS,
 		RoF2::spells::MERC_BUFFS
-	)
+	),
+	/*[ClientVersion::Web] =*/
+	EQ::spells::LookupEntry(
+		Web::spells::SPELL_ID_MAX,
+		Web::spells::SPELLBOOK_SIZE,
+		Web::spells::SPELL_GEM_COUNT,
+		Web::spells::LONG_BUFFS,
+		Web::spells::SHORT_BUFFS,
+		Web::spells::DISC_BUFFS,
+		Web::spells::TOTAL_BUFFS,
+		Web::spells::NPC_BUFFS,
+		Web::spells::PET_BUFFS,
+		Web::spells::MERC_BUFFS
+	),
 };
 
 static bool spells_dictionary_init = false;

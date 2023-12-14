@@ -128,7 +128,7 @@ std::unique_ptr<EQApplicationPacket> ServerManager::CreateServerListPacketWeb(Cl
 		world_server->SerializeForWebClientServerList(server, use_local_ip);
 		count++;
 		if (!servers.empty()) {
-			servers.end()->next = &server;
+			servers.back().next = &server;
 		} else if (count == server_count) {
 			server.next = nullptr;
 		}

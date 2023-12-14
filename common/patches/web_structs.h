@@ -63,8 +63,8 @@ namespace Web
 
 		struct LoginInfo_Struct
 		{
-			char* name;
-			char* password;
+			char *name;
+			char *password;
 			uint8 zoning; // 01 if zoning, 00 if not
 		};
 
@@ -97,7 +97,7 @@ namespace Web
 			uint32 class_;
 			uint32 deity;
 		};
-
+		
 		/*
 		** Entity identification struct
 		** Size: 4 bytes
@@ -149,91 +149,68 @@ namespace Web
 		*/
 		struct Tint_Struct
 		{
-			union
-			{
-				struct
-				{
-					uint8 Blue;
-					uint8 Green;
-					uint8 Red;
-					uint8 UseTint; // if there's a tint this is FF
-				};
-				uint32 Color;
-			};
-		};
-
-		struct TintProfile
-		{
-			union
-			{
-				struct
-				{
-					struct Tint_Struct Head;
-					struct Tint_Struct Chest;
-					struct Tint_Struct Arms;
-					struct Tint_Struct Wrist;
-					struct Tint_Struct Hands;
-					struct Tint_Struct Legs;
-					struct Tint_Struct Feet;
-					struct Tint_Struct Primary;
-					struct Tint_Struct Secondary;
-				};
-				struct Tint_Struct Slot[9];
-			};
-		};
-
-		struct Texture_Struct
-		{
-			uint32 Material;
+			uint8 blue;
+			uint8 green;
+			uint8 red;
+			uint8 use_tint; // if there's a tint this is FF
 		};
 
 		struct TextureProfile
 		{
-			union
-			{
-				struct
-				{
-					struct Texture_Struct Head;
-					struct Texture_Struct Chest;
-					struct Texture_Struct Arms;
-					struct Texture_Struct Wrist;
-					struct Texture_Struct Hands;
-					struct Texture_Struct Legs;
-					struct Texture_Struct Feet;
-					struct Texture_Struct Primary;
-					struct Texture_Struct Secondary;
-				};
-				struct Texture_Struct Slot[9];
-			};
+			uint32 head;
+			uint32 chest;
+			uint32 arms;
+			uint32 wrist;
+			uint32 hands;
+			uint32 legs;
+			uint32 feet;
+			uint32 primary;
+			uint32 secondary;
 		};
 
-		/*
-		** Character Selection Struct
-		** Length: 1704 Bytes
-		**
-		*/
+		struct TintProfile
+		{
+			struct Tint_Struct head;
+			struct Tint_Struct chest;
+			struct Tint_Struct arms;
+			struct Tint_Struct wrist;
+			struct Tint_Struct hands;
+			struct Tint_Struct legs;
+			struct Tint_Struct feet;
+			struct Tint_Struct primary;
+			struct Tint_Struct secondary;
+		};
+
+		struct CharSelectEquip_Struct
+		{
+			uint32 material;
+			struct Tint_Struct color;
+		};
+		struct CharacterSelectEntry_Struct
+		{
+			char name[64];
+			uint8 char_class;
+			uint32 race;
+			uint8 level;
+			uint16 zone;
+			uint16 instance;
+			uint8 gender;
+			uint8 face;
+			struct CharSelectEquip_Struct equip[9];
+			uint32 deity;
+			uint32 primary_id_file;
+			uint32 secondary_id_file;
+			uint8 go_home;	// Seen 0 for new char and 1 for existing
+			uint8 enabled;	// Originally labeled as 'CharEnabled' - unknown purpose and setting
+			uint32 last_login;
+			struct CharacterSelectEntry_Struct* next;
+		};
+
+
 		struct CharacterSelect_Struct
 		{
-			uint32 Race[10];				  // Characters Race
-			struct TintProfile CS_Colors[10]; // Characters Equipment Colors - packet requires length for 10 characters..but, client is limited to 8
-			uint8 BeardColor[10];			  // Characters beard Color
-			uint8 HairStyle[10];			  // Characters hair style
-			struct TextureProfile Equip[10];  // Characters texture array
-			uint32 SecondaryIDFile[10];		  // Characters secondary IDFile number
-			uint32 Deity[10];				  // Characters Deity
-			uint8 GoHome[10];				  // 1=Go Home available, 0=not
-			uint8 Tutorial[10];				  // 1=Tutorial available, 0=not
-			uint8 Beard[10];				  // Characters Beard Type
-			uint32 PrimaryIDFile[10];		  // Characters primary IDFile number
-			uint8 HairColor[10];			  // Characters Hair Color
-			uint32 Zone[10];				  // Characters Current Zone
-			uint8 Class[10];				  // Characters Classes
-			uint8 Face[10];					  // Characters Face Type
-			char Name[10][64];				  // Characters Names
-			uint8 Gender[10];				  // Characters Gender
-			uint8 EyeColor1[10];			  // Characters Eye Color
-			uint8 EyeColor2[10];			  // Characters Eye 2 Color
-			uint8 Level[10];				  // Characters Levels
+			uint32 character_count;
+			struct CharacterSelectEntry_Struct* characters;
 		};
 
 		/*
@@ -3409,7 +3386,7 @@ namespace Web
 
 		struct WebLoginReply_Struct
 		{
-			char *key;
+			char key[11];
 			uint32_t error_str_id;
 			uint32_t failed_attempts;
 			int32_t lsid;
@@ -3428,13 +3405,13 @@ namespace Web
 			uint32_t server_id;
 			uint32_t status;
 			uint32_t players_online;
-			struct WebLoginWorldServer_Struct* next;
+			struct WebLoginWorldServer_Struct *next;
 		};
 
 		struct WebLoginServerResponse_Struct
 		{
 			int32_t server_count;
-			struct WebLoginWorldServer_Struct* servers;
+			struct WebLoginWorldServer_Struct *servers;
 		};
 
 		struct WebPlayEverquestRequest_Struct
