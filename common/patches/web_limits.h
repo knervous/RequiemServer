@@ -280,9 +280,9 @@ namespace Web
 	namespace constants {
 		inline EQ::versions::ClientVersion GetConstantsRef() { return EQ::versions::ClientVersion::Web; }
 
-		const EQ::expansions::Expansion EXPANSION = EQ::expansions::Expansion::SoV; // Someone had this as PoR in another section...
-		const uint32 EXPANSION_BIT = EQ::expansions::bitSoV;
-		const uint32 EXPANSIONS_MASK = EQ::expansions::maskSoV;
+		const EQ::expansions::Expansion EXPANSION = EQ::expansions::Expansion::DoD; // Someone had this as PoR in another section...
+		const uint32 EXPANSION_BIT = EQ::expansions::bitDoD;
+		const uint32 EXPANSIONS_MASK = EQ::expansions::maskDoD;
 
 		const size_t CHARACTER_CREATION_LIMIT = 8; // Hard-coded in client - DO NOT ALTER
 

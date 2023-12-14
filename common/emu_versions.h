@@ -82,6 +82,7 @@ namespace EQ
 			UF,
 			RoF,
 			RoF2,
+			Web,
 			NPC,
 			NPCMerchant,
 			Merc,
@@ -95,13 +96,14 @@ namespace EQ
 			OfflineSoD,
 			OfflineUF,
 			OfflineRoF,
-			OfflineRoF2
+			OfflineRoF2,
+			OfflineWeb
 		};
 
-		const MobVersion LastMobVersion = MobVersion::OfflineRoF2;
-		const MobVersion LastPCMobVersion = MobVersion::RoF2;
+		const MobVersion LastMobVersion = MobVersion::OfflineWeb;
+		const MobVersion LastPCMobVersion = MobVersion::Web;
 		const MobVersion LastNonPCMobVersion = MobVersion::BotPet;
-		const MobVersion LastOfflinePCMobVersion = MobVersion::OfflineRoF2;
+		const MobVersion LastOfflinePCMobVersion = MobVersion::OfflineWeb;
 		const size_t MobVersionCount = (static_cast<size_t>(LastMobVersion) + 1);
 
 		bool IsValidMobVersion(MobVersion mob_version);

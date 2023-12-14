@@ -234,12 +234,13 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 						if !found {
 							fmt.Println("Not found nested single struct", originalName, cType)
 						}
-						nestedMessage, reflectEQStruct, err := mapServerToClientOpCode(nestedOpCode, reflectEQStruct.Addr().UnsafePointer())
+						nestedMessage, reflectEQStruct, err := mapServerToClientOpCode(nestedOpCode, unsafePtr)
 						if err != nil {
 							fmt.Println("Err in nested struct single", err, originalName)
 							return
 						}
 						applyFields(reflectEQStruct, nestedMessage)
+						protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(nestedMessage.ProtoReflect()))
 						break
 					}
 					fmt.Println("Unhandled c type", cType)

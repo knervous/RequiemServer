@@ -1,5 +1,5 @@
 /*	EQEMu: Everquest Server Emulator
-	
+
 	Copyright (C) 2001-2016 EQEMu Development Team (http://eqemulator.net)
 
 	This program is free software; you can redistribute it and/or modify
@@ -11,7 +11,7 @@
 	are required to give you total support for your newly bought product;
 	without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 	A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -19,7 +19,6 @@
 
 #include "emu_versions.h"
 #include "emu_constants.h"
-
 
 bool EQ::versions::IsValidClientVersion(ClientVersion client_version)
 {
@@ -37,9 +36,10 @@ EQ::versions::ClientVersion EQ::versions::ValidateClientVersion(ClientVersion cl
 	return client_version;
 }
 
-const char* EQ::versions::ClientVersionName(ClientVersion client_version)
+const char *EQ::versions::ClientVersionName(ClientVersion client_version)
 {
-	switch (client_version) {
+	switch (client_version)
+	{
 	case ClientVersion::Unknown:
 		return "Unknown Version";
 	case ClientVersion::Client62:
@@ -63,7 +63,8 @@ const char* EQ::versions::ClientVersionName(ClientVersion client_version)
 
 uint32 EQ::versions::ConvertClientVersionToClientVersionBit(ClientVersion client_version)
 {
-	switch (client_version) {
+	switch (client_version)
+	{
 	case ClientVersion::Titanium:
 		return bitTitanium;
 	case ClientVersion::SoF:
@@ -85,20 +86,21 @@ uint32 EQ::versions::ConvertClientVersionToClientVersionBit(ClientVersion client
 
 EQ::versions::ClientVersion EQ::versions::ConvertClientVersionBitToClientVersion(uint32 client_version_bit)
 {
-	switch (client_version_bit) {
-	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::Titanium) - 1)) :
+	switch (client_version_bit)
+	{
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::Titanium) - 1)):
 		return ClientVersion::Titanium;
-	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::SoF) - 1)) :
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::SoF) - 1)):
 		return ClientVersion::SoF;
-	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::SoD) - 1)) :
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::SoD) - 1)):
 		return ClientVersion::SoD;
-	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::UF) - 1)) :
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::UF) - 1)):
 		return ClientVersion::UF;
-	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::RoF) - 1)) :
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::RoF) - 1)):
 		return ClientVersion::RoF;
-	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::RoF2) - 1)) :
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::RoF2) - 1)):
 		return ClientVersion::RoF2;
-	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::Web) - 1)) :
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::Web) - 1)):
 		return ClientVersion::Web;
 	default:
 		return ClientVersion::Unknown;
@@ -169,9 +171,10 @@ EQ::versions::MobVersion EQ::versions::ValidateOfflinePCMobVersion(MobVersion mo
 	return mob_version;
 }
 
-const char* EQ::versions::MobVersionName(MobVersion mob_version)
+const char *EQ::versions::MobVersionName(MobVersion mob_version)
 {
-	switch (mob_version) {
+	switch (mob_version)
+	{
 	case MobVersion::Unknown:
 		return "Unknown Version";
 	case MobVersion::Client62:
@@ -223,7 +226,8 @@ const char* EQ::versions::MobVersionName(MobVersion mob_version)
 
 EQ::versions::ClientVersion EQ::versions::ConvertMobVersionToClientVersion(MobVersion mob_version)
 {
-	switch (mob_version) {
+	switch (mob_version)
+	{
 	case MobVersion::Unknown:
 	case MobVersion::Client62:
 		return ClientVersion::Unknown;
@@ -239,6 +243,8 @@ EQ::versions::ClientVersion EQ::versions::ConvertMobVersionToClientVersion(MobVe
 		return ClientVersion::RoF;
 	case MobVersion::RoF2:
 		return ClientVersion::RoF2;
+	case MobVersion::Web:
+		return ClientVersion::Web;
 	default:
 		return ClientVersion::Unknown;
 	}
@@ -246,7 +252,8 @@ EQ::versions::ClientVersion EQ::versions::ConvertMobVersionToClientVersion(MobVe
 
 EQ::versions::MobVersion EQ::versions::ConvertClientVersionToMobVersion(ClientVersion client_version)
 {
-	switch (client_version) {
+	switch (client_version)
+	{
 	case ClientVersion::Unknown:
 	case ClientVersion::Client62:
 		return MobVersion::Unknown;
@@ -262,6 +269,8 @@ EQ::versions::MobVersion EQ::versions::ConvertClientVersionToMobVersion(ClientVe
 		return MobVersion::RoF;
 	case ClientVersion::RoF2:
 		return MobVersion::RoF2;
+	case ClientVersion::Web:
+		return MobVersion::Web;
 	default:
 		return MobVersion::Unknown;
 	}
@@ -269,7 +278,8 @@ EQ::versions::MobVersion EQ::versions::ConvertClientVersionToMobVersion(ClientVe
 
 EQ::versions::MobVersion EQ::versions::ConvertPCMobVersionToOfflinePCMobVersion(MobVersion mob_version)
 {
-	switch (mob_version) {
+	switch (mob_version)
+	{
 	case MobVersion::Titanium:
 		return MobVersion::OfflineTitanium;
 	case MobVersion::SoF:
@@ -282,6 +292,8 @@ EQ::versions::MobVersion EQ::versions::ConvertPCMobVersionToOfflinePCMobVersion(
 		return MobVersion::OfflineRoF;
 	case MobVersion::RoF2:
 		return MobVersion::OfflineRoF2;
+	case MobVersion::Web:
+		return MobVersion::OfflineWeb;
 	default:
 		return MobVersion::Unknown;
 	}
@@ -289,7 +301,8 @@ EQ::versions::MobVersion EQ::versions::ConvertPCMobVersionToOfflinePCMobVersion(
 
 EQ::versions::MobVersion EQ::versions::ConvertOfflinePCMobVersionToPCMobVersion(MobVersion mob_version)
 {
-	switch (mob_version) {
+	switch (mob_version)
+	{
 	case MobVersion::OfflineTitanium:
 		return MobVersion::Titanium;
 	case MobVersion::OfflineSoF:
@@ -302,6 +315,8 @@ EQ::versions::MobVersion EQ::versions::ConvertOfflinePCMobVersionToPCMobVersion(
 		return MobVersion::RoF;
 	case MobVersion::OfflineRoF2:
 		return MobVersion::RoF2;
+	case MobVersion::OfflineWeb:
+		return MobVersion::Web;
 	default:
 		return MobVersion::Unknown;
 	}
@@ -309,7 +324,8 @@ EQ::versions::MobVersion EQ::versions::ConvertOfflinePCMobVersionToPCMobVersion(
 
 EQ::versions::ClientVersion EQ::versions::ConvertOfflinePCMobVersionToClientVersion(MobVersion mob_version)
 {
-	switch (mob_version) {
+	switch (mob_version)
+	{
 	case MobVersion::OfflineTitanium:
 		return ClientVersion::Titanium;
 	case MobVersion::OfflineSoF:
@@ -322,6 +338,8 @@ EQ::versions::ClientVersion EQ::versions::ConvertOfflinePCMobVersionToClientVers
 		return ClientVersion::RoF;
 	case MobVersion::OfflineRoF2:
 		return ClientVersion::RoF2;
+	case MobVersion::OfflineWeb:
+		return ClientVersion::Web;
 	default:
 		return ClientVersion::Unknown;
 	}
@@ -329,7 +347,8 @@ EQ::versions::ClientVersion EQ::versions::ConvertOfflinePCMobVersionToClientVers
 
 EQ::versions::MobVersion EQ::versions::ConvertClientVersionToOfflinePCMobVersion(ClientVersion client_version)
 {
-	switch (client_version) {
+	switch (client_version)
+	{
 	case ClientVersion::Titanium:
 		return MobVersion::OfflineTitanium;
 	case ClientVersion::SoF:
@@ -342,14 +361,17 @@ EQ::versions::MobVersion EQ::versions::ConvertClientVersionToOfflinePCMobVersion
 		return MobVersion::OfflineRoF;
 	case ClientVersion::RoF2:
 		return MobVersion::OfflineRoF2;
+	case ClientVersion::Web:
+		return MobVersion::OfflineWeb;
 	default:
 		return MobVersion::Unknown;
 	}
 }
 
-const char* EQ::expansions::ExpansionName(Expansion expansion)
+const char *EQ::expansions::ExpansionName(Expansion expansion)
 {
-	switch (expansion) {
+	switch (expansion)
+	{
 	case Expansion::EverQuest:
 		return "EverQuest";
 	case Expansion::RoK:
@@ -397,14 +419,15 @@ const char* EQ::expansions::ExpansionName(Expansion expansion)
 	}
 }
 
-const char* EQ::expansions::ExpansionName(uint32 expansion_bit)
+const char *EQ::expansions::ExpansionName(uint32 expansion_bit)
 {
 	return ExpansionName(ConvertExpansionBitToExpansion(expansion_bit));
 }
 
 uint32 EQ::expansions::ConvertExpansionToExpansionBit(Expansion expansion)
 {
-	switch (expansion) {
+	switch (expansion)
+	{
 	case Expansion::RoK:
 		return bitRoK;
 	case Expansion::SoV:
@@ -452,7 +475,8 @@ uint32 EQ::expansions::ConvertExpansionToExpansionBit(Expansion expansion)
 
 EQ::expansions::Expansion EQ::expansions::ConvertExpansionBitToExpansion(uint32 expansion_bit)
 {
-	switch (expansion_bit) {
+	switch (expansion_bit)
+	{
 	case bitRoK:
 		return Expansion::RoK;
 	case bitSoV:
@@ -500,7 +524,8 @@ EQ::expansions::Expansion EQ::expansions::ConvertExpansionBitToExpansion(uint32 
 
 uint32 EQ::expansions::ConvertExpansionToExpansionsMask(Expansion expansion)
 {
-	switch (expansion) {
+	switch (expansion)
+	{
 	case Expansion::RoK:
 		return maskRoK;
 	case Expansion::SoV:

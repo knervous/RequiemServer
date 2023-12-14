@@ -378,6 +378,33 @@ static const EQ::inventory::LookupEntry inventory_static_lookup_entries[EQ::vers
 		RoF2::inventory::ConcatenateInvTypeLimbo,
 		RoF2::inventory::AllowOverLevelEquipment
 	),
+	/*[MobVersion::Web] =*/
+	EQ::inventory::LookupEntry(
+		EQ::inventory::LookupEntry::InventoryTypeSize_Struct(
+			EQ::invtype::POSSESSIONS_SIZE,		    Web::invtype::BANK_SIZE,		  Web::invtype::SHARED_BANK_SIZE,
+			Web::invtype::TRADE_SIZE,			    Web::invtype::WORLD_SIZE,		  Web::invtype::LIMBO_SIZE,
+			Web::invtype::TRIBUTE_SIZE,		        Web::INULL,						  Web::invtype::GUILD_TRIBUTE_SIZE,
+			Web::invtype::MERCHANT_SIZE,	     	Web::INULL,						  Web::invtype::CORPSE_SIZE,
+			Web::invtype::BAZAAR_SIZE,			  	Web::invtype::INSPECT_SIZE,		  Web::INULL,
+			Web::invtype::VIEW_MOD_PC_SIZE,			Web::invtype::VIEW_MOD_BANK_SIZE, Web::invtype::VIEW_MOD_SHARED_BANK_SIZE,
+			Web::invtype::VIEW_MOD_LIMBO_SIZE,		Web::invtype::ALT_STORAGE_SIZE,	  Web::invtype::ARCHIVED_SIZE,
+			Web::INULL,								Web::INULL,						  Web::INULL,
+			Web::invtype::OTHER_SIZE
+		),
+
+		Web::invslot::EQUIPMENT_BITMASK,
+		Web::invslot::GENERAL_BITMASK,
+		Web::invslot::CURSOR_BITMASK,
+		Web::invslot::POSSESSIONS_BITMASK,
+		Web::invslot::CORPSE_BITMASK,
+		Web::invbag::SLOT_COUNT,
+		Web::invaug::SOCKET_COUNT,
+
+		Web::inventory::AllowEmptyBagInBag,
+		Web::inventory::AllowClickCastFromBag,
+		Web::inventory::ConcatenateInvTypeLimbo,
+		Web::inventory::AllowOverLevelEquipment
+	),
 	/*[MobVersion::NPC] =*/
 	EQ::inventory::LookupEntry(
 		EQ::inventory::LookupEntry::InventoryTypeSize_Struct(
@@ -755,6 +782,33 @@ static const EQ::inventory::LookupEntry inventory_static_lookup_entries[EQ::vers
 		false,
 		false,
 		false
+	),
+	/*[MobVersion::OfflineWeb] =*/
+	EQ::inventory::LookupEntry(
+		EQ::inventory::LookupEntry::InventoryTypeSize_Struct(
+			Web::INULL,						    Web::INULL,						  Web::INULL,
+			Web::invtype::TRADE_SIZE,			Web::INULL,						  Web::INULL,
+			Web::INULL,						    Web::INULL,						  Web::INULL,
+			Web::invtype::MERCHANT_SIZE,		Web::INULL,						  Web::INULL,
+			Web::invtype::BAZAAR_SIZE,			Web::invtype::INSPECT_SIZE,		  Web::INULL,
+			Web::invtype::VIEW_MOD_PC_SIZE,	    Web::invtype::VIEW_MOD_BANK_SIZE, Web::invtype::VIEW_MOD_SHARED_BANK_SIZE,
+			Web::invtype::VIEW_MOD_LIMBO_SIZE,	Web::INULL,						  Web::INULL,
+			Web::INULL,						    Web::INULL,						  Web::INULL,
+			Web::INULL
+		),
+
+		Web::INULL,
+		Web::INULL,
+		Web::INULL,
+		Web::INULL,
+		Web::INULL,
+		Web::invbag::SLOT_COUNT,
+		Web::invaug::SOCKET_COUNT,
+
+		false,
+		false,
+		false,
+		false
 	)
 };
 
@@ -1002,6 +1056,10 @@ static const EQ::behavior::LookupEntry behavior_static_lookup_entries[EQ::versio
 	EQ::behavior::LookupEntry(
 		RoF2::behavior::CoinHasWeight
 	),
+	/*[MobVersion::Web] =*/
+	EQ::behavior::LookupEntry(
+		Web::behavior::CoinHasWeight
+	),
 	/*[MobVersion::NPC] =*/
 	EQ::behavior::LookupEntry(
 		EQ::behavior::CoinHasWeight
@@ -1057,7 +1115,11 @@ static const EQ::behavior::LookupEntry behavior_static_lookup_entries[EQ::versio
 	/*[MobVersion::OfflineRoF2] =*/
 	EQ::behavior::LookupEntry(
 		RoF2::behavior::CoinHasWeight
-	)
+	),
+	/*[MobVersion::OfflineRoF2] =*/
+	EQ::behavior::LookupEntry(
+		Web::behavior::CoinHasWeight
+	),
 };
 
 static bool behavior_dictionary_init = false;

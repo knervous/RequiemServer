@@ -1413,10 +1413,10 @@ namespace Web
 			for (int index = 0; index < EQ::textures::materialCount; ++index) {
 				auto color = emu_cse->Equip[index].Color;
 				character.equip[index].color = {
-					.blue = (uint8)(color >> 24),
-					.green = (uint8)(color >> 16),
-					.red = (uint8)(color >> 8),
-					.use_tint = (uint8)(color),
+					.blue = (uint8)(color),
+					.green = (uint8)(color >> 8),
+					.red = (uint8)(color >> 16),
+					.use_tint = (uint8)(color >> 24),
 				};
 				character.equip[index].material = emu_cse->Equip[index].Material;
 			}
