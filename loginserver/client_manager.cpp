@@ -165,12 +165,16 @@ void ClientManager::Process()
 
 	auto iter = clients.begin();
 	while (iter != clients.end()) {
+		auto size = clients.size();
 		if ((*iter)->Process() == false) {
 			LogWarning("Client had a fatal error and had to be removed from the login");
 			delete (*iter);
 			iter = clients.erase(iter);
-		}
-		else {
+		} else if (clients.size() != size) {
+		  // If we've mutated the client list during client->Process(), this iterator is not guaranteed. We need to break.
+		  iter = clients.begin();
+		  break;
+		} else {
 			++iter;
 		}
 	}

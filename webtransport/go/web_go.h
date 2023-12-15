@@ -73,8 +73,9 @@ typedef struct { void *data; GoInt len; GoInt cap; } GoSlice;
 extern "C" {
 #endif
 
-extern void SendPacket(GoInt sessionId, GoInt opcode, void* structPtr);
-extern void StartServer(int port, void* webstreamManager, OnNewConnection onNewConnection, OnConnectionClosed onConnectionClosed, OnClientPacket onClientPacket, OnError onError);
+extern void CloseConnection(GoInt sessionId);
+extern void SendPacket(GoInt sessionId, GoInt opcode, void* structPtr, GoInt structSize);
+extern void StartServer(int port, void* webstreamManager, OnNewConnection onNewConnection, OnConnectionClosed onConnectionClosed, OnClientPacket onClientPacket, OnError onError, OnLogMessage logFunc);
 extern void StopServer();
 
 #ifdef __cplusplus

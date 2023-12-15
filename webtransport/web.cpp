@@ -6,6 +6,7 @@
 
 #include "go/web_go.h"
 #include "web.h"
+#include "c_bridge.h"
 
 #include <string>
 #include <iomanip>
@@ -25,6 +26,7 @@
 #include <arpa/inet.h>
 #endif
 
+#include "../../common/eqemu_logsys.h"
 #include "../../common/patches/web_structs.h"
 #include "../../common/emu_opcodes.h"
 #include "../../common/net/packet.h"
@@ -61,11 +63,17 @@ extern "C"
 	{
 		// Handle startup error
 	}
+	void Go_LogMessage(char* msg) {
+		LogInfo("{}", msg);
+		delete msg;
+	}
 }
+
+
 
 EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOptions &options) : EQStreamManagerInterface(options)
 {
-	StartServer(options.daybreak_options.port, this, &Go_OnNewConnection, &Go_OnConnectionClosed, &Go_OnClientPacket, &Go_OnError);
+	StartServer(options.daybreak_options.port, this, &Go_OnNewConnection, &Go_OnConnectionClosed, &Go_OnClientPacket, &Go_OnError, &Go_LogMessage);
 }
 
 EQ::Net::EQWebStreamManager::~EQWebStreamManager()
@@ -144,7 +152,7 @@ void EQ::Net::EQWebStream::FastQueuePacket(EQApplicationPacket **p, bool ack_req
 
 void EQ::Net::EQWebStream::SendDatagram(uint16 opcode, EQApplicationPacket *p)
 {
-	SendPacket(m_connection, opcode, p->pBuffer);
+	SendPacket(m_connection, opcode, p->pBuffer, p->size); 
 	delete p;
 	p = nullptr;
 }
@@ -174,6 +182,7 @@ EQApplicationPacket *EQ::Net::EQWebStream::PopPacket()
 };
 void EQ::Net::EQWebStream::Close()
 {
+	CloseConnection(m_connection);
 	SetState(DISCONNECTING);
 }
 

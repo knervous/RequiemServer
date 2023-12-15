@@ -27,7 +27,11 @@ public:
 	/**
 	 * Destructor
 	 */
-	~Client() {}
+	~Client() {
+		if (m_connection != nullptr) {
+			m_connection->Close();
+		}
+	}
 
 	/**
 	 * Processes the client's connection and does various actions
@@ -193,6 +197,9 @@ public:
 	bool IsWebConnection() const {
 		return m_connection->IsWebstream();
 	};
+
+	void DoSucccessfulWebLogin(const std::string& in_account_name, int db_account_id, const std::string &db_loginserver);
+	void DoFailWebLogin();
 
 	void DoSuccessfulLogin(const std::string& in_account_name, int db_account_id, const std::string &db_loginserver);
 	void CreateLocalAccount(const std::string &username, const std::string &password);

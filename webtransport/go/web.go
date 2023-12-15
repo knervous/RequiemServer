@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math/bits"
 	"net"
 	"net/http"
 	reflect "reflect"
@@ -36,12 +37,21 @@ type webSession struct {
 var sessionMap map[int]webSession = map[int]webSession{}
 var stopServer context.CancelFunc = nil
 var fixedArraySizePattern *regexp.Regexp = regexp.MustCompile("\\[(\\d+)\\]")
+var logInfoFunc C.OnLogMessage = nil
+var sessionId int = 0
 
 var opcodeTypeMap map[string]OpCodes = map[string]OpCodes{
 	"_Ctype_struct_WebLoginWorldServer_Struct":  OpCodes_Nested_WorldServer,
 	"_Ctype_struct_CharacterSelectEntry_Struct": OpCodes_Nested_CharacterSelectEntry,
 	"_Ctype_struct_CharSelectEquip_Struct":      OpCodes_Nested_CharSelectEquip,
 	"_Ctype_struct_Tint_Struct":                 OpCodes_Nested_Tint,
+}
+
+func LogEQInfo(message string, args ...any) {
+	if logInfoFunc == nil {
+		return
+	}
+	C.bridge_log_message(C.CString(fmt.Sprintf(message, args...)), logInfoFunc)
 }
 
 func nestedStructToOpCode(cType string) (OpCodes, bool, bool) {
@@ -74,7 +84,7 @@ func mapClientToServerOpCode(opcode OpCodes) (reflect.Value, protoreflect.ProtoM
 	case OpCodes_OP_SendLoginInfo:
 		return tie(&C.struct_LoginInfo_Struct{})
 	}
-	fmt.Println("Got unknown op code map", opcode)
+	LogEQInfo("Got unknown op code map %v", opcode)
 	return reflect.ValueOf(""), nil
 }
 
@@ -84,7 +94,7 @@ func mapServerToClientOpCode(opcode OpCodes, structPtr unsafe.Pointer) (protoMes
 		enumOptions := OpCodes.Descriptor(opcode).Values().ByNumber(opcode.Enum().Number()).Options()
 		pbtype, err := protoregistry.GlobalTypes.FindMessageByName(protoreflect.FullName(proto.GetExtension(enumOptions, E_MessageType).(string)))
 		if err != nil {
-			fmt.Println("Missing map proto message for op code", OpCodes_name[int32(opcode)])
+			LogEQInfo("Missing map proto message for op code: %v", OpCodes_name[int32(opcode)])
 			return nil, reflect.ValueOf(nil), err
 		}
 		return pbtype.New().Interface(), reflect.ValueOf(eqStruct).Elem(), nil
@@ -113,8 +123,18 @@ func mapServerToClientOpCode(opcode OpCodes, structPtr unsafe.Pointer) (protoMes
 	return nil, reflect.ValueOf(nil), errors.New("OpCode not found for server to client")
 }
 
+//export CloseConnection
+func CloseConnection(sessionId int) {
+	session := sessionMap[sessionId]
+	if session.session == nil {
+		return
+	}
+	delete(sessionMap, sessionId)
+	session.session.Close()
+}
+
 //export SendPacket
-func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
+func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer, structSize int) {
 	session := sessionMap[sessionId]
 	if session.session == nil {
 		return
@@ -124,7 +144,7 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 
 	protoMessage, reflectEQStruct, err := mapServerToClientOpCode((OpCodes)(opcode), structPtr)
 	if err != nil {
-		fmt.Println("Got an error or unhandled op code", OpCodes_name[int32(opcode)])
+		LogEQInfo("Got an error or unhandled op code: %v", OpCodes_name[int32(opcode)])
 		return
 	}
 
@@ -149,7 +169,7 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 						}
 						nestedMessage, reflectEQStruct, err := mapServerToClientOpCode(nestedOpcode, next)
 						if err != nil {
-							fmt.Println("Err in nested struct", err)
+							LogEQInfo("Err in nested struct %v", err)
 						}
 						applyFields(reflectEQStruct, nestedMessage)
 						arr := protoMessage.ProtoReflect().Mutable(nestedField).List()
@@ -207,7 +227,7 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 
 						nestedOpCode, found, _ := nestedStructToOpCode(cType)
 						if !found {
-							fmt.Println("Not found nested fixed struct array", originalName, cType)
+							LogEQInfo("Not found nested fixed struct array %s :: %s", originalName, cType)
 						}
 
 						enumOptions := OpCodes.Descriptor(nestedOpCode).Values().ByNumber(nestedOpCode.Enum().Number()).Options()
@@ -219,7 +239,7 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 							reflectEQStruct := rf.Index(i)
 							nestedMessage, _, err := mapServerToClientOpCode(nestedOpCode, reflectEQStruct.Addr().UnsafePointer())
 							if err != nil {
-								fmt.Println("Err in nested struct static array", err, originalName)
+								LogEQInfo("Not found nested fixed struct array %s :: %s", err, originalName)
 								return
 							}
 							applyFields(reflectEQStruct, nestedMessage)
@@ -232,22 +252,22 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer) {
 					if strings.Contains(cType, "main._Ctype_struct") {
 						nestedOpCode, found, _ := nestedStructToOpCode(cType)
 						if !found {
-							fmt.Println("Not found nested single struct", originalName, cType)
+							LogEQInfo("Not found nested single struct %s :: %s", originalName, cType)
 						}
 						nestedMessage, reflectEQStruct, err := mapServerToClientOpCode(nestedOpCode, unsafePtr)
 						if err != nil {
-							fmt.Println("Err in nested struct single", err, originalName)
+							LogEQInfo("Err in nested struct single %s :: %s", err, originalName)
 							return
 						}
 						applyFields(reflectEQStruct, nestedMessage)
 						protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(nestedMessage.ProtoReflect()))
 						break
 					}
-					fmt.Println("Unhandled c type", cType)
+					LogEQInfo("Unhandled c type %s", cType)
 				}
 
 			} else {
-				fmt.Println("Invalid field for server to client proto message", originalName)
+				LogEQInfo("Invalid field for server to client proto message %s", originalName)
 			}
 		}
 	}
@@ -281,7 +301,6 @@ func handleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, o
 			rf = reflect.NewAt(rf.Type(), unsafe.Pointer(rf.UnsafeAddr())).Elem()
 			val := protoMessage.ProtoReflect().Get(fields.ByName(fieldName))
 
-			fmt.Println("Setting value for original", originalName, val, fmt.Stringer.String(rf.Type()))
 			cType := fmt.Stringer.String(rf.Type())
 			switch cType {
 			case "*main._Ctype_char":
@@ -318,7 +337,7 @@ func handleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, o
 					size += length
 					break
 				}
-				fmt.Println("Unhandled c type client -> server", cType)
+				LogEQInfo("Unhandled c type client -> server %s", cType)
 			}
 
 		}
@@ -332,11 +351,12 @@ func handleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, o
 }
 
 //export StartServer
-func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.OnNewConnection, onConnectionClosed C.OnConnectionClosed, onClientPacket C.OnClientPacket, onError C.OnError) {
+func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.OnNewConnection, onConnectionClosed C.OnConnectionClosed, onClientPacket C.OnClientPacket, onError C.OnError, logFunc C.OnLogMessage) {
+	logInfoFunc = logFunc
 	http.HandleFunc("/eq", func(rw http.ResponseWriter, r *http.Request) {
 		session := r.Body.(*webtransport.Session)
 		session.AcceptSession()
-		sessionId := int(session.StreamID())
+		sessionId++
 		sessionMap[sessionId] = webSession{ip: r.RemoteAddr, port: r.URL.Port(), session: session, webstreamManager: webstreamManager}
 		split := strings.Split(r.RemoteAddr, ":")
 		ip, ipErr := ipconv.IPv4ToInt(net.ParseIP(split[0]))
@@ -349,7 +369,7 @@ func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.
 		}
 		sessionStruct := C.struct_WebSession_Struct{
 			remote_addr: C.CString(r.RemoteAddr),
-			remote_ip:   C.uint(ip),
+			remote_ip:   C.uint(bits.ReverseBytes32(ip)),
 			remote_port: C.uint(port),
 		}
 		defer C.free(unsafe.Pointer(sessionStruct.remote_addr))
@@ -360,7 +380,7 @@ func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.
 			for {
 				msg, err := session.ReceiveMessage(session.Context())
 				if err != nil {
-					fmt.Println("Session closed, ending datagram listener:", err)
+					LogEQInfo("Session closed, ending datagram listener: %v", err)
 					delete(sessionMap, sessionId)
 					C.bridge_connection_closed(webstreamManager, C.int(sessionId), onConnectionClosed)
 					break
@@ -368,21 +388,31 @@ func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.
 				handleMessage(msg, webstreamManager, sessionId, onClientPacket)
 			}
 		}()
-		fmt.Println("Accepted incoming WebTransport session")
+
+		LogEQInfo("Accepted incoming WebTransport session from IP: %v", r.RemoteAddr)
 	})
+
+	// Will want this to be configurable in production
+	// This is a TLS cert that can be approved by the client with the associated thumbprint
+	// And only lasts for 14 days, i.e. the WebTransport server would need to be restarted every 14 days
+	//
+	// Alternatively, a dev could supply their own cert that would be good forever
+	//
+	// This spins up an http server listening on the same port that serves the hash of the generated key and can be
+	// accessed by the client by proxying a request since we don't have a real TLS cert in place.
+	cert, priv := GenerateCertAndStartServer(int(port))
 
 	go func() {
 		server := &webtransport.Server{
 			ListenAddr: fmt.Sprintf(":%d", port),
-			TLSCert:    webtransport.CertFile{Path: "certificate.pem"},
-			TLSKey:     webtransport.CertFile{Path: "certificate.key"},
+			TLSCert:    webtransport.CertFile{Data: cert}, // webtransport.CertFile{Path: "certificate.pem"},
+			TLSKey:     webtransport.CertFile{Data: priv}, // webtransport.CertFile{Path: "certificate.key"},
 			QuicConfig: &webtransport.QuicConfig{
 				KeepAlive:      true,
 				MaxIdleTimeout: 30 * time.Second,
 			},
 		}
-
-		fmt.Println("Launching WebTransport server at", server.ListenAddr)
+		LogEQInfo("Launching WebTransport server at %s", server.ListenAddr)
 		ctx, cancel := context.WithCancel(context.Background())
 		stopServer = cancel
 		if err := server.Run(ctx); err != nil {

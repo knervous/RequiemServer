@@ -19,6 +19,10 @@ void bridge_error(void *webstream_manager, char *bytes, OnError f)
 {
    f(webstream_manager, bytes);
 }
+void bridge_log_message(char* message, OnLogMessage f)
+{
+   f(message);
+}
 
 // Helper functions
 void * ptr_at(void **ptr, int idx) {
