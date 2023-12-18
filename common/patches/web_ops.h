@@ -80,6 +80,7 @@ E(OP_WearChange)
 E(OP_ZoneEntry)
 E(OP_ZoneServerReady)
 E(OP_ZoneSpawns)
+E(OP_SpawnDoor)
 
 
 // incoming packets that require a DECODE translation:

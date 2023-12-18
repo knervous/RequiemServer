@@ -215,6 +215,7 @@ void ClientManager::RemoveExistingClient(unsigned int account_id, const std::str
 	}
 }
 
+
 /**
  * @param account_id
  * @param loginserver

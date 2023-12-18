@@ -20,7 +20,7 @@ typedef struct { const char *p; ptrdiff_t n; } _GoString_;
 
 
 #line 3 "web.go"
- #include "c_bridge.h"
+ #include "c/c_bridge.h"
  #include <stdlib.h>
 
 #line 1 "cgo-generated-wrapper"

@@ -1501,7 +1501,8 @@ void Client::Clearance(int8 response)
 	}
 
 	strcpy(zsi->ip, zs_addr.c_str());
-	zsi->port =zs->GetCPort();
+	zsi->port = zs->GetCPort();
+	
 	LogInfo("Sending client to zone [{}] ([{}]:[{}]) at [{}]:[{}]", zonename, zone_id, instance_id, zsi->ip, zsi->port);
 	QueuePacket(outapp);
 	safe_delete(outapp);

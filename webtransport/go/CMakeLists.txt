@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 set(TARGET wt_go)
-set(SRCS web.go bridge.go cert.go)
+set(SRCS web.go bridge.go cert.go constants.go client_interface.go server_interface.go)
 set(LIB web_go.a)
 set(DEPS ${SRCS} ../../common/patches/web_structs.h EQMessage.proto)
 

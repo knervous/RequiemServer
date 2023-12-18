@@ -37,14 +37,13 @@
 
 #include <sstream>
 
-
 namespace Web
 {
 	static const char *name = "Web";
 	static OpcodeManager *opcodes = nullptr;
 	static Strategy struct_strategy;
 
-	void SerializeItem(EQ::OutBuffer& ob, const EQ::ItemInstance *inst, int16 slot_id_in, uint8 depth);
+	void SerializeItem(EQ::OutBuffer &ob, const EQ::ItemInstance *inst, int16 slot_id_in, uint8 depth);
 
 	// server to client inventory location converters
 	static inline int16 ServerToWebSlot(uint32 server_slot);
@@ -69,52 +68,49 @@ namespace Web
 	void Register(EQStreamIdentifier &into)
 	{
 		auto Config = EQEmuConfig::get();
-		//create our opcode manager if we havent already
-		if (opcodes == nullptr) {
+		// create our opcode manager if we havent already
+		if (opcodes == nullptr)
+		{
 			opcodes = new PassthroughOpcodeManager();
 		}
 
-		//ok, now we have what we need to register.
+		// ok, now we have what we need to register.
 
 		EQStreamInterface::Signature signature;
 		std::string pname;
 
-		//register our world signature.
+		// register our world signature.
 		pname = std::string(name) + "_world";
 		signature.ignore_eq_opcode = 0;
 		signature.first_length = 1;
 		signature.first_eq_opcode = opcodes->EmuToEQ(OP_WebInitiateConnection);
 		into.RegisterPatch(signature, pname.c_str(), &opcodes, &struct_strategy);
 
-		//register our zone signature.
+		// register our zone signature.
 		pname = std::string(name) + "_zone";
 		signature.first_length = 1;
 		signature.first_eq_opcode = opcodes->EmuToEQ(OP_WebInitiateConnection);
 		into.RegisterPatch(signature, pname.c_str(), &opcodes, &struct_strategy);
-
-
 
 		LogNetcode("[StreamIdentify] Registered patch [{}]", name);
 	}
 
 	void Reload()
 	{
-
 	}
 
-	Strategy::Strategy() : StructStrategy()
-	{
-		//all opcodes default to passthrough.
+	Strategy::Strategy() : StructStrategy(){
+	// all opcodes default to passthrough.
 #include "ss_register.h"
 #include "web_ops.h"
-	}
+						   }
 
-	std::string Strategy::Describe() const
+						   std::string Strategy::Describe() const
 	{
 		std::string r;
 		r += "Patch ";
 		r += name;
-		return(r);
+		return (r);
 	}
 
 	const EQ::versions::ClientVersion Strategy::ClientVersion() const
@@ -124,7 +120,7 @@ namespace Web
 
 #include "ss_define.h"
 
-// ENCODE methods
+	// ENCODE methods
 	EAT_ENCODE(OP_GuildMemberLevelUpdate); // added ;
 
 	EAT_ENCODE(OP_ZoneServerReady); // added ;
@@ -142,7 +138,7 @@ namespace Web
 		OUT(hit_heading);
 		OUT(hit_pitch);
 		OUT(type);
-		//OUT(damage);
+		// OUT(damage);
 		OUT(spell);
 		OUT(spell_level);
 		OUT(effect_flag); // if this is 4, a buff icon is made
@@ -168,7 +164,7 @@ namespace Web
 		ENCODE_LENGTH_EXACT(ApplyPoison_Struct);
 		SETUP_DIRECT_ENCODE(ApplyPoison_Struct, structs::ApplyPoison_Struct);
 
-		eq->inventorySlot = ServerToWebSlot(emu->inventorySlot);
+		eq->inventory_slot = ServerToWebSlot(emu->inventorySlot);
 		OUT(success);
 
 		FINISH_ENCODE();
@@ -176,7 +172,8 @@ namespace Web
 
 	ENCODE(OP_BazaarSearch)
 	{
-		if (((*p)->size == sizeof(BazaarReturnDone_Struct)) || ((*p)->size == sizeof(BazaarWelcome_Struct))) {
+		if (((*p)->size == sizeof(BazaarReturnDone_Struct)) || ((*p)->size == sizeof(BazaarWelcome_Struct)))
+		{
 
 			EQApplicationPacket *in = *p;
 			*p = nullptr;
@@ -184,39 +181,41 @@ namespace Web
 			return;
 		}
 
-		//consume the packet
+		// consume the packet
 		EQApplicationPacket *in = *p;
 		*p = nullptr;
 
-		//store away the emu struct
+		// store away the emu struct
 		unsigned char *__emu_buffer = in->pBuffer;
 		BazaarSearchResults_Struct *emu = (BazaarSearchResults_Struct *)__emu_buffer;
 
-		//determine and verify length
+		// determine and verify length
 		int entrycount = in->size / sizeof(BazaarSearchResults_Struct);
-		if (entrycount == 0 || (in->size % sizeof(BazaarSearchResults_Struct)) != 0) {
+		if (entrycount == 0 || (in->size % sizeof(BazaarSearchResults_Struct)) != 0)
+		{
 			Log(Logs::General, Logs::Netcode, "[STRUCTS] Wrong size on outbound %s: Got %d, expected multiple of %d",
 				opcodes->EmuToName(in->GetOpcode()), in->size, sizeof(BazaarSearchResults_Struct));
 			delete in;
 			return;
 		}
 
-		//make the EQ struct.
-		in->size = sizeof(structs::BazaarSearchResults_Struct)*entrycount;
+		// make the EQ struct.
+		in->size = sizeof(structs::BazaarSearchResults_Struct) * entrycount;
 		in->pBuffer = new unsigned char[in->size];
-		structs::BazaarSearchResults_Struct *eq = (structs::BazaarSearchResults_Struct *) in->pBuffer;
+		structs::BazaarSearchResults_Struct *eq = (structs::BazaarSearchResults_Struct *)in->pBuffer;
 
-		//zero out the packet. We could avoid this memset by setting all fields (including unknowns) in the loop.
+		// zero out the packet. We could avoid this memset by setting all fields (including unknowns) in the loop.
 		memset(in->pBuffer, 0, in->size);
 
-		for (int i = 0; i < entrycount; i++, eq++, emu++) {
-			eq->Beginning.Action = emu->Beginning.Action;
-			eq->NumItems = emu->NumItems;
-			eq->SerialNumber = emu->SerialNumber;
-			eq->SellerID = emu->SellerID;
-			eq->Cost = emu->Cost;
-			eq->ItemStat = emu->ItemStat;
-			strcpy(eq->ItemName, emu->ItemName);
+		for (int i = 0; i < entrycount; i++, eq++, emu++)
+		{
+			eq->beginning.action = emu->Beginning.Action;
+			eq->num_items = emu->NumItems;
+			eq->serial_number = emu->SerialNumber;
+			eq->seller_id = emu->SellerID;
+			eq->cost = emu->Cost;
+			eq->item_stat = emu->ItemStat;
+			strcpy(eq->item_name, emu->ItemName);
 		}
 
 		delete[] __emu_buffer;
@@ -227,9 +226,8 @@ namespace Web
 	{
 		ENCODE_LENGTH_EXACT(BecomeTrader_Struct);
 		SETUP_DIRECT_ENCODE(BecomeTrader_Struct, structs::BecomeTrader_Struct);
-
-		OUT(ID);
-		OUT(Code);
+		eq->id = emu->ID;
+		eq->code = emu->Code;
 
 		FINISH_ENCODE();
 	}
@@ -284,29 +282,31 @@ namespace Web
 
 	ENCODE(OP_CharInventory)
 	{
-		//consume the packet
-		EQApplicationPacket* in = *p;
+		// consume the packet
+		EQApplicationPacket *in = *p;
 		*p = nullptr;
 
-		//store away the emu struct
-		uchar* __emu_buffer = in->pBuffer;
+		// store away the emu struct
+		uchar *__emu_buffer = in->pBuffer;
 
 		int itemcount = in->size / sizeof(EQ::InternalSerializedItem_Struct);
-		if (itemcount == 0 || (in->size % sizeof(EQ::InternalSerializedItem_Struct)) != 0) {
+		if (itemcount == 0 || (in->size % sizeof(EQ::InternalSerializedItem_Struct)) != 0)
+		{
 			Log(Logs::General, Logs::Netcode, "[STRUCTS] Wrong size on outbound %s: Got %d, expected multiple of %d",
 				opcodes->EmuToName(in->GetOpcode()), in->size, sizeof(EQ::InternalSerializedItem_Struct));
 			delete in;
 			return;
 		}
 
-		EQ::InternalSerializedItem_Struct* eq = (EQ::InternalSerializedItem_Struct*)in->pBuffer;
+		EQ::InternalSerializedItem_Struct *eq = (EQ::InternalSerializedItem_Struct *)in->pBuffer;
 
-		//do the transform...
+		// do the transform...
 		EQ::OutBuffer ob;
 		EQ::OutBuffer::pos_type last_pos = ob.tellp();
 
-		for (int r = 0; r < itemcount; r++, eq++) {
-			SerializeItem(ob, (const EQ::ItemInstance*)eq->inst, ServerToWebSlot(eq->slot_id), 0);
+		for (int r = 0; r < itemcount; r++, eq++)
+		{
+			SerializeItem(ob, (const EQ::ItemInstance *)eq->inst, ServerToWebSlot(eq->slot_id), 0);
 			if (ob.tellp() == last_pos)
 				LogNetcode("Web::ENCODE(OP_CharInventory) Serialization failed on item slot [{}] during OP_CharInventory.  Item skipped", eq->slot_id);
 
@@ -516,7 +516,7 @@ namespace Web
 
 	ENCODE(OP_DzMemberListStatus)
 	{
-		auto emu = reinterpret_cast<DynamicZoneMemberList_Struct*>((*p)->pBuffer);
+		auto emu = reinterpret_cast<DynamicZoneMemberList_Struct *>((*p)->pBuffer);
 		if (emu->member_count == 1)
 		{
 			ENCODE_FORWARD(OP_DzMemberList);
@@ -536,7 +536,7 @@ namespace Web
 		std::string new_message;
 		ServerToWebSayLink(new_message, old_message);
 
-		//if (new_message.length() > 512) // length restricted in packet building function due vari-length name size (no nullterm)
+		// if (new_message.length() > 512) // length restricted in packet building function due vari-length name size (no nullterm)
 		//	new_message = new_message.substr(0, 512);
 
 		in->size = new_message.length() + 5;
@@ -565,8 +565,12 @@ namespace Web
 
 		std::string old_message_array[9];
 
-		for (int i = 0; i < 9; ++i) {
-			if (*old_message_ptr == 0) { break; }
+		for (int i = 0; i < 9; ++i)
+		{
+			if (*old_message_ptr == 0)
+			{
+				break;
+			}
 			old_message_array[i] = old_message_ptr;
 			old_message_ptr += old_message_array[i].length() + 1;
 		}
@@ -574,8 +578,12 @@ namespace Web
 		uint32 new_message_size = 0;
 		std::string new_message_array[9];
 
-		for (int i = 0; i < 9; ++i) {
-			if (old_message_array[i].length() == 0) { break; }
+		for (int i = 0; i < 9; ++i)
+		{
+			if (old_message_array[i].length() == 0)
+			{
+				break;
+			}
 			ServerToWebSayLink(new_message_array[i], old_message_array[i]);
 			new_message_size += new_message_array[i].length() + 1;
 		}
@@ -588,8 +596,12 @@ namespace Web
 		VARSTRUCT_ENCODE_TYPE(uint32, OutBuffer, emu->string_id);
 		VARSTRUCT_ENCODE_TYPE(uint32, OutBuffer, emu->type);
 
-		for (int i = 0; i < 9; ++i) {
-			if (new_message_array[i].length() == 0) { break; }
+		for (int i = 0; i < 9; ++i)
+		{
+			if (new_message_array[i].length() == 0)
+			{
+				break;
+			}
 			VARSTRUCT_ENCODE_STRING(OutBuffer, new_message_array[i].c_str());
 		}
 
@@ -606,14 +618,14 @@ namespace Web
 		EQApplicationPacket *in = *p;
 		*p = nullptr;
 
-		//store away the emu struct
+		// store away the emu struct
 		unsigned char *__emu_buffer = in->pBuffer;
 		Object_Struct *emu = (Object_Struct *)__emu_buffer;
 
 		in->size = strlen(emu->object_name) + sizeof(structs::Object_Struct) - 1;
 		in->pBuffer = new unsigned char[in->size];
 
-		structs::Object_Struct *eq = (structs::Object_Struct *) in->pBuffer;
+		structs::Object_Struct *eq = (structs::Object_Struct *)in->pBuffer;
 
 		eq->drop_id = emu->drop_id;
 		eq->heading = emu->heading;
@@ -628,79 +640,79 @@ namespace Web
 		eq->zone_id = emu->zone_id;
 		eq->zone_instance = emu->zone_instance;
 
-
 		delete[] __emu_buffer;
 		dest->FastQueuePacket(&in, ack_req);
 	}
 
 	ENCODE(OP_GuildMemberList)
 	{
-		//consume the packet
+		// consume the packet
 		EQApplicationPacket *in = *p;
 		*p = nullptr;
 
-		//store away the emu struct
+		// store away the emu struct
 		unsigned char *__emu_buffer = in->pBuffer;
 		Internal_GuildMembers_Struct *emu = (Internal_GuildMembers_Struct *)in->pBuffer;
 
-		//make a new EQ buffer.
+		// make a new EQ buffer.
 		uint32 pnl = strlen(emu->player_name);
 		uint32 length = sizeof(structs::GuildMembers_Struct) + pnl +
-			emu->count*sizeof(structs::GuildMemberEntry_Struct)
-			+ emu->name_length + emu->note_length;
+						emu->count * sizeof(structs::GuildMemberEntry_Struct) + emu->name_length + emu->note_length;
 		in->pBuffer = new uint8[length];
 		in->size = length;
-		//no memset since we fill every byte.
+		// no memset since we fill every byte.
 
 		uint8 *buffer;
 		buffer = in->pBuffer;
 
-		//easier way to setup GuildMembers_Struct
-		//set prefix name
+		// easier way to setup GuildMembers_Struct
+		// set prefix name
 		strcpy((char *)buffer, emu->player_name);
 		buffer += pnl;
 		*buffer = '\0';
 		buffer++;
 
-		//add member count.
+		// add member count.
 		*((uint32 *)buffer) = htonl(emu->count);
 		buffer += sizeof(uint32);
 
-		if (emu->count > 0) {
+		if (emu->count > 0)
+		{
 			Internal_GuildMemberEntry_Struct *emu_e = emu->member;
 			const char *emu_name = (const char *)(__emu_buffer +
-				sizeof(Internal_GuildMembers_Struct)+ //skip header
-				emu->count * sizeof(Internal_GuildMemberEntry_Struct)	//skip static length member data
-				);
+												  sizeof(Internal_GuildMembers_Struct) +				// skip header
+												  emu->count * sizeof(Internal_GuildMemberEntry_Struct) // skip static length member data
+			);
 			const char *emu_note = (emu_name +
-				emu->name_length + //skip name contents
-				emu->count	//skip string terminators
-				);
+									emu->name_length + // skip name contents
+									emu->count		   // skip string terminators
+			);
 
-			structs::GuildMemberEntry_Struct *e = (structs::GuildMemberEntry_Struct *) buffer;
+			structs::GuildMemberEntry_Struct *e = (structs::GuildMemberEntry_Struct *)buffer;
 
 			uint32 r;
-			for (r = 0; r < emu->count; r++, emu_e++) {
+			for (r = 0; r < emu->count; r++, emu_e++)
+			{
 
-				//the order we set things here must match the struct
+				// the order we set things here must match the struct
 
-				//nice helper macro
+				// nice helper macro
 				/*#define SlideStructString(field, str) \
 				strcpy(e->field, str.c_str()); \
 				e = (GuildMemberEntry_Struct *) ( ((uint8 *)e) + str.length() )*/
-#define SlideStructString(field, str) \
-			{ \
-				int sl = strlen(str); \
-				memcpy(e->field, str, sl+1); \
-				e = (structs::GuildMemberEntry_Struct *) ( ((uint8 *)e) + sl ); \
-				str += sl + 1; \
-			}
+#define SlideStructString(field, str)                                \
+	{                                                                \
+		int sl = strlen(str);                                        \
+		memcpy(e->field, str, sl + 1);                               \
+		e = (structs::GuildMemberEntry_Struct *)(((uint8 *)e) + sl); \
+		str += sl + 1;                                               \
+	}
 #define PutFieldN(field) e->field = htonl(emu_e->field)
 
 				SlideStructString(name, emu_name);
 				PutFieldN(level);
 				PutFieldN(banker);
-				PutFieldN(class_);
+				e->char_class = htonl(emu_e->class_);
 				PutFieldN(rank);
 				PutFieldN(time_last_on);
 				PutFieldN(tribute_enable);
@@ -759,17 +771,17 @@ namespace Web
 	{
 		ENCODE_LENGTH_EXACT(InspectResponse_Struct);
 		SETUP_DIRECT_ENCODE(InspectResponse_Struct, structs::InspectResponse_Struct);
+		eq->target_id = emu->TargetID;
+		eq->playerid = emu->playerid;
 
-		OUT(TargetID);
-		OUT(playerid);
-
-		for (int i = EQ::invslot::slotCharm; i <= EQ::invslot::slotWaist; ++i) {
-			strn0cpy(eq->itemnames[i], emu->itemnames[i], sizeof(eq->itemnames[i]));
+		for (int i = EQ::invslot::slotCharm; i <= EQ::invslot::slotWaist; ++i)
+		{
+			//strn0cpy(eq->itemnames[i], emu->itemnames[i], sizeof(eq->itemnames[i]));
 			OUT(itemicons[i]);
 		}
 
 		// move ammo down to last element in web array
-		strn0cpy(eq->itemnames[invslot::slotAmmo], emu->itemnames[EQ::invslot::slotAmmo], sizeof(eq->itemnames[invslot::slotAmmo]));
+		//strn0cpy(eq->itemnames[invslot::slotAmmo], emu->itemnames[EQ::invslot::slotAmmo], sizeof(eq->itemnames[invslot::slotAmmo]));
 		eq->itemicons[invslot::slotAmmo] = emu->itemicons[EQ::invslot::slotAmmo];
 
 		strn0cpy(eq->text, emu->text, sizeof(eq->text));
@@ -782,8 +794,8 @@ namespace Web
 		ENCODE_LENGTH_EXACT(Inspect_Struct);
 		SETUP_DIRECT_ENCODE(Inspect_Struct, structs::Inspect_Struct);
 
-		OUT(TargetID);
-		OUT(PlayerID);
+		eq->target_id = emu->TargetID;
+		eq->player_id = emu->PlayerID;
 
 		FINISH_ENCODE();
 	}
@@ -792,22 +804,23 @@ namespace Web
 
 	ENCODE(OP_ItemPacket)
 	{
-		//consume the packet
-		EQApplicationPacket* in = *p;
+		// consume the packet
+		EQApplicationPacket *in = *p;
 		*p = nullptr;
 
-		//store away the emu struct
-		uchar* __emu_buffer = in->pBuffer;
+		// store away the emu struct
+		uchar *__emu_buffer = in->pBuffer;
 
-		EQ::InternalSerializedItem_Struct* int_struct = (EQ::InternalSerializedItem_Struct*)(&__emu_buffer[4]);
+		EQ::InternalSerializedItem_Struct *int_struct = (EQ::InternalSerializedItem_Struct *)(&__emu_buffer[4]);
 
 		EQ::OutBuffer ob;
 		EQ::OutBuffer::pos_type last_pos = ob.tellp();
 
-		ob.write((const char*)__emu_buffer, 4);
+		ob.write((const char *)__emu_buffer, 4);
 
-		SerializeItem(ob, (const EQ::ItemInstance*)int_struct->inst, ServerToWebSlot(int_struct->slot_id), 0);
-		if (ob.tellp() == last_pos) {
+		SerializeItem(ob, (const EQ::ItemInstance *)int_struct->inst, ServerToWebSlot(int_struct->slot_id), 0);
+		if (ob.tellp() == last_pos)
+		{
 			LogNetcode("Web::ENCODE(OP_ItemPacket) Serialization failed on item slot [{}]", int_struct->slot_id);
 			delete in;
 			return;
@@ -819,6 +832,40 @@ namespace Web
 		delete[] __emu_buffer;
 
 		dest->FastQueuePacket(&in, ack_req);
+	}
+
+	ENCODE(OP_SpawnDoor)
+	{
+		SETUP_DIRECT_ENCODE(Door_Struct, structs::DoorSpawns_Struct);
+		int door_count = __packet->size / sizeof(Door_Struct);
+
+		std::vector<structs::Door_Struct> doors;
+		for (int r = 0; r < door_count; r++)
+		{
+			structs::Door_Struct door{
+				.name = "",
+				.y_pos = emu[r].yPos,
+				.x_pos = emu[r].xPos,
+				.z_pos = emu[r].zPos,
+				.heading = emu[r].heading,
+				.incline = emu[r].incline,
+				.size = emu[r].size,
+				.door_id = emu[r].doorId,
+				.opentype = emu[r].opentype,
+				.state_at_spawn = emu[r].state_at_spawn,
+				.invert_state = emu[r].invert_state,
+				.door_param = emu[r].door_param,
+				.next = nullptr};
+			strncpy(door.name, emu[r].name, sizeof(door.name));
+			if (!doors.empty())
+			{
+				doors.back().next = &door;
+			}
+			doors.push_back(door);
+		}
+		eq->count = door_count;
+		eq->doors = &doors[0];
+		FINISH_ENCODE();
 	}
 
 	ENCODE(OP_LeadershipExpUpdate)
@@ -846,9 +893,9 @@ namespace Web
 			return;
 		}
 
-		auto outapp = new EQApplicationPacket(OP_LFGuild, sizeof(structs::LFGuild_PlayerToggle_Struct));
+		auto outapp = new EQApplicationPacket(OP_LFGuild, sizeof(structs::LFGuild_Playertoggle_Struct));
 
-		memcpy(outapp->pBuffer, in->pBuffer, sizeof(structs::LFGuild_PlayerToggle_Struct));
+		memcpy(outapp->pBuffer, in->pBuffer, sizeof(structs::LFGuild_Playertoggle_Struct));
 
 		dest->FastQueuePacket(&outapp, ack_req);
 		delete in;
@@ -919,11 +966,10 @@ namespace Web
 		ENCODE_LENGTH_EXACT(OnLevelMessage_Struct);
 		SETUP_DIRECT_ENCODE(OnLevelMessage_Struct, structs::OnLevelMessage_Struct);
 
-		OUT_str(Title);
-		OUT_str(Text);
-		OUT(Buttons);
-		OUT(Duration);
-		OUT(PopupID);
+		strncpy(eq->title, emu->Title, sizeof(eq->title)); eq->title[sizeof(eq->title)-1];
+		strncpy(eq->text, emu->Text, sizeof(eq->text)); eq->text[sizeof(eq->text)-1];
+		eq->buttons = emu->Buttons;
+		eq->duration = emu->Duration;
 
 		FINISH_ENCODE();
 	}
@@ -961,10 +1007,11 @@ namespace Web
 		//	OUT(checksum);
 		OUT(gender);
 		OUT(race);
-		OUT(class_);
+		eq->char_class = emu->class_;
 		OUT(level);
 		eq->level1 = emu->level;
-		for (r = 0; r < 5; r++) {
+		for (r = 0; r < 5; r++)
+		{
 			OUT(binds[r].zone_id);
 			OUT(binds[r].x);
 			OUT(binds[r].y);
@@ -973,45 +1020,53 @@ namespace Web
 		}
 		OUT(deity);
 		OUT(intoxication);
-		OUT_array(spellSlotRefresh, spells::SPELL_GEM_COUNT);
-		OUT(abilitySlotRefresh);
+		for(__i = 0; __i < spells::SPELL_GEM_COUNT; __i++) eq->spell_slot_refresh[__i] = emu->spellSlotRefresh[__i];
+		eq->ability_slot_refresh = emu->abilitySlotRefresh;
+
 		OUT(haircolor);
 		OUT(beardcolor);
 		OUT(eyecolor1);
 		OUT(eyecolor2);
 		OUT(hairstyle);
 		OUT(beard);
-		for (r = EQ::textures::textureBegin; r < EQ::textures::materialCount; r++) {
-			
+		for (r = EQ::textures::textureBegin; r < EQ::textures::materialCount; r++)
+		{
+
 			// OUT(item_material.Slot[r].Material);
 			// OUT(item_tint.Slot[r].Color);
 		}
-		for (r = 0; r < structs::MAX_PP_AA_ARRAY; r++) {
-			OUT(aa_array[r].AA);
+		for (r = 0; r < structs::MAX_PP_AA_ARRAY; r++)
+		{
+			OUT_DIFF(aa_array[r].aa, aa_array[r].AA);
+			eq->aa_array[r].aa = emu->aa_array[r].AA;
 			OUT(aa_array[r].value);
 		}
 		OUT(points);
 		OUT(mana);
 		OUT(cur_hp);
-		OUT(STR);
-		OUT(STA);
-		OUT(CHA);
-		OUT(DEX);
-		OUT(INT);
-		OUT(AGI);
-		OUT(WIS);
+		eq->str = emu->STR;
+		eq->sta = emu->STA;
+		eq->cha = emu->CHA;
+		eq->dex = emu->DEX;
+		eq->intel = emu->INT;
+		eq->agi = emu->AGI;
+		eq->wis = emu->WIS;
 		OUT(face);
 
-		if (spells::SPELLBOOK_SIZE <= EQ::spells::SPELLBOOK_SIZE) {
-			for (uint32 r = 0; r < spells::SPELLBOOK_SIZE; r++) {
+		if (spells::SPELLBOOK_SIZE <= EQ::spells::SPELLBOOK_SIZE)
+		{
+			for (uint32 r = 0; r < spells::SPELLBOOK_SIZE; r++)
+			{
 				if (emu->spell_book[r] <= spells::SPELL_ID_MAX)
 					eq->spell_book[r] = emu->spell_book[r];
 				else
 					eq->spell_book[r] = 0xFFFFFFFFU;
 			}
 		}
-		else {
-			for (uint32 r = 0; r < EQ::spells::SPELLBOOK_SIZE; r++) {
+		else
+		{
+			for (uint32 r = 0; r < EQ::spells::SPELLBOOK_SIZE; r++)
+			{
 				if (emu->spell_book[r] <= spells::SPELL_ID_MAX)
 					eq->spell_book[r] = emu->spell_book[r];
 				else
@@ -1031,13 +1086,14 @@ namespace Web
 		OUT(silver_cursor);
 		OUT(copper_cursor);
 
-		OUT_array(skills, structs::MAX_PP_SKILL);	// 1:1 direct copy (100 dword)
-		OUT_array(InnateSkills, structs::MAX_PP_INNATE_SKILL);	// 1:1 direct copy (25 dword)
+		OUT_array(skills, structs::MAX_PP_SKILL);			   // 1:1 direct copy (100 dword)
+		OUT_DIFF_array(innate_skills, InnateSkills, structs::MAX_PP_INNATE_SKILL); // 1:1 direct copy (25 dword)
 
 		OUT(toxicity);
 		OUT(thirst_level);
 		OUT(hunger_level);
-		for (r = 0; r < structs::BUFF_COUNT; r++) {
+		for (r = 0; r < structs::BUFF_COUNT; r++)
+		{
 			OUT(buffs[r].effect_type);
 			OUT(buffs[r].level);
 			OUT(buffs[r].bard_modifier);
@@ -1046,7 +1102,8 @@ namespace Web
 			OUT(buffs[r].counters);
 			OUT(buffs[r].player_id);
 		}
-		for (r = 0; r < structs::MAX_PP_DISCIPLINES; r++) {
+		for (r = 0; r < structs::MAX_PP_DISCIPLINES; r++)
+		{
 			OUT(disciplines.values[r]);
 		}
 		//	OUT_array(recastTimers, structs::MAX_RECAST_TYPES);
@@ -1054,47 +1111,50 @@ namespace Web
 		OUT(aapoints_spent);
 		OUT(aapoints);
 
-
 		// Copy bandoliers where server and client indices converge
-		for (r = 0; r < EQ::profile::BANDOLIERS_SIZE && r < profile::BANDOLIERS_SIZE; ++r) {
-			OUT_str(bandoliers[r].Name);
-			for (uint32 k = 0; k < profile::BANDOLIER_ITEM_COUNT; ++k) { // Will need adjusting if 'server != client' is ever true
-				OUT(bandoliers[r].Items[k].ID);
-				OUT(bandoliers[r].Items[k].Icon);
-				OUT_str(bandoliers[r].Items[k].Name);
+		for (r = 0; r < EQ::profile::BANDOLIERS_SIZE && r < profile::BANDOLIERS_SIZE; ++r)
+		{
+			OUT_DIFF_str(bandoliers[r].name, bandoliers[r].Name);
+			for (uint32 k = 0; k < profile::BANDOLIER_ITEM_COUNT; ++k)
+			{ // Will need adjusting if 'server != client' is ever true
+				OUT_DIFF(bandoliers[r].items[k].id, bandoliers[r].Items[k].ID);
+				OUT_DIFF(bandoliers[r].items[k].icon, bandoliers[r].Items[k].Icon);
+				OUT_DIFF_str(bandoliers[r].items[k].name, bandoliers[r].Items[k].Name);
 			}
 		}
 		// Nullify bandoliers where server and client indices diverge, with a client bias
-		for (r = EQ::profile::BANDOLIERS_SIZE; r < profile::BANDOLIERS_SIZE; ++r) {
-			eq->bandoliers[r].Name[0] = '\0';
-			for (uint32 k = 0; k < profile::BANDOLIER_ITEM_COUNT; ++k) { // Will need adjusting if 'server != client' is ever true
-				eq->bandoliers[r].Items[k].ID = 0;
-				eq->bandoliers[r].Items[k].Icon = 0;
-				eq->bandoliers[r].Items[k].Name[0] = '\0';
+		for (r = EQ::profile::BANDOLIERS_SIZE; r < profile::BANDOLIERS_SIZE; ++r)
+		{
+			eq->bandoliers[r].name[0] = '\0';
+			for (uint32 k = 0; k < profile::BANDOLIER_ITEM_COUNT; ++k)
+			{ // Will need adjusting if 'server != client' is ever true
+				eq->bandoliers[r].items[k].id = 0;
+				eq->bandoliers[r].items[k].icon = 0;
+				eq->bandoliers[r].items[k].name[0] = '\0';
 			}
 		}
 
-
 		// Copy potion belt where server and client indices converge
-		for (r = 0; r < EQ::profile::POTION_BELT_SIZE && r < profile::POTION_BELT_SIZE; ++r) {
-			OUT(potionbelt.Items[r].ID);
-			OUT(potionbelt.Items[r].Icon);
-			OUT_str(potionbelt.Items[r].Name);
+		for (r = 0; r < EQ::profile::POTION_BELT_SIZE && r < profile::POTION_BELT_SIZE; ++r)
+		{
+			OUT_DIFF(potionbelt.items[r].id, potionbelt.Items[r].ID);
+			OUT_DIFF(potionbelt.items[r].icon, potionbelt.Items[r].Icon);
+			OUT_DIFF_str(potionbelt.items[r].name, potionbelt.Items[r].Name);
 		}
 		// Nullify potion belt where server and client indices diverge, with a client bias
-		for (r = EQ::profile::POTION_BELT_SIZE; r < profile::POTION_BELT_SIZE; ++r) {
-			eq->potionbelt.Items[r].ID = 0;
-			eq->potionbelt.Items[r].Icon = 0;
-			eq->potionbelt.Items[r].Name[0] = '\0';
+		for (r = EQ::profile::POTION_BELT_SIZE; r < profile::POTION_BELT_SIZE; ++r)
+		{
+			eq->potionbelt.items[r].id = 0;
+			eq->potionbelt.items[r].icon = 0;
+			eq->potionbelt.items[r].name[0] = '\0';
 		}
-
 
 		OUT_str(name);
 		OUT_str(last_name);
 		OUT(guild_id);
 		OUT(birthday);
 		OUT(lastlogin);
-		OUT(timePlayedMin);
+		OUT_DIFF(time_played_min, timePlayedMin);
 		OUT(pvp);
 		OUT(anon);
 		OUT(gm);
@@ -1115,14 +1175,15 @@ namespace Web
 		OUT(expansions);
 		OUT(autosplit);
 		OUT(zone_id);
-		OUT(zoneInstance);
-		for (r = 0; r < structs::MAX_GROUP_MEMBERS; r++) {
-			OUT_str(groupMembers[r]);
+		OUT_DIFF(zone_instance, zoneInstance);
+		for (r = 0; r < structs::MAX_GROUP_MEMBERS; r++)
+		{
+			//OUT_str(groupMembers[r]);
 		}
-		strcpy(eq->groupLeader, emu->groupMembers[0]);
-		//	OUT_str(groupLeader);
+		
+		//OUT_DIFF_str(group_leader, groupLeader);
 		OUT(entityid);
-		OUT(leadAAActive);
+		OUT_DIFF(lead_aa_active, leadAAActive);
 		OUT(ldon_points_guk);
 		OUT(ldon_points_mir);
 		OUT(ldon_points_mmc);
@@ -1133,7 +1194,8 @@ namespace Web
 		OUT(career_tribute_points);
 		OUT(tribute_points);
 		OUT(tribute_active);
-		for (r = 0; r < structs::MAX_PLAYER_TRIBUTES; r++) {
+		for (r = 0; r < structs::MAX_PLAYER_TRIBUTES; r++)
+		{
 			OUT(tributes[r].tribute);
 			OUT(tributes[r].tier);
 		}
@@ -1141,36 +1203,33 @@ namespace Web
 		OUT(raid_leadership_exp);
 		OUT(group_leadership_points);
 		OUT(raid_leadership_points);
-		OUT_array(leader_abilities.ranks, structs::MAX_LEADERSHIP_AA_ARRAY);
+		//OUT_array(leader_abilities.ranks, structs::MAX_LEADERSHIP_AA_ARRAY);
 		OUT(air_remaining);
-		OUT(PVPKills);
-		OUT(PVPDeaths);
-		OUT(PVPCurrentPoints);
-		OUT(PVPCareerPoints);
-		OUT(PVPBestKillStreak);
-		OUT(PVPWorstDeathStreak);
-		OUT(PVPCurrentKillStreak);
-		OUT(expAA);
-		OUT(currentRadCrystals);
-		OUT(careerRadCrystals);
-		OUT(currentEbonCrystals);
-		OUT(careerEbonCrystals);
-		OUT(groupAutoconsent);
-		OUT(raidAutoconsent);
-		OUT(guildAutoconsent);
+		OUT_DIFF(pvp_kills, PVPKills);
+		OUT_DIFF(pvp_deaths, PVPDeaths);
+		OUT_DIFF(pvp_current_points, PVPCurrentPoints);
+		OUT_DIFF(pvp_career_points, PVPCareerPoints);
+		OUT_DIFF(pvp_best_kill_streak, PVPBestKillStreak);
+		OUT_DIFF(pvp_worst_death_streak, PVPWorstDeathStreak);
+		OUT_DIFF(pvp_current_kill_streak, PVPCurrentKillStreak);
+		OUT_DIFF(exp_aa, expAA);
+		OUT_DIFF(current_rad_crystals, currentRadCrystals);
+		OUT_DIFF(career_rad_crystals, careerRadCrystals);
+		OUT_DIFF(current_ebon_crystals, currentEbonCrystals);
+		OUT_DIFF(career_ebon_crystals, careerEbonCrystals);
+		OUT_DIFF(group_autoconsent, groupAutoconsent);
+		OUT_DIFF(raid_autoconsent, raidAutoconsent);
+		OUT_DIFF(guild_autoconsent, guildAutoconsent);
 		eq->level3 = emu->level;
 		eq->showhelm = emu->showhelm;
-
-
 
 		const uint8 bytes[] = {
 			0x78, 0x03, 0x00, 0x00, 0x1A, 0x04, 0x00, 0x00, 0x1A, 0x04, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00,
 			0x19, 0x00, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00,
 			0x0F, 0x00, 0x00, 0x00, 0x1F, 0x85, 0xEB, 0x3E, 0x33, 0x33, 0x33, 0x3F, 0x09, 0x00, 0x00, 0x00,
-			0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x14
-		};
+			0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x14};
 
-		//set the checksum...
+		// set the checksum...
 		CRC32::SetEQChecksum(__packet->pBuffer, sizeof(structs::PlayerProfile_Struct) - 4);
 
 		FINISH_ENCODE();
@@ -1180,9 +1239,9 @@ namespace Web
 	{
 		ENCODE_LENGTH_EXACT(MarkNPC_Struct);
 		SETUP_DIRECT_ENCODE(MarkNPC_Struct, MarkNPC_Struct);
-	
-		EQApplicationPacket* outapp = new EQApplicationPacket(OP_MarkNPC, sizeof(MarkNPC_Struct));
-		MarkNPC_Struct* mnpcs = (MarkNPC_Struct*)outapp->pBuffer;
+
+		EQApplicationPacket *outapp = new EQApplicationPacket(OP_MarkNPC, sizeof(MarkNPC_Struct));
+		MarkNPC_Struct *mnpcs = (MarkNPC_Struct *)outapp->pBuffer;
 		mnpcs->TargetID = emu->TargetID;
 		mnpcs->Number = emu->Number;
 		dest->QueuePacket(outapp);
@@ -1193,38 +1252,38 @@ namespace Web
 
 	ENCODE(OP_RaidUpdate)
 	{
-		EQApplicationPacket* inapp = *p;
+		EQApplicationPacket *inapp = *p;
 		*p = nullptr;
-		unsigned char* __emu_buffer = inapp->pBuffer;
-		RaidGeneral_Struct* raid_gen = (RaidGeneral_Struct*)__emu_buffer;
-		
+		unsigned char *__emu_buffer = inapp->pBuffer;
+		RaidGeneral_Struct *raid_gen = (RaidGeneral_Struct *)__emu_buffer;
+
 		switch (raid_gen->action)
 		{
-		case raidAdd: 
+		case raidAdd:
 		{
-			RaidAddMember_Struct* emu = (RaidAddMember_Struct*)__emu_buffer;
+			RaidAddMember_Struct *emu = (RaidAddMember_Struct *)__emu_buffer;
 
 			auto outapp = new EQApplicationPacket(OP_RaidUpdate, sizeof(structs::RaidAddMember_Struct));
-			structs::RaidAddMember_Struct* eq = (structs::RaidAddMember_Struct*)outapp->pBuffer;
+			structs::RaidAddMember_Struct *eq = (structs::RaidAddMember_Struct *)outapp->pBuffer;
 
-			OUT(raidGen.action);
-			OUT(raidGen.parameter);
-			OUT_str(raidGen.leader_name);
-			OUT_str(raidGen.player_name);
-			OUT(_class);
+			OUT_DIFF(raid_gen.action, raidGen.action);
+			OUT_DIFF(raid_gen.parameter, raidGen.parameter);
+			OUT_DIFF_str(raid_gen.leader_name, raidGen.leader_name);
+			OUT_DIFF_str(raid_gen.player_name, raidGen.player_name);
+			eq->char_class = emu->_class;
+
 			OUT(level);
-			OUT(isGroupLeader);
+			OUT_DIFF(is_group_leader, isGroupLeader);
 
 			dest->FastQueuePacket(&outapp);
 			break;
-
 		}
 		case raidSetMotd:
 		{
-			RaidMOTD_Struct* emu = (RaidMOTD_Struct*)__emu_buffer;
+			RaidMOTD_Struct *emu = (RaidMOTD_Struct *)__emu_buffer;
 
 			auto outapp = new EQApplicationPacket(OP_RaidUpdate, sizeof(structs::RaidMOTD_Struct));
-			structs::RaidMOTD_Struct* eq = (structs::RaidMOTD_Struct*)outapp->pBuffer;
+			structs::RaidMOTD_Struct *eq = (structs::RaidMOTD_Struct *)outapp->pBuffer;
 
 			OUT(general.action);
 			OUT_str(general.player_name);
@@ -1237,10 +1296,10 @@ namespace Web
 		case raidSetLeaderAbilities:
 		case raidMakeLeader:
 		{
-			RaidLeadershipUpdate_Struct* emu = (RaidLeadershipUpdate_Struct*)__emu_buffer;
+			RaidLeadershipUpdate_Struct *emu = (RaidLeadershipUpdate_Struct *)__emu_buffer;
 
 			auto outapp = new EQApplicationPacket(OP_RaidUpdate, sizeof(structs::RaidLeadershipUpdate_Struct));
-			structs::RaidLeadershipUpdate_Struct* eq = (structs::RaidLeadershipUpdate_Struct*)outapp->pBuffer;
+			structs::RaidLeadershipUpdate_Struct *eq = (structs::RaidLeadershipUpdate_Struct *)outapp->pBuffer;
 
 			OUT(action);
 			OUT_str(player_name);
@@ -1252,10 +1311,10 @@ namespace Web
 		}
 		case raidSetNote:
 		{
-			auto emu = (RaidNote_Struct*)__emu_buffer;
+			auto emu = (RaidNote_Struct *)__emu_buffer;
 
 			auto outapp = new EQApplicationPacket(OP_RaidUpdate, sizeof(structs::RaidNote_Struct));
-			auto eq = (structs::RaidNote_Struct*)outapp->pBuffer;
+			auto eq = (structs::RaidNote_Struct *)outapp->pBuffer;
 
 			OUT(general.action);
 			OUT_str(general.leader_name);
@@ -1270,12 +1329,12 @@ namespace Web
 			dest->QueuePacket(inapp);
 			break;
 		}
-		default: 
+		default:
 		{
-			RaidGeneral_Struct* emu = (RaidGeneral_Struct*)__emu_buffer;
+			RaidGeneral_Struct *emu = (RaidGeneral_Struct *)__emu_buffer;
 
 			auto outapp = new EQApplicationPacket(OP_RaidUpdate, sizeof(structs::RaidGeneral_Struct));
-			structs::RaidGeneral_Struct* eq = (structs::RaidGeneral_Struct*)outapp->pBuffer;
+			structs::RaidGeneral_Struct *eq = (structs::RaidGeneral_Struct *)outapp->pBuffer;
 
 			OUT(action);
 			OUT(parameter);
@@ -1302,7 +1361,7 @@ namespace Web
 		in->size = sizeof(structs::BookText_Struct) + strlen(emu_BookText_Struct->booktext);
 		in->pBuffer = new unsigned char[in->size];
 
-		structs::BookText_Struct *eq_BookText_Struct = (structs::BookText_Struct*)in->pBuffer;
+		structs::BookText_Struct *eq_BookText_Struct = (structs::BookText_Struct *)in->pBuffer;
 
 		eq_BookText_Struct->window = emu_BookText_Struct->window;
 		eq_BookText_Struct->type = emu_BookText_Struct->type;
@@ -1318,8 +1377,9 @@ namespace Web
 		SETUP_DIRECT_ENCODE(AATable_Struct, structs::AATable_Struct);
 
 		unsigned int r;
-		for (r = 0; r < structs::MAX_PP_AA_ARRAY; r++) {
-			OUT(aa_list[r].AA);
+		for (r = 0; r < structs::MAX_PP_AA_ARRAY; r++)
+		{
+			OUT_DIFF(aa_list[r].aa, aa_list[r].AA);
 			OUT(aa_list[r].value);
 		}
 
@@ -1330,11 +1390,11 @@ namespace Web
 	{
 		EQApplicationPacket *inapp = *p;
 		*p = nullptr;
-		AARankInfo_Struct *emu = (AARankInfo_Struct*)inapp->pBuffer;
+		AARankInfo_Struct *emu = (AARankInfo_Struct *)inapp->pBuffer;
 
 		auto outapp = new EQApplicationPacket(
-		    OP_SendAATable, sizeof(structs::SendAA_Struct) + emu->total_effects * sizeof(structs::AA_Ability));
-		structs::SendAA_Struct *eq = (structs::SendAA_Struct*)outapp->pBuffer;
+			OP_SendAATable, sizeof(structs::SendAA_Struct) + emu->total_effects * sizeof(structs::AA_Ability));
+		structs::SendAA_Struct *eq = (structs::SendAA_Struct *)outapp->pBuffer;
 
 		inapp->SetReadPosition(sizeof(AARankInfo_Struct));
 		outapp->SetWritePosition(sizeof(structs::SendAA_Struct));
@@ -1358,16 +1418,18 @@ namespace Web
 		eq->last_id = emu->prev_id;
 		eq->next_id = emu->next_id;
 		eq->cost2 = emu->total_cost;
-		eq->total_abilities = emu->total_effects;
+		eq->count = emu->total_effects;
 
-		for(auto i = 0; i < eq->total_abilities; ++i) {
+		for (auto i = 0; i < eq->count; ++i)
+		{
 			eq->abilities[i].skill_id = inapp->ReadUInt32();
 			eq->abilities[i].base_value = inapp->ReadUInt32();
 			eq->abilities[i].limit_value = inapp->ReadUInt32();
 			eq->abilities[i].slot = inapp->ReadUInt32();
 		}
 
-		if(emu->total_prereqs > 0) {
+		if (emu->total_prereqs > 0)
+		{
 			eq->prereq_skill = inapp->ReadUInt32();
 			eq->prereq_minpoints = inapp->ReadUInt32();
 		}
@@ -1387,9 +1449,10 @@ namespace Web
 
 		size_t char_index = 0;
 		std::vector<Web::structs::CharacterSelectEntry_Struct> characters;
-		for (; char_index < emu->CharCount && char_index < 8; ++char_index) {
+		for (; char_index < emu->CharCount && char_index < 8; ++char_index)
+		{
 			emu_cse = (CharacterSelectEntry_Struct *)emu_ptr;
-			Web::structs::CharacterSelectEntry_Struct character {
+			Web::structs::CharacterSelectEntry_Struct character{
 				.name = "",
 				.char_class = emu_cse->Class,
 				.race = emu_cse->Race > 473 ? 1 : emu_cse->Race,
@@ -1410,7 +1473,8 @@ namespace Web
 
 			memcpy(character.name, emu_cse->Name, 64);
 
-			for (int index = 0; index < EQ::textures::materialCount; ++index) {
+			for (int index = 0; index < EQ::textures::materialCount; ++index)
+			{
 				auto color = emu_cse->Equip[index].Color;
 				character.equip[index].color = {
 					.blue = (uint8)(color),
@@ -1421,7 +1485,8 @@ namespace Web
 				character.equip[index].material = emu_cse->Equip[index].Material;
 			}
 
-			if (!characters.empty()) {
+			if (!characters.empty())
+			{
 				characters.back().next = &character;
 			}
 
@@ -1436,22 +1501,22 @@ namespace Web
 
 	ENCODE(OP_SetFace)
 	{
-		auto emu = reinterpret_cast<FaceChange_Struct*>((*p)->pBuffer);
+		auto emu = reinterpret_cast<FaceChange_Struct *>((*p)->pBuffer);
 
 		EQApplicationPacket outapp(OP_Illusion, sizeof(structs::Illusion_Struct));
-		auto buf = reinterpret_cast<structs::Illusion_Struct*>(outapp.pBuffer);
+		auto buf = reinterpret_cast<structs::Illusion_Struct *>(outapp.pBuffer);
 
-		buf->spawnid     = emu->entity_id;
-		buf->race        = -1; // unchanged
-		buf->gender      = -1; // unchanged
-		buf->texture     = -1; // unchanged
+		buf->spawnid = emu->entity_id;
+		buf->race = -1;		   // unchanged
+		buf->gender = -1;	   // unchanged
+		buf->texture = -1;	   // unchanged
 		buf->helmtexture = -1; // unchanged
-		buf->face        = emu->face;
-		buf->hairstyle   = emu->hairstyle;
-		buf->haircolor   = emu->haircolor;
-		buf->beard       = emu->beard;
-		buf->beardcolor  = emu->beardcolor;
-		buf->size        = 0.0f; // unchanged
+		buf->face = emu->face;
+		buf->hairstyle = emu->hairstyle;
+		buf->haircolor = emu->haircolor;
+		buf->beard = emu->beard;
+		buf->beardcolor = emu->beardcolor;
+		buf->size = 0.0f; // unchanged
 
 		safe_delete(*p); // not using the original packet
 
@@ -1477,9 +1542,9 @@ namespace Web
 		*p = nullptr;
 
 		SerializeBuffer buf(in->size);
-		buf.WriteInt8(in->ReadUInt8()); // speak mode
-		buf.WriteInt8(in->ReadUInt8()); // journal mode
-		buf.WriteInt8(in->ReadUInt8()); // language
+		buf.WriteInt8(in->ReadUInt8());	  // speak mode
+		buf.WriteInt8(in->ReadUInt8());	  // journal mode
+		buf.WriteInt8(in->ReadUInt8());	  // language
 		buf.WriteInt32(in->ReadUInt32()); // message type
 		buf.WriteInt32(in->ReadUInt32()); // target spawn id
 
@@ -1533,8 +1598,8 @@ namespace Web
 		ServerToWebSayLink(new_message, old_message);
 
 		in->size = sizeof(TaskDescriptionHeader_Struct) + sizeof(TaskDescriptionData1_Struct) +
-			sizeof(TaskDescriptionData2_Struct) + sizeof(TaskDescriptionTrailer_Struct) +
-			title_size + description_size + reward_size + new_message.length() + 1;
+				   sizeof(TaskDescriptionData2_Struct) + sizeof(TaskDescriptionTrailer_Struct) +
+				   title_size + description_size + reward_size + new_message.length() + 1;
 
 		in->pBuffer = new unsigned char[in->size];
 
@@ -1573,12 +1638,12 @@ namespace Web
 
 		in->size = sizeof(structs::Track_Struct) * EntryCount;
 		in->pBuffer = new unsigned char[in->size];
-		structs::Track_Struct *eq = (structs::Track_Struct *) in->pBuffer;
+		structs::Track_Struct *eq = (structs::Track_Struct *)in->pBuffer;
 
 		for (int i = 0; i < EntryCount; ++i, ++eq, ++emu)
 		{
 			OUT(entityid);
-			//OUT(padding002);
+			// OUT(padding002);
 			OUT(distance);
 		}
 
@@ -1588,7 +1653,8 @@ namespace Web
 
 	ENCODE(OP_Trader)
 	{
-		if ((*p)->size != sizeof(TraderBuy_Struct)) {
+		if ((*p)->size != sizeof(TraderBuy_Struct))
+		{
 			EQApplicationPacket *in = *p;
 			*p = nullptr;
 			dest->FastQueuePacket(&in, ack_req);
@@ -1603,13 +1669,13 @@ namespace Web
 		ENCODE_LENGTH_EXACT(TraderBuy_Struct);
 		SETUP_DIRECT_ENCODE(TraderBuy_Struct, structs::TraderBuy_Struct);
 
-		OUT(Action);
-		OUT(Price);
-		OUT(TraderID);
-		memcpy(eq->ItemName, emu->ItemName, sizeof(eq->ItemName));
-		OUT(ItemID);
-		OUT(Quantity);
-		OUT(AlreadySold);
+		OUT_DIFF(action, Action);
+		OUT_DIFF(price, Price);
+		OUT_DIFF(trader_id, TraderID);
+		memcpy(eq->item_name, emu->ItemName, sizeof(eq->item_name));
+		OUT_DIFF(item_id, ItemID);
+		OUT_DIFF(quantity, Quantity);
+		OUT_DIFF(already_sold, AlreadySold);
 
 		FINISH_ENCODE();
 	}
@@ -1630,19 +1696,19 @@ namespace Web
 	ENCODE(OP_VetRewardsAvaliable)
 	{
 		EQApplicationPacket *inapp = *p;
-		unsigned char * __emu_buffer = inapp->pBuffer;
+		unsigned char *__emu_buffer = inapp->pBuffer;
 
 		uint32 count = ((*p)->Size() / sizeof(InternalVeteranReward));
 		*p = nullptr;
 
 		auto outapp_create =
-		    new EQApplicationPacket(OP_VetRewardsAvaliable, (sizeof(structs::VeteranReward) * count));
+			new EQApplicationPacket(OP_VetRewardsAvaliable, (sizeof(structs::VeteranReward) * count));
 		uchar *old_data = __emu_buffer;
 		uchar *data = outapp_create->pBuffer;
 		for (uint32 i = 0; i < count; ++i)
 		{
-			structs::VeteranReward *vr = (structs::VeteranReward*)data;
-			InternalVeteranReward *ivr = (InternalVeteranReward*)old_data;
+			structs::VeteranReward *vr = (structs::VeteranReward *)data;
+			InternalVeteranReward *ivr = (InternalVeteranReward *)old_data;
 
 			vr->claim_id = ivr->claim_id;
 			vr->item.item_id = ivr->items[0].item_id;
@@ -1663,7 +1729,7 @@ namespace Web
 
 		OUT(spawn_id);
 		OUT(material);
-		//OUT(color.Color);
+		// OUT(color.Color);
 		OUT(wear_slot_id);
 
 		FINISH_ENCODE();
@@ -1673,35 +1739,37 @@ namespace Web
 
 	ENCODE(OP_ZoneSpawns)
 	{
-		//consume the packet
+		// consume the packet
 		EQApplicationPacket *in = *p;
 		*p = nullptr;
 
-		//store away the emu struct
+		// store away the emu struct
 		unsigned char *__emu_buffer = in->pBuffer;
 		Spawn_Struct *emu = (Spawn_Struct *)__emu_buffer;
 
-		//determine and verify length
+		// determine and verify length
 		int entrycount = in->size / sizeof(Spawn_Struct);
-		if (entrycount == 0 || (in->size % sizeof(Spawn_Struct)) != 0) {
+		if (entrycount == 0 || (in->size % sizeof(Spawn_Struct)) != 0)
+		{
 			LogNetcode("[STRUCTS] Wrong size on outbound [{}]: Got [{}], expected multiple of [{}]", opcodes->EmuToName(in->GetOpcode()), in->size, sizeof(Spawn_Struct));
 			delete in;
 			return;
 		}
 
-		//make the EQ struct.
-		in->size = sizeof(structs::Spawn_Struct)*entrycount;
+		// make the EQ struct.
+		in->size = sizeof(structs::Spawn_Struct) * entrycount;
 		in->pBuffer = new unsigned char[in->size];
-		structs::Spawn_Struct *eq = (structs::Spawn_Struct *) in->pBuffer;
+		structs::Spawn_Struct *eq = (structs::Spawn_Struct *)in->pBuffer;
 
-		//zero out the packet. We could avoid this memset by setting all fields (including unknowns)
-		//in the loop.
+		// zero out the packet. We could avoid this memset by setting all fields (including unknowns)
+		// in the loop.
 		memset(in->pBuffer, 0, in->size);
 
-		//do the transform...
+		// do the transform...
 		int r;
 		int k;
-		for (r = 0; r < entrycount; r++, eq++, emu++) {
+		for (r = 0; r < entrycount; r++, eq++, emu++)
+		{
 			eq->gm = emu->gm;
 			eq->aaitle = emu->aaitle;
 			eq->anon = emu->anon;
@@ -1709,65 +1777,63 @@ namespace Web
 			strcpy(eq->name, emu->name);
 			eq->deity = emu->deity;
 			eq->size = emu->size;
-			eq->NPC = emu->NPC;
+			eq->npc = emu->NPC;
 			eq->invis = emu->invis;
 			eq->haircolor = emu->haircolor;
-			eq->curHp = emu->curHp;
+			eq->cur_hp = emu->curHp;
 			eq->max_hp = emu->max_hp;
 			eq->findable = emu->findable;
-			eq->deltaHeading = emu->deltaHeading;
+			eq->delta_heading = emu->deltaHeading;
 			eq->x = emu->x;
 			eq->y = emu->y;
 			eq->animation = emu->animation;
 			eq->z = emu->z;
-			eq->deltaY = emu->deltaY;
-			eq->deltaX = emu->deltaX;
+			eq->delta_y = emu->deltaY;
+			eq->delta_x = emu->deltaX;
 			eq->heading = emu->heading;
-			eq->deltaZ = emu->deltaZ;
+			eq->delta_z = emu->deltaZ;
 			eq->eyecolor1 = emu->eyecolor1;
 			eq->showhelm = emu->showhelm;
 			eq->is_npc = emu->is_npc;
 			eq->hairstyle = emu->hairstyle;
 
-			//if(emu->gender == 1){
+			// if(emu->gender == 1){
 			//	eq->hairstyle = eq->hairstyle == 0xFF ? 0 : eq->hairstyle;
-			//}
+			// }
 
 			eq->beardcolor = emu->beardcolor;
 			eq->level = emu->level;
-			eq->PlayerState = emu->PlayerState;
+			eq->player_state = emu->PlayerState;
 			eq->beard = emu->beard;
 			strcpy(eq->suffix, emu->suffix);
-			eq->petOwnerId = emu->petOwnerId;
+			eq->pet_owner_id = emu->petOwnerId;
 			eq->guildrank = emu->guildrank;
-			for (k = EQ::textures::textureBegin; k < EQ::textures::materialCount; k++) {
-			//	eq->equipment.Slot[k].Material = emu->equipment.Slot[k].Material;
-			//	eq->equipment_tint.Slot[k].Color = emu->equipment_tint.Slot[k].Color;
-			}
-			for (k = 0; k < 8; k++) {
-				eq->set_to_0xFF[k] = 0xFF;
+			for (k = EQ::textures::textureBegin; k < EQ::textures::materialCount; k++)
+			{
+				//	eq->equipment.Slot[k].Material = emu->equipment.Slot[k].Material;
+				//	eq->equipment_tint.Slot[k].Color = emu->equipment_tint.Slot[k].Color;
 			}
 
 			eq->runspeed = emu->runspeed;
 			eq->afk = emu->afk;
-			eq->guildID = emu->guildID;
+			eq->guild_id = emu->guildID;
 			strcpy(eq->title, emu->title);
 			eq->helm = emu->helm;
 			if (emu->race > 473)
 				eq->race = 1;
 			else
 				eq->race = emu->race;
-			strcpy(eq->lastName, emu->lastName);
+			strcpy(eq->last_name, emu->lastName);
 			eq->walkspeed = emu->walkspeed;
 			eq->is_pet = emu->is_pet;
 			eq->light = emu->light;
-			eq->class_ = emu->class_;
+			eq->char_class = emu->class_;
 			eq->eyecolor2 = emu->eyecolor2;
 			eq->flymode = emu->flymode;
 			eq->gender = emu->gender;
 			eq->bodytype = emu->bodytype;
 			eq->equip_chest2 = emu->equip_chest2;
-			eq->spawnId = emu->spawnId;
+			eq->spawn_id = emu->spawnId;
 			eq->lfg = emu->lfg;
 
 			/*
@@ -1779,26 +1845,28 @@ namespace Web
 			if (emu->beard == 99)      {eq->beard = 0;}
 			if (emu->beardcolor == 99) {eq->beardcolor = 0;}
 			*/
-
 		}
 
-		//kill off the emu structure and send the eq packet.
+		// kill off the emu structure and send the eq packet.
 		delete[] __emu_buffer;
 		dest->FastQueuePacket(&in, ack_req);
 	}
 
-// DECODE methods
-	DECODE(OP_SendLoginInfo) {
+	// DECODE methods
+	DECODE(OP_SendLoginInfo)
+	{
 		// DECODE_LENGTH_EXACT(structs::LoginInfo_Struct);
 		SETUP_DIRECT_DECODE(LoginInfo_Struct, structs::LoginInfo_Struct);
 		std::string name(eq->name);
 		std::string pw(eq->password);
 		int idx = 0;
-		for (int i = 0; i < name.length(); i++, idx++) { 
+		for (int i = 0; i < name.length(); i++, idx++)
+		{
 			emu->login_info[idx] = name[i];
 		}
 		emu->login_info[idx++] = '\0';
-		for (int i = 0; i < pw.length(); i++, idx++) { 
+		for (int i = 0; i < pw.length(); i++, idx++)
+		{
 			emu->login_info[idx] = pw[i];
 		}
 		IN(zoning);
@@ -1823,7 +1891,7 @@ namespace Web
 		DECODE_LENGTH_EXACT(structs::ApplyPoison_Struct);
 		SETUP_DIRECT_DECODE(ApplyPoison_Struct, structs::ApplyPoison_Struct);
 
-		emu->inventorySlot = WebToServerSlot(eq->inventorySlot);
+		emu->inventorySlot = WebToServerSlot(eq->inventory_slot);
 		IN(success);
 
 		FINISH_DIRECT_DECODE();
@@ -1907,22 +1975,22 @@ namespace Web
 		DECODE_LENGTH_EXACT(structs::CharCreate_Struct);
 		SETUP_DIRECT_DECODE(CharCreate_Struct, structs::CharCreate_Struct);
 
-		IN(class_);
+		emu->class_ = eq->char_class;
 		IN(beardcolor);
 		IN(beard);
 		IN(haircolor);
-		IN(gender);
+		IN(gender);	
 		IN(race);
 		IN(start_zone);
 		IN(hairstyle);
 		IN(deity);
-		IN(STR);
-		IN(STA);
-		IN(AGI);
-		IN(DEX);
-		IN(WIS);
-		IN(INT);
-		IN(CHA);
+		IN_DIFF(STR, str);
+		IN_DIFF(STA, sta);
+		IN_DIFF(AGI, agi);
+		IN_DIFF(DEX, dex);
+		IN_DIFF(WIS, wis);
+		IN_DIFF(INT, intel);
+		IN_DIFF(CHA, cha);
 		IN(face);
 		IN(eyecolor1);
 		IN(eyecolor2);
@@ -1971,7 +2039,7 @@ namespace Web
 		SETUP_DIRECT_DECODE(DeleteItem_Struct, structs::DeleteItem_Struct);
 
 		emu->from_slot = WebToServerSlot(eq->from_slot);
-		emu->to_slot =WebToServerSlot(eq->to_slot);
+		emu->to_slot = WebToServerSlot(eq->to_slot);
 		IN(number_in_stack);
 
 		FINISH_DIRECT_DECODE();
@@ -2085,16 +2153,17 @@ namespace Web
 		DECODE_LENGTH_EXACT(structs::InspectResponse_Struct);
 		SETUP_DIRECT_DECODE(InspectResponse_Struct, structs::InspectResponse_Struct);
 
-		IN(TargetID);
+		IN_DIFF(TargetID, target_id);
 		IN(playerid);
 
-		for (int i = invslot::slotCharm; i <= invslot::slotWaist; ++i) {
-			strn0cpy(emu->itemnames[i], eq->itemnames[i], sizeof(emu->itemnames[i]));
+		for (int i = invslot::slotCharm; i <= invslot::slotWaist; ++i)
+		{
+			//strn0cpy(emu->itemnames[i], eq->itemnames[i], sizeof(emu->itemnames[i]));
 			IN(itemicons[i]);
 		}
 
 		// move ammo up to last element in server array
-		strn0cpy(emu->itemnames[EQ::invslot::slotAmmo], eq->itemnames[invslot::slotAmmo], sizeof(emu->itemnames[EQ::invslot::slotAmmo]));
+		//strn0cpy(emu->itemnames[EQ::invslot::slotAmmo], eq->itemnames[invslot::slotAmmo], sizeof(emu->itemnames[EQ::invslot::slotAmmo]));
 		emu->itemicons[EQ::invslot::slotAmmo] = eq->itemicons[invslot::slotAmmo];
 
 		// nullify power source element in server array
@@ -2111,8 +2180,8 @@ namespace Web
 		DECODE_LENGTH_EXACT(structs::Inspect_Struct);
 		SETUP_DIRECT_DECODE(Inspect_Struct, structs::Inspect_Struct);
 
-		IN(TargetID);
-		IN(PlayerID);
+		IN_DIFF(TargetID, target_id);
+		IN_DIFF(PlayerID, player_id);
 
 		FINISH_DIRECT_DECODE();
 	}
@@ -2125,7 +2194,8 @@ namespace Web
 
 		IN(item_id);
 		int r;
-		for (r = 0; r < 5; r++) {
+		for (r = 0; r < 5; r++)
+		{
 			IN(augments[r]);
 		}
 		IN(link_hash);
@@ -2140,8 +2210,8 @@ namespace Web
 		if (Command != 0)
 			return;
 
-		SETUP_DIRECT_DECODE(LFGuild_PlayerToggle_Struct, structs::LFGuild_PlayerToggle_Struct);
-		memcpy(emu, eq, sizeof(structs::LFGuild_PlayerToggle_Struct));
+		SETUP_DIRECT_DECODE(LFGuild_PlayerToggle_Struct, structs::LFGuild_Playertoggle_Struct);
+		memcpy(emu, eq, sizeof(structs::LFGuild_Playertoggle_Struct));
 
 		FINISH_DIRECT_DECODE();
 	}
@@ -2155,7 +2225,6 @@ namespace Web
 			IN(spell[i]);
 		for (int i = spells::SPELL_GEM_COUNT; i < EQ::spells::SPELL_GEM_COUNT; ++i)
 			emu->spell[i] = 0xFFFFFFFF;
-
 
 		FINISH_DIRECT_DECODE();
 	}
@@ -2202,7 +2271,7 @@ namespace Web
 		case 2: // get lost
 			emu->command = 29;
 			break;
-		case 3: // as you were ???
+		case 3:				  // as you were ???
 			emu->command = 4; // fuck it follow
 			break;
 		case 4: // report HP
@@ -2211,7 +2280,7 @@ namespace Web
 		case 5: // guard here
 			emu->command = 5;
 			break;
-		case 6: // guard me
+		case 6:				  // guard me
 			emu->command = 4; // fuck it follow
 			break;
 		case 7: // attack
@@ -2262,7 +2331,7 @@ namespace Web
 	DECODE(OP_RaidInvite)
 	{
 		DECODE_LENGTH_ATLEAST(structs::RaidGeneral_Struct);
-		RaidGeneral_Struct* rgs = (RaidGeneral_Struct*)__packet->pBuffer;
+		RaidGeneral_Struct *rgs = (RaidGeneral_Struct *)__packet->pBuffer;
 
 		switch (rgs->action)
 		{
@@ -2274,16 +2343,18 @@ namespace Web
 			IN(general.parameter);
 			IN_str(general.leader_name);
 			IN_str(general.player_name);
-			
+
 			auto len = 0;
-			if (__packet->size < sizeof(structs::RaidMOTD_Struct)) {
+			if (__packet->size < sizeof(structs::RaidMOTD_Struct))
+			{
 				len = __packet->size - sizeof(structs::RaidGeneral_Struct);
 			}
-			else {
+			else
+			{
 				len = sizeof(eq->motd);
 			}
-			
-			strn0cpy(emu->motd, eq->motd, len > 1024 ? 1024 : len); 
+
+			strn0cpy(emu->motd, eq->motd, len > 1024 ? 1024 : len);
 			emu->motd[len - 1] = '\0';
 
 			FINISH_VAR_DECODE();
@@ -2301,7 +2372,7 @@ namespace Web
 
 			FINISH_VAR_DECODE();
 			break;
-		}		
+		}
 		default:
 		{
 			SETUP_DIRECT_DECODE(RaidGeneral_Struct, structs::RaidGeneral_Struct);
@@ -2335,7 +2406,8 @@ namespace Web
 		SETUP_DIRECT_DECODE(SetServerFilter_Struct, structs::SetServerFilter_Struct);
 
 		int r;
-		for (r = 0; r < 29; r++) {
+		for (r = 0; r < 29; r++)
+		{
 			IN(filters[r]);
 		}
 
@@ -2361,12 +2433,12 @@ namespace Web
 		SETUP_DIRECT_DECODE(TraderBuy_Struct, structs::TraderBuy_Struct);
 		MEMSET_IN(TraderBuy_Struct);
 
-		IN(Action);
-		IN(Price);
-		IN(TraderID);
-		memcpy(emu->ItemName, eq->ItemName, sizeof(emu->ItemName));
-		IN(ItemID);
-		IN(Quantity);
+		IN_DIFF(Action, action);
+		IN_DIFF(Price, price);
+		IN_DIFF(TraderID, trader_id);
+		memcpy(emu->ItemName, eq->item_name, sizeof(emu->ItemName));
+		IN_DIFF(ItemID, item_id);
+		IN_DIFF(Quantity, quantity);
 
 		FINISH_DIRECT_DECODE();
 	}
@@ -2402,7 +2474,7 @@ namespace Web
 
 		IN(spawn_id);
 		IN(material);
-		//IN(color.Color);
+		// IN(color.Color);
 		IN(wear_slot_id);
 		emu->elite_material = 0;
 		emu->hero_forge_model = 0;
@@ -2426,9 +2498,10 @@ namespace Web
 		FINISH_DIRECT_DECODE();
 	}
 
-// file scope helper methods
-	void SerializeItem(EQ::OutBuffer& ob, const EQ::ItemInstance *inst, int16 slot_id_in, uint8 depth) {
-		const char *protection      = "\\\\\\\\\\";
+	// file scope helper methods
+	void SerializeItem(EQ::OutBuffer &ob, const EQ::ItemInstance *inst, int16 slot_id_in, uint8 depth)
+	{
+		const char *protection = "\\\\\\\\\\";
 		const EQ::ItemData *item = inst->GetUnscaledItem();
 
 		ob << StringFormat(
@@ -2438,17 +2511,15 @@ namespace Web
 			(depth ? "\"" : "")); // For leading quotes (and protection) if a subitem;
 
 		// Instance data
-		ob << itoa((inst->IsStackable() ? inst->GetCharges() : 0)); // stack count
-		ob << '|' << itoa((!inst->GetMerchantSlot() ? slot_id_in : inst->GetMerchantSlot())); // inst slot/merchant slot
-		ob << '|' << itoa(inst->GetPrice()); // merchant price
-		ob << '|' << itoa((!inst->GetMerchantSlot() ? 1 : inst->GetMerchantCount())); // inst count/merchant count
-		ob << '|' << itoa((inst->IsScaling() ? (inst->GetExp() / 100) : 0)); // inst experience
-		ob << '|' << itoa((!inst->GetMerchantSlot() ? inst->GetSerialNumber()
-			: inst->GetMerchantSlot())); // merchant serial number
-		ob << '|' << itoa(inst->GetRecastTimestamp()); // recast timestamp
-		ob << '|' << itoa(((inst->IsStackable() ? ((inst->GetItem()->ItemType == EQ::item::ItemTypePotion) ? 1 : 0)
-			: inst->GetCharges()))); // charge count
-		ob << '|' << itoa((inst->IsAttuned() ? 1 : 0)); // inst attuned
+		ob << itoa((inst->IsStackable() ? inst->GetCharges() : 0));																			 // stack count
+		ob << '|' << itoa((!inst->GetMerchantSlot() ? slot_id_in : inst->GetMerchantSlot()));												 // inst slot/merchant slot
+		ob << '|' << itoa(inst->GetPrice());																								 // merchant price
+		ob << '|' << itoa((!inst->GetMerchantSlot() ? 1 : inst->GetMerchantCount()));														 // inst count/merchant count
+		ob << '|' << itoa((inst->IsScaling() ? (inst->GetExp() / 100) : 0));																 // inst experience
+		ob << '|' << itoa((!inst->GetMerchantSlot() ? inst->GetSerialNumber() : inst->GetMerchantSlot()));									 // merchant serial number
+		ob << '|' << itoa(inst->GetRecastTimestamp());																						 // recast timestamp
+		ob << '|' << itoa(((inst->IsStackable() ? ((inst->GetItem()->ItemType == EQ::item::ItemTypePotion) ? 1 : 0) : inst->GetCharges()))); // charge count
+		ob << '|' << itoa((inst->IsAttuned() ? 1 : 0));																						 // inst attuned
 		ob << '|';
 
 		ob << StringFormat("%.*s\"", depth, protection); // Quotes (and protection, if needed) around static data
@@ -2651,7 +2722,8 @@ namespace Web
 		ob << StringFormat("%.*s\"", depth, protection); // Quotes (and protection, if needed) around static data
 
 		// Sub data
-		for (int index = EQ::invbag::SLOT_BEGIN; index <= invbag::SLOT_END; ++index) {
+		for (int index = EQ::invbag::SLOT_BEGIN; index <= invbag::SLOT_END; ++index)
+		{
 			ob << '|';
 
 			EQ::ItemInstance *sub = inst->GetItem(index);
@@ -2671,62 +2743,80 @@ namespace Web
 			ob.write("\0", 1);
 	}
 
-	static inline int16 ServerToWebSlot(uint32 server_slot) {
+	static inline int16 ServerToWebSlot(uint32 server_slot)
+	{
 		int16 web_slot = invslot::SLOT_INVALID;
 
-		if (server_slot <= EQ::invslot::slotWaist) {
+		if (server_slot <= EQ::invslot::slotWaist)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot == EQ::invslot::slotAmmo) {
+		else if (server_slot == EQ::invslot::slotAmmo)
+		{
 			web_slot = server_slot - 1;
 		}
-		else if (server_slot <= EQ::invslot::slotGeneral8 && server_slot >= EQ::invslot::slotGeneral1) {
+		else if (server_slot <= EQ::invslot::slotGeneral8 && server_slot >= EQ::invslot::slotGeneral1)
+		{
 			web_slot = server_slot - 1;
 		}
 		else if (server_slot <= (EQ::invslot::POSSESSIONS_COUNT + EQ::invslot::slotWaist) &&
-				 server_slot >= EQ::invslot::slotCursor) {
+				 server_slot >= EQ::invslot::slotCursor)
+		{
 			web_slot = server_slot - 3;
 		}
-		else if (server_slot == (EQ::invslot::POSSESSIONS_COUNT + EQ::invslot::slotAmmo)) {
+		else if (server_slot == (EQ::invslot::POSSESSIONS_COUNT + EQ::invslot::slotAmmo))
+		{
 			web_slot = server_slot - 4;
 		}
 		else if (server_slot <= EQ::invbag::GENERAL_BAGS_8_END &&
-				 server_slot >= EQ::invbag::GENERAL_BAGS_BEGIN) {
+				 server_slot >= EQ::invbag::GENERAL_BAGS_BEGIN)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot <= EQ::invbag::CURSOR_BAG_END && server_slot >= EQ::invbag::CURSOR_BAG_BEGIN) {
+		else if (server_slot <= EQ::invbag::CURSOR_BAG_END && server_slot >= EQ::invbag::CURSOR_BAG_BEGIN)
+		{
 			web_slot = server_slot - 20;
 		}
-		else if (server_slot <= EQ::invslot::TRIBUTE_END && server_slot >= EQ::invslot::TRIBUTE_BEGIN) {
+		else if (server_slot <= EQ::invslot::TRIBUTE_END && server_slot >= EQ::invslot::TRIBUTE_BEGIN)
+		{
 			web_slot = server_slot;
 		}
 		else if (server_slot <= EQ::invslot::GUILD_TRIBUTE_END &&
-				 server_slot >= EQ::invslot::GUILD_TRIBUTE_BEGIN) {
+				 server_slot >= EQ::invslot::GUILD_TRIBUTE_BEGIN)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot == EQ::invslot::SLOT_TRADESKILL_EXPERIMENT_COMBINE) {
+		else if (server_slot == EQ::invslot::SLOT_TRADESKILL_EXPERIMENT_COMBINE)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot <= EQ::invslot::BANK_END && server_slot >= EQ::invslot::BANK_BEGIN) {
+		else if (server_slot <= EQ::invslot::BANK_END && server_slot >= EQ::invslot::BANK_BEGIN)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot <= EQ::invbag::BANK_BAGS_16_END && server_slot >= EQ::invbag::BANK_BAGS_BEGIN) {
+		else if (server_slot <= EQ::invbag::BANK_BAGS_16_END && server_slot >= EQ::invbag::BANK_BAGS_BEGIN)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot <= EQ::invslot::SHARED_BANK_END && server_slot >= EQ::invslot::SHARED_BANK_BEGIN) {
+		else if (server_slot <= EQ::invslot::SHARED_BANK_END && server_slot >= EQ::invslot::SHARED_BANK_BEGIN)
+		{
 			web_slot = server_slot;
 		}
 		else if (server_slot <= EQ::invbag::SHARED_BANK_BAGS_END &&
-				 server_slot >= EQ::invbag::SHARED_BANK_BAGS_BEGIN) {
+				 server_slot >= EQ::invbag::SHARED_BANK_BAGS_BEGIN)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot <= EQ::invslot::TRADE_END && server_slot >= EQ::invslot::TRADE_BEGIN) {
+		else if (server_slot <= EQ::invslot::TRADE_END && server_slot >= EQ::invslot::TRADE_BEGIN)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot <= EQ::invbag::TRADE_BAGS_END && server_slot >= EQ::invbag::TRADE_BAGS_BEGIN) {
+		else if (server_slot <= EQ::invbag::TRADE_BAGS_END && server_slot >= EQ::invbag::TRADE_BAGS_BEGIN)
+		{
 			web_slot = server_slot;
 		}
-		else if (server_slot <= EQ::invslot::WORLD_END && server_slot >= EQ::invslot::WORLD_BEGIN) {
+		else if (server_slot <= EQ::invslot::WORLD_END && server_slot >= EQ::invslot::WORLD_BEGIN)
+		{
 			web_slot = server_slot;
 		}
 
@@ -2735,20 +2825,23 @@ namespace Web
 		return web_slot;
 	}
 
-
-	static inline int16 ServerToWebCorpseSlot(uint32 server_corpse_slot) {
+	static inline int16 ServerToWebCorpseSlot(uint32 server_corpse_slot)
+	{
 		int16 web_slot = invslot::SLOT_INVALID;
 
-		if (server_corpse_slot <= EQ::invslot::slotGeneral8 && server_corpse_slot >= EQ::invslot::slotGeneral1) {
+		if (server_corpse_slot <= EQ::invslot::slotGeneral8 && server_corpse_slot >= EQ::invslot::slotGeneral1)
+		{
 			web_slot = server_corpse_slot - 1;
 		}
 
 		else if (server_corpse_slot <= (EQ::invslot::POSSESSIONS_COUNT + EQ::invslot::slotWaist) &&
-				 server_corpse_slot >= EQ::invslot::slotCursor) {
+				 server_corpse_slot >= EQ::invslot::slotCursor)
+		{
 			web_slot = server_corpse_slot - 3;
 		}
 
-		else if (server_corpse_slot == (EQ::invslot::POSSESSIONS_COUNT + EQ::invslot::slotAmmo)) {
+		else if (server_corpse_slot == (EQ::invslot::POSSESSIONS_COUNT + EQ::invslot::slotAmmo))
+		{
 			web_slot = server_corpse_slot - 4;
 		}
 
@@ -2761,59 +2854,77 @@ namespace Web
 		return web_slot;
 	}
 
-	static inline uint32 WebToServerSlot(int16 web_slot) {
+	static inline uint32 WebToServerSlot(int16 web_slot)
+	{
 		uint32 server_slot = EQ::invslot::SLOT_INVALID;
 
-		if (web_slot <= invslot::slotWaist) {
+		if (web_slot <= invslot::slotWaist)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot == invslot::slotAmmo) {
+		else if (web_slot == invslot::slotAmmo)
+		{
 			server_slot = web_slot + 1;
 		}
-		else if (web_slot <= invslot::slotGeneral8 && web_slot >= invslot::slotGeneral1) {
+		else if (web_slot <= invslot::slotGeneral8 && web_slot >= invslot::slotGeneral1)
+		{
 			server_slot = web_slot + 1;
 		}
 		else if (web_slot <= (invslot::POSSESSIONS_COUNT + invslot::slotWaist) &&
-				 web_slot >= invslot::slotCursor) {
+				 web_slot >= invslot::slotCursor)
+		{
 			server_slot = web_slot + 3;
 		}
-		else if (web_slot == (invslot::POSSESSIONS_COUNT + invslot::slotAmmo)) {
+		else if (web_slot == (invslot::POSSESSIONS_COUNT + invslot::slotAmmo))
+		{
 			server_slot = web_slot + 4;
 		}
-		else if (web_slot <= invbag::GENERAL_BAGS_END && web_slot >= invbag::GENERAL_BAGS_BEGIN) {
+		else if (web_slot <= invbag::GENERAL_BAGS_END && web_slot >= invbag::GENERAL_BAGS_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invbag::CURSOR_BAG_END && web_slot >= invbag::CURSOR_BAG_BEGIN) {
+		else if (web_slot <= invbag::CURSOR_BAG_END && web_slot >= invbag::CURSOR_BAG_BEGIN)
+		{
 			server_slot = web_slot + 20;
 		}
-		else if (web_slot <= invslot::TRIBUTE_END && web_slot >= invslot::TRIBUTE_BEGIN) {
+		else if (web_slot <= invslot::TRIBUTE_END && web_slot >= invslot::TRIBUTE_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot == invslot::SLOT_TRADESKILL_EXPERIMENT_COMBINE) {
+		else if (web_slot == invslot::SLOT_TRADESKILL_EXPERIMENT_COMBINE)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invslot::GUILD_TRIBUTE_END && web_slot >= invslot::GUILD_TRIBUTE_BEGIN) {
+		else if (web_slot <= invslot::GUILD_TRIBUTE_END && web_slot >= invslot::GUILD_TRIBUTE_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invslot::BANK_END && web_slot >= invslot::BANK_BEGIN) {
+		else if (web_slot <= invslot::BANK_END && web_slot >= invslot::BANK_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invbag::BANK_BAGS_END && web_slot >= invbag::BANK_BAGS_BEGIN) {
+		else if (web_slot <= invbag::BANK_BAGS_END && web_slot >= invbag::BANK_BAGS_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invslot::SHARED_BANK_END && web_slot >= invslot::SHARED_BANK_BEGIN) {
+		else if (web_slot <= invslot::SHARED_BANK_END && web_slot >= invslot::SHARED_BANK_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invbag::SHARED_BANK_BAGS_END && web_slot >= invbag::SHARED_BANK_BAGS_BEGIN) {
+		else if (web_slot <= invbag::SHARED_BANK_BAGS_END && web_slot >= invbag::SHARED_BANK_BAGS_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invslot::TRADE_END && web_slot >= invslot::TRADE_BEGIN) {
+		else if (web_slot <= invslot::TRADE_END && web_slot >= invslot::TRADE_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invbag::TRADE_BAGS_END && web_slot >= invbag::TRADE_BAGS_BEGIN) {
+		else if (web_slot <= invbag::TRADE_BAGS_END && web_slot >= invbag::TRADE_BAGS_BEGIN)
+		{
 			server_slot = web_slot;
 		}
-		else if (web_slot <= invslot::WORLD_END && web_slot >= invslot::WORLD_BEGIN) {
+		else if (web_slot <= invslot::WORLD_END && web_slot >= invslot::WORLD_BEGIN)
+		{
 			server_slot = web_slot;
 		}
 
@@ -2826,15 +2937,18 @@ namespace Web
 	{
 		uint32 server_slot = EQ::invslot::SLOT_INVALID;
 
-		if (web_corpse_slot <= invslot::slotGeneral8 && web_corpse_slot >= invslot::slotGeneral1) {
+		if (web_corpse_slot <= invslot::slotGeneral8 && web_corpse_slot >= invslot::slotGeneral1)
+		{
 			server_slot = web_corpse_slot + 1;
 		}
 
-		else if (web_corpse_slot <= (invslot::POSSESSIONS_COUNT + invslot::slotWaist) && web_corpse_slot >= invslot::slotCursor) {
+		else if (web_corpse_slot <= (invslot::POSSESSIONS_COUNT + invslot::slotWaist) && web_corpse_slot >= invslot::slotCursor)
+		{
 			server_slot = web_corpse_slot + 3;
 		}
 
-		else if (web_corpse_slot == (invslot::POSSESSIONS_COUNT + invslot::slotAmmo)) {
+		else if (web_corpse_slot == (invslot::POSSESSIONS_COUNT + invslot::slotAmmo))
+		{
 			server_slot = web_corpse_slot + 4;
 		}
 
@@ -2845,16 +2959,20 @@ namespace Web
 
 	static inline void ServerToWebSayLink(std::string &web_saylink, const std::string &server_saylink)
 	{
-		if ((constants::SAY_LINK_BODY_SIZE == EQ::constants::SAY_LINK_BODY_SIZE) || (server_saylink.find('\x12') == std::string::npos)) {
+		if ((constants::SAY_LINK_BODY_SIZE == EQ::constants::SAY_LINK_BODY_SIZE) || (server_saylink.find('\x12') == std::string::npos))
+		{
 			web_saylink = server_saylink;
 			return;
 		}
 
 		auto segments = Strings::Split(server_saylink, '\x12');
 
-		for (size_t segment_iter = 0; segment_iter < segments.size(); ++segment_iter) {
-			if (segment_iter & 1) {
-				if (segments[segment_iter].length() <= EQ::constants::SAY_LINK_BODY_SIZE) {
+		for (size_t segment_iter = 0; segment_iter < segments.size(); ++segment_iter)
+		{
+			if (segment_iter & 1)
+			{
+				if (segments[segment_iter].length() <= EQ::constants::SAY_LINK_BODY_SIZE)
+				{
 					web_saylink.append(segments[segment_iter]);
 					// TODO: log size mismatch error
 					continue;
@@ -2877,7 +2995,8 @@ namespace Web
 				web_saylink.append(segments[segment_iter].substr(48));
 				web_saylink.push_back('\x12');
 			}
-			else {
+			else
+			{
 				web_saylink.append(segments[segment_iter]);
 			}
 		}
@@ -2885,16 +3004,20 @@ namespace Web
 
 	static inline void WebToServerSayLink(std::string &server_saylink, const std::string &web_saylink)
 	{
-		if ((EQ::constants::SAY_LINK_BODY_SIZE == constants::SAY_LINK_BODY_SIZE) || (web_saylink.find('\x12') == std::string::npos)) {
+		if ((EQ::constants::SAY_LINK_BODY_SIZE == constants::SAY_LINK_BODY_SIZE) || (web_saylink.find('\x12') == std::string::npos))
+		{
 			server_saylink = web_saylink;
 			return;
 		}
 
 		auto segments = Strings::Split(web_saylink, '\x12');
 
-		for (size_t segment_iter = 0; segment_iter < segments.size(); ++segment_iter) {
-			if (segment_iter & 1) {
-				if (segments[segment_iter].length() <= constants::SAY_LINK_BODY_SIZE) {
+		for (size_t segment_iter = 0; segment_iter < segments.size(); ++segment_iter)
+		{
+			if (segment_iter & 1)
+			{
+				if (segments[segment_iter].length() <= constants::SAY_LINK_BODY_SIZE)
+				{
 					server_saylink.append(segments[segment_iter]);
 					// TODO: log size mismatch error
 					continue;
@@ -2915,79 +3038,84 @@ namespace Web
 				server_saylink.append(segments[segment_iter].substr(37));
 				server_saylink.push_back('\x12');
 			}
-			else {
+			else
+			{
 				server_saylink.append(segments[segment_iter]);
 			}
 		}
 	}
 
-	static inline spells::CastingSlot ServerToWebCastingSlot(EQ::spells::CastingSlot slot) {
-		switch (slot) {
-			case EQ::spells::CastingSlot::Gem1:
-				return spells::CastingSlot::Gem1;
-			case EQ::spells::CastingSlot::Gem2:
-				return spells::CastingSlot::Gem2;
-			case EQ::spells::CastingSlot::Gem3:
-				return spells::CastingSlot::Gem3;
-			case EQ::spells::CastingSlot::Gem4:
-				return spells::CastingSlot::Gem4;
-			case EQ::spells::CastingSlot::Gem5:
-				return spells::CastingSlot::Gem5;
-			case EQ::spells::CastingSlot::Gem6:
-				return spells::CastingSlot::Gem6;
-			case EQ::spells::CastingSlot::Gem7:
-				return spells::CastingSlot::Gem7;
-			case EQ::spells::CastingSlot::Gem8:
-				return spells::CastingSlot::Gem8;
-			case EQ::spells::CastingSlot::Gem9:
-				return spells::CastingSlot::Gem9;
-			case EQ::spells::CastingSlot::Item:
-				return spells::CastingSlot::Item;
-			case EQ::spells::CastingSlot::PotionBelt:
-				return spells::CastingSlot::PotionBelt;
-			case EQ::spells::CastingSlot::Discipline:
-				return spells::CastingSlot::Discipline;
-			case EQ::spells::CastingSlot::AltAbility:
-				return spells::CastingSlot::AltAbility;
-			default: // we shouldn't have any issues with other slots ... just return something
-				return spells::CastingSlot::Discipline;
+	static inline spells::CastingSlot ServerToWebCastingSlot(EQ::spells::CastingSlot slot)
+	{
+		switch (slot)
+		{
+		case EQ::spells::CastingSlot::Gem1:
+			return spells::CastingSlot::Gem1;
+		case EQ::spells::CastingSlot::Gem2:
+			return spells::CastingSlot::Gem2;
+		case EQ::spells::CastingSlot::Gem3:
+			return spells::CastingSlot::Gem3;
+		case EQ::spells::CastingSlot::Gem4:
+			return spells::CastingSlot::Gem4;
+		case EQ::spells::CastingSlot::Gem5:
+			return spells::CastingSlot::Gem5;
+		case EQ::spells::CastingSlot::Gem6:
+			return spells::CastingSlot::Gem6;
+		case EQ::spells::CastingSlot::Gem7:
+			return spells::CastingSlot::Gem7;
+		case EQ::spells::CastingSlot::Gem8:
+			return spells::CastingSlot::Gem8;
+		case EQ::spells::CastingSlot::Gem9:
+			return spells::CastingSlot::Gem9;
+		case EQ::spells::CastingSlot::Item:
+			return spells::CastingSlot::Item;
+		case EQ::spells::CastingSlot::PotionBelt:
+			return spells::CastingSlot::PotionBelt;
+		case EQ::spells::CastingSlot::Discipline:
+			return spells::CastingSlot::Discipline;
+		case EQ::spells::CastingSlot::AltAbility:
+			return spells::CastingSlot::AltAbility;
+		default: // we shouldn't have any issues with other slots ... just return something
+			return spells::CastingSlot::Discipline;
 		}
 	}
 
-	static inline EQ::spells::CastingSlot WebToServerCastingSlot(spells::CastingSlot slot, uint32 item_location) {
-		switch (slot) {
-			case spells::CastingSlot::Gem1:
-				return EQ::spells::CastingSlot::Gem1;
-			case spells::CastingSlot::Gem2:
-				return EQ::spells::CastingSlot::Gem2;
-			case spells::CastingSlot::Gem3:
-				return EQ::spells::CastingSlot::Gem3;
-			case spells::CastingSlot::Gem4:
-				return EQ::spells::CastingSlot::Gem4;
-			case spells::CastingSlot::Gem5:
-				return EQ::spells::CastingSlot::Gem5;
-			case spells::CastingSlot::Gem6:
-				return EQ::spells::CastingSlot::Gem6;
-			case spells::CastingSlot::Gem7:
-				return EQ::spells::CastingSlot::Gem7;
-			case spells::CastingSlot::Gem8:
-				return EQ::spells::CastingSlot::Gem8;
-			case spells::CastingSlot::Gem9:
-				return EQ::spells::CastingSlot::Gem9;
-			case spells::CastingSlot::Ability:
-				return EQ::spells::CastingSlot::Ability;
-				// Tit uses 10 for item and discipline casting, but items have a valid location
-			case spells::CastingSlot::Item:
-				if (item_location == INVALID_INDEX)
-					return EQ::spells::CastingSlot::Discipline;
-				else
-					return EQ::spells::CastingSlot::Item;
-			case spells::CastingSlot::PotionBelt:
-				return EQ::spells::CastingSlot::PotionBelt;
-			case spells::CastingSlot::AltAbility:
-				return EQ::spells::CastingSlot::AltAbility;
-			default: // we shouldn't have any issues with other slots ... just return something
+	static inline EQ::spells::CastingSlot WebToServerCastingSlot(spells::CastingSlot slot, uint32 item_location)
+	{
+		switch (slot)
+		{
+		case spells::CastingSlot::Gem1:
+			return EQ::spells::CastingSlot::Gem1;
+		case spells::CastingSlot::Gem2:
+			return EQ::spells::CastingSlot::Gem2;
+		case spells::CastingSlot::Gem3:
+			return EQ::spells::CastingSlot::Gem3;
+		case spells::CastingSlot::Gem4:
+			return EQ::spells::CastingSlot::Gem4;
+		case spells::CastingSlot::Gem5:
+			return EQ::spells::CastingSlot::Gem5;
+		case spells::CastingSlot::Gem6:
+			return EQ::spells::CastingSlot::Gem6;
+		case spells::CastingSlot::Gem7:
+			return EQ::spells::CastingSlot::Gem7;
+		case spells::CastingSlot::Gem8:
+			return EQ::spells::CastingSlot::Gem8;
+		case spells::CastingSlot::Gem9:
+			return EQ::spells::CastingSlot::Gem9;
+		case spells::CastingSlot::Ability:
+			return EQ::spells::CastingSlot::Ability;
+			// Tit uses 10 for item and discipline casting, but items have a valid location
+		case spells::CastingSlot::Item:
+			if (item_location == INVALID_INDEX)
 				return EQ::spells::CastingSlot::Discipline;
+			else
+				return EQ::spells::CastingSlot::Item;
+		case spells::CastingSlot::PotionBelt:
+			return EQ::spells::CastingSlot::PotionBelt;
+		case spells::CastingSlot::AltAbility:
+			return EQ::spells::CastingSlot::AltAbility;
+		default: // we shouldn't have any issues with other slots ... just return something
+			return EQ::spells::CastingSlot::Discipline;
 		}
 	}
 
@@ -2996,7 +3124,7 @@ namespace Web
 		// we're a disc
 		if (index >= EQ::spells::LONG_BUFFS + EQ::spells::SHORT_BUFFS)
 			return index - EQ::spells::LONG_BUFFS - EQ::spells::SHORT_BUFFS +
-			       spells::LONG_BUFFS + spells::SHORT_BUFFS;
+				   spells::LONG_BUFFS + spells::SHORT_BUFFS;
 		// we're a song
 		if (index >= EQ::spells::LONG_BUFFS)
 			return index - EQ::spells::LONG_BUFFS + spells::LONG_BUFFS;
@@ -3009,7 +3137,7 @@ namespace Web
 		// we're a disc
 		if (index >= spells::LONG_BUFFS + spells::SHORT_BUFFS)
 			return index - spells::LONG_BUFFS - spells::SHORT_BUFFS + EQ::spells::LONG_BUFFS +
-			       EQ::spells::SHORT_BUFFS;
+				   EQ::spells::SHORT_BUFFS;
 		// we're a song
 		if (index >= spells::LONG_BUFFS)
 			return index - spells::LONG_BUFFS + EQ::spells::LONG_BUFFS;
@@ -3017,3 +3145,22 @@ namespace Web
 		return index; // as long as we guard against bad slots server side, we should be fine
 	}
 } /*Web*/
+
+// todo structs with count structs needing to be mapped
+// var names to count
+/**
+ * DoorSpawns_Struct - done
+ * ZonePoints
+ * Track_Struct
+ * WhoAllReturnStruct
+ * GuildMembers_Struct
+ * FindPersonResult_Struct
+ * Titles_Struct
+ * TitleList_Struct
+ * TaskHistory_Struct
+ * SendAA_Struct
+ * DynamicZoneMemberList_Struct
+ * ExpeditionLockoutTimers_Struct
+ * DynamicZoneCompass_Struct
+ * 
+ */

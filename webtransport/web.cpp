@@ -6,7 +6,7 @@
 
 #include "go/web_go.h"
 #include "web.h"
-#include "c_bridge.h"
+#include "c/c_bridge.h"
 
 #include <string>
 #include <iomanip>

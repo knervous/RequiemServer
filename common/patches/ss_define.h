@@ -74,6 +74,16 @@
 	for(__i = 0; __i < n; __i++) \
 		eq->x[__i] = emu->x[__i];
 
+// assigns for var name diffs
+#undef OUT_DIFF
+#define OUT_DIFF(x, y) eq->x = emu->y;
+#define OUT_DIFF_str(x, y) \
+	strncpy(eq->x, emu->y, sizeof(eq->x)); \
+        eq->x[sizeof(eq->x)-1] = '\0';
+#define OUT_DIFF_array(x, y, n) \
+	for(__i = 0; __i < n; __i++) \
+		eq->x[__i] = emu->y[__i];
+
 //call before any premature returns in an encoder using SETUP_DIRECT_ENCODE
 #define FAIL_ENCODE() \
 	delete[] __emu_buffer; \
@@ -149,6 +159,16 @@
 #define IN_array(x, n) \
 	for(__i = 0; __i < n; __i++) \
 		emu->x[__i] = eq->x[__i];
+
+//a shorter assignment for direct mode diff var names
+#undef IN_DIFF
+#define IN_DIFF(x, y) emu->x = eq->y;
+#define IN_DIFF_str(x, y) \
+	strncpy(emu->x, eq->y, sizeof(emu->x)); \
+        emu->x[sizeof(emu->x)-1] = '\0';
+#define IN_DIFF_array(x, y, n) \
+	for(__i = 0; __i < n; __i++) \
+		emu->x[__i] = eq->y[__i];
 
 //call before any premature returns in an encoder using SETUP_DIRECT_DECODE
 #define FAIL_DIRECT_DECODE() \

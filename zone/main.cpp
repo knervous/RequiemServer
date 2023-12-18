@@ -57,6 +57,7 @@
 #include "npc_scale_manager.h"
 
 #include "../common/net/eqstream.h"
+#include "../webtransport/web.h"
 
 #include <signal.h>
 #include <chrono>
@@ -556,6 +557,19 @@ int main(int argc, char **argv)
 					stream_identifier.AddStream(stream);
 					LogInfo(
 						"New connection from address [{}] port [{}]",
+						long2ip(stream->GetRemoteIP()),
+						ntohs(stream->GetRemotePort())
+					);
+				}
+			);
+
+			EQStreamManagerInterfaceOptions web_opts(Config->ZonePort + 1000, false, false);
+			EQ::Net::EQWebStreamManager eqWebStreamManager(web_opts);
+			eqWebStreamManager.OnNewConnection(
+				[&stream_identifier](std::shared_ptr<EQ::Net::EQWebStream> stream) {
+					stream_identifier.AddStream(stream);
+					LogInfo(
+						"New [Web Client] connection from IP [{}:{}]",
 						long2ip(stream->GetRemoteIP()),
 						ntohs(stream->GetRemotePort())
 					);

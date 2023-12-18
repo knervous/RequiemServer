@@ -369,7 +369,7 @@ int main(int argc, char **argv)
 		[&stream_identifier](std::shared_ptr<EQ::Net::EQWebStream> stream) {
 			stream_identifier.AddStream(stream);
 			LogInfo(
-				"New [EverQuest Client] connection from IP [{}:{}]",
+				"New [Web Client] connection from IP [{}:{}]",
 				long2ip(stream->GetRemoteIP()),
 				ntohs(stream->GetRemotePort())
 			);

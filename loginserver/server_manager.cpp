@@ -91,7 +91,7 @@ std::unique_ptr<EQApplicationPacket> ServerManager::CreateServerListPacketWeb(Cl
 	auto login_server_size = sizeof(Web::structs::WebLoginServerResponse_Struct);
 	
 	Web::structs::WebLoginServerResponse_Struct login_server_response {
-		.server_count = server_count,
+		.server_count = (int32_t)server_count,
 	};
 
 	int count = 0;
