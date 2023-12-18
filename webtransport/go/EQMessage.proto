@@ -10,11 +10,101 @@ extend google.protobuf.EnumValueOptions {
 
 option go_package = "./main";
 
+
+// Login
+message LoginMessage {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginReply {
+  string key = 1;
+  int32 error_str_id = 2;
+  int32 failed_attempts = 3;
+  int32 lsid = 4;
+  bool success = 5;
+  bool show_player_count = 6;
+}
+
+message LoginRequest {
+  int32 sequence = 1;
+}
+
+message WorldServer {
+  string ip = 1;
+  int32 server_type = 2;
+  int32 server_id = 3;
+  string long_name = 4;
+  string country_code = 5;
+  string language_code = 6;
+  int32 status = 7;
+  int32 players_online = 8;
+}
+
+message LoginServerResponse {
+  int32 server_count = 1;
+  repeated WorldServer servers = 2;
+}
+
+message PlayEverquest {
+  int32 server_id = 1;
+}
+
+message PlayEverquestResponse {
+  int32 server_id = 1;
+  bool success = 2;
+  int32 error_str_id = 3;
+}
+
+// World
+message WebInitiateConnection {
+  bool login = 1;
+}
+
 message LoginInfo {
   string name = 1;
   string password = 2;
   int32 zoning = 3;
 }
+
+message Tint {
+  int32 blue = 1;
+  int32 green = 2;
+  int32 red = 3;
+  int32 use_tint = 4;
+}
+
+message CharSelectEquip
+{
+  int32 material = 1;
+  Tint color = 2;
+};
+
+message CharacterSelectEntry
+{
+  string name = 1;
+  int32 char_class = 2;
+  int32 race = 3;
+  int32 level = 4;
+  int32 zone = 5;
+  int32 instance = 6;
+  int32 gender = 7;
+  int32 face = 8;
+  repeated CharSelectEquip equip = 9;
+  int32 deity = 10;
+  int32 primary_id_file = 11;
+  int32 secondary_id_file = 12;
+  int32 go_home = 13;
+  int32 enabled = 14;
+  int32 last_login = 15;
+};
+
+
+message CharacterSelect
+{
+  int32 character_count = 1;
+  repeated CharacterSelectEntry characters = 2;
+};
 
 message EnterWorld {
   string name = 1;
@@ -72,13 +162,6 @@ message AdventureInfo {
   int32 zonedungeonid = 15;
 }
 
-message Tint {
-  int32 blue = 1;
-  int32 green = 2;
-  int32 red = 3;
-  int32 use_tint = 4;
-}
-
 message TextureProfile {
   int32 head = 1;
   int32 chest = 2;
@@ -101,34 +184,6 @@ message TintProfile {
   int32 feet = 7;
   int32 primary = 8;
   int32 secondary = 9;
-}
-
-message CharSelectEquip {
-  int32 material = 1;
-  int32 color = 2;
-}
-
-message CharacterSelectEntry {
-  string name = 1;
-  int32 char_class = 2;
-  int32 race = 3;
-  int32 level = 4;
-  int32 zone = 5;
-  int32 instance = 6;
-  int32 gender = 7;
-  int32 face = 8;
-  repeated CharSelectEquip equip = 9;
-  int32 deity = 10;
-  int32 primary_id_file = 11;
-  int32 secondary_id_file = 12;
-  int32 go_home = 13;
-  int32 enabled = 14;
-  int32 last_login = 15;
-}
-
-message CharacterSelect {
-  int32 character_count = 1;
-  repeated CharacterSelectEntry characters = 2;
 }
 
 message Spawn {
@@ -823,6 +878,11 @@ message MoveCoin {
   int32 amount = 5;
 }
 
+message TradeBusy {
+  int32 to_mob_id = 1;
+  int32 from_mob_id = 2;
+}
+
 message TradeCoin {
   int32 trader = 1;
   int32 slot = 2;
@@ -1097,7 +1157,7 @@ message ZonePoint_Entry {
 
 message ZonePoints {
   int32 count = 1;
-  repeated int32 zpe = 2;
+  repeated ZonePoint_Entry zpe = 2;
 }
 
 message SkillUpdate {
@@ -1324,6 +1384,15 @@ message ClickObject {
   int32 player_id = 2;
 }
 
+message ClickObjectAction {
+  int32 player_id = 1;
+  int32 drop_id = 2;
+  int32 open = 3;
+  int32 type = 4;
+  int32 icon = 5;
+  string object_name = 6;
+};
+
 message Shielding {
   int32 target_id = 1;
 }
@@ -1374,6 +1443,11 @@ message MoveDoor {
   int32 doorid = 1;
   int32 action = 2;
 }
+
+message ControlBoat {
+  int32	boat_id = 1;
+  bool	take_control = 2;
+};
 
 message BecomeNPC {
   int32 id = 1;
@@ -1469,6 +1543,11 @@ message ItemViewRequest {
   int32 link_hash = 3;
 }
 
+message ItemVerifyRequest {
+  int32	slot = 1;
+  int32	target = 2;
+};
+
 message PickPocket {
   int32 to = 1;
   int32 from = 2;
@@ -1508,6 +1587,10 @@ message Track {
   int32 entityid = 1;
   float distance = 2;
 }
+
+message TrackTarget {
+  int32 entityid = 1;
+};
 
 message Tracking {
   int32 count = 1;
@@ -2425,14 +2508,24 @@ message WebPlayEverquestResponse {
   int32 error_str_id = 3;
 }
 
-message WebInitiateConnection {
-  bool login = 1;
-}
-
 message WebSession {
   string remote_addr = 1;
   int32 remote_ip = 2;
   int32 remote_port = 3;
+}
+
+message Zero {}
+
+message Int {
+  int32 value = 1;
+}
+
+message Bool {
+  bool value = 1;
+}
+
+message String {
+  string value = 1;
 }
 
 // OpCodes
@@ -2471,6 +2564,292 @@ enum OpCodes {
   OP_SendCharInfo = 444 [(messageType) = "eq.CharacterSelect"];
   OP_ZoneServerInfo = 585 [(messageType) = "eq.ZoneServerInfo"];
 
+  // Zone
+  OP_ZoneEntry = 581 [(messageType) = "eq.ClientZoneEntry"];
+  OP_SetServerFilter = 468 [(messageType) = "eq.SetServerFilter"];
+  OP_SendAATable = 443 [(messageType) = "eq.Zero"];
+  OP_SendTributes = 454 [(messageType) = "eq.Zero"];
+  OP_SendGuildTributes = 447 [(messageType) = "eq.Zero"];
+  OP_SendAAStats = 442 [(messageType) = "eq.Zero"];
+  OP_ReqClientSpawn = 423 [(messageType) = "eq.Zero"];
+  OP_ReqNewZone = 424 [(messageType) = "eq.Zero"];
+  OP_SendExpZonein = 445 [(messageType) = "eq.Zero"];
+  OP_ClientReady = 92 [(messageType) = "eq.Zero"];
+  OP_ClientError = 91 [(messageType) = "eq.ClientError"];
+  OP_ApproveZone = 42 [(messageType) = "eq.ApproveZone"];
+  OP_TGB = 524 [(messageType) = "eq.Int"];
+  OP_AckPacket = 7 [(messageType) = "eq.Int"];
+  OP_ClientUpdate = 94 [(messageType) = "eq.PlayerPositionUpdateClient"];
+  OP_AutoAttack = 47 [(messageType) = "eq.Int"];
+  OP_AutoAttack2 = 48 [(messageType) = "eq.Int"];
+  OP_Consent = 102 [(messageType) = "eq.Consent"];
+  OP_ConsentDeny = 103 [(messageType) = "eq.Consent"];
+  OP_TargetMouse = 513 [(messageType) = "eq.ClientTarget"];
+  OP_TargetCommand = 511 [(messageType) = "eq.ClientTarget"];
+  OP_Shielding = 485 [(messageType) = "eq.Shielding"];
+  OP_Jump = 274 [(messageType) = "eq.Zero"];
+  OP_AdventureInfoRequest = 15 [(messageType) = "eq.EntityId"];
+  OP_AdventureRequest = 23 [(messageType) = "eq.AdventureRequest"];
+  OP_LDoNButton = 278 [(messageType) = "eq.Bool	"];
+  OP_LeaveAdventure = 286 [(messageType) = "eq.Zero"];
+  OP_Consume = 107 [(messageType) = "eq.Consume"];
+  OP_AdventureMerchantRequest = 19 [(messageType) = "eq.AdventureMerchant"];
+  OP_AdventureMerchantPurchase = 18 [(messageType) = "eq.Adventure_Purchase"];
+  OP_ConsiderCorpse = 106 [(messageType) = "eq.Consider"];
+  OP_Consider = 105 [(messageType) = "eq.Consider"];
+  OP_Begging = 58 [(messageType) = "eq.Zero"];
+  OP_TestBuff = 523 [(messageType) = "eq.Zero"];
+  OP_Surname = 508 [(messageType) = "eq.Surname"];
+  OP_YellForHelp = 578 [(messageType) = "eq.Zero"];
+  OP_Assist = 43 [(messageType) = "eq.EntityId		"];
+  OP_GMTraining = 201 [(messageType) = "eq.GMTrainee"];
+  OP_GMEndTraining = 188 [(messageType) = "eq.GMTrainEnd"];
+  OP_GMTrainSkill = 202 [(messageType) = "eq.GMSkillChange"];
+  OP_RequestDuel = 426 [(messageType) = "eq.Duel"];
+  OP_DuelDecline = 132 [(messageType) = "eq.DuelResponse"];
+  OP_DuelAccept = 133 [(messageType) = "eq.Duel"];
+  OP_SpawnAppearance = 500 [(messageType) = "eq.SpawnAppearance"];
+  OP_BazaarInspect = 54 [(messageType) = "eq.BazaarInspect"];
+  OP_Death = 117 [(messageType) = "eq.Death"];
+  OP_MoveCoin = 346 [(messageType) = "eq.MoveCoin"];
+  OP_ItemLinkClick = 264 [(messageType) = "eq.ItemViewRequest"];
+  OP_MoveItem = 348 [(messageType) = "eq.MoveItem"];
+  OP_Camp = 69 [(messageType) = "eq.Zero"];
+  OP_Logout = 310 [(messageType) = "eq.Zero"];
+  OP_SenseHeading = 456 [(messageType) = "eq.Zero"];
+  OP_FeignDeath = 166 [(messageType) = "eq.Zero"];
+  OP_Sneak = 495 [(messageType) = "eq.Zero"];
+  OP_Hide = 251 [(messageType) = "eq.Zero"];
+  OP_ChannelMessage = 76 [(messageType) = "eq.ChannelMessage"];
+  OP_WearChange = 560 [(messageType) = "eq.WearChange"];
+  OP_DeleteSpawn = 123 [(messageType) = "eq.EntityId	"];
+  OP_SaveOnZoneReq = 440 [(messageType) = "eq.Save		"];
+  OP_Save = 439 [(messageType) = "eq.Save"];
+  OP_WhoAllRequest = 563 [(messageType) = "eq.Who_All"];
+  OP_GMZoneRequest = 204 [(messageType) = "eq.GMZoneRequest"];
+  OP_GMZoneRequest2 = 205 [(messageType) = "eq.Int"];
+  OP_EndLootRequest = 157 [(messageType) = "eq.EntityId	"];
+  OP_LootRequest = 315 [(messageType) = "eq.EntityId	"];
+  OP_Dye = 135 [(messageType) = "eq.DyeStruct"];
+  OP_ConfirmDelete = 101 [(messageType) = "eq.Zero"];
+  OP_LootItem = 314 [(messageType) = "eq.LootingItem"];
+  OP_GuildDelete = 228 [(messageType) = "eq.Zero"];
+  OP_GuildPublicNote = 243 [(messageType) = "eq.GuildUpdate_PublicNote"];
+  OP_GetGuildsList = 182 [(messageType) = "eq.Zero"];
+  OP_SetGuildMOTD = 465 [(messageType) = "eq.GuildMOTD"];
+  OP_SetRunMode = 467 [(messageType) = "eq.SetRunMode"];
+  OP_GuildPeace = 241 [(messageType) = "eq.Zero"];
+  OP_GuildWar = 249 [(messageType) = "eq.Zero"];
+  OP_GuildLeader = 232 [(messageType) = "eq.GuildMakeLeader"];
+  OP_GuildDemote = 229 [(messageType) = "eq.GuildDemoteStruct"];
+  OP_GuildInvite = 230 [(messageType) = "eq.GuildCommand"];
+  OP_GuildRemove = 244 [(messageType) = "eq.GuildCommand"];
+  OP_GuildInviteAccept = 231 [(messageType) = "eq.GuildInviteAccept"];
+  OP_ManaChange = 316 [(messageType) = "eq.ManaChange	"];
+  OP_MemorizeSpell = 321 [(messageType) = "eq.MemorizeSpell"];
+  OP_SwapSpell = 509 [(messageType) = "eq.SwapSpell"];
+  OP_CastSpell = 74 [(messageType) = "eq.CastSpell"];
+  OP_DeleteItem = 121 [(messageType) = "eq.DeleteItem"];
+  OP_CombatAbility = 98 [(messageType) = "eq.CombatAbility"];
+  OP_Taunt = 522 [(messageType) = "eq.ClientTarget"];
+  OP_InstillDoubt = 262 [(messageType) = "eq.Zero"];
+  OP_RezzAnswer = 433 [(messageType) = "eq.Resurrect"];
+  OP_GMSummon = 199 [(messageType) = "eq.GMSummon"];
+  OP_TradeBusy = 530 [(messageType) = "eq.TradeBusy"];
+  OP_TradeRequest = 536 [(messageType) = "eq.TradeRequest"];
+  OP_TradeRequestAck = 537 [(messageType) = "eq.TradeRequest	"];
+  OP_CancelTrade = 72 [(messageType) = "eq.CancelTrade"];
+  OP_TradeAcceptClick = 529 [(messageType) = "eq.TradeAccept"];
+  OP_BoardBoat = 62 [(messageType) = "eq.EntityId		"];
+  OP_LeaveBoat = 287 [(messageType) = "eq.Zero"];
+  OP_RandomReq = 409 [(messageType) = "eq.RandomReq"];
+  OP_Buff = 64 [(messageType) = "eq.SpellBuffPacket"];
+  OP_GMHideMe = 192 [(messageType) = "eq.SpawnAppearance"];
+  OP_GMNameChange = 196 [(messageType) = "eq.GMName"];
+  OP_GMKill = 194 [(messageType) = "eq.GMKill"];
+  OP_GMLastName = 195 [(messageType) = "eq.GMLastName"];
+  OP_GMToggle = 200 [(messageType) = "eq.GMToggle"];
+  OP_LFGCommand = 291 [(messageType) = "eq.LFG"];
+  OP_GMGoto = 191 [(messageType) = "eq.GMSummon"];
+  OP_TraderShop = 539 [(messageType) = "eq.TraderClick"];
+  OP_ShopRequest = 492 [(messageType) = "eq.Merchant_Click"];
+  OP_Bazaar = 53 [(messageType) = "eq.BazaarSearch"];
+  OP_ShopPlayerBuy = 490 [(messageType) = "eq.Merchant_Sell"];
+  OP_ShopPlayerSell = 491 [(messageType) = "eq.Merchant_Purchase"];
+  OP_ShopEnd = 487 [(messageType) = "eq.Zero"];
+  OP_CloseContainer = 95 [(messageType) = "eq.ClickObjectAction"];
+  OP_ClickObjectAction = 90 [(messageType) = "eq.ClickObjectAction"];
+  OP_ClickObject = 89 [(messageType) = "eq.ClickObject"];
+  OP_RecipesFavorite = 414 [(messageType) = "eq.TradeskillFavorites"];
+  OP_RecipesSearch = 415 [(messageType) = "eq.RecipesSearch"];
+  OP_RecipeDetails = 412 [(messageType) = "eq.Int"];
+  OP_RecipeAutoCombine = 411 [(messageType) = "eq.RecipeAutoCombine"];
+  OP_TradeSkillCombine = 540 [(messageType) = "eq.NewCombine"];
+  OP_ItemName = 267 [(messageType) = "eq.ItemNamePacket"];
+  OP_AugmentItem = 46 [(messageType) = "eq.AugmentItem"];
+  OP_ClickDoor = 88 [(messageType) = "eq.ClickDoor"];
+  OP_FaceChange = 164 [(messageType) = "eq.FaceChange"];
+  OP_GroupInvite = 215 [(messageType) = "eq.GroupInvite"];
+  OP_GroupInvite2 = 216 [(messageType) = "eq.GroupInvite	"];
+  OP_GroupFollow = 213 [(messageType) = "eq.GroupGeneric	"];
+  OP_GroupFollow2 = 214 [(messageType) = "eq.GroupGeneric	"];
+  OP_GroupAcknowledge = 207 [(messageType) = "eq.Zero"];
+  OP_GroupCancelInvite = 208 [(messageType) = "eq.GroupGeneric	"];
+  OP_GroupDisband = 210 [(messageType) = "eq.GroupGeneric"];
+  OP_GroupDelete = 209 [(messageType) = "eq.Zero"];
+  OP_GMEmoteZone = 187 [(messageType) = "eq.GMEmoteZone"];
+  OP_InspectRequest = 261 [(messageType) = "eq.Inspect"];
+  OP_InspectAnswer = 258 [(messageType) = "eq.Inspect	"];
+  OP_DeleteSpell = 124 [(messageType) = "eq.DeleteSpell"];
+  OP_PetitionBug = 368 [(messageType) = "eq.PetitionBug"];
+  OP_Bug = 67 [(messageType) = "eq.BugStruct"];
+  OP_Petition = 367 [(messageType) = "eq.String"];
+  OP_PetitionCheckIn = 369 [(messageType) = "eq.Petition"];
+  OP_PetitionResolve = 375 [(messageType) = "eq.PetitionUpdate"];
+  OP_PetitionDelete = 372 [(messageType) = "eq.PetitionUpdate"];
+  OP_PetitionUnCheckout = 379 [(messageType) = "eq.Int"];
+  OP_PetitionQue = 373 [(messageType) = "eq.Zero"];
+  OP_PDeletePetition = 362 [(messageType) = "eq.String"];
+  OP_PetitionCheckout = 370 [(messageType) = "eq.Int"];
+  OP_PetitionRefresh = 374 [(messageType) = "eq.Zero"];
+  OP_PetCommands = 364 [(messageType) = "eq.PetCommand"];
+  OP_ReadBook = 410 [(messageType) = "eq.BookRequest"];
+  OP_Emote = 156 [(messageType) = "eq.Emote"];
+  OP_GMDelCorpse = 186 [(messageType) = "eq.GMDelCorpse"];
+  OP_GMKick = 193 [(messageType) = "eq.GMKick"];
+  OP_GMServers = 198 [(messageType) = "eq.Zero"];
+  OP_Illusion = 254 [(messageType) = "eq.Illusion"];
+  OP_GMBecomeNPC = 185 [(messageType) = "eq.BecomeNPC"];
+  OP_Fishing = 173 [(messageType) = "eq.Zero"];
+  OP_Forage = 176 [(messageType) = "eq.Zero"];
+  OP_Mend = 322 [(messageType) = "eq.Zero"];
+  OP_EnvDamage = 161 [(messageType) = "eq.EnvDamage2"];
+  OP_Damage = 116 [(messageType) = "eq.CombatDamage"];
+  OP_AAAction = 4 [(messageType) = "eq.AA_Action"];
+  OP_TraderBuy = 534 [(messageType) = "eq.TraderBuy"];
+  OP_Trader = 533 [(messageType) = "eq.Trader_ShowItems"];
+  OP_GMFind = 190 [(messageType) = "eq.GMSummon"];
+  OP_PickPocket = 381 [(messageType) = "eq.PickPocket"];
+  OP_Bind_Wound = 60 [(messageType) = "eq.BindWound"];
+  OP_TrackTarget = 527 [(messageType) = "eq.TrackTarget"];
+  OP_Track = 526 [(messageType) = "eq.Zero"];
+  OP_TrackUnknown = 528 [(messageType) = "eq.Zero"];
+  OP_ReloadUI = 417 [(messageType) = "eq.Zero"];
+  OP_Split = 505 [(messageType) = "eq.Split"];
+  OP_SenseTraps = 457 [(messageType) = "eq.Zero"];
+  OP_DisarmTraps = 127 [(messageType) = "eq.Zero"];
+  OP_OpenTributeMaster = 361 [(messageType) = "eq.StartTribute"];
+  OP_OpenGuildTributeMaster = 359 [(messageType) = "eq.StartTribute"];
+  OP_TributeItem = 543 [(messageType) = "eq.TributeItem"];
+  OP_TributeMoney = 544 [(messageType) = "eq.TributeMoney"];
+  OP_SelectTribute = 441 [(messageType) = "eq.SelectTributeReq"];
+  OP_TributeUpdate = 549 [(messageType) = "eq.TributeInfo"];
+  OP_TributeToggle = 548 [(messageType) = "eq.uint32"];
+  OP_TributeNPC = 545 [(messageType) = "eq.uint32"];
+  OP_CrashDump = 111 [(messageType) = "eq.Zero"];
+  OP_ControlBoat = 108 [(messageType) = "eq.ControlBoat"];
+  OP_DumpName = 134 [(messageType) = "eq.Zero"];
+  OP_SafeFallSuccess = 437 [(messageType) = "eq.Zero"];
+  OP_Heartbeat = 250 [(messageType) = "eq.Zero"];
+  OP_SafePoint = 438 [(messageType) = "eq.Zero"];
+  OP_FindPersonRequest = 169 [(messageType) = "eq.FindPersonRequest"];
+  OP_LeadershipExpToggle = 284 [(messageType) = "eq.Int"];
+  OP_PurchaseLeadershipAA = 394 [(messageType) = "eq.Int"];
+  OP_BankerChange = 51 [(messageType) = "eq.BankerChange"];
+  OP_SetTitle = 470 [(messageType) = "eq.SetTitle"];
+  OP_RequestTitles = 428 [(messageType) = "eq.Zero"];
+  OP_ItemVerifyRequest = 272 [(messageType) = "eq.ItemVerifyRequest"];
+  OP_ClearObject = 86 [(messageType) = "eq.Zero"];
+  OP_FinishTrade = 170 [(messageType) = "eq.Zero"];
+  OP_GMEndTrainingResponse = 189 [(messageType) = "eq.Zero"];
+  OP_LootComplete = 313 [(messageType) = "eq.Zero"];
+  OP_WorldObjectsSent = 571 [(messageType) = "eq.Zero"];
+  OP_FinishWindow = 171 [(messageType) = "eq.Zero"];
+  OP_FinishWindow2 = 172 [(messageType) = "eq.Zero"];
+  OP_ItemPacket = 268 [(messageType) = "eq.ItemPacket"];
+  OP_ColoredText = 97 [(messageType) = "eq.ColoredText"];
+  OP_ItemRecastDelay = 270 [(messageType) = "eq.ItemRecastDelay"];
+  OP_FormattedMessage = 178 [(messageType) = "eq.FormattedMessage"];
+  OP_GuildMemberList = 238 [(messageType) = "eq.uint32"];
+  OP_InterruptCast = 263 [(messageType) = "eq.InterruptCast"];
+  OP_ItemLinkResponse = 265 [(messageType) = "eq.ItemPacket"];
+  OP_ZoneSpawns = 587 [(messageType) = "eq.Spawn"];
+  OP_CompletedTasks = 100 [(messageType) = "eq.TaskHistory"];
+  OP_CharInventory = 79 [(messageType) = "eq.ItemPacket"];
+  OP_CustomTitles = 115 [(messageType) = "eq.Titles"];
+  OP_SpawnDoor = 501 [(messageType) = "eq.Door"];
+  OP_SendZonepoints = 455 [(messageType) = "eq.ZonePoints"];
+  OP_TributeInfo = 542 [(messageType) = "eq.TributeAbility"];
+  OP_GuildTributeInfo = 247 [(messageType) = "eq.GuildTributeAbility"];
+  OP_SendTitleList = 453 [(messageType) = "eq.TitleList"];
+  OP_SendMaxCharacters = 449 [(messageType) = "eq.MaxCharacters"];
+  OP_AAExpUpdate = 5 [(messageType) = "eq.AAExpUpdate"];
+  OP_Action = 8 [(messageType) = "eq.Action"];
+  OP_AdventureData = 11 [(messageType) = "eq.AdventureRequestResponse"];
+  OP_AdventureFinish = 13 [(messageType) = "eq.AdventureFinish"];
+  OP_AdventurePointsUpdate = 22 [(messageType) = "eq.AdventurePoints_Update"];
+  OP_Animation = 37 [(messageType) = "eq.Animation"];
+  OP_AnnoyingZoneUnknown = 38 [(messageType) = "eq.AnnoyingZoneUnknown"];
+  OP_BecomeTrader = 57 [(messageType) = "eq.BecomeTrader"];
+  OP_BeginCast = 59 [(messageType) = "eq.BeginCast"];
+  OP_Charm = 80 [(messageType) = "eq.Charm"];
+  OP_CameraEffect = 68 [(messageType) = "eq.Camera"];
+  OP_ConsentResponse = 104 [(messageType) = "eq.ConsentResponse"];
+  OP_EnduranceUpdate = 158 [(messageType) = "eq.EnduranceUpdate"];
+  OP_ExpUpdate = 163 [(messageType) = "eq.ExpUpdate"];
+  OP_GroundSpawn = 206 [(messageType) = "eq.Object"];
+  OP_GroupUpdate = 222 [(messageType) = "eq.GroupJoin	"];
+  OP_GuildMOTD = 240 [(messageType) = "eq.GuildMOTD"];
+  OP_GuildManageAdd = 233 [(messageType) = "eq.GuildJoin"];
+  OP_GuildManageRemove = 235 [(messageType) = "eq.GuildManageRemove"];
+  OP_GuildManageStatus = 236 [(messageType) = "eq.GuildManageStatus"];
+  OP_GuildMemberUpdate = 239 [(messageType) = "eq.GuildMemberUpdate"];
+  OP_HPUpdate = 253 [(messageType) = "eq.SpawnHPUpdate"];
+  OP_IncreaseStats = 255 [(messageType) = "eq.IncreaseStat"];
+  OP_ItemVerifyReply = 271 [(messageType) = "eq.ItemVerifyReply"];
+  OP_LFGAppearance = 290 [(messageType) = "eq.LFG_Appearance"];
+  OP_LeadershipExpUpdate = 285 [(messageType) = "eq.LeadershipExpUpdate"];
+  OP_LevelAppearance = 288 [(messageType) = "eq.LevelAppearance"];
+  OP_LevelUpdate = 289 [(messageType) = "eq.LevelUpdate"];
+  OP_ManaUpdate = 317 [(messageType) = "eq.ManaUpdate"];
+  OP_MobEnduranceUpdate = 338 [(messageType) = "eq.MobEnduranceUpdate"];
+  OP_MobHealth = 339 [(messageType) = "eq.MobHealth"];
+  OP_MobManaUpdate = 340 [(messageType) = "eq.MobManaUpdate"];
+  OP_MobRename = 341 [(messageType) = "eq.MobRename"];
+  OP_MoneyOnCorpse = 343 [(messageType) = "eq.moneyOnCorpseStruct"];
+  OP_MoneyUpdate = 344 [(messageType) = "eq.MoneyUpdate"];
+  OP_MoveDoor = 347 [(messageType) = "eq.MoveDoor"];
+  OP_NewSpawn = 353 [(messageType) = "eq.NewSpawn"];
+  OP_NewZone = 355 [(messageType) = "eq.NewZone"];
+  OP_PetitionUpdate = 380 [(messageType) = "eq.PetitionUpdate"];
+  OP_PlayerProfile = 382 [(messageType) = "eq.PlayerProfile"];
+  OP_RaidUpdate = 406 [(messageType) = "eq.ZoneInSendName"];
+  OP_RandomReply = 408 [(messageType) = "eq.RandomReply"];
+  OP_RecipeReply = 413 [(messageType) = "eq.RecipeReply"];
+  OP_RequestClientZoneChange = 425 [(messageType) = "eq.RequestClientZoneChange"];
+  OP_RespondAA = 430 [(messageType) = "eq.AATable"];
+  OP_RezzRequest = 435 [(messageType) = "eq.Resurrect"];
+  OP_SetTitleReply = 471 [(messageType) = "eq.SetTitleReply"];
+  OP_ShopDelItem = 486 [(messageType) = "eq.Merchant_DelItem"];
+  OP_SimpleMessage = 493 [(messageType) = "eq.SimpleMessage"];
+  OP_SkillUpdate = 494 [(messageType) = "eq.SkillUpdate"];
+  OP_SomeItemPacketMaybe = 498 [(messageType) = "eq.Arrow"];
+  OP_SpellEffect = 504 [(messageType) = "eq.SpellEffect"];
+  OP_Stamina = 506 [(messageType) = "eq.Stamina"];
+  OP_Stun = 507 [(messageType) = "eq.Stun"];
+  OP_TargetReject = 514 [(messageType) = "eq.TargetReject"];
+  OP_TimeOfDay = 525 [(messageType) = "eq.TimeOfDay"];
+  OP_TradeCoins = 531 [(messageType) = "eq.TradeCoin"];
+  OP_TradeMoneyUpdate = 532 [(messageType) = "eq.TradeMoneyUpdate"];
+  OP_TraderDelItem = 535 [(messageType) = "eq.TraderDelItem"];
+  OP_TraderItemUpdate = 538 [(messageType) = "eq.TraderItemUpdate"];
+  OP_TributeTimer = 547 [(messageType) = "eq.Bool"];
+  OP_UpdateLeadershipAA = 553 [(messageType) = "eq.UpdateLeadershipAA"];
+  OP_Weather = 561 [(messageType) = "eq.Weather"];
+  OP_ZoneChange = 579 [(messageType) = "eq.ZoneChange"];
+  OP_ZoneInUnknown = 583 [(messageType) = "eq.ZoneInUnknown"];
+
+
   ////////////////////
   // Nested Structs //
   ////////////////////
@@ -2490,26 +2869,15 @@ enum OpCodes {
   OP_ExploreUnknown = 1;
   OP_0x0193 = 2;
   OP_0x0347 = 3;
-  OP_AAAction = 4;
-  OP_AAExpUpdate = 5;
   OP_AcceptNewTask = 6;
-  OP_AckPacket = 7;
-  OP_Action = 8;
   OP_Action2 = 9;
   OP_AddNimbusEffect = 10;
-  OP_AdventureData = 11;
   OP_AdventureDetails = 12;
-  OP_AdventureFinish = 13;
   OP_AdventureInfo = 14;
-  OP_AdventureInfoRequest = 15;
   OP_AdventureLeaderboardReply = 16;
   OP_AdventureLeaderboardRequest = 17;
-  OP_AdventureMerchantPurchase = 18;
-  OP_AdventureMerchantRequest = 19;
   OP_AdventureMerchantResponse = 20;
   OP_AdventureMerchantSell = 21;
-  OP_AdventurePointsUpdate = 22;
-  OP_AdventureRequest = 23;
   OP_AdventureStatsReply = 24;
   OP_AdventureStatsRequest = 25;
   OP_AdventureUpdate = 26;
@@ -2523,105 +2891,50 @@ enum OpCodes {
   OP_AltCurrencyReclaim = 34;
   OP_AltCurrencySell = 35;
   OP_AltCurrencySellSelection = 36;
-  OP_Animation = 37;
-  OP_AnnoyingZoneUnknown = 38;
   OP_ApplyPoison = 39;
   OP_ApproveName = 40;
   OP_ApproveWorld = 41;
-  OP_ApproveZone = 42;
-  OP_Assist = 43;
   OP_AssistGroup = 44;
   OP_AugmentInfo = 45;
-  OP_AugmentItem = 46;
-  OP_AutoAttack = 47;
-  OP_AutoAttack2 = 48;
   OP_AutoFire = 49;
   OP_Bandolier = 50;
-  OP_BankerChange = 51;
   OP_Barter = 52;
-  OP_Bazaar = 53;
-  OP_BazaarInspect = 54;
   OP_BazaarSearch = 55;
   OP_BecomeCorpse = 56;
-  OP_BecomeTrader = 57;
-  OP_Begging = 58;
-  OP_BeginCast = 59;
-  OP_Bind_Wound = 60;
   OP_BlockedBuffs = 61;
-  OP_BoardBoat = 62;
   OP_BookButton = 63;
-  OP_Buff = 64;
   OP_BuffCreate = 65;
   OP_BuffRemoveRequest = 66;
-  OP_Bug = 67;
-  OP_CameraEffect = 68;
-  OP_Camp = 69;
   OP_CancelSneakHide = 70;
   OP_CancelTask = 71;
-  OP_CancelTrade = 72;
   OP_CashReward = 73;
-  OP_CastSpell = 74;
   OP_ChangeSize = 75;
-  OP_ChannelMessage = 76;
   OP_CharacterCreate = 77;
   OP_CharacterCreateRequest = 78;
-  OP_CharInventory = 79;
-  OP_Charm = 80;
   OP_ChatMessage = 81;
   OP_ClearAA = 82;
   OP_ClearBlockedBuffs = 83;
   OP_ClearLeadershipAbilities = 84;
   OP_ClearNPCMarks = 85;
-  OP_ClearObject = 86;
   OP_ClearSurname = 87;
-  OP_ClickDoor = 88;
-  OP_ClickObject = 89;
-  OP_ClickObjectAction = 90;
-  OP_ClientError = 91;
-  OP_ClientReady = 92;
   OP_ClientTimeStamp = 93;
-  OP_ClientUpdate = 94;
-  OP_CloseContainer = 95;
   OP_CloseTributeMaster = 96;
-  OP_ColoredText = 97;
-  OP_CombatAbility = 98;
   OP_Command = 99;
-  OP_CompletedTasks = 100;
-  OP_ConfirmDelete = 101;
-  OP_Consent = 102;
-  OP_ConsentDeny = 103;
-  OP_ConsentResponse = 104;
-  OP_Consider = 105;
-  OP_ConsiderCorpse = 106;
-  OP_Consume = 107;
-  OP_ControlBoat = 108;
   OP_CorpseDrag = 109;
   OP_CorpseDrop = 110;
-  OP_CrashDump = 111;
   OP_CrystalCountUpdate = 112;
   OP_CrystalCreate = 113;
   OP_CrystalReclaim = 114;
-  OP_CustomTitles = 115;
-  OP_Damage = 116;
-  OP_Death = 117;
   OP_DelegateAbility = 118;
   OP_DeleteCharacter = 119;
   OP_DeleteCharge = 120;
-  OP_DeleteItem = 121;
   OP_DeletePetition = 122;
-  OP_DeleteSpawn = 123;
-  OP_DeleteSpell = 124;
   OP_DenyResponse = 125;
   OP_Disarm = 126;
-  OP_DisarmTraps = 127;
   OP_DisciplineTimer = 128;
   OP_DisciplineUpdate = 129;
   OP_DiscordMerchantInventory = 130;
   OP_DoGroupLeadershipAbility = 131;
-  OP_DuelDecline = 132;
-  OP_DuelAccept = 133;
-  OP_DumpName = 134;
-  OP_Dye = 135;
   OP_DynamicWall = 136;
   OP_DzAddPlayer = 137;
   OP_DzChooseZone = 138;
@@ -2642,141 +2955,54 @@ enum OpCodes {
   OP_DzRemovePlayer = 153;
   OP_DzSetLeaderName = 154;
   OP_DzSwapPlayer = 155;
-  OP_Emote = 156;
-  OP_EndLootRequest = 157;
-  OP_EnduranceUpdate = 158;
   OP_EnterChat = 159;
-  OP_EnvDamage = 161;
   OP_ExpansionInfo = 162;
-  OP_ExpUpdate = 163;
-  OP_FaceChange = 164;
   OP_Feedback = 165;
-  OP_FeignDeath = 166;
   OP_FellowshipUpdate = 167;
   OP_FindPersonReply = 168;
-  OP_FindPersonRequest = 169;
-  OP_FinishTrade = 170;
-  OP_FinishWindow = 171;
-  OP_FinishWindow2 = 172;
-  OP_Fishing = 173;
   OP_Fling = 174;
   OP_FloatListThing = 175;
-  OP_Forage = 176;
   OP_ForceFindPerson = 177;
-  OP_FormattedMessage = 178;
   OP_FriendsWho = 179;
   OP_GetGuildMOTD = 180;
   OP_GetGuildMOTDReply = 181;
-  OP_GetGuildsList = 182;
   OP_GiveMoney = 183;
   OP_GMApproval = 184;
-  OP_GMBecomeNPC = 185;
-  OP_GMDelCorpse = 186;
-  OP_GMEmoteZone = 187;
-  OP_GMEndTraining = 188;
-  OP_GMEndTrainingResponse = 189;
-  OP_GMFind = 190;
-  OP_GMGoto = 191;
-  OP_GMHideMe = 192;
-  OP_GMKick = 193;
-  OP_GMKill = 194;
-  OP_GMLastName = 195;
-  OP_GMNameChange = 196;
-  OP_GMSearchCorpse = 197;
-  OP_GMServers = 198;
-  OP_GMSummon = 199;
-  OP_GMToggle = 200;
-  OP_GMTraining = 201;
-  OP_GMTrainSkill = 202;
   OP_GMTrainSkillConfirm = 203;
-  OP_GMZoneRequest = 204;
-  OP_GMZoneRequest2 = 205;
-  OP_GroundSpawn = 206;
-  OP_GroupAcknowledge = 207;
-  OP_GroupCancelInvite = 208;
-  OP_GroupDelete = 209;
-  OP_GroupDisband = 210;
   OP_GroupDisbandOther = 211;
   OP_GroupDisbandYou = 212;
-  OP_GroupFollow = 213;
-  OP_GroupFollow2 = 214;
-  OP_GroupInvite = 215;
-  OP_GroupInvite2 = 216;
   OP_GroupLeaderChange = 217;
   OP_GroupLeadershipAAUpdate = 218;
   OP_GroupMakeLeader = 219;
   OP_GroupMentor = 220;
   OP_GroupRoles = 221;
-  OP_GroupUpdate = 222;
   OP_GroupUpdateB = 223;
   OP_GroupUpdateLeaderAA = 224;
   OP_GuildBank = 225;
   OP_GuildBankItemList = 226;
   OP_GuildCreate = 227;
-  OP_GuildDelete = 228;
-  OP_GuildDemote = 229;
-  OP_GuildInvite = 230;
-  OP_GuildInviteAccept = 231;
-  OP_GuildLeader = 232;
-  OP_GuildManageAdd = 233;
   OP_GuildManageBanker = 234;
-  OP_GuildManageRemove = 235;
-  OP_GuildManageStatus = 236;
   OP_GuildMemberLevelUpdate = 237;
-  OP_GuildMemberList = 238;
-  OP_GuildMemberUpdate = 239;
-  OP_GuildMOTD = 240;
-  OP_GuildPeace = 241;
   OP_GuildPromote = 242;
-  OP_GuildPublicNote = 243;
-  OP_GuildRemove = 244;
   OP_GuildsList = 245;
   OP_GuildStatus = 246;
-  OP_GuildTributeInfo = 247;
   OP_GuildUpdateURLAndChannel = 248;
-  OP_GuildWar = 249;
-  OP_Heartbeat = 250;
-  OP_Hide = 251;
   OP_HideCorpse = 252;
-  OP_HPUpdate = 253;
-  OP_Illusion = 254;
-  OP_IncreaseStats = 255;
   OP_InitialHPUpdate = 256;
   OP_InitialMobHealth = 257;
-  OP_InspectAnswer = 258;
   OP_InspectBuffs = 259;
   OP_InspectMessageUpdate = 260;
-  OP_InspectRequest = 261;
-  OP_InstillDoubt = 262;
-  OP_InterruptCast = 263;
-  OP_ItemLinkClick = 264;
-  OP_ItemLinkResponse = 265;
   OP_ItemLinkText = 266;
-  OP_ItemName = 267;
-  OP_ItemPacket = 268;
   OP_ItemPreview = 269;
-  OP_ItemRecastDelay = 270;
-  OP_ItemVerifyReply = 271;
-  OP_ItemVerifyRequest = 272;
   OP_ItemViewUnknown = 273;
-  OP_Jump = 274;
   OP_KeyRing = 275;
   OP_KickPlayers = 276;
   OP_KnowledgeBase = 277;
-  OP_LDoNButton = 278;
   OP_LDoNDisarmTraps = 279;
   OP_LDoNInspect = 280;
   OP_LDoNOpen = 281;
   OP_LDoNPickLock = 282;
   OP_LDoNSenseTraps = 283;
-  OP_LeadershipExpToggle = 284;
-  OP_LeadershipExpUpdate = 285;
-  OP_LeaveAdventure = 286;
-  OP_LeaveBoat = 287;
-  OP_LevelAppearance = 288;
-  OP_LevelUpdate = 289;
-  OP_LFGAppearance = 290;
-  OP_LFGCommand = 291;
   OP_LFGGetMatchesRequest = 292;
   OP_LFGGetMatchesResponse = 293;
   OP_LFGResponse = 294;
@@ -2793,19 +3019,11 @@ enum OpCodes {
   OP_LoginExpansionPacketData = 307;
   OP_LoginUnknown1 = 308;
   OP_LoginUnknown2 = 309;
-  OP_Logout = 310;
   OP_LogoutReply = 311;
   OP_LogServer = 312;
-  OP_LootComplete = 313;
-  OP_LootItem = 314;
-  OP_LootRequest = 315;
-  OP_ManaChange = 316;
-  OP_ManaUpdate = 317;
   OP_MarkNPC = 318;
   OP_MarkRaidNPC = 319;
   OP_Marquee = 320;
-  OP_MemorizeSpell = 321;
-  OP_Mend = 322;
   OP_MendHPUpdate = 323;
   OP_MercenaryAssign = 324;
   OP_MercenaryCommand = 325;
@@ -2821,54 +3039,26 @@ enum OpCodes {
   OP_MercenaryTimerRequest = 335;
   OP_MercenaryUnknown1 = 336;
   OP_MercenaryUnsuspendResponse = 337;
-  OP_MobEnduranceUpdate = 338;
-  OP_MobHealth = 339;
-  OP_MobManaUpdate = 340;
-  OP_MobRename = 341;
   OP_MobUpdate = 342;
-  OP_MoneyOnCorpse = 343;
-  OP_MoneyUpdate = 344;
   OP_MOTD = 345;
-  OP_MoveCoin = 346;
-  OP_MoveDoor = 347;
-  OP_MoveItem = 348;
   OP_MoveMultipleItems = 349;
   OP_MoveLogDisregard = 350;
   OP_MoveLogRequest = 351;
   OP_MultiLineMsg = 352;
-  OP_NewSpawn = 353;
   OP_NewTitlesAvailable = 354;
-  OP_NewZone = 355;
   OP_OnLevelMessage = 356;
   OP_OpenContainer = 357;
   OP_OpenDiscordMerchant = 358;
-  OP_OpenGuildTributeMaster = 359;
   OP_OpenInventory = 360;
-  OP_OpenTributeMaster = 361;
-  OP_PDeletePetition = 362;
   OP_PetBuffWindow = 363;
-  OP_PetCommands = 364;
   OP_PetCommandState = 365;
   OP_PetHoTT = 366;
-  OP_Petition = 367;
-  OP_PetitionBug = 368;
-  OP_PetitionCheckIn = 369;
-  OP_PetitionCheckout = 370;
   OP_PetitionCheckout2 = 371;
-  OP_PetitionDelete = 372;
-  OP_PetitionQue = 373;
-  OP_PetitionRefresh = 374;
-  OP_PetitionResolve = 375;
   OP_PetitionSearch = 376;
   OP_PetitionSearchResults = 377;
   OP_PetitionSearchText = 378;
-  OP_PetitionUnCheckout = 379;
-  OP_PetitionUpdate = 380;
-  OP_PickPocket = 381;
-  OP_PlayerProfile = 382;
   OP_PlayerStateAdd = 383;
   OP_PlayerStateRemove = 384;
-
   OP_PlayMP3 = 387;
   OP_Poll = 388;
   OP_PollResponse = 389;
@@ -2876,7 +3066,6 @@ enum OpCodes {
   OP_PostEnterWorld = 391;
   OP_PotionBelt = 392;
   OP_PreLogoutReply = 393;
-  OP_PurchaseLeadershipAA = 394;
   OP_PVPLeaderBoardDetailsReply = 395;
   OP_PVPLeaderBoardDetailsRequest = 396;
   OP_PVPLeaderBoardReply = 397;
@@ -2888,68 +3077,30 @@ enum OpCodes {
   OP_RaidClearNPCMarks = 403;
   OP_RaidInvite = 404;
   OP_RaidJoin = 405;
-  OP_RaidUpdate = 406;
   OP_RandomNameGenerator = 407;
-  OP_RandomReply = 408;
-  OP_RandomReq = 409;
-  OP_ReadBook = 410;
-  OP_RecipeAutoCombine = 411;
-  OP_RecipeDetails = 412;
-  OP_RecipeReply = 413;
-  OP_RecipesFavorite = 414;
-  OP_RecipesSearch = 415;
   OP_ReclaimCrystals = 416;
-  OP_ReloadUI = 417;
   OP_RemoveAllDoors = 418;
   OP_RemoveBlockedBuffs = 419;
   OP_RemoveNimbusEffect = 420;
   OP_RemoveTrap = 421;
   OP_Report = 422;
-  OP_ReqClientSpawn = 423;
-  OP_ReqNewZone = 424;
-  OP_RequestClientZoneChange = 425;
-  OP_RequestDuel = 426;
   OP_RequestKnowledgeBase = 427;
-  OP_RequestTitles = 428;
   OP_RespawnWindow = 429;
-  OP_RespondAA = 430;
   OP_RestState = 431;
   OP_Rewind = 432;
-  OP_RezzAnswer = 433;
   OP_RezzComplete = 434;
-  OP_RezzRequest = 435;
   OP_Sacrifice = 436;
-  OP_SafeFallSuccess = 437;
-  OP_SafePoint = 438;
-  OP_Save = 439;
-  OP_SaveOnZoneReq = 440;
-  OP_SelectTribute = 441;
-  OP_SendAAStats = 442;
-  OP_SendAATable = 443;
-  OP_SendExpZonein = 445;
   OP_SendFindableNPCs = 446;
-  OP_SendGuildTributes = 447;
-  OP_SendMaxCharacters = 449;
   OP_SendMembership = 450;
   OP_SendMembershipDetails = 451;
   OP_SendSystemStats = 452;
-  OP_SendTitleList = 453;
-  OP_SendTributes = 454;
-  OP_SendZonepoints = 455;
-  OP_SenseHeading = 456;
-  OP_SenseTraps = 457;
   OP_SessionReady = 460;
   OP_SetChatServer = 461;
   OP_SetChatServer2 = 462;
   OP_SetFace = 463;
   OP_SetGroupTarget = 464;
-  OP_SetGuildMOTD = 465;
   OP_SetGuildRank = 466;
-  OP_SetRunMode = 467;
-  OP_SetServerFilter = 468;
   OP_SetStartCity = 469;
-  OP_SetTitle = 470;
-  OP_SetTitleReply = 471;
   OP_SharedTaskMemberList = 472;
   OP_SharedTaskAddPlayer = 473;
   OP_SharedTaskRemovePlayer = 474;
@@ -2963,36 +3114,15 @@ enum OpCodes {
   OP_SharedTaskSelectWindow = 482;
   OP_SharedTaskQuit = 483;
   OP_TaskTimers = 484;
-  OP_Shielding = 485;
-  OP_ShopDelItem = 486;
-  OP_ShopEnd = 487;
   OP_ShopEndConfirm = 488;
   OP_ShopItem = 489;
-  OP_ShopPlayerBuy = 490;
-  OP_ShopPlayerSell = 491;
-  OP_ShopRequest = 492;
-  OP_SimpleMessage = 493;
-  OP_SkillUpdate = 494;
-  OP_Sneak = 495;
   OP_Some3ByteHPUpdate = 496;
   OP_Some6ByteHPUpdate = 497;
-  OP_SomeItemPacketMaybe = 498;
   OP_Sound = 499;
-  OP_SpawnAppearance = 500;
-  OP_SpawnDoor = 501;
   OP_SpawnPositionUpdate = 502;
   OP_SpecialMesg = 503;
-  OP_SpellEffect = 504;
-  OP_Split = 505;
-  OP_Stamina = 506;
-  OP_Stun = 507;
-  OP_Surname = 508;
-  OP_SwapSpell = 509;
   OP_TargetBuffs = 510;
-  OP_TargetCommand = 511;
   OP_TargetHoTT = 512;
-  OP_TargetMouse = 513;
-  OP_TargetReject = 514;
   OP_TaskActivity = 515;
   OP_TaskActivityComplete = 516;
   OP_TaskDescription = 517;
@@ -3000,48 +3130,18 @@ enum OpCodes {
   OP_TaskHistoryRequest = 519;
   OP_TaskRequestTimer = 520;
   OP_TaskSelectWindow = 521;
-  OP_Taunt = 522;
-  OP_TestBuff = 523;
-  OP_TGB = 524;
-  OP_TimeOfDay = 525;
-  OP_Track = 526;
-  OP_TrackTarget = 527;
-  OP_TrackUnknown = 528;
-  OP_TradeAcceptClick = 529;
-  OP_TradeBusy = 530;
-  OP_TradeCoins = 531;
-  OP_TradeMoneyUpdate = 532;
-  OP_Trader = 533;
-  OP_TraderBuy = 534;
-  OP_TraderDelItem = 535;
-  OP_TradeRequest = 536;
-  OP_TradeRequestAck = 537;
-  OP_TraderItemUpdate = 538;
-  OP_TraderShop = 539;
-  OP_TradeSkillCombine = 540;
   OP_Translocate = 541;
-  OP_TributeInfo = 542;
-  OP_TributeItem = 543;
-  OP_TributeMoney = 544;
-  OP_TributeNPC = 545;
   OP_TributePointUpdate = 546;
-  OP_TributeTimer = 547;
-  OP_TributeToggle = 548;
-  OP_TributeUpdate = 549;
   OP_Untargetable = 550;
   OP_UpdateAA = 551;
   OP_UpdateAura = 552;
-  OP_UpdateLeadershipAA = 553;
   OP_VetClaimReply = 554;
   OP_VetClaimRequest = 555;
   OP_VetRewardsAvaliable = 556;
   OP_VoiceMacroIn = 557;
   OP_VoiceMacroOut = 558;
   OP_WeaponEquip1 = 559;
-  OP_WearChange = 560;
-  OP_Weather = 561;
   OP_Weblink = 562;
-  OP_WhoAllRequest = 563;
   OP_WhoAllResponse = 564;
   OP_World_Client_CRC1 = 565;
   OP_World_Client_CRC2 = 566;
@@ -3049,22 +3149,16 @@ enum OpCodes {
   OP_WorldClientReady = 568;
   OP_WorldComplete = 569;
   OP_WorldLogout = 570;
-  OP_WorldObjectsSent = 571;
   OP_WorldUnknown001 = 572;
   OP_XTargetAutoAddHaters = 573;
   OP_XTargetOpen = 574;
   OP_XTargetOpenResponse = 575;
   OP_XTargetRequest = 576;
   OP_XTargetResponse = 577;
-  OP_YellForHelp = 578;
-  OP_ZoneChange = 579;
   OP_ZoneComplete = 580;
-  OP_ZoneEntry = 581;
   OP_ZoneGuildList = 582;
-  OP_ZoneInUnknown = 583;
   OP_ZonePlayerToBind = 584;
   OP_ZoneServerReady = 586;
-  OP_ZoneSpawns = 587;
   OP_ZoneUnavail = 588;
   OP_ResetAA = 589;
   OP_UnderWorld = 590;

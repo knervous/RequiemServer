@@ -50,6 +50,286 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		return tie((*C.struct_EnterWorld_Struct)(structPtr))
 	case OpCodes_OP_ZoneServerInfo:
 		return tie((*C.struct_ZoneServerInfo_Struct)(structPtr))
+		// Zone
+	case OpCodes_OP_ClearObject:
+		return tie((*C.struct_Zero_Struct)(structPtr))
+
+	case OpCodes_OP_FinishTrade:
+		return tie((*C.struct_Zero_Struct)(structPtr))
+
+	case OpCodes_OP_GMEndTrainingResponse:
+		return tie((*C.struct_Zero_Struct)(structPtr))
+
+	case OpCodes_OP_LootComplete:
+		return tie((*C.struct_Zero_Struct)(structPtr))
+
+	case OpCodes_OP_WorldObjectsSent:
+		return tie((*C.struct_Zero_Struct)(structPtr))
+
+	case OpCodes_OP_FinishWindow:
+		return tie((*C.struct_Zero_Struct)(structPtr))
+
+	case OpCodes_OP_FinishWindow2:
+		return tie((*C.struct_Zero_Struct)(structPtr))
+
+	case OpCodes_OP_ItemPacket:
+		return tie((*C.struct_ItemPacket_Struct)(structPtr))
+
+	case OpCodes_OP_ColoredText:
+		return tie((*C.struct_ColoredText_Struct)(structPtr))
+
+	case OpCodes_OP_ItemRecastDelay:
+		return tie((*C.struct_ItemRecastDelay_Struct)(structPtr))
+
+	case OpCodes_OP_FormattedMessage:
+		return tie((*C.struct_FormattedMessage_Struct)(structPtr))
+
+	case OpCodes_OP_GuildMemberList:
+		return tie((*C.struct_uint32)(structPtr))
+
+	case OpCodes_OP_InterruptCast:
+		return tie((*C.struct_InterruptCast_Struct)(structPtr))
+
+	case OpCodes_OP_ItemLinkResponse:
+		return tie((*C.struct_ItemPacket_Struct)(structPtr))
+
+	case OpCodes_OP_ZoneSpawns:
+		return tie((*C.struct_Spawn_Struct)(structPtr))
+
+	case OpCodes_OP_CompletedTasks:
+		return tie((*C.struct_TaskHistory_Struct)(structPtr))
+
+	case OpCodes_OP_CharInventory:
+		return tie((*C.struct_ItemPacket_Struct)(structPtr))
+
+	case OpCodes_OP_CustomTitles:
+		return tie((*C.struct_Titles_Struct)(structPtr))
+
+	case OpCodes_OP_SpawnDoor:
+		return tie((*C.struct_Door_Struct)(structPtr))
+
+	case OpCodes_OP_SendZonepoints:
+		return tie((*C.struct_ZonePoints)(structPtr))
+
+	case OpCodes_OP_TributeInfo:
+		return tie((*C.struct_TributeAbility_Struct)(structPtr))
+
+	case OpCodes_OP_GuildTributeInfo:
+		return tie((*C.struct_GuildTributeAbility_Struct)(structPtr))
+
+	case OpCodes_OP_SendTitleList:
+		return tie((*C.struct_TitleList_Struct)(structPtr))
+
+	case OpCodes_OP_SendMaxCharacters:
+		return tie((*C.struct_MaxCharacters_Struct)(structPtr))
+
+	case OpCodes_OP_AAExpUpdate:
+		return tie((*C.struct_AAExpUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_Action:
+		return tie((*C.struct_Action_Struct)(structPtr))
+
+	case OpCodes_OP_AdventureData:
+		return tie((*C.struct_AdventureRequestResponse_Struct)(structPtr))
+
+	case OpCodes_OP_AdventureFinish:
+		return tie((*C.struct_AdventureFinish_Struct)(structPtr))
+
+	case OpCodes_OP_AdventurePointsUpdate:
+		return tie((*C.struct_AdventurePoints_Update_Struct)(structPtr))
+
+	case OpCodes_OP_Animation:
+		return tie((*C.struct_Animation_Struct)(structPtr))
+
+	case OpCodes_OP_AnnoyingZoneUnknown:
+		return tie((*C.struct_AnnoyingZoneUnknown_Struct)(structPtr))
+
+	case OpCodes_OP_BankerChange:
+		return tie((*C.struct_BankerChange_Struct)(structPtr))
+
+	case OpCodes_OP_BecomeTrader:
+		return tie((*C.struct_BecomeTrader_Struct)(structPtr))
+
+	case OpCodes_OP_BeginCast:
+		return tie((*C.struct_BeginCast_Struct)(structPtr))
+
+	case OpCodes_OP_Charm:
+		return tie((*C.struct_Charm_Struct)(structPtr))
+
+	case OpCodes_OP_CameraEffect:
+		return tie((*C.struct_Camera_Struct)(structPtr))
+
+	case OpCodes_OP_ClickObjectAction:
+		return tie((*C.struct_ClickObjectAction_Struct)(structPtr))
+
+	case OpCodes_OP_ConsentResponse:
+		return tie((*C.struct_ConsentResponse_Struct)(structPtr))
+
+	case OpCodes_OP_EnduranceUpdate:
+		return tie((*C.struct_EnduranceUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_ExpUpdate:
+		return tie((*C.struct_ExpUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_GroundSpawn:
+		return tie((*C.struct_Object_Struct)(structPtr))
+
+	case OpCodes_OP_GroupUpdate:
+		return tie((*C.struct_GroupJoin_Struct)(structPtr))
+
+	case OpCodes_OP_GuildMOTD:
+		return tie((*C.struct_GuildMOTD_Struct)(structPtr))
+
+	case OpCodes_OP_GuildManageAdd:
+		return tie((*C.struct_GuildJoin_Struct)(structPtr))
+
+	case OpCodes_OP_GuildManageRemove:
+		return tie((*C.struct_GuildManageRemove_Struct)(structPtr))
+
+	case OpCodes_OP_GuildManageStatus:
+		return tie((*C.struct_GuildManageStatus_Struct)(structPtr))
+
+	case OpCodes_OP_GuildMemberUpdate:
+		return tie((*C.struct_GuildMemberUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_HPUpdate:
+		return tie((*C.struct_SpawnHPUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_IncreaseStats:
+		return tie((*C.struct_IncreaseStat_Struct)(structPtr))
+
+	case OpCodes_OP_ItemVerifyReply:
+		return tie((*C.struct_ItemVerifyReply_Struct)(structPtr))
+
+	case OpCodes_OP_LFGAppearance:
+		return tie((*C.struct_LFG_Appearance_Struct)(structPtr))
+
+	case OpCodes_OP_LeadershipExpUpdate:
+		return tie((*C.struct_LeadershipExpUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_LevelAppearance:
+		return tie((*C.struct_LevelAppearance_Struct)(structPtr))
+
+	case OpCodes_OP_LevelUpdate:
+		return tie((*C.struct_LevelUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_ManaUpdate:
+		return tie((*C.struct_ManaUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_MobEnduranceUpdate:
+		return tie((*C.struct_MobEnduranceUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_MobHealth:
+		return tie((*C.struct_MobHealth_Struct)(structPtr))
+
+	case OpCodes_OP_MobManaUpdate:
+		return tie((*C.struct_MobManaUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_MobRename:
+		return tie((*C.struct_MobRename_Struct)(structPtr))
+
+	case OpCodes_OP_MoneyOnCorpse:
+		return tie((*C.struct_moneyOnCorpseStruct)(structPtr))
+
+	case OpCodes_OP_MoneyUpdate:
+		return tie((*C.struct_MoneyUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_MoveDoor:
+		return tie((*C.struct_MoveDoor_Struct)(structPtr))
+
+	case OpCodes_OP_NewSpawn:
+		return tie((*C.struct_NewSpawn_Struct)(structPtr))
+
+	case OpCodes_OP_NewZone:
+		return tie((*C.struct_NewZone_Struct)(structPtr))
+
+	case OpCodes_OP_PetitionCheckout:
+		return tie((*C.struct_Petition_Struct)(structPtr))
+
+	case OpCodes_OP_PetitionUpdate:
+		return tie((*C.struct_PetitionUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_PlayerProfile:
+		return tie((*C.struct_PlayerProfile_Struct)(structPtr))
+
+	case OpCodes_OP_RaidUpdate:
+		return tie((*C.struct_ZoneInSendName_Struct)(structPtr))
+
+	case OpCodes_OP_RandomReply:
+		return tie((*C.struct_RandomReply_Struct)(structPtr))
+
+	case OpCodes_OP_RecipeReply:
+		return tie((*C.struct_RecipeReply_Struct)(structPtr))
+
+	case OpCodes_OP_RequestClientZoneChange:
+		return tie((*C.struct_RequestClientZoneChange_Struct)(structPtr))
+
+	case OpCodes_OP_RespondAA:
+		return tie((*C.struct_AATable_Struct)(structPtr))
+
+	case OpCodes_OP_RezzRequest:
+		return tie((*C.struct_Resurrect_Struct)(structPtr))
+
+	case OpCodes_OP_SetTitleReply:
+		return tie((*C.struct_SetTitleReply_Struct)(structPtr))
+
+	case OpCodes_OP_ShopDelItem:
+		return tie((*C.struct_Merchant_DelItem_Struct)(structPtr))
+
+	case OpCodes_OP_SimpleMessage:
+		return tie((*C.struct_SimpleMessage_Struct)(structPtr))
+
+	case OpCodes_OP_SkillUpdate:
+		return tie((*C.struct_SkillUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_SomeItemPacketMaybe:
+		return tie((*C.struct_Arrow_Struct)(structPtr))
+
+	case OpCodes_OP_SpellEffect:
+		return tie((*C.struct_SpellEffect_Struct)(structPtr))
+
+	case OpCodes_OP_Stamina:
+		return tie((*C.struct_Stamina_Struct)(structPtr))
+
+	case OpCodes_OP_Stun:
+		return tie((*C.struct_Stun_Struct)(structPtr))
+
+	case OpCodes_OP_TargetReject:
+		return tie((*C.struct_TargetReject_Struct)(structPtr))
+
+	case OpCodes_OP_TimeOfDay:
+		return tie((*C.struct_TimeOfDay_Struct)(structPtr))
+
+	case OpCodes_OP_Track:
+		return tie((*C.struct_Track_Struct)(structPtr))
+
+	case OpCodes_OP_TradeCoins:
+		return tie((*C.struct_TradeCoin_Struct)(structPtr))
+
+	case OpCodes_OP_TradeMoneyUpdate:
+		return tie((*C.struct_TradeMoneyUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_TraderDelItem:
+		return tie((*C.struct_TraderDelItem_Struct)(structPtr))
+
+	case OpCodes_OP_TraderItemUpdate:
+		return tie((*C.struct_TraderItemUpdate_Struct)(structPtr))
+
+	case OpCodes_OP_TributeTimer:
+		return tie((*C.struct_Bool_Struct)(structPtr))
+
+	case OpCodes_OP_UpdateLeadershipAA:
+		return tie((*C.struct_UpdateLeadershipAA_Struct)(structPtr))
+
+	case OpCodes_OP_Weather:
+		return tie((*C.struct_Weather_Struct)(structPtr))
+
+	case OpCodes_OP_ZoneChange:
+		return tie((*C.struct_ZoneChange_Struct)(structPtr))
+
+	case OpCodes_OP_ZoneInUnknown:
+		return tie((*C.struct_ZoneInUnknown_Struct)(structPtr))
+
 	// Nested structs
 	case OpCodes_Nested_WorldServer:
 		return tie((*C.struct_WebLoginWorldServer_Struct)(structPtr))

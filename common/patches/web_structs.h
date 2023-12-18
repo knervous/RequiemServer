@@ -294,9 +294,8 @@ namespace Web
 			struct Spawn_Struct spawn; // Spawn Information
 		};
 
-		struct ClientzoneEntry_Struct
+		struct ClientZoneEntry_Struct
 		{
-
 			char char_name[64]; // Character name
 		};
 
@@ -1309,7 +1308,7 @@ namespace Web
 			uint32 guildeqid;
 			char member[64];
 		};
-		struct Guildcommand_Struct
+		struct GuildCommand_Struct
 		{
 			char othername[64];
 			char myname[64];
@@ -1566,7 +1565,7 @@ namespace Web
 			struct ZonePoint_Entry *next;
 		};
 
-		struct ZonePoints
+		struct ZonePoints_Struct
 		{
 			uint32 count;
 			struct ZonePoint_Entry *zpe; // Always add one extra to the end after all zonepoints
@@ -1633,6 +1632,12 @@ namespace Web
 			// there are only 10 faces for barbs changing woad just
 			// increase the face value by ten so if there were 8 woad
 			// designs then there would be 80 barb faces
+		};
+
+		struct TradeBusy_Struct
+		{
+			uint32 to_mob_id;
+			uint32 from_mob_id;
 		};
 
 		/*
@@ -1878,6 +1883,16 @@ namespace Web
 			uint32 player_id;
 		};
 
+		struct ClickObjectAction_Struct
+		{
+			uint32 player_id;
+			uint32 drop_id;
+			uint32 open;
+			uint32 type;
+			uint32 icon;
+			char object_name[64];
+		};
+
 		struct Shielding_Struct
 		{
 			uint32 target_id;
@@ -1964,6 +1979,11 @@ namespace Web
 		{
 			uint8 doorid;
 			uint8 action;
+		};
+
+		struct ControlBoat_Struct {
+			uint32	boat_id;
+			bool	take_control;
 		};
 
 		struct BecomeNPC_Struct
@@ -2086,6 +2106,11 @@ namespace Web
 			uint32 link_hash;
 		};
 
+		struct ItemVerifyRequest_Struct {
+			int32	slot;
+			uint32	target;
+		};
+
 		/*
 		 *  Client to server packet
 		 */
@@ -2144,6 +2169,11 @@ namespace Web
 			uint32 entityid;
 			float distance;
 			struct Track_Struct *next;
+		};
+
+		struct TrackTarget_Struct
+		{
+			uint32 entityid;
 		};
 
 		struct Tracking_Struct
@@ -2914,9 +2944,8 @@ namespace Web
 		{
 		};
 
-		struct GMtoggle_Struct
+		struct GMToggle_Struct
 		{
-
 			uint32 toggle;
 		};
 
@@ -3319,6 +3348,25 @@ namespace Web
 			char *remote_addr;
 			uint32_t remote_ip;
 			uint32_t remote_port;
+		};
+
+		struct Zero_Struct
+		{
+		};
+
+		struct Int_Struct
+		{
+			int32_t value;
+		};
+
+		struct Bool_Struct
+		{
+			bool value;
+		};
+
+		struct String_Struct
+		{
+			char *value;
 		};
 
 #ifdef __cplusplus
