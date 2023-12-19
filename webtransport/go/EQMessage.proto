@@ -2848,7 +2848,30 @@ enum OpCodes {
   OP_Weather = 561 [(messageType) = "eq.Weather"];
   OP_ZoneChange = 579 [(messageType) = "eq.ZoneChange"];
   OP_ZoneInUnknown = 583 [(messageType) = "eq.ZoneInUnknown"];
-
+  OP_AcceptNewTask = 6 [(messageType) = "eq.AcceptNewTask"];
+  OP_AdventureInfo = 14 [(messageType) = "eq.AdventureInfo"];
+  OP_ApplyPoison = 39 [(messageType) = "eq.ApplyPoison"];
+  OP_ApproveWorld = 41 [(messageType) = "eq.ApproveWorld"];
+  OP_Bandolier = 50 [(messageType) = "eq.BandolierItem"];
+  OP_BazaarSearch = 55 [(messageType) = "eq.BazaarSearch"];
+  OP_BecomeCorpse = 56 [(messageType) = "eq.BecomeCorpse"];
+  OP_CancelTask = 71 [(messageType) = "eq.CancelTask"];
+  OP_Command = 99 [(messageType) = "eq.PetCommand"];
+  OP_DynamicWall = 136 [(messageType) = "eq.DynamicWall"];
+  OP_GuildsList = 245 [(messageType) = "eq.GuildsListEntry"];
+  OP_LFGuild = 295 [(messageType) = "eq.LFGuild_SearchPlayer"];
+  OP_LoadSpellSet = 300 [(messageType) = "eq.LoadSpellSet"];
+  OP_LogServer = 312 [(messageType) = "eq.LogServer"];
+  OP_MOTD = 345 [(messageType) = "eq.GuildMOTD"];
+  OP_OnLevelMessage = 356 [(messageType) = "eq.OnLevelMessage"];
+  OP_PlayMP3 = 387 [(messageType) = "eq.PlayMP3"];
+  OP_PotionBelt = 392 [(messageType) = "eq.PotionBeltItem"];
+  OP_PVPStats = 399 [(messageType) = "eq.PVPStatsEntry"];
+  OP_Report = 422 [(messageType) = "eq.BugReport"];
+  OP_SpecialMesg = 503 [(messageType) = "eq.SpecialMesg"];
+  OP_TaskActivity = 515 [(messageType) = "eq.TaskActivity"];
+  OP_TaskDescription = 517 [(messageType) = "eq.TaskDescription"];
+  OP_ZoneUnavail = 588 [(messageType) = "eq.ZoneUnavail"];
 
   ////////////////////
   // Nested Structs //
@@ -2869,11 +2892,9 @@ enum OpCodes {
   OP_ExploreUnknown = 1;
   OP_0x0193 = 2;
   OP_0x0347 = 3;
-  OP_AcceptNewTask = 6;
   OP_Action2 = 9;
   OP_AddNimbusEffect = 10;
   OP_AdventureDetails = 12;
-  OP_AdventureInfo = 14;
   OP_AdventureLeaderboardReply = 16;
   OP_AdventureLeaderboardRequest = 17;
   OP_AdventureMerchantResponse = 20;
@@ -2891,22 +2912,16 @@ enum OpCodes {
   OP_AltCurrencyReclaim = 34;
   OP_AltCurrencySell = 35;
   OP_AltCurrencySellSelection = 36;
-  OP_ApplyPoison = 39;
   OP_ApproveName = 40;
-  OP_ApproveWorld = 41;
   OP_AssistGroup = 44;
   OP_AugmentInfo = 45;
   OP_AutoFire = 49;
-  OP_Bandolier = 50;
   OP_Barter = 52;
-  OP_BazaarSearch = 55;
-  OP_BecomeCorpse = 56;
   OP_BlockedBuffs = 61;
   OP_BookButton = 63;
   OP_BuffCreate = 65;
   OP_BuffRemoveRequest = 66;
   OP_CancelSneakHide = 70;
-  OP_CancelTask = 71;
   OP_CashReward = 73;
   OP_ChangeSize = 75;
   OP_CharacterCreate = 77;
@@ -2919,7 +2934,6 @@ enum OpCodes {
   OP_ClearSurname = 87;
   OP_ClientTimeStamp = 93;
   OP_CloseTributeMaster = 96;
-  OP_Command = 99;
   OP_CorpseDrag = 109;
   OP_CorpseDrop = 110;
   OP_CrystalCountUpdate = 112;
@@ -2935,7 +2949,6 @@ enum OpCodes {
   OP_DisciplineUpdate = 129;
   OP_DiscordMerchantInventory = 130;
   OP_DoGroupLeadershipAbility = 131;
-  OP_DynamicWall = 136;
   OP_DzAddPlayer = 137;
   OP_DzChooseZone = 138;
   OP_DzChooseZoneReply = 139;
@@ -2984,7 +2997,6 @@ enum OpCodes {
   OP_GuildManageBanker = 234;
   OP_GuildMemberLevelUpdate = 237;
   OP_GuildPromote = 242;
-  OP_GuildsList = 245;
   OP_GuildStatus = 246;
   OP_GuildUpdateURLAndChannel = 248;
   OP_HideCorpse = 252;
@@ -3006,12 +3018,10 @@ enum OpCodes {
   OP_LFGGetMatchesRequest = 292;
   OP_LFGGetMatchesResponse = 293;
   OP_LFGResponse = 294;
-  OP_LFGuild = 295;
   OP_LFPCommand = 296;
   OP_LFPGetMatchesRequest = 297;
   OP_LFPGetMatchesResponse = 298;
   OP_LinkedReuse = 299;
-  OP_LoadSpellSet = 300;
   OP_LocInfo = 301;
   OP_LockoutTimerInfo = 302;
   OP_Login = 303;
@@ -3020,7 +3030,6 @@ enum OpCodes {
   OP_LoginUnknown1 = 308;
   OP_LoginUnknown2 = 309;
   OP_LogoutReply = 311;
-  OP_LogServer = 312;
   OP_MarkNPC = 318;
   OP_MarkRaidNPC = 319;
   OP_Marquee = 320;
@@ -3040,13 +3049,11 @@ enum OpCodes {
   OP_MercenaryUnknown1 = 336;
   OP_MercenaryUnsuspendResponse = 337;
   OP_MobUpdate = 342;
-  OP_MOTD = 345;
   OP_MoveMultipleItems = 349;
   OP_MoveLogDisregard = 350;
   OP_MoveLogRequest = 351;
   OP_MultiLineMsg = 352;
   OP_NewTitlesAvailable = 354;
-  OP_OnLevelMessage = 356;
   OP_OpenContainer = 357;
   OP_OpenDiscordMerchant = 358;
   OP_OpenInventory = 360;
@@ -3059,18 +3066,15 @@ enum OpCodes {
   OP_PetitionSearchText = 378;
   OP_PlayerStateAdd = 383;
   OP_PlayerStateRemove = 384;
-  OP_PlayMP3 = 387;
   OP_Poll = 388;
   OP_PollResponse = 389;
   OP_PopupResponse = 390;
   OP_PostEnterWorld = 391;
-  OP_PotionBelt = 392;
   OP_PreLogoutReply = 393;
   OP_PVPLeaderBoardDetailsReply = 395;
   OP_PVPLeaderBoardDetailsRequest = 396;
   OP_PVPLeaderBoardReply = 397;
   OP_PVPLeaderBoardRequest = 398;
-  OP_PVPStats = 399;
   OP_QueryResponseThing = 400;
   OP_QueryUCSServerStatus = 401;
   OP_RaidDelegateAbility = 402;
@@ -3083,7 +3087,6 @@ enum OpCodes {
   OP_RemoveBlockedBuffs = 419;
   OP_RemoveNimbusEffect = 420;
   OP_RemoveTrap = 421;
-  OP_Report = 422;
   OP_RequestKnowledgeBase = 427;
   OP_RespawnWindow = 429;
   OP_RestState = 431;
@@ -3120,12 +3123,9 @@ enum OpCodes {
   OP_Some6ByteHPUpdate = 497;
   OP_Sound = 499;
   OP_SpawnPositionUpdate = 502;
-  OP_SpecialMesg = 503;
   OP_TargetBuffs = 510;
   OP_TargetHoTT = 512;
-  OP_TaskActivity = 515;
   OP_TaskActivityComplete = 516;
-  OP_TaskDescription = 517;
   OP_TaskHistoryReply = 518;
   OP_TaskHistoryRequest = 519;
   OP_TaskRequestTimer = 520;
@@ -3159,7 +3159,6 @@ enum OpCodes {
   OP_ZoneGuildList = 582;
   OP_ZonePlayerToBind = 584;
   OP_ZoneServerReady = 586;
-  OP_ZoneUnavail = 588;
   OP_ResetAA = 589;
   OP_UnderWorld = 590;
 }

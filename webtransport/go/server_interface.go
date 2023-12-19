@@ -330,6 +330,80 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 	case OpCodes_OP_ZoneInUnknown:
 		return tie((*C.struct_ZoneInUnknown_Struct)(structPtr))
 
+	case OpCodes_OP_AcceptNewTask:
+		return tie((*C.struct_AcceptNewTask_Struct)(structPtr))
+
+	case OpCodes_OP_AdventureInfo:
+		return tie((*C.struct_AdventureInfo)(structPtr))
+
+	case OpCodes_OP_ApplyPoison:
+		return tie((*C.struct_ApplyPoison_Struct)(structPtr))
+
+	case OpCodes_OP_ApproveWorld:
+		return tie((*C.struct_ApproveWorld_Struct)(structPtr))
+
+	case OpCodes_OP_Bandolier:
+		return tie((*C.struct_BandolierItem_Struct)(structPtr))
+
+	case OpCodes_OP_BazaarSearch:
+		return tie((*C.struct_BazaarSearch_Struct)(structPtr))
+
+	case OpCodes_OP_BecomeCorpse:
+		return tie((*C.struct_BecomeCorpse_Struct)(structPtr))
+
+	case OpCodes_OP_CancelTask:
+		return tie((*C.struct_CancelTask_Struct)(structPtr))
+
+	case OpCodes_OP_Command:
+		return tie((*C.struct_PetCommand_Struct)(structPtr))
+
+	case OpCodes_OP_DynamicWall:
+		return tie((*C.struct_DynamicWall_Struct)(structPtr))
+
+	case OpCodes_OP_GuildsList:
+		return tie((*C.struct_GuildsListEntry_Struct)(structPtr))
+
+	case OpCodes_OP_LFGuild:
+		return tie((*C.struct_LFGuild_SearchPlayer_Struct)(structPtr))
+
+	case OpCodes_OP_LoadSpellSet:
+		return tie((*C.struct_LoadSpellSet_Struct)(structPtr))
+
+	case OpCodes_OP_Login:
+		return tie((*C.struct_LoginInfo_Struct)(structPtr))
+
+	case OpCodes_OP_LogServer:
+		return tie((*C.struct_LogServer_Struct)(structPtr))
+
+	case OpCodes_OP_MOTD:
+		return tie((*C.struct_GuildMOTD_Struct)(structPtr))
+
+	case OpCodes_OP_OnLevelMessage:
+		return tie((*C.struct_OnLevelMessage_Struct)(structPtr))
+
+	case OpCodes_OP_PlayMP3:
+		return tie((*C.struct_PlayMP3_Struct)(structPtr))
+
+	case OpCodes_OP_PotionBelt:
+		return tie((*C.struct_PotionBeltItem_Struct)(structPtr))
+
+	case OpCodes_OP_PVPStats:
+		return tie((*C.struct_PVPStatsEntry_Struct)(structPtr))
+
+	case OpCodes_OP_Report:
+		return tie((*C.struct_BugReport_Struct)(structPtr))
+
+	case OpCodes_OP_SpecialMesg:
+		return tie((*C.struct_SpecialMesg_Struct)(structPtr))
+
+	case OpCodes_OP_TaskActivity:
+		return tie((*C.struct_TaskActivity_Struct)(structPtr))
+
+	case OpCodes_OP_TaskDescription:
+		return tie((*C.struct_TaskDescription_Struct)(structPtr))
+
+	case OpCodes_OP_ZoneUnavail:
+		return tie((*C.struct_ZoneUnavail_Struct)(structPtr))
 	// Nested structs
 	case OpCodes_Nested_WorldServer:
 		return tie((*C.struct_WebLoginWorldServer_Struct)(structPtr))

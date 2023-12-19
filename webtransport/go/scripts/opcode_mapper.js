@@ -179,7 +179,41 @@ for (const line of opcodes) {
     }
 }
 
+const unhandled = fs.readFileSync('./unhandled.txt').toString().split('\n');
+const unhandledOpLines = []
+const unhandledLines = []
+for (const op1 of unhandled) {
+    const [, op] = /OP_(\w+)/.exec(op1);
+    const [, withPref] = /(OP_\w+)/.exec(op1);
+    let mapped
+    if (mapped = structs.find(o => o.name.includes(op))) {
+        unhandledOpLines.push(`${withPref} = ${findOp(withPref)} [(messageType) = "eq.${mapped.name.replace('_Struct', '')}"];`)
+
+        unhandledLines.push(`
+                case OpCodes_${op}:
+                    return tie((*C.struct_${mapped.name})(structPtr))`)
+        protomessage += `message ${mapped.name.replace('_Struct', '')} {
+            `
+        for (const [idx, field] of Object.entries(mapped.fields)) {
+            if (field.name === 'next' && field.repeated) {
+                continue;
+            }
+            protomessage += `${field.repeated ? 'repeated ' : ''}${getType(field.type)} ${field.name} = ${+idx + 1};
+            `
+        }
+        protomessage += `
+        }
+        
+        `
+
+    }
+}
+
+
 fs.writeFileSync('./protomap.proto', opLines.join('\n'))
 fs.writeFileSync('./out.txt', outLines.join('\n'))
 fs.writeFileSync('./in.txt', inLines.join('\n'))
+fs.writeFileSync('./unmapped.txt', unhandledLines.join('\n'))
+fs.writeFileSync('./unmapped-proto.txt', protomessage)
+fs.writeFileSync('./unmapped-op.txt', unhandledOpLines.join('\n'))
 const r = 123;
