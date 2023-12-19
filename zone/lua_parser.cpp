@@ -168,7 +168,14 @@ const char *LuaEvents[_LargestEventID] = {
 	"event_memorize_spell",
 	"event_unmemorize_spell",
 	"event_scribe_spell",
-	"event_unscribe_spell"
+	"event_unscribe_spell",
+	"event_loot_added",
+	"event_ldon_points_gain",
+	"event_ldon_points_loss",
+	"event_alt_currency_gain",
+	"event_alt_currency_loss",
+	"event_crystal_gain",
+	"event_crystal_loss"
 };
 
 extern Zone *zone;
@@ -226,6 +233,7 @@ LuaParser::LuaParser() {
 	NPCArgumentDispatch[EVENT_DESPAWN_ZONE]    = handle_npc_despawn_zone;
 	NPCArgumentDispatch[EVENT_DAMAGE_GIVEN]    = handle_npc_damage;
 	NPCArgumentDispatch[EVENT_DAMAGE_TAKEN]    = handle_npc_damage;
+	NPCArgumentDispatch[EVENT_LOOT_ADDED]      = handle_npc_loot_added;
 
 	PlayerArgumentDispatch[EVENT_SAY]                        = handle_player_say;
 	PlayerArgumentDispatch[EVENT_ENVIRONMENTAL_DAMAGE]       = handle_player_environmental_damage;
@@ -300,6 +308,12 @@ LuaParser::LuaParser() {
 	PlayerArgumentDispatch[EVENT_UNMEMORIZE_SPELL]           = handle_player_memorize_scribe_spell;
 	PlayerArgumentDispatch[EVENT_SCRIBE_SPELL]               = handle_player_memorize_scribe_spell;
 	PlayerArgumentDispatch[EVENT_UNSCRIBE_SPELL]             = handle_player_memorize_scribe_spell;
+	PlayerArgumentDispatch[EVENT_LDON_POINTS_GAIN]           = handle_player_ldon_points_gain_loss;
+	PlayerArgumentDispatch[EVENT_LDON_POINTS_LOSS]           = handle_player_ldon_points_gain_loss;
+	PlayerArgumentDispatch[EVENT_ALT_CURRENCY_GAIN]          = handle_player_alt_currency_gain_loss;
+	PlayerArgumentDispatch[EVENT_ALT_CURRENCY_LOSS]          = handle_player_alt_currency_gain_loss;
+	PlayerArgumentDispatch[EVENT_CRYSTAL_GAIN]               = handle_player_crystal_gain_loss;
+	PlayerArgumentDispatch[EVENT_CRYSTAL_LOSS]               = handle_player_crystal_gain_loss;
 
 	ItemArgumentDispatch[EVENT_ITEM_CLICK]      = handle_item_click;
 	ItemArgumentDispatch[EVENT_ITEM_CLICK_CAST] = handle_item_click;
@@ -341,6 +355,8 @@ LuaParser::LuaParser() {
 	BotArgumentDispatch[EVENT_UNEQUIP_ITEM_BOT] = handle_bot_equip_item;
 	BotArgumentDispatch[EVENT_DAMAGE_GIVEN]     = handle_bot_damage;
 	BotArgumentDispatch[EVENT_DAMAGE_TAKEN]     = handle_bot_damage;
+	BotArgumentDispatch[EVENT_LEVEL_UP]         = handle_bot_level_up;
+	BotArgumentDispatch[EVENT_LEVEL_DOWN]       = handle_bot_level_down;
 #endif
 
 	L = nullptr;

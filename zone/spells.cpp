@@ -402,7 +402,7 @@ bool Mob::DoCastSpell(uint16 spell_id, uint16 target_id, CastingSlot slot,
 		}
 	}
 	//must use SPA 415 with focus (SPA 127/500/501) to reduce item recast
-	else if (cast_time && IsClient() && slot == CastingSlot::Item && item_slot != 0xFFFFFFFF) {
+	else if (cast_time && IsOfClientBot() && slot == CastingSlot::Item && item_slot != 0xFFFFFFFF) {
 		orgcasttime = cast_time;
 		if (cast_time) {
 			cast_time = GetActSpellCasttime(spell_id, cast_time);
@@ -1094,7 +1094,7 @@ bool Client::CheckFizzle(uint16 spell_id)
 	float diff = par_skill + static_cast<float>(spells[spell_id].base_difficulty) - act_skill;
 
 	// if you have high int/wis you fizzle less, you fizzle more if you are stupid
-	if(GetClass() == BARD)
+	if(GetClass() == Class::Bard)
 	{
 		diff -= (GetCHA() - 110) / 20.0;
 	}
@@ -1381,7 +1381,7 @@ void Mob::CastedSpellFinished(uint16 spell_id, uint32 target_id, CastingSlot slo
 	Mob *spell_target = entity_list.GetMob(target_id);
 	// here we do different things if this is a bard casting a bard song from
 	// a spell bar slot
-	if(GetClass() == BARD) // bard's can move when casting any spell...
+	if(GetClass() == Class::Bard) // bard's can move when casting any spell...
 	{
 		if (IsBardSong(spell_id) && slot < CastingSlot::MaxGems) {
 			if (spells[spell_id].buff_duration == 0xFFFF) {
@@ -1643,6 +1643,10 @@ void Mob::CastedSpellFinished(uint16 spell_id, uint32 target_id, CastingSlot slo
 	{
 		DeleteChargeFromSlot = GetItemSlotToConsumeCharge(spell_id, inventory_slot);
 	}
+	if (IsBot() && slot == CastingSlot::Item && inventory_slot != 0xFFFFFFFF)	// 10 is an item
+	{
+		DeleteChargeFromSlot = GetItemSlotToConsumeCharge(spell_id, inventory_slot);
+	}
 	// we're done casting, now try to apply the spell
 	if(!SpellFinished(spell_id, spell_target, slot, mana_used, inventory_slot, resist_adjust, false,-1, 0xFFFFFFFF, 0, true))
 	{
@@ -1661,8 +1665,22 @@ void Mob::CastedSpellFinished(uint16 spell_id, uint32 target_id, CastingSlot slo
 
 	TryTriggerOnCastFocusEffect(focusTriggerOnCast, spell_id);
 
-	if (DeleteChargeFromSlot >= 0) {
+	if (IsClient() && DeleteChargeFromSlot >= 0) {
 		CastToClient()->DeleteItemInInventory(DeleteChargeFromSlot, 1, true);
+	}
+	else if (IsBot() && DeleteChargeFromSlot >= 0) {
+		EQ::ItemInstance* inst = CastToBot()->GetBotItem(DeleteChargeFromSlot);
+		if (inst) {
+			inst->SetCharges((inst->GetCharges() - 1));
+			if (!database.botdb.SaveItemBySlot(CastToBot(), DeleteChargeFromSlot, inst)) {
+				GetOwner()->Message(Chat::Red, "%s says, 'Failed to save item [%i] slot [%i] for [%s].", inst->GetID(), DeleteChargeFromSlot, GetCleanName());
+				return;
+			}
+		}
+		else {
+			GetOwner()->Message(Chat::Red, "%s says, 'Failed to update item charges.", GetCleanName());
+			LogError("Failed to update item charges for {}.", GetCleanName());
+		}
 	}
 
 	//
@@ -1938,7 +1956,7 @@ bool Mob::DetermineSpellTargets(uint16 spell_id, Mob *&spell_target, Mob *&ae_ce
 						return false;
 					}
 
-					if(spell_target->GetClass() != LDON_TREASURE)
+					if(spell_target->GetClass() != Class::LDoNTreasure)
 					{
 						LogSpells("Spell [{}] canceled: invalid target (normal)", spell_id);
 						MessageString(Chat::Red,SPELL_NEED_TAR);
@@ -2301,11 +2319,18 @@ bool Mob::SpellFinished(uint16 spell_id, Mob *spell_target, CastingSlot slot, in
 		return false;
 
 	//Death Touch targets the pet owner instead of the pet when said pet is tanking.
-	if ((RuleB(Spells, CazicTouchTargetsPetOwner) && spell_target && spell_target->HasOwner()) && (spell_id == SPELL_CAZIC_TOUCH || spell_id == SPELL_TOUCH_OF_VINITRAS)) {
-		Mob* owner =  spell_target->GetOwner();
+	if ((RuleB(Spells, CazicTouchTargetsPetOwner) && spell_target && spell_target->HasOwner()) && !spell_target->IsBot() && (spell_id == SPELL_CAZIC_TOUCH || spell_id == SPELL_TOUCH_OF_VINITRAS)) {
+		Mob* owner = spell_target->GetOwner();
 
 		if (owner) {
 			spell_target = owner;
+		}
+	}
+
+	if ((RuleB(Bots, CazicTouchBotsOwner) && spell_target && spell_target->IsBot()) && spell_id == (SPELL_CAZIC_TOUCH || spell_id == SPELL_TOUCH_OF_VINITRAS)) {
+		auto bot_owner = spell_target->GetOwner();
+		if (bot_owner) {
+			spell_target = bot_owner;
 		}
 	}
 
@@ -2687,7 +2712,7 @@ bool Mob::SpellFinished(uint16 spell_id, Mob *spell_target, CastingSlot slot, in
 			}
 		}
 		//handle bard AA and Discipline recast timers when singing
-		if (GetClass() == BARD && spell_id != casting_spell_id && timer != 0xFFFFFFFF) {
+		if (GetClass() == Class::Bard && spell_id != casting_spell_id && timer != 0xFFFFFFFF) {
 			CastToClient()->GetPTimers().Start(timer, timer_duration);
 			LogSpells("Spell [{}]: Setting BARD custom reuse timer [{}] to [{}]", spell_id, casting_spell_timer, casting_spell_timer_duration);
 		}
@@ -2731,6 +2756,18 @@ bool Mob::SpellFinished(uint16 spell_id, Mob *spell_target, CastingSlot slot, in
 	*/
 	if(IsClient() && (slot == CastingSlot::Item || slot == CastingSlot::PotionBelt)){
 		CastToClient()->SetItemRecastTimer(spell_id, inventory_slot);
+	}
+	else if (IsBot() && CastToBot()->GetIsUsingItemClick() && slot == CastingSlot::Item) {
+		EQ::ItemInstance* inst = CastToBot()->GetBotItem(inventory_slot);
+		const EQ::ItemData* item = nullptr;
+		if (inst && inst->GetItem()) {
+			item = inst->GetItem();
+			CastToBot()->SetItemReuseTimer(item->ID);
+			CastToBot()->SetIsUsingItemClick(false);
+		}
+		else {
+			GetOwner()->Message(Chat::Red, "%s says, 'Failed to set item reuse timer for %s.", GetCleanName());
+		}
 	}
 
 	if (IsNPC()) {
@@ -3143,8 +3180,8 @@ int Mob::CheckStackConflict(uint16 spellid1, int caster_level1, uint16 spellid2,
 		if(effect1 != effect2)
 			continue;
 
-		if (IsBardOnlyStackEffect(effect1) && GetSpellLevel(spellid1, BARD) != 255 &&
-			GetSpellLevel(spellid2, BARD) != 255)
+		if (IsBardOnlyStackEffect(effect1) && GetSpellLevel(spellid1, Class::Bard) != 255 &&
+			GetSpellLevel(spellid2, Class::Bard) != 255)
 			continue;
 
 		// big ol' list according to the client, wasn't that nice!
@@ -3848,7 +3885,7 @@ bool Mob::SpellOnTarget(
 	// Prevent double invising, which made you uninvised
 	// Not sure if all 3 should be stacking
 	//This is not live like behavior (~Kayen confirmed 2/2/22)
-	if (!RuleB(Spells, AllowDoubleInvis)) {
+	if (!RuleB(Spells, AllowDoubleInvis) && !IsActiveBardSong(spell_id)) {
 		if (IsEffectInSpell(spell_id, SE_Invisibility)) {
 			if (spelltar->invisible) {
 				spelltar->MessageString(Chat::SpellFailure, ALREADY_INVIS, GetCleanName());
@@ -5811,7 +5848,7 @@ std::unordered_map<uint32, std::vector<uint16>> Client::LoadSpellGroupCache(uint
 		m_pp.class_, min_level, max_level
 	);
 
-	auto results = database.QueryDatabase(query);
+	auto results = content_db.QueryDatabase(query);
 	if (!results.Success() || !results.RowCount()) {
 		return spell_group_cache;
 	}
@@ -6199,7 +6236,7 @@ bool Mob::UseBardSpellLogic(uint16 spell_id, int slot)
 	(
 		IsValidSpell(spell_id) &&
 		slot != -1 &&
-		GetClass() == BARD &&
+		GetClass() == Class::Bard &&
 		slot <= EQ::spells::SPELL_GEM_COUNT &&
 		IsBardSong(spell_id)
 	);
@@ -6964,7 +7001,11 @@ void Mob::DoBardCastingFromItemClick(bool is_casting_bard_song, uint32 cast_time
 	}
 
 	if (cast_time != 0) {
-		CastSpell(spell_id, target_id, CastingSlot::Item, cast_time, 0, 0, item_slot);
+		if (!CastSpell(spell_id, target_id, CastingSlot::Item, cast_time, 0, 0, item_slot)) {
+			if (IsBot()) {
+				GetOwner()->Message(Chat::Red, "%s says, 'Casting failed for %s. This could be due to zone restrictions, target restrictions or other limiting factors.", GetCleanName(), CastToBot()->GetBotItem(item_slot)->GetItem()->Name);
+			}
+		}
 	}
 	//Instant cast items do not stop bard songs or interrupt casting.
 	else if (CheckItemRaceClassDietyRestrictionsOnCast(item_slot) && DoCastingChecksOnCaster(spell_id, CastingSlot::Item)) {
@@ -6972,6 +7013,25 @@ void Mob::DoBardCastingFromItemClick(bool is_casting_bard_song, uint32 cast_time
 		if (SpellFinished(spell_id, entity_list.GetMob(target_id), CastingSlot::Item, 0, item_slot)) {
 			if (IsClient() && DeleteChargeFromSlot >= 0) {
 				CastToClient()->DeleteItemInInventory(DeleteChargeFromSlot, 1, true);
+			}
+			else if (IsBot() && DeleteChargeFromSlot >= 0) {
+				EQ::ItemInstance* inst = CastToBot()->GetBotItem(DeleteChargeFromSlot);
+				if (inst) {
+					inst->SetCharges((inst->GetCharges() - 1));
+					if (!database.botdb.SaveItemBySlot(CastToBot(), DeleteChargeFromSlot, inst)) {
+						GetOwner()->Message(Chat::Red, "%s says, 'Failed to save item [%i] slot [%i] for [%s].", inst->GetID(), DeleteChargeFromSlot, GetCleanName());
+						return;
+					}
+				}
+				else {
+					GetOwner()->Message(Chat::Red, "%s says, 'Failed to update item charges.", GetCleanName());
+					LogError("Failed to update item charges for {}.", GetCleanName());
+				}
+			}
+		}
+		else {
+			if (IsBot()) {
+				GetOwner()->Message(Chat::Red, "%s says, 'Casting failed for %s. This could be due to zone restrictions, target restrictions or other limiting factors.", GetCleanName(), CastToBot()->GetBotItem(item_slot)->GetItem()->Name);
 			}
 		}
 	}
@@ -6981,12 +7041,17 @@ int16 Mob::GetItemSlotToConsumeCharge(int32 spell_id, uint32 inventory_slot)
 {
 	int16 DeleteChargeFromSlot = -1;
 
-	if (!IsClient() || inventory_slot == 0xFFFFFFFF) {
+	if (!IsOfClientBot() || inventory_slot == 0xFFFFFFFF) {
 		return DeleteChargeFromSlot;
 	}
 
 	EQ::ItemInstance *item = nullptr;
-	item = CastToClient()->GetInv().GetItem(inventory_slot);
+	if (IsClient()) {
+		item = CastToClient()->GetInv().GetItem(inventory_slot);
+	}
+	else if (IsBot()) {
+		item = CastToBot()->GetBotItem(inventory_slot);
+	}
 
 	bool fromaug = false;
 	EQ::ItemData* augitem = nullptr;
@@ -7029,7 +7094,12 @@ int16 Mob::GetItemSlotToConsumeCharge(int32 spell_id, uint32 inventory_slot)
 	}
 	else{
 		LogSpells("Item used to cast spell [{}] was missing from inventory slot [{}] after casting!", spell_id, inventory_slot);
-		Message(Chat::Red, "Casting Error: Active casting item not found in inventory slot %i", inventory_slot);
+		if (IsClient()) {
+			Message(Chat::Red, "Casting Error: Active casting item not found in inventory slot %i", inventory_slot);
+		}
+		else if (IsBot()) {
+			CastToBot()->GetOwner()->Message(Chat::Red, "Casting Error: Active casting item not found in inventory slot %i for %s", inventory_slot, GetCleanName());
+		}
 		InterruptSpell();
 		return DeleteChargeFromSlot;
 	}

@@ -46,7 +46,7 @@ void EntityList::DescribeAggro(Client *to_who, NPC *from_who, float d, bool verb
 	);
 
 	bool is_engaged = from_who->IsEngaged();
-	bool will_aggro_npcs = from_who->WillAggroNPCs();
+	bool will_aggro_npcs = from_who->GetNPCAggro();
 	if (is_engaged) {
 		Mob *top = from_who->GetHateTop();
 		to_who->Message(
@@ -678,7 +678,7 @@ bool Mob::IsAttackAllowed(Mob *target, bool isSpellAttack)
 
 	if(!isSpellAttack)
 	{
-		if(GetClass() == LDON_TREASURE)
+		if(GetClass() == Class::LDoNTreasure)
 		{
 			return false;
 		}
@@ -1070,10 +1070,10 @@ bool Mob::CombatRange(Mob* other, float fixed_size_mod, bool aeRampage, ExtraAtt
 			SetPseudoRoot(false);
 		}
 	}
-	
+
 	if (aeRampage) {
 		float aeramp_size = RuleR(Combat, AERampageMaxDistance);
-		
+
 		LogCombatDetail("AERampage: Default - aeramp_size = [{}] ", aeramp_size);
 
 		if (opts) {
@@ -1093,7 +1093,7 @@ bool Mob::CombatRange(Mob* other, float fixed_size_mod, bool aeRampage, ExtraAtt
 
 		LogCombatDetail("AE Rampage: ramp_range = [{}] -- (size_mod [{}] * aeramp_size [{}])", ramp_range, size_mod, aeramp_size);
 		LogCombatDetail("AE Rampage: _DistNoRoot [{}] <= ramp_range [{}]", _DistNoRoot, ramp_range);
-		
+
 		if (_DistNoRoot <= ramp_range) {
 			LogCombatDetail("AE Rampage: Combat Distance returned [true]");
 			return true;

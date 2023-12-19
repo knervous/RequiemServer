@@ -1211,7 +1211,24 @@ void Lua_Client::AddPVPPoints(uint32 points) {
 
 void Lua_Client::AddCrystals(uint32 radiant, uint32 ebon) {
 	Lua_Safe_Call_Void();
-	self->AddCrystals(radiant, ebon);
+
+	if (ebon != 0) {
+		if (ebon > 0) {
+			self->AddEbonCrystals(ebon);
+			return;
+		}
+
+		self->RemoveEbonCrystals(ebon);
+	}
+
+	if (radiant != 0) {
+		if (radiant > 0) {
+			self->AddRadiantCrystals(radiant);
+			return;
+		}
+
+		self->RemoveRadiantCrystals(radiant);
+	}
 }
 
 void Lua_Client::SetEbonCrystals(uint32 value) {
@@ -1486,15 +1503,15 @@ void Lua_Client::Signal(int signal_id) {
 
 void Lua_Client::AddAlternateCurrencyValue(uint32 currency, int amount) {
 	Lua_Safe_Call_Void();
-	self->AddAlternateCurrencyValue(currency, amount, 1);
+	self->AddAlternateCurrencyValue(currency, amount, true);
 }
 
-void Lua_Client::SetAlternateCurrencyValue(uint32 currency, int amount) {
+void Lua_Client::SetAlternateCurrencyValue(uint32 currency, uint32 amount) {
 	Lua_Safe_Call_Void();
 	self->SetAlternateCurrencyValue(currency, amount);
 }
 
-int Lua_Client::GetAlternateCurrencyValue(uint32 currency) {
+uint32 Lua_Client::GetAlternateCurrencyValue(uint32 currency) {
 	Lua_Safe_Call_Int();
 	return self->GetAlternateCurrencyValue(currency);
 }
@@ -3176,6 +3193,30 @@ void Lua_Client::GrantAllAAPoints(uint8 unlock_level)
 	self->GrantAllAAPoints(unlock_level);
 }
 
+void Lua_Client::AddEbonCrystals(uint32 amount)
+{
+	Lua_Safe_Call_Void();
+	self->AddEbonCrystals(amount);
+}
+
+void Lua_Client::AddRadiantCrystals(uint32 amount)
+{
+	Lua_Safe_Call_Void();
+	self->AddRadiantCrystals(amount);
+}
+
+void Lua_Client::RemoveEbonCrystals(uint32 amount)
+{
+	Lua_Safe_Call_Void();
+	self->RemoveEbonCrystals(amount);
+}
+
+void Lua_Client::RemoveRadiantCrystals(uint32 amount)
+{
+	Lua_Safe_Call_Void();
+	self->RemoveRadiantCrystals(amount);
+}
+
 luabind::scope lua_register_client() {
 	return luabind::class_<Lua_Client, Lua_Mob>("Client")
 	.def(luabind::constructor<>())
@@ -3187,6 +3228,7 @@ luabind::scope lua_register_client() {
 	.def("AddEXP", (void(Lua_Client::*)(uint32))&Lua_Client::AddEXP)
 	.def("AddEXP", (void(Lua_Client::*)(uint32,int))&Lua_Client::AddEXP)
 	.def("AddEXP", (void(Lua_Client::*)(uint32,int,bool))&Lua_Client::AddEXP)
+	.def("AddEbonCrystals", (void(Lua_Client::*)(uint32))&Lua_Client::AddEbonCrystals)
 	.def("AddExpeditionLockout", (void(Lua_Client::*)(std::string, std::string, uint32))&Lua_Client::AddExpeditionLockout)
 	.def("AddExpeditionLockout", (void(Lua_Client::*)(std::string, std::string, uint32, std::string))&Lua_Client::AddExpeditionLockout)
 	.def("AddExpeditionLockoutDuration", (void(Lua_Client::*)(std::string, std::string, int))&Lua_Client::AddExpeditionLockoutDuration)
@@ -3202,6 +3244,7 @@ luabind::scope lua_register_client() {
 	.def("AddPlatinum", (void(Lua_Client::*)(uint32))&Lua_Client::AddPlatinum)
 	.def("AddPlatinum", (void(Lua_Client::*)(uint32,bool))&Lua_Client::AddPlatinum)
 	.def("AddPVPPoints", (void(Lua_Client::*)(uint32))&Lua_Client::AddPVPPoints)
+	.def("AddRadiantCrystals", (void(Lua_Client::*)(uint32))&Lua_Client::AddRadiantCrystals)
 	.def("AddSkill", (void(Lua_Client::*)(int,int))&Lua_Client::AddSkill)
 	.def("Admin", (int16(Lua_Client::*)(void))&Lua_Client::Admin)
 	.def("ApplySpell", (void(Lua_Client::*)(int))&Lua_Client::ApplySpell)
@@ -3303,7 +3346,7 @@ luabind::scope lua_register_client() {
 	.def("GetAccountFlags", (luabind::object(Lua_Client::*)(lua_State*))&Lua_Client::GetAccountFlags)
 	.def("GetAggroCount", (uint32(Lua_Client::*)(void))&Lua_Client::GetAggroCount)
 	.def("GetAllMoney", (uint64(Lua_Client::*)(void))&Lua_Client::GetAllMoney)
-	.def("GetAlternateCurrencyValue", (int(Lua_Client::*)(uint32))&Lua_Client::GetAlternateCurrencyValue)
+	.def("GetAlternateCurrencyValue", (uint32(Lua_Client::*)(uint32))&Lua_Client::GetAlternateCurrencyValue)
 	.def("GetAnon", (int(Lua_Client::*)(void))&Lua_Client::GetAnon)
 	.def("GetAugmentIDAt", (int(Lua_Client::*)(int,int))&Lua_Client::GetAugmentIDAt)
 	.def("GetAugmentIDsBySlotID", (luabind::object(Lua_Client::*)(lua_State* L,int16))&Lua_Client::GetAugmentIDsBySlotID)
@@ -3554,7 +3597,9 @@ luabind::scope lua_register_client() {
 	.def("ResetCastbarCooldownBySlot", (void(Lua_Client::*)(int))&Lua_Client::ResetCastbarCooldownBySlot)
 	.def("ResetCastbarCooldownBySpellID", (void(Lua_Client::*)(uint32))&Lua_Client::ResetCastbarCooldownBySpellID)
 	.def("ResetDisciplineTimer", (void(Lua_Client::*)(uint32))&Lua_Client::ResetDisciplineTimer)
+	.def("RemoveEbonCrystals", (void(Lua_Client::*)(uint32))&Lua_Client::RemoveEbonCrystals)
 	.def("ResetItemCooldown", (void(Lua_Client::*)(uint32))&Lua_Client::ResetItemCooldown)
+	.def("RemoveRadiantCrystals", (void(Lua_Client::*)(uint32))&Lua_Client::RemoveRadiantCrystals)
 	.def("ResetTrade", (void(Lua_Client::*)(void))&Lua_Client::ResetTrade)
 	.def("RewardFaction", (void(Lua_Client::*)(int,int))&Lua_Client::RewardFaction)
 	.def("Save", (void(Lua_Client::*)(int))&Lua_Client::Save)
@@ -3586,7 +3631,7 @@ luabind::scope lua_register_client() {
 	.def("SetAATitle", (void(Lua_Client::*)(std::string,bool))&Lua_Client::SetAATitle)
 	.def("SetAFK", (void(Lua_Client::*)(uint8))&Lua_Client::SetAFK)
 	.def("SetAccountFlag", (void(Lua_Client::*)(const std::string&,const std::string&))&Lua_Client::SetAccountFlag)
-	.def("SetAlternateCurrencyValue", (void(Lua_Client::*)(uint32,int))&Lua_Client::SetAlternateCurrencyValue)
+	.def("SetAlternateCurrencyValue", (void(Lua_Client::*)(uint32,uint32))&Lua_Client::SetAlternateCurrencyValue)
 	.def("SetAnon", (void(Lua_Client::*)(uint8))&Lua_Client::SetAnon)
 	.def("SetBaseClass", (void(Lua_Client::*)(int))&Lua_Client::SetBaseClass)
 	.def("SetBaseGender", (void(Lua_Client::*)(int))&Lua_Client::SetBaseGender)

@@ -210,6 +210,16 @@ void handle_npc_damage(
 	std::vector<std::any> *extra_pointers
 );
 
+void handle_npc_loot_added(
+	QuestInterface *parse,
+	lua_State* L,
+	NPC* npc,
+	Mob *init,
+	std::string data,
+	uint32 extra_data,
+	std::vector<std::any> *extra_pointers
+);
+
 // Player
 void handle_player_say(
 	QuestInterface *parse,
@@ -733,6 +743,33 @@ void handle_player_memorize_scribe_spell(
 	std::vector<std::any> *extra_pointers
 );
 
+void handle_player_ldon_points_gain_loss(
+	QuestInterface *parse,
+	lua_State* L,
+	Client* client,
+	std::string data,
+	uint32 extra_data,
+	std::vector<std::any> *extra_pointers
+);
+
+void handle_player_alt_currency_gain_loss(
+	QuestInterface *parse,
+	lua_State* L,
+	Client* client,
+	std::string data,
+	uint32 extra_data,
+	std::vector<std::any> *extra_pointers
+);
+
+void handle_player_crystal_gain_loss(
+	QuestInterface *parse,
+	lua_State* L,
+	Client* client,
+	std::string data,
+	uint32 extra_data,
+	std::vector<std::any> *extra_pointers
+);
+
 // Item
 void handle_item_click(
 	QuestInterface *parse,
@@ -1046,6 +1083,26 @@ void handle_bot_equip_item(
 );
 
 void handle_bot_damage(
+	QuestInterface *parse,
+	lua_State* L,
+	Bot* bot,
+	Mob* init,
+	std::string data,
+	uint32 extra_data,
+	std::vector<std::any> *extra_pointers
+);
+
+void handle_bot_level_up(
+	QuestInterface *parse,
+	lua_State* L,
+	Bot* bot,
+	Mob* init,
+	std::string data,
+	uint32 extra_data,
+	std::vector<std::any> *extra_pointers
+);
+
+void handle_bot_level_down(
 	QuestInterface *parse,
 	lua_State* L,
 	Bot* bot,

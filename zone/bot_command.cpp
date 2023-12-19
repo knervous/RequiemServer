@@ -84,8 +84,8 @@ namespace
 
 	enum { EffectIDFirst = 1, EffectIDLast = 12 };
 
-#define VALIDATECLASSID(x) ((x >= WARRIOR && x <= BERSERKER) ? (x) : (0))
-#define CLASSIDTOINDEX(x) ((x >= WARRIOR && x <= BERSERKER) ? (x - 1) : (0))
+#define VALIDATECLASSID(x) ((x >= Class::Warrior && x <= Class::Berserker) ? (x) : (0))
+#define CLASSIDTOINDEX(x) ((x >= Class::Warrior && x <= Class::Berserker) ? (x - 1) : (0))
 #define EFFECTIDTOINDEX(x) ((x >= EffectIDFirst && x <= EffectIDLast) ? (x - 1) : (0))
 #define AILMENTIDTOINDEX(x) ((x >= BCEnum::AT_Blindness && x <= BCEnum::AT_Corruption) ? (x - 1) : (0))
 #define RESISTANCEIDTOINDEX(x) ((x >= BCEnum::RT_Fire && x <= BCEnum::RT_Corruption) ? (x - 1) : (0))
@@ -196,7 +196,7 @@ public:
 
 			uint8 class_levels[16] = {0};
 			bool player_spell = false;
-			for (int class_type = WARRIOR; class_type <= BERSERKER; ++class_type) {
+			for (int class_type = Class::Warrior; class_type <= Class::Berserker; ++class_type) {
 				int class_index = CLASSIDTOINDEX(class_type);
 				if (spells[spell_id].classes[class_index] == 0 ||
 					spells[spell_id].classes[class_index] > HARD_LEVEL_CAP) {
@@ -489,7 +489,7 @@ public:
 			entry_prototype->target_type = target_type;
 
 			bcst_levels& bot_levels = bot_levels_map[entry_prototype->BCST()];
-			for (int class_type = WARRIOR; class_type <= BERSERKER; ++class_type) {
+			for (int class_type = Class::Warrior; class_type <= Class::Berserker; ++class_type) {
 				int class_index = CLASSIDTOINDEX(class_type);
 				if (!class_levels[class_index])
 					continue;
@@ -1119,7 +1119,7 @@ private:
 	}
 
 	static void helper_bots_string(BCEnum::SpType type_index, bcst_levels& bot_levels) {
-		for (int i = WARRIOR; i <= BERSERKER; ++i)
+		for (int i = Class::Warrior; i <= Class::Berserker; ++i)
 			required_bots_map_by_class[type_index][i] = "Unavailable...";
 
 		if (bot_levels.empty()) {
@@ -1375,6 +1375,7 @@ int bot_command_init(void)
 		bot_command_add("casterrange", "Controls the range casters will try to stay away from a mob (if too far, they will skip spells that are out-of-range)", AccountStatus::Player, bot_command_caster_range) ||
 		bot_command_add("charm", "Attempts to have a bot charm your target", AccountStatus::Player, bot_command_charm) ||
 		bot_command_add("circle", "Orders a Druid bot to open a magical doorway to a specified destination", AccountStatus::Player, bot_subcommand_circle) ||
+		bot_command_add("clickitem", "Orders your targeted bot to click the item in the provided inventory slot.", AccountStatus::Player, bot_command_click_item) ||
 		bot_command_add("cure", "Orders a bot to remove any ailments", AccountStatus::Player, bot_command_cure) ||
 		bot_command_add("defensive", "Orders a bot to use a defensive discipline", AccountStatus::Player, bot_command_defensive) ||
 		bot_command_add("depart", "Orders a bot to open a magical doorway to a specified destination", AccountStatus::Player, bot_command_depart) ||
@@ -1444,6 +1445,7 @@ int bot_command_init(void)
 		bot_command_add("summoncorpse", "Orders a bot to summon a corpse to its feet", AccountStatus::Player, bot_command_summon_corpse) ||
 		bot_command_add("suspend", "Suspends a bot's AI processing until released", AccountStatus::Player, bot_command_suspend) ||
 		bot_command_add("taunt", "Toggles taunt use by a bot", AccountStatus::Player, bot_command_taunt) ||
+		bot_command_add("timer", "Checks or clears timers of the chosen type.", AccountStatus::GMMgmt, bot_command_timer) ||
 		bot_command_add("track", "Orders a capable bot to track enemies", AccountStatus::Player, bot_command_track) ||
 		bot_command_add("viewcombos", "Views bot race class combinations", AccountStatus::Player, bot_command_view_combos) ||
 		bot_command_add("waterbreathing", "Orders a bot to cast a water breathing spell", AccountStatus::Player, bot_command_water_breathing)
@@ -2377,7 +2379,7 @@ namespace ActionableBots
 		else if (!ab_type_arg.compare("healrotationtargets")) {
 			ab_type = ABT_HealRotationTargets;
 		}
-		else if (!ab_type_arg.compare("byclass")) { 
+		else if (!ab_type_arg.compare("byclass")) {
 			ab_type = ABT_Class;
 		}
 		else if (!ab_type_arg.compare("byrace")) {
@@ -2730,9 +2732,9 @@ namespace ActionableBots
 
 	static void Filter_ByHighestPickLock(Client* bot_owner, std::list<Bot*>& sbl, float& pick_lock_value) {
 		sbl.remove_if([bot_owner](Bot* l) { return (!MyBots::IsMyBot(bot_owner, l)); });
-		sbl.remove_if([bot_owner](const Bot* l) { return (l->GetClass() != ROGUE && l->GetClass() != BARD); });
-		sbl.remove_if([bot_owner](const Bot* l) { return (l->GetClass() == ROGUE && l->GetLevel() < 5); });
-		sbl.remove_if([bot_owner](const Bot* l) { return (l->GetClass() == BARD && l->GetLevel() < 40); });
+		sbl.remove_if([bot_owner](const Bot* l) { return (l->GetClass() != Class::Rogue && l->GetClass() != Class::Bard); });
+		sbl.remove_if([bot_owner](const Bot* l) { return (l->GetClass() == Class::Rogue && l->GetLevel() < 5); });
+		sbl.remove_if([bot_owner](const Bot* l) { return (l->GetClass() == Class::Bard && l->GetLevel() < 40); });
 
 		ActionableBots::Filter_ByHighestSkill(bot_owner, sbl, EQ::skills::SkillPickLock, pick_lock_value);
 	}
@@ -2832,7 +2834,7 @@ void bot_command_aggressive(Client *c, const Seperator *sep)
 		}
 	}
 
-	c->Message(Chat::White, "%i of %i bots have used aggressive disciplines", success_count, candidate_count);
+	c->Message(Chat::White, "%i of %i bots have attempted to use aggressive disciplines", success_count, candidate_count);
 }
 
 void bot_command_apply_poison(Client *c, const Seperator *sep)
@@ -2856,7 +2858,7 @@ void bot_command_apply_poison(Client *c, const Seperator *sep)
 		t &&
 		t->IsBot() &&
 		t->CastToBot()->GetBotOwnerCharacterID() == c->CharacterID() &&
-		t->GetClass() == ROGUE
+		t->GetClass() == Class::Rogue
 	) {
 		my_rogue_bot = t->CastToBot();
 	}
@@ -2964,7 +2966,7 @@ void bot_command_apply_potion(Client* c, const Seperator* sep)
 
 	if (potion_data->ItemType == EQ::item::ItemTypePotion && potion_data->Click.Effect > 0) {
 
-		if (RuleB(Bots, RestrictApplyPotionToRogue) && potion_data->Classes != PLAYER_CLASS_ROGUE_BIT) {
+		if (RuleB(Bots, RestrictApplyPotionToRogue) && potion_data->Classes != player_class_bitmasks[Class::Rogue]) {
 
 			c->Message(Chat::White, "This command is restricted to rogue poison potions only!");
 			return;
@@ -3300,7 +3302,7 @@ void bot_command_defensive(Client *c, const Seperator *sep)
 		auto local_entry = list_iter->SafeCastToStance();
 		if (helper_spell_check_fail(local_entry))
 			continue;
-		if (local_entry->stance_type != BCEnum::StT_Aggressive)
+		if (local_entry->stance_type != BCEnum::StT_Defensive)
 			continue;
 
 		for (auto bot_iter = sbl.begin(); bot_iter != sbl.end(); ) {
@@ -3332,7 +3334,7 @@ void bot_command_defensive(Client *c, const Seperator *sep)
 		}
 	}
 
-	c->Message(Chat::White, "%i of %i bots have used defensive disciplines", success_count, candidate_count);
+	c->Message(Chat::White, "%i of %i bots have attempted to use defensive disciplines", success_count, candidate_count);
 }
 
 void bot_command_depart(Client *c, const Seperator *sep)
@@ -3353,8 +3355,8 @@ void bot_command_depart(Client *c, const Seperator *sep)
 
 	std::string destination = sep->arg[1];
 	if (!destination.compare("list")) {
-		Bot* my_druid_bot = ActionableBots::AsGroupMember_ByClass(c, c, DRUID);
-		Bot* my_wizard_bot = ActionableBots::AsGroupMember_ByClass(c, c, WIZARD);
+		Bot* my_druid_bot = ActionableBots::AsGroupMember_ByClass(c, c, Class::Druid);
+		Bot* my_wizard_bot = ActionableBots::AsGroupMember_ByClass(c, c, Class::Wizard);
 		helper_command_depart_list(c, my_druid_bot, my_wizard_bot, local_list, single);
 		return;
 	}
@@ -3906,16 +3908,77 @@ void bot_command_invisibility(Client *c, const Seperator *sep)
 void bot_command_item_use(Client* c, const Seperator* sep)
 {
 	if (helper_is_help_or_usage(sep->arg[1])) {
-		c->Message(Chat::White, "usage: %s ([empty])", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s empty] will display only bots that can use the item in an empty slot.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s byclass classID] - Example: [%s byclass 7] will display only bots that match the class that can use the item. Example is a Monk, use [^create help] for a list of class IDs.", sep->arg[0], sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s casteronly] will display only caster bots that can use the item.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s hybridonly] will display only hybrid bots that can use the item.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s meleeonly] will display only melee bots that can use the item.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s wiscasteronly] will display only Wisdom-based Caster bots that can use the item.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s intcasteronly] will display only Intelligence-based Caster bots that can use the item.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s plateonly] will display only Plate-wearing bots that can use the item.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s chainonly] will display only Chain-wearing bots that can use the item.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s leatheronly] will display only Leather-wearing bots that can use the item.", sep->arg[0]);
+		c->Message(Chat::White, "usage: [%s clothonly] will display only Cloth-wearing bots that can use the item.", sep->arg[0]);
 		return;
 	}
 
 	bool empty_only = false;
+	int8 class_mask = 0;
+	bool caster_only = false;
+	bool hybrid_only = false;
+	bool melee_only = false;
+	bool wis_caster_only = false;
+	bool int_caster_only = false;
+	bool plate_only = false;
+	bool chain_only = false;
+	bool leather_only = false;
+	bool cloth_only = false;
+
 	std::string arg1 = sep->arg[1];
+	std::string arg2 = sep->arg[2];
 	if (arg1.compare("empty") == 0) {
 		empty_only = true;
 	}
-
+	else if (arg1.compare("byclass") == 0) {
+		if (Strings::IsNumber(sep->arg[2])) {
+			class_mask = Strings::ToUnsignedInt(sep->arg[2]);
+			if (!(class_mask >= Class::Warrior && class_mask <= Class::Berserker)) {
+				c->Message(Chat::White, "Invalid class range, you must choose between 1 (Warrior) and 15 (Beastlord)");
+				return;
+			}
+		}
+	}
+	else if (arg1.compare("casteronly") == 0) {
+		caster_only = true;
+	}
+	else if (arg1.compare("hybridonly") == 0) {
+		hybrid_only = true;
+	}
+	else if (arg1.compare("meleeonly") == 0) {
+		melee_only = true;
+	}
+	else if (arg1.compare("wiscasteronly") == 0) {
+		wis_caster_only = true;
+	}
+	else if (arg1.compare("intcasteronly") == 0) {
+		int_caster_only = true;
+	}
+	else if (arg1.compare("plateonly") == 0) {
+		plate_only = true;
+	}
+	else if (arg1.compare("chainonly") == 0) {
+		chain_only = true;
+	}
+	else if (arg1.compare("leatheronly") == 0) {
+		leather_only = true;
+	}
+	else if (arg1.compare("clothonly") == 0) {
+		cloth_only = true;
+	}
+	else if (!arg1.empty()) {
+		c->Message(Chat::White, "Please choose the correct subtype. For help use %s help.", sep->arg[0]);
+		return;
+	}
 	const auto item_instance = c->GetInv().GetItem(EQ::invslot::slotCursor);
 	if (!item_instance) {
 		c->Message(Chat::White, "No item found on cursor!");
@@ -3948,11 +4011,41 @@ void bot_command_item_use(Client* c, const Seperator* sep)
 	std::list<Bot*> sbl;
 	MyBots::PopulateSBL_BySpawnedBots(c, sbl);
 
+	if (class_mask) {
+		ActionableBots::Filter_ByClasses(c, sbl, GetPlayerClassBit(class_mask));
+	}
+
 	for (const auto& bot_iter : sbl) {
 		if (!bot_iter) {
 			continue;
 		}
-
+		if (caster_only && !IsCasterClass(bot_iter->GetClass())) {
+			continue;
+		}
+		if (hybrid_only && !IsSpellFighterClass(bot_iter->GetClass())) {
+			continue;
+		}
+		if (melee_only && !IsNonSpellFighterClass(bot_iter->GetClass())) {
+			continue;
+		}
+		if (wis_caster_only && !IsWISCasterClass(bot_iter->GetClass())) {
+			continue;
+		}
+		if (int_caster_only && !IsINTCasterClass(bot_iter->GetClass())) {
+			continue;
+		}
+		if (plate_only && !IsPlateClass(bot_iter->GetClass())) {
+			continue;
+		}
+		if (chain_only && !IsChainClass(bot_iter->GetClass())) {
+			continue;
+		}
+		if (leather_only && !IsLeatherClass(bot_iter->GetClass())) {
+			continue;
+		}
+		if (cloth_only && !IsClothClass(bot_iter->GetClass())) {
+			continue;
+		}
 		if (((~item_data->Races) & GetPlayerRaceBit(bot_iter->GetRace())) || ((~item_data->Classes) & GetPlayerClassBit(bot_iter->GetClass()))) {
 			continue;
 		}
@@ -3997,7 +4090,8 @@ void bot_command_item_use(Client* c, const Seperator* sep)
 				);
 
 				bot_iter->DoAnim(29);
-			} else if (!equipped_item) {
+			}
+			else if (!equipped_item) {
 				c->Message(
 					Chat::Say,
 					fmt::format(
@@ -4647,17 +4741,17 @@ void bot_command_pull(Client *c, const Seperator *sep)
 		}
 
 		switch (bot_iter->GetClass()) {
-		case ROGUE:
-		case MONK:
-		case BARD:
-		case RANGER:
+		case Class::Rogue:
+		case Class::Monk:
+		case Class::Bard:
+		case Class::Ranger:
 			bot_puller = bot_iter;
 			break;
-		case WARRIOR:
-		case SHADOWKNIGHT:
-		case PALADIN:
-		case BERSERKER:
-		case BEASTLORD:
+		case Class::Warrior:
+		case Class::ShadowKnight:
+		case Class::Paladin:
+		case Class::Berserker:
+		case Class::Beastlord:
 			if (!bot_puller) {
 
 				bot_puller = bot_iter;
@@ -4665,22 +4759,22 @@ void bot_command_pull(Client *c, const Seperator *sep)
 			}
 
 			switch (bot_puller->GetClass()) {
-			case DRUID:
-			case SHAMAN:
-			case CLERIC:
-			case WIZARD:
-			case NECROMANCER:
-			case MAGICIAN:
-			case ENCHANTER:
+			case Class::Druid:
+			case Class::Shaman:
+			case Class::Cleric:
+			case Class::Wizard:
+			case Class::Necromancer:
+			case Class::Magician:
+			case Class::Enchanter:
 				bot_puller = bot_iter;
 			default:
 				continue;
 			}
 
 			continue;
-		case DRUID:
-		case SHAMAN:
-		case CLERIC:
+		case Class::Druid:
+		case Class::Shaman:
+		case Class::Cleric:
 			if (!bot_puller) {
 
 				bot_puller = bot_iter;
@@ -4688,20 +4782,20 @@ void bot_command_pull(Client *c, const Seperator *sep)
 			}
 
 			switch (bot_puller->GetClass()) {
-			case WIZARD:
-			case NECROMANCER:
-			case MAGICIAN:
-			case ENCHANTER:
+			case Class::Wizard:
+			case Class::Necromancer:
+			case Class::Magician:
+			case Class::Enchanter:
 				bot_puller = bot_iter;
 			default:
 				continue;
 			}
 
 			continue;
-		case WIZARD:
-		case NECROMANCER:
-		case MAGICIAN:
-		case ENCHANTER:
+		case Class::Wizard:
+		case Class::Necromancer:
+		case Class::Magician:
+		case Class::Enchanter:
 			if (!bot_puller) {
 				bot_puller = bot_iter;
 			}
@@ -5194,6 +5288,194 @@ void bot_command_taunt(Client *c, const Seperator *sep)
 	}
 }
 
+void bot_command_timer(Client* c, const Seperator* sep)
+{
+	if (helper_command_alias_fail(c, "bot_command_timer", sep->arg[0], "timer"))
+		return;
+	if (helper_is_help_or_usage(sep->arg[1])) {
+		c->Message(Chat::White, "usage: %s [clear | has | set] [disc | item | spell] [timer ID | item ID | spell ID | all] [optional ms for set] [actionable].", sep->arg[0]);
+		c->Message(Chat::White, "When setting, you can leave the value blank to use the default for the item or specify a value in ms to set the timer to.");
+		c->Message(Chat::White, "Returns or sets the provided timer(s) for the selected bot(s) or clears the selected timer(s) for the selected bot(s).");
+		return;
+	}
+
+	const int ab_mask = ActionableBots::ABM_Type1;
+
+	std::string arg1 = sep->arg[1];
+	std::string arg2 = sep->arg[2];
+	std::string arg3 = sep->arg[3];
+	int ab_arg = 4;
+	bool clear = false;
+	bool has = false;
+	bool set = false;
+	bool disc = false;
+	bool item = false;
+	bool spell = false;
+	uint32 timer_id = 0;
+	uint32 timer_value = 0;
+	bool all = false;
+
+	if (!arg1.compare("clear")) {
+		clear = true;
+	}
+	else if (!arg1.compare("has")) {
+		has = true;
+	}
+	else if (!arg1.compare("set")) {
+		set = true;
+	}
+	else {
+		c->Message(Chat::White, "Incorrect argument, use %s help for a list of options.", sep->arg[0]);
+		return;
+	}
+
+	if (!arg2.compare("disc")) {
+		disc = true;
+	}
+	else if (!arg2.compare("item")) {
+		item = true;
+	}
+	else if (!arg2.compare("spell")) {
+		spell = true;
+	}
+	else {
+		c->Message(Chat::White, "Incorrect timer type, use %s help for a list of options.", sep->arg[0]);
+		return;
+	}
+
+	if (sep->IsNumber(3)) {
+		timer_id = atoi(sep->arg[3]);
+		if (timer_id < 0) {
+			c->Message(Chat::White, "You cannot use negative numbers.");
+			return;
+		}
+	}
+	else if (!arg3.compare("all")) {
+		if (has || set) {
+			c->Message(Chat::White, "You can only use 'all' for clearing timers.");
+			return;
+		}
+
+		all = true;
+	}
+	else {
+		c->Message(Chat::White, "Incorrect ID option, use %s help for a list of options.", sep->arg[0]);
+		return;
+	}
+
+	if (set) {
+		if (sep->IsNumber(4)) {
+			ab_arg = 5;
+			timer_value = atoi(sep->arg[4]);
+			if (timer_value <= 0) {
+				c->Message(Chat::White, "You cannot use 0 or negative numbers.");
+				return;
+			}
+		}
+	}
+
+	std::string class_race_arg = sep->arg[ab_arg];
+	bool class_race_check = false;
+	if (!class_race_arg.compare("byclass") || !class_race_arg.compare("byrace")) {
+		class_race_check = true;
+	}
+
+	std::list<Bot*> sbl;
+	if (ActionableBots::PopulateSBL(c, sep->arg[ab_arg], sbl, ab_mask, !class_race_check ? sep->arg[ab_arg + 1] : nullptr, class_race_check ? atoi(sep->arg[ab_arg + 1]) : 0) == ActionableBots::ABT_None) {
+		return;
+	}
+	sbl.remove(nullptr);
+
+	for (auto my_bot : sbl) {
+		bool found = false;
+
+		if (clear) {
+			c->Message(
+				Chat::White,
+				fmt::format(
+					"{} says, 'Clearing {} timer{}'",
+					my_bot->GetCleanName(),
+					disc ? "Discipline" : item ? "Item" : "Spell",
+					(all ? "s." : ".")
+				).c_str()
+			);
+
+			if (disc) {
+				my_bot->ClearDisciplineReuseTimer(timer_id);
+			}
+			else if (item) {
+				my_bot->ClearItemReuseTimer(timer_id);
+			}
+			else if (spell) {
+				my_bot->ClearSpellRecastTimer(timer_id);
+			}
+		}
+		else if (has) {
+			uint32 remaining_time;
+			std::string time_string = "";
+
+			if (disc) {
+				if (!my_bot->CheckDisciplineReuseTimer(timer_id)) {
+					remaining_time = my_bot->GetDisciplineReuseRemainingTime(timer_id) / 1000;
+					time_string = Strings::SecondsToTime(remaining_time);
+					found = true;
+				}
+			}
+			else if (item) {
+				if (!my_bot->CheckItemReuseTimer(timer_id)) {
+					remaining_time = my_bot->GetItemReuseRemainingTime(timer_id) / 1000;
+					time_string = Strings::SecondsToTime(remaining_time);
+					found = true;
+				}
+			}
+			else if (spell) {
+				if (!my_bot->CheckSpellRecastTimer(timer_id)) {
+					remaining_time = my_bot->GetSpellRecastRemainingTime(timer_id) / 1000;
+					time_string = Strings::SecondsToTime(remaining_time);
+					found = true;
+				}
+			}
+
+			c->Message(
+				Chat::White,
+				fmt::format(
+					"{} says, 'I {}{}{}'",
+					my_bot->GetCleanName(),
+					(!found ? " do not have that timer currently" : " have "),
+					(!found ? "" : time_string),
+					(!found ? "." : " remaining.")
+				).c_str()
+			);
+		}
+		else if (set) {
+			c->Message(
+				Chat::White,
+				fmt::format(
+					"{} says, 'Setting {} timer{} for {} to {}.'",
+					my_bot->GetCleanName(),
+					disc ? "Discipline" : item ? "Item" : "Spell",
+					(all ? "s" : ""),
+					timer_id,
+					timer_value ? std::to_string(timer_value) : "the default value"
+				).c_str()
+			);
+
+			if (disc) {
+				my_bot->ClearDisciplineReuseTimer(timer_id);
+				my_bot->SetDisciplineReuseTimer(timer_id, timer_value);
+			}
+			else if (item) {
+				my_bot->ClearItemReuseTimer(timer_id);
+				my_bot->SetItemReuseTimer(timer_id, timer_value);
+			}
+			else if (spell) {
+				my_bot->ClearSpellRecastTimer(timer_id);
+				my_bot->SetSpellRecastTimer(timer_id, timer_value);
+			}
+		}
+	}
+}
+
 void bot_command_track(Client *c, const Seperator *sep)
 {
 	if (helper_command_alias_fail(c, "bot_command_track", sep->arg[0], "track"))
@@ -5210,15 +5492,15 @@ void bot_command_track(Client *c, const Seperator *sep)
 	std::list<Bot*> sbl;
 	MyBots::PopulateSBL_BySpawnedBots(c, sbl);
 
-	uint16 class_mask = (PLAYER_CLASS_RANGER_BIT | PLAYER_CLASS_DRUID_BIT | PLAYER_CLASS_BARD_BIT);
+	uint16 class_mask = (player_class_bitmasks[Class::Ranger] | player_class_bitmasks[Class::Druid] | player_class_bitmasks[Class::Bard]);
 	ActionableBots::Filter_ByClasses(c, sbl, class_mask);
 
-	Bot* my_bot = ActionableBots::AsSpawned_ByMinLevelAndClass(c, sbl, 1, RANGER);
+	Bot* my_bot = ActionableBots::AsSpawned_ByMinLevelAndClass(c, sbl, 1, Class::Ranger);
 	if (tracking_scope.empty()) {
 		if (!my_bot)
-			my_bot = ActionableBots::AsSpawned_ByMinLevelAndClass(c, sbl, 20, DRUID);
+			my_bot = ActionableBots::AsSpawned_ByMinLevelAndClass(c, sbl, 20, Class::Druid);
 		if (!my_bot)
-			my_bot = ActionableBots::AsSpawned_ByMinLevelAndClass(c, sbl, 35, BARD);
+			my_bot = ActionableBots::AsSpawned_ByMinLevelAndClass(c, sbl, 35, Class::Bard);
 	}
 	if (!my_bot) {
 		c->Message(Chat::White, "No bots are capable of performing this action");
@@ -5229,7 +5511,7 @@ void bot_command_track(Client *c, const Seperator *sep)
 	bool track_named = false;
 	std::string tracking_msg;
 	switch (my_bot->GetClass()) {
-	case RANGER:
+	case Class::Ranger:
 		if (!tracking_scope.compare("local")) {
 			base_distance = 30;
 			tracking_msg = "Local tracking...";
@@ -5244,11 +5526,11 @@ void bot_command_track(Client *c, const Seperator *sep)
 			tracking_msg = "Advanced tracking...";
 		}
 		break;
-	case DRUID:
+	case Class::Druid:
 		base_distance = 30;
 		tracking_msg = "Local tracking...";
 		break;
-	case BARD:
+	case Class::Bard:
 		base_distance = 20;
 		tracking_msg = "Near tracking...";
 		break;
@@ -6612,7 +6894,7 @@ void bot_subcommand_bot_list(Client *c, const Seperator *sep)
 			).c_str()
 		);
 
-		for (uint8 class_id = WARRIOR; class_id <= BERSERKER; class_id++) {
+		for (uint8 class_id = Class::Warrior; class_id <= Class::Berserker; class_id++) {
 			auto class_creation_limit = c->GetBotCreationLimit(class_id);
 
 			if (class_creation_limit != overall_bot_creation_limit) {
@@ -6865,7 +7147,7 @@ void bot_subcommand_bot_spawn(Client *c, const Seperator *sep)
 	std::string bot_name = sep->arg[1];
 
 	uint32 bot_id = 0;
-	uint8 bot_class = NO_CLASS;
+	uint8 bot_class = Class::None;
 	if (!database.botdb.LoadBotID(c->CharacterID(), bot_name, bot_id, bot_class)) {
 		c->Message(
 			Chat::White,
@@ -6972,22 +7254,22 @@ void bot_subcommand_bot_spawn(Client *c, const Seperator *sep)
 
 	static std::string bot_spawn_message[17] = {
 		"I am ready to fight!", // DEFAULT
-		"A solid weapon is my ally!", // WARRIOR
-		"The pious shall never die!", // CLERIC
-		"I am the symbol of Light!", // PALADIN
-		"There are enemies near!", // RANGER
-		"Out of the shadows, I step!", // SHADOWKNIGHT
-		"Nature's fury shall be wrought!", // DRUID
-		"Your punishment will be my fist!", // MONK
+		"A solid weapon is my ally!", // Class::Warrior
+		"The pious shall never die!", // Class::Cleric
+		"I am the symbol of Light!", // Class::Paladin
+		"There are enemies near!", // Class::Ranger
+		"Out of the shadows, I step!", // Class::ShadowKnight
+		"Nature's fury shall be wrought!", // Class::Druid
+		"Your punishment will be my fist!", // Class::Monk
 		"Music is the overture of battle! ", // BARD
-		"Daggers into the backs of my enemies!", // ROGUE
-		"More bones to grind!", // SHAMAN
-		"Death is only the beginning!", // NECROMANCER
-		"I am the harbinger of demise!", // WIZARD
-		"The elements are at my command!", // MAGICIAN
-		"No being can resist my charm!", // ENCHANTER
-		"Battles are won by hand and paw!", // BEASTLORD
-		"My bloodthirst shall not be quenched!" // BERSERKER
+		"Daggers into the backs of my enemies!", // Class::Rogue
+		"More bones to grind!", // Class::Shaman
+		"Death is only the beginning!", // Class::Necromancer
+		"I am the harbinger of demise!", // Class::Wizard
+		"The elements are at my command!", // Class::Magician
+		"No being can resist my charm!", // Class::Enchanter
+		"Battles are won by hand and paw!", // Class::Beastlord
+		"My bloodthirst shall not be quenched!" // Class::Berserker
 	};
 
 	uint8 message_index = 0;
@@ -7257,7 +7539,7 @@ void bot_subcommand_bot_toggle_archer(Client *c, const Seperator *sep)
 		}
 		bot_iter->ChangeBotArcherWeapons(bot_iter->IsBotArcher());
 
-		if (bot_iter->GetClass() == RANGER && bot_iter->GetLevel() >= 61) {
+		if (bot_iter->GetClass() == Class::Ranger && bot_iter->GetLevel() >= 61) {
 			bot_iter->SetRangerAutoWeaponSelect(bot_iter->IsBotArcher());
 		}
 	}
@@ -7467,7 +7749,7 @@ void bot_subcommand_circle(Client *c, const Seperator *sep)
 		return;
 	if (helper_is_help_or_usage(sep->arg[1])) {
 		c->Message(Chat::White, "usage: %s [list | destination] ([option: single])", sep->arg[0]);
-		helper_send_usage_required_bots(c, BCEnum::SpT_Depart, DRUID);
+		helper_send_usage_required_bots(c, BCEnum::SpT_Depart, Class::Druid);
 		return;
 	}
 
@@ -7478,7 +7760,7 @@ void bot_subcommand_circle(Client *c, const Seperator *sep)
 
 	std::string destination = sep->arg[1];
 	if (!destination.compare("list")) {
-		auto my_druid_bot = ActionableBots::AsGroupMember_ByClass(c, c, DRUID);
+		auto my_druid_bot = ActionableBots::AsGroupMember_ByClass(c, c, Class::Druid);
 		helper_command_depart_list(c, my_druid_bot, nullptr, local_list, single);
 		return;
 	}
@@ -7497,7 +7779,7 @@ void bot_subcommand_circle(Client *c, const Seperator *sep)
 		auto local_entry = list_iter->SafeCastToDepart();
 		if (helper_spell_check_fail(local_entry))
 			continue;
-		if (local_entry->caster_class != DRUID)
+		if (local_entry->caster_class != Class::Druid)
 			continue;
 		if (local_entry->single != single)
 			continue;
@@ -8988,7 +9270,7 @@ void bot_subcommand_pet_remove(Client *c, const Seperator *sep)
 	if (ActionableBots::PopulateSBL(c, sep->arg[1], sbl, ab_mask, sep->arg[2]) == ActionableBots::ABT_None)
 		return;
 
-	uint16 class_mask = (PLAYER_CLASS_DRUID_BIT | PLAYER_CLASS_NECROMANCER_BIT | PLAYER_CLASS_ENCHANTER_BIT);
+	uint16 class_mask = (player_class_bitmasks[Class::Druid] | player_class_bitmasks[Class::Necromancer] | player_class_bitmasks[Class::Enchanter]);
 	ActionableBots::Filter_ByClasses(c, sbl, class_mask);
 	if (sbl.empty()) {
 		c->Message(Chat::White, "You have no spawned bots capable of charming");
@@ -9068,7 +9350,7 @@ void bot_subcommand_pet_set_type(Client *c, const Seperator *sep)
 	if (ActionableBots::PopulateSBL(c, sep->arg[2], sbl, ab_mask, sep->arg[3]) == ActionableBots::ABT_None)
 		return;
 
-	uint16 class_mask = PLAYER_CLASS_MAGICIAN_BIT;
+	uint16 class_mask = player_class_bitmasks[Class::Magician];
 	ActionableBots::Filter_ByClasses(c, sbl, class_mask);
 	if (sbl.empty()) {
 		c->Message(Chat::White, "You have no spawned Magician bots");
@@ -9103,7 +9385,7 @@ void bot_subcommand_portal(Client *c, const Seperator *sep)
 		return;
 	if (helper_is_help_or_usage(sep->arg[1])) {
 		c->Message(Chat::White, "usage: %s [list | destination] ([option: single])", sep->arg[0]);
-		helper_send_usage_required_bots(c, BCEnum::SpT_Depart, WIZARD);
+		helper_send_usage_required_bots(c, BCEnum::SpT_Depart, Class::Wizard);
 		return;
 	}
 
@@ -9114,7 +9396,7 @@ void bot_subcommand_portal(Client *c, const Seperator *sep)
 
 	std::string destination = sep->arg[1];
 	if (!destination.compare("list")) {
-		auto my_wizard_bot = ActionableBots::AsGroupMember_ByClass(c, c, WIZARD);
+		auto my_wizard_bot = ActionableBots::AsGroupMember_ByClass(c, c, Class::Wizard);
 		helper_command_depart_list(c, nullptr, my_wizard_bot, local_list, single);
 		return;
 	}
@@ -9133,7 +9415,7 @@ void bot_subcommand_portal(Client *c, const Seperator *sep)
 		auto local_entry = list_iter->SafeCastToDepart();
 		if (helper_spell_check_fail(local_entry))
 			continue;
-		if (local_entry->caster_class != WIZARD)
+		if (local_entry->caster_class != Class::Wizard)
 			continue;
 		if (local_entry->single != single)
 			continue;
@@ -9427,26 +9709,26 @@ void helper_bot_out_of_combat(Client *bot_owner, Bot *my_bot)
 		return;
 
 	switch (my_bot->GetClass()) {
-	case WARRIOR:
-	case CLERIC:
-	case PALADIN:
-	case RANGER:
-	case SHADOWKNIGHT:
-	case DRUID:
-	case MONK:
+	case Class::Warrior:
+	case Class::Cleric:
+	case Class::Paladin:
+	case Class::Ranger:
+	case Class::ShadowKnight:
+	case Class::Druid:
+	case Class::Monk:
 		bot_owner->Message(Chat::White, "%s has no out-of-combat behavior defined", my_bot->GetCleanName());
 		break;
-	case BARD:
+	case Class::Bard:
 		bot_owner->Message(Chat::White, "%s will %s use out-of-combat behavior for bard songs", my_bot->GetCleanName(), ((my_bot->GetAltOutOfCombatBehavior()) ? ("now") : ("no longer")));
 		break;
-	case ROGUE:
-	case SHAMAN:
-	case NECROMANCER:
-	case WIZARD:
-	case MAGICIAN:
-	case ENCHANTER:
-	case BEASTLORD:
-	case BERSERKER:
+	case Class::Rogue:
+	case Class::Shaman:
+	case Class::Necromancer:
+	case Class::Wizard:
+	case Class::Magician:
+	case Class::Enchanter:
+	case Class::Beastlord:
+	case Class::Berserker:
 		bot_owner->Message(Chat::White, "%s has no out-of-combat behavior defined", my_bot->GetCleanName());
 		break;
 	default:
@@ -10438,6 +10720,61 @@ void bot_command_caster_range(Client* c, const Seperator* sep)
 	}
 }
 
+void bot_command_click_item(Client* c, const Seperator* sep)
+{
+	if (!RuleB(Bots, BotsCanClickItems)) {
+		c->Message(Chat::White, "The ability for bots to click equipped items is currently disabled.");
+		return;
+	}
+
+	if (helper_is_help_or_usage(sep->arg[1])) {
+		c->Message(Chat::White, "usage: <slot id> %s ([actionable: target | byname | ownergroup | ownerraid | targetgroup | namesgroup | byclass | byrace | spawned] ([actionable_name]))", sep->arg[0]);
+		c->Message(Chat::White, "This will cause the selected bots to click the item in the given slot ID.");
+		c->Message(Chat::White, "Use ^invlist to see their items along with slot IDs.");
+		return;
+	}
+
+	if (!sep->IsNumber(1)) {
+		c->Message(Chat::Yellow, "You must specify a slot ID. Use %s help for more information.", sep->arg[0]);
+		return;
+	}
+
+	const int ab_mask = ActionableBots::ABM_Type1;
+
+	int ab_arg = 1;
+	uint32 slot_id = 0;
+
+	if (sep->IsNumber(1)) {
+		ab_arg = 2;
+		slot_id = atoi(sep->arg[1]);
+		if (slot_id < EQ::invslot::EQUIPMENT_BEGIN || slot_id > EQ::invslot::EQUIPMENT_END) {
+			c->Message(Chat::Yellow, "You must specify a valid inventory slot from 0 to 22. Use %s help for more information", sep->arg[0]);
+			return;
+		}
+	}
+
+	std::string class_race_arg = sep->arg[ab_arg];
+	bool class_race_check = false;
+	if (!class_race_arg.compare("byclass") || !class_race_arg.compare("byrace")) {
+		class_race_check = true;
+	}
+
+	std::list<Bot*> sbl;
+	if (ActionableBots::PopulateSBL(c, sep->arg[ab_arg], sbl, ab_mask, !class_race_check ? sep->arg[ab_arg + 1] : nullptr, class_race_check ? atoi(sep->arg[ab_arg + 1]) : 0) == ActionableBots::ABT_None) {
+		return;
+	}
+	sbl.remove(nullptr);
+
+	for (auto my_bot : sbl) {
+		if (RuleI(Bots, BotsClickItemsMinLvl) > my_bot->GetLevel()) {
+			c->Message(Chat::White, "%s must be level %i to use clickable items.", my_bot->GetCleanName(), RuleI(Bots, BotsClickItemsMinLvl));
+			continue;
+		}
+
+		my_bot->TryItemClick(slot_id);
+	}
+}
+
 void bot_command_pickpocket(Client *c, const Seperator *sep)
 {
 	if (helper_command_disabled(c, RuleB(Bots, AllowPickpocketCommand), "pickpocket")) {
@@ -10457,8 +10794,8 @@ void bot_command_pickpocket(Client *c, const Seperator *sep)
 	MyBots::PopulateSBL_BySpawnedBots(c, sbl);
 
 	// Check for capable rogue
-	ActionableBots::Filter_ByClasses(c, sbl, PLAYER_CLASS_ROGUE_BIT);
-	Bot *my_bot = ActionableBots::AsSpawned_ByMinLevelAndClass(c, sbl, 7, ROGUE);
+	ActionableBots::Filter_ByClasses(c, sbl, player_class_bitmasks[Class::Rogue]);
+	Bot *my_bot = ActionableBots::AsSpawned_ByMinLevelAndClass(c, sbl, 7, Class::Rogue);
 	if (!my_bot) {
 		c->Message(Chat::White, "No bots are capable of performing this action");
 		return;

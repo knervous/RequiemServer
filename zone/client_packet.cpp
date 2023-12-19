@@ -1381,7 +1381,7 @@ void Client::Handle_Connect_OP_ZoneEntry(const EQApplicationPacket *app)
 	SetClientMaxLevel(client_max_level);
 
 	// we know our class now, so we might have to fix our consume timer!
-	if (class_ == MONK)
+	if (class_ == Class::Monk)
 		consume_food_timer.SetTimer(CONSUMPTION_MNK_TIMER);
 
 	InitInnates();
@@ -1592,9 +1592,9 @@ void Client::Handle_Connect_OP_ZoneEntry(const EQApplicationPacket *app)
 			m_pp.spellSlotRefresh[i] = p_timers.GetRemainingTime(pTimerSpellStart + m_pp.mem_spells[i]) * 1000;
 
 	/* Ability slot refresh send SK/PAL */
-	if (m_pp.class_ == SHADOWKNIGHT || m_pp.class_ == PALADIN) {
+	if (m_pp.class_ == Class::ShadowKnight || m_pp.class_ == Class::Paladin) {
 		uint32 abilitynum = 0;
-		if (m_pp.class_ == SHADOWKNIGHT) { abilitynum = pTimerHarmTouch; }
+		if (m_pp.class_ == Class::ShadowKnight) { abilitynum = pTimerHarmTouch; }
 		else { abilitynum = pTimerLayHands; }
 
 		uint32 remaining = p_timers.GetRemainingTime(abilitynum);
@@ -1935,8 +1935,8 @@ void Client::Handle_OP_AdventureMerchantPurchase(const EQApplicationPacket *app)
 	Adventure_Purchase_Struct* aps = (Adventure_Purchase_Struct*)app->pBuffer;
 	uint32 merchantid = 0;
 	Mob* tmp = entity_list.GetMob(aps->npcid);
-	if (tmp == 0 || !tmp->IsNPC() || ((tmp->GetClass() != ADVENTURE_MERCHANT) &&
-		(tmp->GetClass() != DISCORD_MERCHANT) && (tmp->GetClass() != NORRATHS_KEEPERS_MERCHANT) && (tmp->GetClass() != DARK_REIGN_MERCHANT)))
+	if (tmp == 0 || !tmp->IsNPC() || ((tmp->GetClass() != Class::AdventureMerchant) &&
+		(tmp->GetClass() != Class::DiscordMerchant) && (tmp->GetClass() != Class::NorrathsKeepersMerchant) && (tmp->GetClass() != Class::DarkReignMerchant)))
 		return;
 
 	//you have to be somewhat close to them to be properly using them
@@ -2121,8 +2121,8 @@ void Client::Handle_OP_AdventureMerchantRequest(const EQApplicationPacket *app)
 	uint32 merchantid = 0;
 
 	Mob* tmp = entity_list.GetMob(eid->entity_id);
-	if (tmp == 0 || !tmp->IsNPC() || ((tmp->GetClass() != ADVENTURE_MERCHANT) &&
-		(tmp->GetClass() != DISCORD_MERCHANT) && (tmp->GetClass() != NORRATHS_KEEPERS_MERCHANT) && (tmp->GetClass() != DARK_REIGN_MERCHANT)))
+	if (tmp == 0 || !tmp->IsNPC() || ((tmp->GetClass() != Class::AdventureMerchant) &&
+		(tmp->GetClass() != Class::DiscordMerchant) && (tmp->GetClass() != Class::NorrathsKeepersMerchant) && (tmp->GetClass() != Class::DarkReignMerchant)))
 		return;
 
 	if (!tmp->CastToNPC()->IsMerchantOpen()) {
@@ -2197,8 +2197,8 @@ void Client::Handle_OP_AdventureMerchantSell(const EQApplicationPacket *app)
 	Adventure_Sell_Struct *ams_in = (Adventure_Sell_Struct*)app->pBuffer;
 
 	Mob* vendor = entity_list.GetMob(ams_in->npcid);
-	if (vendor == 0 || !vendor->IsNPC() || ((vendor->GetClass() != ADVENTURE_MERCHANT) &&
-		(vendor->GetClass() != NORRATHS_KEEPERS_MERCHANT) && (vendor->GetClass() != DARK_REIGN_MERCHANT)))
+	if (vendor == 0 || !vendor->IsNPC() || ((vendor->GetClass() != Class::AdventureMerchant) &&
+		(vendor->GetClass() != Class::NorrathsKeepersMerchant) && (vendor->GetClass() != Class::DarkReignMerchant)))
 	{
 		Message(Chat::Red, "Vendor was not found.");
 		return;
@@ -2298,17 +2298,17 @@ void Client::Handle_OP_AdventureMerchantSell(const EQApplicationPacket *app)
 
 	switch (vendor->GetClass())
 	{
-	case ADVENTURE_MERCHANT:
+	case Class::AdventureMerchant:
 	{
 		UpdateLDoNPoints(6, price);
 		break;
 	}
-	case NORRATHS_KEEPERS_MERCHANT:
+	case Class::NorrathsKeepersMerchant:
 	{
 		SetRadiantCrystals(GetRadiantCrystals() + price);
 		break;
 	}
-	case DARK_REIGN_MERCHANT:
+	case Class::DarkReignMerchant:
 	{
 		SetEbonCrystals(GetEbonCrystals() + price);
 		break;
@@ -2482,7 +2482,7 @@ void Client::Handle_OP_AltCurrencyMerchantRequest(const EQApplicationPacket *app
 			return;
 		}
 
-		if (target->GetClass() != ALT_CURRENCY_MERCHANT) {
+		if (target->GetClass() != Class::AlternateCurrencyMerchant) {
 			return;
 		}
 
@@ -2553,7 +2553,7 @@ void Client::Handle_OP_AltCurrencyPurchase(const EQApplicationPacket *app)
 		if (DistanceSquared(m_Position, tar->GetPosition())> USE_NPC_RANGE2)
 			return;
 
-		if (tar->GetClass() != ALT_CURRENCY_MERCHANT) {
+		if (tar->GetClass() != Class::AlternateCurrencyMerchant) {
 			return;
 		}
 
@@ -2626,7 +2626,7 @@ void Client::Handle_OP_AltCurrencyPurchase(const EQApplicationPacket *app)
 			parse->EventPlayer(EVENT_ALT_CURRENCY_MERCHANT_BUY, this, export_string, 0);
 		}
 
-		uint64 current_balance = AddAlternateCurrencyValue(alt_cur_id, -((int32) cost));
+		uint64 current_balance = AddAlternateCurrencyValue(alt_cur_id, -((int) cost));
 		int16  charges         = 1;
 		if (item->MaxCharges != 0) {
 			charges = item->MaxCharges;
@@ -2701,7 +2701,7 @@ void Client::Handle_OP_AltCurrencyReclaim(const EQApplicationPacket *app)
 		}
 		else {
 			SummonItem(item_id, reclaim->count, 0, 0, 0, 0, 0, 0, false, EQ::invslot::slotCursor);
-			AddAlternateCurrencyValue(reclaim->currency_id, -((int32)reclaim->count));
+			AddAlternateCurrencyValue(reclaim->currency_id, -((int)reclaim->count));
 		}
 		/* QS: PlayerLogAlternateCurrencyTransactions :: Cursor to Item Storage */
 		if (RuleB(QueryServ, PlayerLogAlternateCurrencyTransactions)) {
@@ -2722,7 +2722,7 @@ void Client::Handle_OP_AltCurrencySell(const EQApplicationPacket *app)
 		if (DistanceSquared(m_Position, tar->GetPosition()) > USE_NPC_RANGE2)
 			return;
 
-		if (tar->GetClass() != ALT_CURRENCY_MERCHANT) {
+		if (tar->GetClass() != Class::AlternateCurrencyMerchant) {
 			return;
 		}
 
@@ -2858,7 +2858,7 @@ void Client::Handle_OP_AltCurrencySellSelection(const EQApplicationPacket *app)
 		if (DistanceSquared(m_Position, tar->GetPosition()) > USE_NPC_RANGE2)
 			return;
 
-		if (tar->GetClass() != ALT_CURRENCY_MERCHANT) {
+		if (tar->GetClass() != Class::AlternateCurrencyMerchant) {
 			return;
 		}
 
@@ -2966,7 +2966,7 @@ void Client::Handle_OP_ApplyPoison(const EQApplicationPacket *app)
 
 	bool IsPoison = (poison && poison->ItemType == EQ::item::ItemTypePoison);
 
-	if (IsPoison && GetClass() == ROGUE) {
+	if (IsPoison && GetClass() == Class::Rogue) {
 
 		// Live always checks for skillup, even when poison is too high
 		CheckIncreaseSkill(EQ::skills::SkillApplyPoison, nullptr, 10);
@@ -3926,7 +3926,7 @@ void Client::Handle_OP_Begging(const EQApplicationPacket *app)
 	if (!HasSkill(EQ::skills::SkillBegging) || !GetTarget())
 		return;
 
-	if (GetTarget()->GetClass() == LDON_TREASURE)
+	if (GetTarget()->GetClass() == Class::LDoNTreasure)
 		return;
 
 	p_timers.Start(pTimerBeggingPickPocket, 8);
@@ -4471,7 +4471,7 @@ void Client::Handle_OP_CastSpell(const EQApplicationPacket *app)
 	else if (slot == CastingSlot::Ability) {
 		uint16 spell_to_cast = 0;
 
-		if (castspell->spell_id == SPELL_LAY_ON_HANDS && GetClass() == PALADIN) {
+		if (castspell->spell_id == SPELL_LAY_ON_HANDS && GetClass() == Class::Paladin) {
 			if (!p_timers.Expired(&database, pTimerLayHands)) {
 				Message(Chat::Red, "Ability recovery time not yet met.");
 				InterruptSpell(castspell->spell_id);
@@ -4481,7 +4481,7 @@ void Client::Handle_OP_CastSpell(const EQApplicationPacket *app)
 			p_timers.Start(pTimerLayHands, LayOnHandsReuseTime);
 		}
 		else if ((castspell->spell_id == SPELL_HARM_TOUCH
-			|| castspell->spell_id == SPELL_HARM_TOUCH2) && GetClass() == SHADOWKNIGHT) {
+			|| castspell->spell_id == SPELL_HARM_TOUCH2) && GetClass() == Class::ShadowKnight) {
 			if (!p_timers.Expired(&database, pTimerHarmTouch)) {
 				Message(Chat::Red, "Ability recovery time not yet met.");
 				InterruptSpell(castspell->spell_id);
@@ -5122,7 +5122,7 @@ void Client::Handle_OP_Consider(const EQApplicationPacket *app)
 		}
 	}
 
-	if (t->GetClass() == LDON_TREASURE) {
+	if (t->GetClass() == Class::LDoNTreasure) {
 		Message(Chat::Yellow, fmt::format("{}", t->GetCleanName()).c_str());
 		return;
 	}
@@ -5475,59 +5475,50 @@ void Client::Handle_OP_CreateObject(const EQApplicationPacket *app)
 void Client::Handle_OP_CrystalCreate(const EQApplicationPacket *app)
 {
 	VERIFY_PACKET_LENGTH(OP_CrystalCreate, app, CrystalReclaim_Struct);
-	CrystalReclaim_Struct *cr = (CrystalReclaim_Struct*)app->pBuffer;
+	auto *cr = (CrystalReclaim_Struct *) app->pBuffer;
 
-	const uint32 requestQty = cr->amount;
-	const bool isRadiant = cr->type == 4;
-	const bool isEbon = cr->type == 5;
+	const uint32 quantity   = cr->amount;
+	const bool   is_radiant = cr->type == CrystalReclaimTypes::Radiant;
+	const bool   is_ebon    = cr->type == CrystalReclaimTypes::Ebon;
 
-	// Check: Valid type requested.
-	if (!isRadiant && !isEbon) {
+	if (!is_radiant && !is_ebon) {
 		return;
 	}
-	// Check: Valid quantity requested.
-	if (requestQty < 1) {
+
+	if (quantity < 1) {
 		return;
 	}
 
 	// Check: Valid client state to make request.
 	// In this situation the client is either desynced or attempting an exploit.
-	const uint32 currentQty = isRadiant ? GetRadiantCrystals() : GetEbonCrystals();
-	if (currentQty == 0) {
+	const uint32 current_quantity = is_radiant ? GetRadiantCrystals() : GetEbonCrystals();
+	if (!current_quantity) {
 		return;
 	}
 
 	// Prevent the client from creating more than they have.
-	const uint32 amount = EQ::ClampUpper(requestQty, currentQty);
-	const uint32 itemID = isRadiant ? RuleI(Zone, RadiantCrystalItemID) : RuleI(Zone, EbonCrystalItemID);
+	const uint32 amount  = EQ::ClampUpper(quantity, current_quantity);
+	const uint32 item_id = is_radiant ? RuleI(Zone, RadiantCrystalItemID) : RuleI(Zone, EbonCrystalItemID);
 
-	// Summon crystals for player.
-	const bool success = SummonItem(itemID, amount);
-
+	const bool success = SummonItem(item_id, amount);
 	if (!success) {
 		return;
 	}
 
-	// Deduct crystals from client and update them.
-	if (isRadiant) {
-		m_pp.currentRadCrystals -= amount;
-		m_pp.careerRadCrystals -= amount;
+	if (is_ebon) {
+		RemoveEbonCrystals(amount, true);
+	} else if (is_radiant) {
+		RemoveRadiantCrystals(amount, true);
 	}
-	else if (isEbon) {
-		m_pp.currentEbonCrystals -= amount;
-		m_pp.careerEbonCrystals -= amount;
-	}
-
-	SaveCurrency();
-	SendCrystalCounts();
 }
 
 void Client::Handle_OP_CrystalReclaim(const EQApplicationPacket *app)
 {
-	uint32 ebon = NukeItem(RuleI(Zone, EbonCrystalItemID), invWhereWorn | invWherePersonal | invWhereCursor);
-	uint32 radiant = NukeItem(RuleI(Zone, RadiantCrystalItemID), invWhereWorn | invWherePersonal | invWhereCursor);
+	const uint32 ebon    = NukeItem(RuleI(Zone, EbonCrystalItemID), invWhereWorn | invWherePersonal | invWhereCursor);
+	const uint32 radiant = NukeItem(RuleI(Zone, RadiantCrystalItemID), invWhereWorn | invWherePersonal | invWhereCursor);
 	if ((ebon + radiant) > 0) {
-		AddCrystals(radiant, ebon);
+		AddEbonCrystals(ebon, true);
+		AddRadiantCrystals(radiant, true);
 	}
 }
 
@@ -6293,6 +6284,11 @@ void Client::Handle_OP_EnvDamage(const EQApplicationPacket *app)
 			);
 			parse->EventPlayer(EVENT_ENVIRONMENTAL_DAMAGE, this, export_string, 0);
 		}
+
+		if (ed->dmgtype == EQ::constants::EnvironmentalDamage::Trap) {
+			BreakInvisibleSpells();
+			CancelSneakHide();
+		}
 	}
 
 	if (GetHP() <= 0) {
@@ -6876,12 +6872,6 @@ void Client::Handle_OP_GMSummon(const EQApplicationPacket *app)
 {
 	if (app->size != sizeof(GMSummon_Struct)) {
 		std::cout << "Wrong size on OP_GMSummon. Got: " << app->size << ", Expected: " << sizeof(GMSummon_Struct) << std::endl;
-		return;
-	}
-
-	if (!GetGM()) {
-		Message(Chat::Red, "Your account has been reported for hacking.");
-		RecordPlayerEventLog(PlayerEvent::POSSIBLE_HACK, PlayerEvent::PossibleHackEvent{.message = "Used /summon"});
 		return;
 	}
 
@@ -8626,7 +8616,7 @@ void Client::Handle_OP_Hide(const EQApplicationPacket *app)
 			hidden = true;
 		tmHidden = Timer::GetCurrentTime();
 	}
-	if (GetClass() == ROGUE) {
+	if (GetClass() == Class::Rogue) {
 		auto outapp = new EQApplicationPacket(OP_SimpleMessage, sizeof(SimpleMessage_Struct));
 		SimpleMessage_Struct *msg = (SimpleMessage_Struct *)outapp->pBuffer;
 		msg->color = 0x010E;
@@ -9175,7 +9165,7 @@ void Client::Handle_OP_ItemVerifyRequest(const EQApplicationPacket *app)
 				Bards on live can click items while casting spell gems, it stops that song cast and replaces it with item click cast.
 				Can not click while casting other items.
 			*/
-			if (GetClass() == BARD && IsCasting() && casting_spell_slot < CastingSlot::MaxGems)
+			if (GetClass() == Class::Bard && IsCasting() && casting_spell_slot < CastingSlot::MaxGems)
 			{
 				is_casting_bard_song = true;
 			}
@@ -9341,7 +9331,7 @@ void Client::Handle_OP_ItemVerifyRequest(const EQApplicationPacket *app)
 						if (!IsCastWhileInvisibleSpell(item->Click.Effect)) {
 							CommonBreakInvisible(); // client can't do this for us :(
 						}
-						if (GetClass() == BARD){
+						if (GetClass() == Class::Bard){
 							DoBardCastingFromItemClick(is_casting_bard_song, item->CastTime, item->Click.Effect, target_id, CastingSlot::Item, slot_id, item->RecastType, item->RecastDelay);
 						}
 						else {
@@ -9413,7 +9403,7 @@ void Client::Handle_OP_ItemVerifyRequest(const EQApplicationPacket *app)
 						if (!IsCastWhileInvisibleSpell(augitem->Click.Effect)) {
 							CommonBreakInvisible(); // client can't do this for us :(
 						}
-						if (GetClass() == BARD) {
+						if (GetClass() == Class::Bard) {
 							DoBardCastingFromItemClick(is_casting_bard_song, augitem->CastTime, augitem->Click.Effect, target_id, CastingSlot::Item, slot_id, augitem->RecastType, augitem->RecastDelay);
 						}
 						else {
@@ -9549,7 +9539,7 @@ void Client::Handle_OP_LDoNDisarmTraps(const EQApplicationPacket *app)
 void Client::Handle_OP_LDoNInspect(const EQApplicationPacket *app)
 {
 	auto* t = GetTarget();
-	if (t && t->GetClass() == LDON_TREASURE && !t->IsAura()) {
+	if (t && t->GetClass() == Class::LDoNTreasure && !t->IsAura()) {
 		if (parse->PlayerHasQuestSub(EVENT_INSPECT)) {
 			std::vector<std::any> args = { t };
 			if (parse->EventPlayer(EVENT_INSPECT, this, "", t->GetID(), &args) == 0) {
@@ -9878,7 +9868,7 @@ void Client::Handle_OP_LFPCommand(const EQApplicationPacket *app)
 
 	for (unsigned int i = 0; i<MAX_GROUP_MEMBERS; i++) {
 		LFPMembers[i].Name[0] = '\0';
-		LFPMembers[i].Class = NO_CLASS;
+		LFPMembers[i].Class = Class::None;
 		LFPMembers[i].Level = 0;
 		LFPMembers[i].Zone = 0;
 		LFPMembers[i].GuildID = 0xFFFF;
@@ -10219,7 +10209,7 @@ void Client::Handle_OP_MercenaryDataRequest(const EQApplicationPacket *app)
 		if (DistanceSquared(m_Position, tar->GetPosition()) > USE_NPC_RANGE2)
 			return;
 
-		if (tar->GetClass() != MERCENARY_MASTER) {
+		if (tar->GetClass() != Class::MercenaryLiaison) {
 			return;
 		}
 
@@ -10594,7 +10584,7 @@ void Client::Handle_OP_OpenGuildTributeMaster(const EQApplicationPacket *app)
 		//Opens the guild tribute master window
 		StartTribute_Struct* st = (StartTribute_Struct*)app->pBuffer;
 		Mob* tribmast = entity_list.GetMob(st->tribute_master_id);
-		if (tribmast && tribmast->IsNPC() && tribmast->GetClass() == GUILD_TRIBUTE_MASTER
+		if (tribmast && tribmast->IsNPC() && tribmast->GetClass() == Class::GuildTributeMaster
 			&& DistanceSquared(m_Position, tribmast->GetPosition()) <= USE_NPC_RANGE2) {
 			st->response = 1;
 			QueuePacket(app);
@@ -10625,7 +10615,7 @@ void Client::Handle_OP_OpenTributeMaster(const EQApplicationPacket *app)
 		//Opens the tribute master window
 		StartTribute_Struct* st = (StartTribute_Struct*)app->pBuffer;
 		Mob* tribmast = entity_list.GetMob(st->tribute_master_id);
-		if (tribmast && tribmast->IsNPC() && tribmast->GetClass() == TRIBUTE_MASTER
+		if (tribmast && tribmast->IsNPC() && tribmast->GetClass() == Class::TributeMaster
 			&& DistanceSquared(m_Position, tribmast->GetPosition()) <= USE_NPC_RANGE2) {
 			st->response = 1;
 			QueuePacket(app);
@@ -13531,7 +13521,7 @@ void Client::Handle_OP_Shielding(const EQApplicationPacket *app)
 		return;
 	}
 
-	if (GetClass() != WARRIOR){
+	if (GetClass() != Class::Warrior){
 		return;
 	}
 
@@ -13587,7 +13577,7 @@ void Client::Handle_OP_ShopPlayerBuy(const EQApplicationPacket *app)
 	bool tmpmer_used = false;
 	Mob* tmp = entity_list.GetMob(mp->npcid);
 
-	if (tmp == 0 || !tmp->IsNPC() || tmp->GetClass() != MERCHANT)
+	if (tmp == 0 || !tmp->IsNPC() || tmp->GetClass() != Class::Merchant)
 		return;
 
 	if (mp->quantity < 1) return;
@@ -13896,7 +13886,7 @@ void Client::Handle_OP_ShopPlayerSell(const EQApplicationPacket *app)
 
 	Mob* vendor = entity_list.GetMob(mp->npcid);
 
-	if (vendor == 0 || !vendor->IsNPC() || vendor->GetClass() != MERCHANT)
+	if (vendor == 0 || !vendor->IsNPC() || vendor->GetClass() != Class::Merchant)
 		return;
 
 	//you have to be somewhat close to them to be properly using them
@@ -14122,7 +14112,7 @@ void Client::Handle_OP_ShopRequest(const EQApplicationPacket *app)
 	int merchantid = 0;
 	Mob* tmp = entity_list.GetMob(mc->npcid);
 
-	if (tmp == 0 || !tmp->IsNPC() || tmp->GetClass() != MERCHANT)
+	if (tmp == 0 || !tmp->IsNPC() || tmp->GetClass() != Class::Merchant)
 		return;
 
 	//you have to be somewhat close to them to be properly using them
@@ -14229,7 +14219,7 @@ void Client::Handle_OP_Sneak(const EQApplicationPacket *app)
 	sa_out->parameter = sneaking;
 	QueuePacket(outapp);
 	safe_delete(outapp);
-	if (GetClass() == ROGUE) {
+	if (GetClass() == Class::Rogue) {
 		outapp = new EQApplicationPacket(OP_SimpleMessage, 12);
 		SimpleMessage_Struct *msg = (SimpleMessage_Struct *)outapp->pBuffer;
 		msg->color = 0x010E;
@@ -15545,7 +15535,7 @@ void Client::Handle_OP_TributeItem(const EQApplicationPacket *app)
 		tribute_master_id = t->tribute_master_id;
 		//make sure they are dealing with a valid tribute master
 		Mob* tribmast = entity_list.GetMob(t->tribute_master_id);
-		if (!tribmast || !tribmast->IsNPC() || tribmast->GetClass() != TRIBUTE_MASTER)
+		if (!tribmast || !tribmast->IsNPC() || tribmast->GetClass() != Class::TributeMaster)
 			return;
 		if (DistanceSquared(m_Position, tribmast->GetPosition()) > USE_NPC_RANGE2)
 			return;
@@ -15572,7 +15562,7 @@ void Client::Handle_OP_TributeMoney(const EQApplicationPacket *app)
 		tribute_master_id = t->tribute_master_id;
 		//make sure they are dealing with a valid tribute master
 		Mob* tribmast = entity_list.GetMob(t->tribute_master_id);
-		if (!tribmast || !tribmast->IsNPC() || tribmast->GetClass() != TRIBUTE_MASTER)
+		if (!tribmast || !tribmast->IsNPC() || tribmast->GetClass() != Class::TributeMaster)
 			return;
 		if (DistanceSquared(m_Position, tribmast->GetPosition()) > USE_NPC_RANGE2)
 			return;

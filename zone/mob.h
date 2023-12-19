@@ -714,7 +714,7 @@ public:
 	bool IsRunning() const { return m_is_running; }
 	void SetRunning(bool val) { m_is_running = val; }
 	virtual void GMMove(float x, float y, float z, float heading = 0.01, bool save_guard_spot = true);
-	virtual void GMMove(const glm::vec4 &position);
+	virtual void GMMove(const glm::vec4 &position, bool save_guard_spot = true);
 	void SetDelta(const glm::vec4& delta);
 	void MakeSpawnUpdateNoDelta(PlayerPositionUpdateServer_Struct* spu);
 	void MakeSpawnUpdate(PlayerPositionUpdateServer_Struct* spu);
@@ -1121,7 +1121,7 @@ public:
 
 	void DoSpecialAttackDamage(Mob *who, EQ::skills::SkillType skill, int base_damage, int min_damage = 0, int32 hate_override = -1, int ReuseTime = 10);
 	void DoThrowingAttackDmg(Mob* other, const EQ::ItemInstance* RangeWeapon = nullptr, const EQ::ItemData* AmmoItem = nullptr, int32 weapon_damage = 0, int16 chance_mod = 0, int16 focus = 0, int ReuseTime = 0, uint32 range_id = 0, int AmmoSlot = 0, float speed = 4.0f, bool DisableProcs = false);
-	void DoMeleeSkillAttackDmg(Mob* other, int32 weapon_damage, EQ::skills::SkillType skillinuse, int16 chance_mod = 0, int16 focus = 0, bool CanRiposte = false, int ReuseTime = 0);
+	void DoMeleeSkillAttackDmg(Mob* other, int32 weapon_damage, EQ::skills::SkillType skillinuse, int16 chance_mod = 0, int16 focus = 0, bool can_riposte = false, int ReuseTime = 0);
 	void DoArcheryAttackDmg(Mob* other, const EQ::ItemInstance* RangeWeapon = nullptr, const EQ::ItemInstance* Ammo = nullptr, int32 weapon_damage = 0, int16 chance_mod = 0, int16 focus = 0, int ReuseTime = 0, uint32 range_id = 0, uint32 ammo_id = 0, const EQ::ItemData *AmmoItem = nullptr, int AmmoSlot = 0, float speed = 4.0f, bool DisableProcs = false);
 	bool TryProjectileAttack(Mob* other, const EQ::ItemData *item, EQ::skills::SkillType skillInUse, uint64 weapon_dmg, const EQ::ItemInstance* RangeWeapon, const EQ::ItemInstance* Ammo, int AmmoSlot, float speed, bool DisableProcs = false);
 	void ProjectileAttack();

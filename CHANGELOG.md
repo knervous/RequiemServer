@@ -1,3 +1,137 @@
+## [22.37.0] - 12/18/2023
+
+### Bots
+
+* Add ScanCloseMobs support to fix AEs ([#3786](https://github.com/EQEmu/Server/pull/3786)) @nytmyr 2023-12-18
+* Expand ^itemuse options ([#3756](https://github.com/EQEmu/Server/pull/3756)) @nytmyr 2023-12-17
+* Fix ^defensive from checking aggressive disciplines. ([#3787](https://github.com/EQEmu/Server/pull/3787)) @nytmyr 2023-12-18
+* Fix ^oo autodefend from sending bots/pets to invalid haters ([#3772](https://github.com/EQEmu/Server/pull/3772)) @nytmyr 2023-12-16
+* Fix unnecessary failed to save timer error ([#3788](https://github.com/EQEmu/Server/pull/3788)) @nytmyr 2023-12-18
+* [Quest API] Add ^clickitem, ^timer, fix GetBestBotSpellForCure ([#3755](https://github.com/EQEmu/Server/pull/3755)) @nytmyr 2023-12-17
+
+### CI
+
+* Switch to use clang for Linux builds (speed) ([#3777](https://github.com/EQEmu/Server/pull/3777)) @Akkadius 2023-12-17
+
+### Compilation
+
+* Use pre-compiled headers for Windows (speed) ([#3778](https://github.com/EQEmu/Server/pull/3778)) @Akkadius 2023-12-18
+
+### Fixes
+
+* Drop Invisibility when hit by traps ([#3785](https://github.com/EQEmu/Server/pull/3785)) @Kinglykrab 2023-12-18
+* Fix NPCs routing to 0.0, 0.0 on #summon ([#3780](https://github.com/EQEmu/Server/pull/3780)) @Kinglykrab 2023-12-18
+* Fix bad merge  @Akkadius 2023-12-17
+* Fix issue with HOTBonusHealingSplitOverDuration Rule ([#3776](https://github.com/EQEmu/Server/pull/3776)) @Kinglykrab 2023-12-17
+* Fixed the discrepacy with time using command #time and in quests. ([#3767](https://github.com/EQEmu/Server/pull/3767)) @regneq 2023-12-17
+* Send Entity ID in Death Events to resolve #3721 ([#3779](https://github.com/EQEmu/Server/pull/3779)) @Kinglykrab 2023-12-18
+
+### Quest API
+
+* Add EVENT_ALT_CURRENCY_GAIN and EVENT_ALT_CURRENCY_LOSS to Perl/Lua ([#3734](https://github.com/EQEmu/Server/pull/3734)) @Kinglykrab 2023-12-17
+* Add EVENT_CRYSTAL_GAIN and EVENT_CRYSTAL_LOSS to Perl/Lua ([#3735](https://github.com/EQEmu/Server/pull/3735)) @Kinglykrab 2023-12-17
+* Add EVENT_LDON_POINTS_GAIN and EVENT_LDON_POINTS_LOSS to Perl/Lua ([#3742](https://github.com/EQEmu/Server/pull/3742)) @Kinglykrab 2023-12-17
+* Add EVENT_LEVEL_UP and EVENT_LEVEL_DOWN to Bots ([#3750](https://github.com/EQEmu/Server/pull/3750)) @Kinglykrab 2023-12-17
+* Add EVENT_LOOT_ADDED to Perl/Lua ([#3739](https://github.com/EQEmu/Server/pull/3739)) @Kinglykrab 2023-12-17
+* Add GetNPCAggro() and SetNPCAggro() to Perl/Lua ([#3781](https://github.com/EQEmu/Server/pull/3781)) @Kinglykrab 2023-12-18
+
+## [22.36.0] - 12/16/2023
+
+### Bots
+
+* Add rule to toggle DT hitting owner ([#3757](https://github.com/EQEmu/Server/pull/3757)) @nytmyr 2023-12-11
+* Enable auto-saving of bots. ([#3758](https://github.com/EQEmu/Server/pull/3758)) @nytmyr 2023-12-13
+
+### Code
+
+* Cleanup classes.cpp/classes.h ([#3752](https://github.com/EQEmu/Server/pull/3752)) @Kinglykrab 2023-12-13
+
+### Corpse
+
+* Fix /corpse command regression from #3727 ([#3770](https://github.com/EQEmu/Server/pull/3770)) @Akkadius 2023-12-16
+
+### Database
+
+* Make it clearer to users that a database backup is occurring ([#3769](https://github.com/EQEmu/Server/pull/3769)) @Akkadius 2023-12-16
+* When database version is greater than binary, we are up to date ([#3771](https://github.com/EQEmu/Server/pull/3771)) @Akkadius 2023-12-16
+
+### Fixes
+
+* Fix Starting Items SQL ([#3766](https://github.com/EQEmu/Server/pull/3766)) @Kinglykrab 2023-12-16
+
+### Logging
+
+* Change empty object loading to warning ([#3759](https://github.com/EQEmu/Server/pull/3759)) @nytmyr 2023-12-11
+
+### Rules
+
+* Add DOT and HOT Rules ([#3760](https://github.com/EQEmu/Server/pull/3760)) @Kinglykrab 2023-12-16
+
+## [22.35.0] - 12/10/2023
+
+### Bots
+
+* Add BotHealOnLevel to fully heal/mana on level. ([#3745](https://github.com/EQEmu/Server/pull/3745)) @nytmyr 2023-12-08
+* Fix bots learning spells on level ([#3744](https://github.com/EQEmu/Server/pull/3744)) @nytmyr 2023-12-08
+
+### Bug
+
+* Fix blocked spells regression from #3638 ([#3753](https://github.com/EQEmu/Server/pull/3753)) @joligario 2023-12-11
+* PR 3638 Missed the blocked spells repository updates ([#3748](https://github.com/EQEmu/Server/pull/3748)) @fryguy503 2023-12-08
+
+### CMake
+
+* Update minimum version of CMake ([#3743](https://github.com/EQEmu/Server/pull/3743)) @joligario 2023-12-08
+
+### Code
+
+* Remove hard-coded Status Checks ([#3727](https://github.com/EQEmu/Server/pull/3727)) @Kinglykrab 2023-12-03
+
+### Commands
+
+* #guild set CharName 0 did not remove char from guild. ([#3717](https://github.com/EQEmu/Server/pull/3717)) @noudess 2023-11-25
+* #petname changes PC to Nobody if selected. ([#3720](https://github.com/EQEmu/Server/pull/3720)) @noudess 2023-11-26
+* Add #show aas Command ([#3710](https://github.com/EQEmu/Server/pull/3710)) @Kinglykrab 2023-11-26
+* Add #task complete Command ([#3711](https://github.com/EQEmu/Server/pull/3711)) @Kinglykrab 2023-11-26
+* Cleanup #acceptrules Command ([#3716](https://github.com/EQEmu/Server/pull/3716)) @Kinglykrab 2023-11-26
+* Cleanup #disarmtrap Command ([#3713](https://github.com/EQEmu/Server/pull/3713)) @Kinglykrab 2023-11-26
+* Cleanup #list Command ([#3714](https://github.com/EQEmu/Server/pull/3714)) @Kinglykrab 2023-11-26
+* Cleanup #movement Command ([#3715](https://github.com/EQEmu/Server/pull/3715)) @Kinglykrab 2023-11-26
+* Cleanup #object Command ([#3722](https://github.com/EQEmu/Server/pull/3722)) @Kinglykrab 2023-12-03
+* Cleanup #zonebootup and #zoneshutdown Commands ([#3729](https://github.com/EQEmu/Server/pull/3729)) @Kinglykrab 2023-12-03
+* Fix formatting of #wpinfo output. ([#3728](https://github.com/EQEmu/Server/pull/3728)) @noudess 2023-12-01
+
+### Database
+
+* Add primary key to keyring table ([#3746](https://github.com/EQEmu/Server/pull/3746)) @Kinglykrab 2023-12-08
+* Consolidate Starting Items Table ([#3723](https://github.com/EQEmu/Server/pull/3723)) @Kinglykrab 2023-11-30
+* Extra whitespace in #3723 ([#3730](https://github.com/EQEmu/Server/pull/3730)) @joligario 2023-12-02
+* Minor adjustment to #3726 ([#3732](https://github.com/EQEmu/Server/pull/3732)) @joligario 2023-12-03
+* Modify `updated` column in `items` table with proper default. ([#3726](https://github.com/EQEmu/Server/pull/3726)) @joligario 2023-12-02
+* Pull Spell Group Cache from Content DB ([#3749](https://github.com/EQEmu/Server/pull/3749)) @fryguy503 2023-12-08
+
+### Faction
+
+* Alliance line is only allowed 1 faction change at a time. ([#3718](https://github.com/EQEmu/Server/pull/3718)) @noudess 2023-11-26
+
+### Fixes
+
+* Changing Group Leader Invalidated GetLeaderName() ([#3712](https://github.com/EQEmu/Server/pull/3712)) @Kinglykrab 2023-11-26
+* Fix 9245 SQL ([#3740](https://github.com/EQEmu/Server/pull/3740)) @Kinglykrab 2023-12-05
+* Fix Swarm Pets Requiring NPC Aggros Flag ([#3738](https://github.com/EQEmu/Server/pull/3738)) @Kinglykrab 2023-12-05
+* Guild Message Limits ([#3724](https://github.com/EQEmu/Server/pull/3724)) @neckkola 2023-11-29
+
+### Quest API
+
+* Add EVENT_AA_GAIN to AddAAPoints() ([#3733](https://github.com/EQEmu/Server/pull/3733)) @Kinglykrab 2023-12-03
+* Add GMMove Overloads to Perl/Lua ([#3719](https://github.com/EQEmu/Server/pull/3719)) @Kinglykrab 2023-11-25
+
+### Scripts
+
+* Import items into `items_new` table instead of writing directly to the existing `items` table. ([#3725](https://github.com/EQEmu/Server/pull/3725)) @joligario 2023-11-30
+* Revert database engine change from #3702. ([#3736](https://github.com/EQEmu/Server/pull/3736)) @joligario 2023-12-03
+* Update 13th Floor Import Tool ([#3702](https://github.com/EQEmu/Server/pull/3702)) @joligario 2023-11-26
+
 ## [22.34.2] - 11/23/2023
 
 ### Admin

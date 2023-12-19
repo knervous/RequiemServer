@@ -186,6 +186,14 @@ const char *QuestEventSubroutines[_LargestEventID] = {
 	"EVENT_UNMEMORIZE_SPELL",
 	"EVENT_SCRIBE_SPELL",
 	"EVENT_UNSCRIBE_SPELL",
+	"EVENT_LOOT_ADDED",
+	"EVENT_LDON_POINTS_GAIN",
+	"EVENT_LDON_POINTS_LOSS",
+	"EVENT_ALT_CURRENCY_GAIN",
+	"EVENT_ALT_CURRENCY_LOSS",
+	"EVENT_CRYSTAL_GAIN",
+	"EVENT_CRYSTAL_LOSS",
+
 	// Add new events before these or Lua crashes
 	"EVENT_SPELL_EFFECT_BOT",
 	"EVENT_SPELL_EFFECT_BUFF_TIC_BOT"
@@ -1883,19 +1891,17 @@ void PerlembParser::ExportEventVariables(
 			ExportVar(package_name.c_str(), "killer_damage", sep.arg[1]);
 			ExportVar(package_name.c_str(), "killer_spell", sep.arg[2]);
 			ExportVar(package_name.c_str(), "killer_skill", sep.arg[3]);
-			if (extra_pointers && extra_pointers->size() >= 1)
-			{
-				Corpse* corpse = std::any_cast<Corpse*>(extra_pointers->at(0));
-				if (corpse)
-				{
+
+			if (extra_pointers && extra_pointers->size() >= 1) {
+				Corpse *corpse = std::any_cast<Corpse *>(extra_pointers->at(0));
+				if (corpse) {
 					ExportVar(package_name.c_str(), "killed_corpse_id", corpse->GetID());
 				}
 			}
-			if (extra_pointers && extra_pointers->size() >= 2)
-			{
-				NPC* killed = std::any_cast<NPC*>(extra_pointers->at(1));
-				if (killed)
-				{
+
+			if (extra_pointers && extra_pointers->size() >= 2) {
+				NPC *killed = std::any_cast<NPC *>(extra_pointers->at(1));
+				if (killed) {
 					ExportVar(package_name.c_str(), "killed_entity_id", killed->GetID());
 					ExportVar(package_name.c_str(), "killed_bot_id", killed->IsBot() ? killed->CastToBot()->GetBotID() : 0);
 					ExportVar(package_name.c_str(), "killed_npc_id", killed->IsNPC() ? killed->GetNPCTypeID() : 0);
@@ -2238,6 +2244,50 @@ void PerlembParser::ExportEventVariables(
 				ExportVar(package_name.c_str(), "spell", "Spell", (void*)&spells[Strings::ToUnsignedInt(sep.arg[1])]);
 			}
 
+			break;
+		}
+
+		case EVENT_LOOT_ADDED: {
+			if (extra_pointers && extra_pointers->size() == 1) {
+				auto *inst = std::any_cast<EQ::ItemInstance *>(extra_pointers->at(0));
+				if (inst) {
+					ExportVar(package_name.c_str(), "item", "QuestItem", inst);
+					ExportVar(package_name.c_str(), "item_id", inst->GetID());
+					ExportVar(package_name.c_str(), "item_name", inst->GetItem()->Name);
+					ExportVar(package_name.c_str(), "item_charges", inst->GetCharges());
+					ExportVar(package_name.c_str(), "augment_one", inst->GetAugmentItemID(EQ::invaug::SOCKET_BEGIN));
+					ExportVar(package_name.c_str(), "augment_two", inst->GetAugmentItemID(EQ::invaug::SOCKET_BEGIN + 1));
+					ExportVar(package_name.c_str(), "augment_three", inst->GetAugmentItemID(EQ::invaug::SOCKET_BEGIN + 2));
+					ExportVar(package_name.c_str(), "augment_four", inst->GetAugmentItemID(EQ::invaug::SOCKET_BEGIN + 3));
+					ExportVar(package_name.c_str(), "augment_five", inst->GetAugmentItemID(EQ::invaug::SOCKET_BEGIN + 4));
+					ExportVar(package_name.c_str(), "augment_six", inst->GetAugmentItemID(EQ::invaug::SOCKET_END));
+				}
+			}
+		}
+
+		case EVENT_LDON_POINTS_GAIN:
+		case EVENT_LDON_POINTS_LOSS: {
+			Seperator sep(data);
+			ExportVar(package_name.c_str(), "theme_id", sep.arg[0]);
+			ExportVar(package_name.c_str(), "points", sep.arg[1]);
+			break;
+		}
+
+		case EVENT_ALT_CURRENCY_GAIN:
+		case EVENT_ALT_CURRENCY_LOSS: {
+			Seperator sep(data);
+			ExportVar(package_name.c_str(), "currency_id", sep.arg[0]);
+			ExportVar(package_name.c_str(), "amount", sep.arg[1]);
+			ExportVar(package_name.c_str(), "total", sep.arg[2]);
+			break;
+		}
+
+		case EVENT_CRYSTAL_GAIN:
+		case EVENT_CRYSTAL_LOSS: {
+			Seperator sep(data);
+			ExportVar(package_name.c_str(), "ebon_amount", sep.arg[0]);
+			ExportVar(package_name.c_str(), "radiant_amount", sep.arg[1]);
+			ExportVar(package_name.c_str(), "is_reclaim", sep.arg[2]);
 			break;
 		}
 

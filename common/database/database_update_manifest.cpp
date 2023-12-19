@@ -5105,6 +5105,35 @@ ALTER TABLE `object` CHANGE COLUMN `unknown08` `size_percentage` float NOT NULL 
 ALTER TABLE `object` CHANGE COLUMN `unknown10` `solid_type` mediumint(5) NOT NULL DEFAULT 0 AFTER `size`;
 ALTER TABLE `object` CHANGE COLUMN `unknown20` `incline` int(11) NOT NULL DEFAULT 0 AFTER `solid_type`;
 )"
+	},
+	ManifestEntry{
+		.version = 9246,
+		.description = "2023_12_07_keyring_id.sql",
+		.check = "SHOW COLUMNS FROM `keyring` LIKE 'id'",
+		.condition = "empty",
+		.match = "",
+		.sql = R"(
+ALTER TABLE `keyring`
+ADD COLUMN `id` int UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
+ADD PRIMARY KEY (`id`);
+)"
+	},
+	ManifestEntry{
+		.version = 9247,
+		.description = "2023_12_14_starting_items_fix.sql",
+		.check = "SHOW COLUMNS FROM `starting_items` LIKE 'inventory_slot'",
+		.condition = "empty",
+		.match = "",
+		.sql = R"(
+ALTER TABLE `starting_items`
+CHANGE COLUMN `race_list` `temporary` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `id`,
+CHANGE COLUMN `class_list` `race_list` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `temporary`,
+CHANGE COLUMN `gm` `status` mediumint(3) NOT NULL DEFAULT 0 AFTER `item_charges`,
+CHANGE COLUMN `slot` `inventory_slot` mediumint(9) NOT NULL DEFAULT -1 AFTER `status`;
+
+ALTER TABLE `starting_items`
+CHANGE COLUMN `temporary` `class_list` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `id`;
+)"
 	}
 
 // -- template; copy/paste this when you need to create a new entry

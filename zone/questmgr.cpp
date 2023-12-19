@@ -1029,10 +1029,10 @@ bool QuestManager::isdisctome(uint32 item_id) {
 
 	//we know for sure none of the int casters get disciplines
 	uint32 class_bit = 0;
-	class_bit |= 1 << (WIZARD - 1);
-	class_bit |= 1 << (ENCHANTER - 1);
-	class_bit |= 1 << (MAGICIAN - 1);
-	class_bit |= 1 << (NECROMANCER - 1);
+	class_bit |= 1 << (Class::Wizard - 1);
+	class_bit |= 1 << (Class::Enchanter - 1);
+	class_bit |= 1 << (Class::Magician - 1);
+	class_bit |= 1 << (Class::Necromancer - 1);
 	if (item->Classes & class_bit) {
 		return false;
 	}
@@ -1045,10 +1045,10 @@ bool QuestManager::isdisctome(uint32 item_id) {
 	//we know for sure none of the int casters get disciplines
 	const auto& spell = spells[spell_id];
 	if(
-		spell.classes[WIZARD - 1] != 255 &&
-		spell.classes[ENCHANTER - 1] != 255 &&
-		spell.classes[MAGICIAN - 1] != 255 &&
-		spell.classes[NECROMANCER - 1] != 255
+		spell.classes[Class::Wizard - 1] != 255 &&
+		spell.classes[Class::Enchanter - 1] != 255 &&
+		spell.classes[Class::Magician - 1] != 255 &&
+		spell.classes[Class::Necromancer - 1] != 255
 	) {
 		return false;
 	}
@@ -1526,7 +1526,7 @@ void QuestManager::CreateGuild(const char *guild_name, const char *leader) {
 void QuestManager::settime(uint8 new_hour, uint8 new_min, bool update_world /*= true*/)
 {
 	if (zone)
-		zone->SetTime(new_hour + 1, new_min, update_world);
+		zone->SetTime(new_hour, new_min, update_world);
 }
 
 void QuestManager::itemlink(int item_id) {
@@ -3128,7 +3128,7 @@ void QuestManager::UpdateSpawnTimer(uint32 id, uint32 newTime)
 void QuestManager::MerchantSetItem(uint32 NPCid, uint32 itemid, uint32 quantity) {
 	Mob* merchant = entity_list.GetMobByNpcTypeID(NPCid);
 
-	if (merchant == 0 || !merchant->IsNPC() || (merchant->GetClass() != MERCHANT))
+	if (merchant == 0 || !merchant->IsNPC() || (merchant->GetClass() != Class::Merchant))
 		return;	// don't do anything if NPCid isn't a merchant
 
 	const EQ::ItemData* item = nullptr;
@@ -3141,7 +3141,7 @@ void QuestManager::MerchantSetItem(uint32 NPCid, uint32 itemid, uint32 quantity)
 uint32 QuestManager::MerchantCountItem(uint32 NPCid, uint32 itemid) {
 	Mob* merchant = entity_list.GetMobByNpcTypeID(NPCid);
 
-	if (merchant == 0 || !merchant->IsNPC() || (merchant->GetClass() != MERCHANT))
+	if (merchant == 0 || !merchant->IsNPC() || (merchant->GetClass() != Class::Merchant))
 		return 0;	// if it isn't a merchant, it doesn't have any items
 
 	const EQ::ItemData* item = nullptr;

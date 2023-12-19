@@ -24,6 +24,7 @@
 
 #include "../common/repositories/bot_data_repository.h"
 #include "../common/repositories/bot_inventories_repository.h"
+#include "../common/repositories/bot_timers_repository.h"
 
 #include "zonedb.h"
 #include "bot.h"
@@ -141,7 +142,7 @@ bool BotDatabase::LoadBotSpellCastingChances()
 		if (spell_type_index >= Bot::SPELL_TYPE_COUNT)
 			continue;
 		uint8 class_index = Strings::ToInt(row[1]);
-		if (class_index < WARRIOR || class_index > BERSERKER)
+		if (class_index < Class::Warrior || class_index > Class::Berserker)
 			continue;
 		--class_index;
 		uint8 stance_index = Strings::ToInt(row[2]);
@@ -224,7 +225,7 @@ bool BotDatabase::QueryBotCount(const uint32 owner_id, int class_id, uint32& bot
 	auto row = results.begin();
 	bot_count = Strings::ToUnsignedInt(row[0]);
 
-	if (EQ::ValueWithin(class_id, WARRIOR, BERSERKER)) {
+	if (EQ::ValueWithin(class_id, Class::Warrior, Class::Berserker)) {
 		query = fmt::format(
 			"SELECT COUNT(`bot_id`) FROM `bot_data` WHERE `owner_id` = {} AND `class` = {}",
 			owner_id,
@@ -917,45 +918,39 @@ bool BotDatabase::LoadTimers(Bot* bot_inst)
 	if (!bot_inst)
 		return false;
 
-	query = StringFormat(
-		"SELECT"
-		" IfNull(bt.`timer_id`, '0') As timer_id,"
-		" IfNull(bt.`timer_value`, '0') As timer_value,"
-		" IfNull(MAX(sn.`recast_time`), '0') AS MaxTimer"
-		" FROM `bot_timers` bt, `spells_new` sn"
-		" WHERE bt.`bot_id` = '%u' AND sn.`EndurTimerIndex` = ("
-		"SELECT case"
-		" WHEN timer_id > '%i' THEN timer_id - '%i'"
-		" ELSE timer_id END AS timer_id"
-		" FROM `bot_timers` WHERE `timer_id` = bt.`timer_id` AND `bot_id` = bt.`bot_id`" // double-check validity
-		")"
-		" AND sn.`classes%i` <= '%i'",
-		bot_inst->GetBotID(),
-		(DisciplineReuseStart - 1),
-		(DisciplineReuseStart - 1),
-		bot_inst->GetClass(),
-		bot_inst->GetLevel()
+	auto timers = BotTimersRepository::GetWhere(
+		database,
+		fmt::format("bot_id = {}", bot_inst->GetBotID())
 	);
-	auto results = database.QueryDatabase(query);
-	if (!results.Success())
-		return false;
-	if (!results.RowCount())
-		return true;
 
-	uint32* bot_timers = bot_inst->GetTimers();
-	if (!bot_timers)
-		return false;
+	std::vector<BotTimer_Struct> bot_timers;
 
-	int timer_id = 0;
-	uint32 timer_value = 0;
-	uint32 max_value = 0;
-	for (auto row = results.begin(); row != results.end(); ++row) {
-		timer_id = Strings::ToInt(row[0]) - 1;
-		timer_value = Strings::ToInt(row[1]);
-		max_value = Strings::ToInt(row[2]);
+	BotTimer_Struct t{};
+	t.timer_id    = 0;
+	t.timer_value = 0;
+	t.recast_time = 0;
+	t.is_spell    = false;
+	t.is_disc     = false;
+	t.spell_id    = 0;
+	t.is_item     = false;
+	t.item_id     = 0;
 
-		if (timer_id >= 0 && timer_id < MaxTimer && timer_value < (Timer::GetCurrentTime() + max_value))
-			bot_timers[timer_id] = timer_value;
+	for (auto& timer : timers) {
+		if (t.timer_value < (Timer::GetCurrentTime() + t.recast_time)) {
+			t.timer_id    = timer.timer_id;
+			t.timer_value = timer.timer_value;
+			t.recast_time = timer.recast_time;
+			t.is_spell    = timer.is_spell ? true : false;
+			t.is_disc     = timer.is_disc ? true : false;
+			t.spell_id    = timer.spell_id;
+			t.is_item     = timer.is_item ? true : false;
+			t.item_id     = timer.item_id;
+			bot_timers.push_back(t);
+		}
+	}
+
+	if (!bot_timers.empty()) {
+		bot_inst->SetBotTimers(bot_timers);
 	}
 
 	return true;
@@ -963,26 +958,56 @@ bool BotDatabase::LoadTimers(Bot* bot_inst)
 
 bool BotDatabase::SaveTimers(Bot* bot_inst)
 {
-	if (!bot_inst)
+	if (!bot_inst) {
 		return false;
+	}
 
-	if (!DeleteTimers(bot_inst->GetBotID()))
+	if (!DeleteTimers(bot_inst->GetBotID())) {
 		return false;
+	}
 
-	uint32* bot_timers = bot_inst->GetTimers();
-	if (!bot_timers)
-		return false;
+	std::vector<BotTimer_Struct> bot_timers = bot_inst->GetBotTimers();
 
-	for (int timer_index = 0; timer_index < MaxTimer; ++timer_index) {
-		if (bot_timers[timer_index] <= Timer::GetCurrentTime())
-			continue;
+	if (bot_timers.empty()) {
+		return true;
+	}
 
-		query = fmt::format(
-				"REPLACE INTO `bot_timers` (`bot_id`, `timer_id`, `timer_value`) VALUES ('{}', '{}', '{}')",
-				bot_inst->GetBotID(), (timer_index + 1), bot_timers[timer_index]
+	std::vector<BotTimersRepository::BotTimers> timers;
+
+	if (!bot_timers.empty()) {
+		for (auto & bot_timer : bot_timers) {
+			if (bot_timer.timer_value <= Timer::GetCurrentTime()) {
+				continue;
+			}
+
+			auto t = BotTimersRepository::BotTimers{
+				.bot_id = bot_inst->GetBotID(),
+				.timer_id = bot_timer.timer_id,
+				.timer_value = bot_timer.timer_value,
+				.recast_time = bot_timer.recast_time,
+				.is_spell = bot_timer.is_spell ? true : false,
+				.is_disc = bot_timer.is_disc ? true : false,
+				.spell_id = bot_timer.spell_id,
+				.is_item = bot_timer.is_item ? true : false,
+				.item_id = bot_timer.item_id
+			};
+
+			timers.push_back(t);
+		}
+
+		if (timers.empty()) {
+			return true;
+		}
+
+		// delete existing
+		BotTimersRepository::DeleteWhere(
+			database,
+			fmt::format("bot_id = {}", bot_inst->GetBotID())
 		);
-		auto results = database.QueryDatabase(query);
-		if (!results.Success()) {
+
+		// bulk insert current
+		auto success = BotTimersRepository::InsertMany(database, timers);
+		if (!success) {
 			DeleteTimers(bot_inst->GetBotID());
 			return false;
 		}
@@ -993,13 +1018,11 @@ bool BotDatabase::SaveTimers(Bot* bot_inst)
 
 bool BotDatabase::DeleteTimers(const uint32 bot_id)
 {
-	if (!bot_id)
+	if (!bot_id) {
 		return false;
+	}
 
-	query = StringFormat("DELETE FROM `bot_timers` WHERE `bot_id` = '%u'", bot_id);
-	auto results = database.QueryDatabase(query);
-	if (!results.Success())
-		return false;
+	BotTimersRepository::DeleteWhere(database, fmt::format("bot_id = {}", bot_id));
 
 	return true;
 }
@@ -2517,7 +2540,7 @@ uint8 BotDatabase::GetSpellCastingChance(uint8 spell_type_index, uint8 class_ind
 {
 	if (spell_type_index >= Bot::SPELL_TYPE_COUNT)
 		return 0;
-	if (class_index >= PLAYER_CLASS_COUNT)
+	if (class_index >= Class::PLAYER_CLASS_COUNT)
 		return 0;
 	if (stance_index >= EQ::constants::STANCE_TYPE_COUNT)
 		return 0;
