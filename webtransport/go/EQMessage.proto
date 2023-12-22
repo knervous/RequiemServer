@@ -186,6 +186,11 @@ message TintProfile {
   int32 secondary = 9;
 }
 
+message Spawns {
+  int32 spawn_count = 1;
+  Spawn spawns = 2;
+}
+
 message Spawn {
   int32 gm = 1;
   int32 aaitle = 2;
@@ -248,7 +253,7 @@ message NewSpawn {
   Spawn spawn = 1;
 }
 
-message ClientzoneEntry {
+message ClientZoneEntry {
   string char_name = 1;
 }
 
@@ -2579,7 +2584,7 @@ enum OpCodes {
   OP_ApproveZone = 42 [(messageType) = "eq.ApproveZone"];
   OP_TGB = 524 [(messageType) = "eq.Int"];
   OP_AckPacket = 7 [(messageType) = "eq.Int"];
-  OP_ClientUpdate = 94 [(messageType) = "eq.PlayerPositionUpdateClient"];
+  OP_ClientUpdate = 94 [(messageType) = "eq.PlayerPositionUpdateServer"];
   OP_AutoAttack = 47 [(messageType) = "eq.Int"];
   OP_AutoAttack2 = 48 [(messageType) = "eq.Int"];
   OP_Consent = 102 [(messageType) = "eq.Consent"];
@@ -2773,7 +2778,7 @@ enum OpCodes {
   OP_GuildMemberList = 238 [(messageType) = "eq.uint32"];
   OP_InterruptCast = 263 [(messageType) = "eq.InterruptCast"];
   OP_ItemLinkResponse = 265 [(messageType) = "eq.ItemPacket"];
-  OP_ZoneSpawns = 587 [(messageType) = "eq.Spawn"];
+  OP_ZoneSpawns = 587 [(messageType) = "eq.Spawns", (repeatedField) = "spawns"];
   OP_CompletedTasks = 100 [(messageType) = "eq.TaskHistory"];
   OP_CharInventory = 79 [(messageType) = "eq.ItemPacket"];
   OP_CustomTitles = 115 [(messageType) = "eq.Titles"];
@@ -2819,7 +2824,7 @@ enum OpCodes {
   OP_MoneyOnCorpse = 343 [(messageType) = "eq.moneyOnCorpseStruct"];
   OP_MoneyUpdate = 344 [(messageType) = "eq.MoneyUpdate"];
   OP_MoveDoor = 347 [(messageType) = "eq.MoveDoor"];
-  OP_NewSpawn = 353 [(messageType) = "eq.NewSpawn"];
+  OP_NewSpawn = 353 [(messageType) = "eq.Spawns", (repeatedField) = "spawns"];
   OP_NewZone = 355 [(messageType) = "eq.NewZone"];
   OP_PetitionUpdate = 380 [(messageType) = "eq.PetitionUpdate"];
   OP_PlayerProfile = 382 [(messageType) = "eq.PlayerProfile"];

@@ -506,13 +506,15 @@ int main(int argc, char **argv)
 
 	bool worldwasconnected       = worldserver.Connected();
 	bool eqsf_open               = false;
+	bool webtransport_opened     = false;
 	bool websocker_server_opened = false;
 
 	Timer quest_timers(100);
-	UpdateWindowTitle(nullptr);
+	UpdateWindowTitle(nullptr); 
 	std::shared_ptr<EQStreamInterface>                 eqss;
 	EQStreamInterface                                  *eqsi;
 	std::unique_ptr<EQ::Net::EQStreamManager>          eqsm;
+	std::unique_ptr<EQ::Net::EQWebStreamManager>       eqwsm;
 	std::chrono::time_point<std::chrono::system_clock> frame_prev = std::chrono::system_clock::now();
 	std::unique_ptr<EQ::Net::WebsocketServer>          ws_server;
 
@@ -562,10 +564,11 @@ int main(int argc, char **argv)
 					);
 				}
 			);
-
+		}
+		if (!webtransport_opened && Config->ZonePort != 0) {
 			EQStreamManagerInterfaceOptions web_opts(Config->ZonePort + 1000, false, false);
-			EQ::Net::EQWebStreamManager eqWebStreamManager(web_opts);
-			eqWebStreamManager.OnNewConnection(
+			eqwsm = std::make_unique<EQ::Net::EQWebStreamManager>(web_opts);
+			eqwsm->OnNewConnection(
 				[&stream_identifier](std::shared_ptr<EQ::Net::EQWebStream> stream) {
 					stream_identifier.AddStream(stream);
 					LogInfo(
@@ -575,7 +578,9 @@ int main(int argc, char **argv)
 					);
 				}
 			);
+			webtransport_opened = true;
 		}
+		
 
 		//give the stream identifier a chance to do its work....
 		stream_identifier.Process();

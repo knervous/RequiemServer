@@ -323,7 +323,6 @@ namespace Web
 
 	ENCODE(OP_ClientUpdate)
 	{
-		ENCODE_LENGTH_EXACT(PlayerPositionUpdateServer_Struct);
 		SETUP_DIRECT_ENCODE(PlayerPositionUpdateServer_Struct, structs::PlayerPositionUpdateServer_Struct);
 
 		OUT(spawn_id);
@@ -553,62 +552,13 @@ namespace Web
 
 	ENCODE(OP_FormattedMessage)
 	{
-		EQApplicationPacket *in = *p;
-		*p = nullptr;
+		SETUP_DIRECT_ENCODE(FormattedMessage_Struct, structs::FormattedMessage_Struct);
 
-		FormattedMessage_Struct *emu = (FormattedMessage_Struct *)in->pBuffer;
+		OUT(string_id);
+		OUT(type);
+		strn0cpy(eq->message, emu->message, sizeof(eq->message));
 
-		unsigned char *__emu_buffer = in->pBuffer;
-
-		char *old_message_ptr = (char *)in->pBuffer;
-		old_message_ptr += sizeof(FormattedMessage_Struct);
-
-		std::string old_message_array[9];
-
-		for (int i = 0; i < 9; ++i)
-		{
-			if (*old_message_ptr == 0)
-			{
-				break;
-			}
-			old_message_array[i] = old_message_ptr;
-			old_message_ptr += old_message_array[i].length() + 1;
-		}
-
-		uint32 new_message_size = 0;
-		std::string new_message_array[9];
-
-		for (int i = 0; i < 9; ++i)
-		{
-			if (old_message_array[i].length() == 0)
-			{
-				break;
-			}
-			ServerToWebSayLink(new_message_array[i], old_message_array[i]);
-			new_message_size += new_message_array[i].length() + 1;
-		}
-
-		in->size = sizeof(FormattedMessage_Struct) + new_message_size + 1;
-		in->pBuffer = new unsigned char[in->size];
-
-		char *OutBuffer = (char *)in->pBuffer;
-
-		VARSTRUCT_ENCODE_TYPE(uint32, OutBuffer, emu->string_id);
-		VARSTRUCT_ENCODE_TYPE(uint32, OutBuffer, emu->type);
-
-		for (int i = 0; i < 9; ++i)
-		{
-			if (new_message_array[i].length() == 0)
-			{
-				break;
-			}
-			VARSTRUCT_ENCODE_STRING(OutBuffer, new_message_array[i].c_str());
-		}
-
-		VARSTRUCT_ENCODE_TYPE(uint8, OutBuffer, 0);
-
-		delete[] __emu_buffer;
-		dest->FastQueuePacket(&in, ack_req);
+		FINISH_ENCODE();
 	}
 
 	ENCODE(OP_GroundSpawn)
@@ -1739,117 +1689,89 @@ namespace Web
 
 	ENCODE(OP_ZoneSpawns)
 	{
-		// consume the packet
-		EQApplicationPacket *in = *p;
-		*p = nullptr;
+		SETUP_DIRECT_ENCODE(Spawn_Struct, structs::Spawns_Struct);
+		int spawn_count = __packet->size / sizeof(Spawn_Struct);
 
-		// store away the emu struct
-		unsigned char *__emu_buffer = in->pBuffer;
-		Spawn_Struct *emu = (Spawn_Struct *)__emu_buffer;
-
-		// determine and verify length
-		int entrycount = in->size / sizeof(Spawn_Struct);
-		if (entrycount == 0 || (in->size % sizeof(Spawn_Struct)) != 0)
+		std::vector<structs::Spawn_Struct> spawns;
+		for (int r = 0; r < spawn_count; r++)
 		{
-			LogNetcode("[STRUCTS] Wrong size on outbound [{}]: Got [{}], expected multiple of [{}]", opcodes->EmuToName(in->GetOpcode()), in->size, sizeof(Spawn_Struct));
-			delete in;
-			return;
-		}
+			structs::Spawn_Struct spawn{
+			.gm = emu->gm,
+			.aaitle = emu->aaitle,
+			.anon = emu->anon,
+			.face = emu->face,
+			.name="",
+			.deity = emu->deity,
+			.size = emu->size,
+			.npc = emu->NPC,
+			.invis = emu->invis,
+			.haircolor = emu->haircolor,
+			.cur_hp = emu->curHp,
+			.max_hp = emu->max_hp,
+			.findable = emu->findable,
+			.delta_heading = emu->deltaHeading,
+			.x = emu->x,
+			.y = emu->y,
+			.animation = emu->animation,
+			.z = emu->z,
+			.delta_y = emu->deltaY,
+			.delta_x = emu->deltaX,
+			.heading = emu->heading,
+			.delta_z = emu->deltaZ,
+			.eyecolor1 = emu->eyecolor1,
+			.showhelm = emu->showhelm,
+			.is_npc = emu->is_npc,
+			.hairstyle = emu->hairstyle,
+			.beardcolor = emu->beardcolor,
+			.level = emu->level,
+			.player_state = emu->PlayerState,
+			.beard = emu->beard,
+			.suffix = "",
+			.pet_owner_id = emu->petOwnerId,
+			.guildrank = emu->guildrank,
+			.equipment = {},
+			.runspeed = emu->runspeed,
+			.afk = emu->afk,
+			.guild_id = emu->guildID,
+			.title = "",
+			.helm = emu->helm,
+			.race = emu->race > 473 ? 1 : emu->race,
+			.last_name = "",
+			.walkspeed = emu->walkspeed,
+			.is_pet = emu->is_pet,
+			.light = emu->light,
+			.char_class = emu->class_,
+			.eyecolor2 = emu->eyecolor2,
+			.flymode = emu->flymode,
+			.gender = emu->gender,
+			.bodytype = emu->bodytype,
+			.equip_chest2 = emu->equip_chest2,
+			.spawn_id = emu->spawnId,
+			.lfg = emu->lfg,
+			.next = nullptr,
+				
+			};
 
-		// make the EQ struct.
-		in->size = sizeof(structs::Spawn_Struct) * entrycount;
-		in->pBuffer = new unsigned char[in->size];
-		structs::Spawn_Struct *eq = (structs::Spawn_Struct *)in->pBuffer;
+			strncpy(spawn.title, emu[r].title, sizeof(spawn.title));
+			strncpy(spawn.last_name, emu[r].lastName, sizeof(spawn.last_name));
+			strncpy(spawn.name, emu[r].name, sizeof(spawn.name));
+			strncpy(spawn.suffix, emu[r].suffix, sizeof(spawn.suffix));
 
-		// zero out the packet. We could avoid this memset by setting all fields (including unknowns)
-		// in the loop.
-		memset(in->pBuffer, 0, in->size);
-
-		// do the transform...
-		int r;
-		int k;
-		for (r = 0; r < entrycount; r++, eq++, emu++)
-		{
-			eq->gm = emu->gm;
-			eq->aaitle = emu->aaitle;
-			eq->anon = emu->anon;
-			eq->face = emu->face;
-			strcpy(eq->name, emu->name);
-			eq->deity = emu->deity;
-			eq->size = emu->size;
-			eq->npc = emu->NPC;
-			eq->invis = emu->invis;
-			eq->haircolor = emu->haircolor;
-			eq->cur_hp = emu->curHp;
-			eq->max_hp = emu->max_hp;
-			eq->findable = emu->findable;
-			eq->delta_heading = emu->deltaHeading;
-			eq->x = emu->x;
-			eq->y = emu->y;
-			eq->animation = emu->animation;
-			eq->z = emu->z;
-			eq->delta_y = emu->deltaY;
-			eq->delta_x = emu->deltaX;
-			eq->heading = emu->heading;
-			eq->delta_z = emu->deltaZ;
-			eq->eyecolor1 = emu->eyecolor1;
-			eq->showhelm = emu->showhelm;
-			eq->is_npc = emu->is_npc;
-			eq->hairstyle = emu->hairstyle;
-
-			// if(emu->gender == 1){
-			//	eq->hairstyle = eq->hairstyle == 0xFF ? 0 : eq->hairstyle;
-			// }
-
-			eq->beardcolor = emu->beardcolor;
-			eq->level = emu->level;
-			eq->player_state = emu->PlayerState;
-			eq->beard = emu->beard;
-			strcpy(eq->suffix, emu->suffix);
-			eq->pet_owner_id = emu->petOwnerId;
-			eq->guildrank = emu->guildrank;
-			for (k = EQ::textures::textureBegin; k < EQ::textures::materialCount; k++)
+			for (int k = EQ::textures::textureBegin; k < EQ::textures::materialCount; k++)
 			{
 				//	eq->equipment.Slot[k].Material = emu->equipment.Slot[k].Material;
 				//	eq->equipment_tint.Slot[k].Color = emu->equipment_tint.Slot[k].Color;
 			}
 
-			eq->runspeed = emu->runspeed;
-			eq->afk = emu->afk;
-			eq->guild_id = emu->guildID;
-			strcpy(eq->title, emu->title);
-			eq->helm = emu->helm;
-			if (emu->race > 473)
-				eq->race = 1;
-			else
-				eq->race = emu->race;
-			strcpy(eq->last_name, emu->lastName);
-			eq->walkspeed = emu->walkspeed;
-			eq->is_pet = emu->is_pet;
-			eq->light = emu->light;
-			eq->char_class = emu->class_;
-			eq->eyecolor2 = emu->eyecolor2;
-			eq->flymode = emu->flymode;
-			eq->gender = emu->gender;
-			eq->bodytype = emu->bodytype;
-			eq->equip_chest2 = emu->equip_chest2;
-			eq->spawn_id = emu->spawnId;
-			eq->lfg = emu->lfg;
-
-			/*
-			if (emu->face == 99)	      {eq->face = 0;}
-			if (emu->eyecolor1 == 99)  {eq->eyecolor1 = 0;}
-			if (emu->eyecolor2 == 99)  {eq->eyecolor2 = 0;}
-			if (emu->hairstyle == 99)  {eq->hairstyle = 0;}
-			if (emu->haircolor == 99)  {eq->haircolor = 0;}
-			if (emu->beard == 99)      {eq->beard = 0;}
-			if (emu->beardcolor == 99) {eq->beardcolor = 0;}
-			*/
+			if (!spawns.empty())
+			{
+				spawns.back().next = &spawn;
+			}
+			spawns.push_back(spawn);
 		}
-
-		// kill off the emu structure and send the eq packet.
-		delete[] __emu_buffer;
-		dest->FastQueuePacket(&in, ack_req);
+		eq->spawn_count = spawn_count;
+		eq->spawns = &spawns[0];
+		
 	}
 
 	// DECODE methods
@@ -2001,8 +1923,6 @@ namespace Web
 
 	DECODE(OP_ClientUpdate)
 	{
-		// for some odd reason, there is an extra byte on the end of this on occasion.. (copied from SoF..not sure if applies to Ti - TODO: check)
-		DECODE_LENGTH_ATLEAST(structs::PlayerPositionUpdateClient_Struct);
 		SETUP_DIRECT_DECODE(PlayerPositionUpdateClient_Struct, structs::PlayerPositionUpdateClient_Struct);
 
 		IN(spawn_id);

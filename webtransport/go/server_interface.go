@@ -35,6 +35,9 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		}
 		return pbtype.New().Interface(), reflect.ValueOf(eqStruct).Elem(), nil
 	}
+	if (OpCodes)(opcode) != OpCodes_OP_ClientUpdate {
+		fmt.Println("OP CODE: ", (OpCodes)(opcode))
+	}
 	switch (OpCodes)(opcode) {
 	// Login
 	case OpCodes_OP_LoginAccepted:
@@ -50,7 +53,7 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		return tie((*C.struct_EnterWorld_Struct)(structPtr))
 	case OpCodes_OP_ZoneServerInfo:
 		return tie((*C.struct_ZoneServerInfo_Struct)(structPtr))
-		// Zone
+	// Zone
 	case OpCodes_OP_ClearObject:
 		return tie((*C.struct_Zero_Struct)(structPtr))
 
@@ -94,7 +97,7 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		return tie((*C.struct_ItemPacket_Struct)(structPtr))
 
 	case OpCodes_OP_ZoneSpawns:
-		return tie((*C.struct_Spawn_Struct)(structPtr))
+		return tie((*C.struct_Spawns_Struct)(structPtr))
 
 	case OpCodes_OP_CompletedTasks:
 		return tie((*C.struct_TaskHistory_Struct)(structPtr))
@@ -158,6 +161,9 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 
 	case OpCodes_OP_CameraEffect:
 		return tie((*C.struct_Camera_Struct)(structPtr))
+
+	case OpCodes_OP_ClientUpdate:
+		return tie((*C.struct_PlayerPositionUpdateServer_Struct)(structPtr))
 
 	case OpCodes_OP_ClickObjectAction:
 		return tie((*C.struct_ClickObjectAction_Struct)(structPtr))
@@ -238,7 +244,7 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		return tie((*C.struct_MoveDoor_Struct)(structPtr))
 
 	case OpCodes_OP_NewSpawn:
-		return tie((*C.struct_NewSpawn_Struct)(structPtr))
+		return tie((*C.struct_Spawns_Struct)(structPtr))
 
 	case OpCodes_OP_NewZone:
 		return tie((*C.struct_NewZone_Struct)(structPtr))
@@ -454,6 +460,7 @@ func applyFields(reflectEQStruct reflect.Value, protoMessage protoreflect.ProtoM
 				protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(C.GoString(rf.Interface().(*C.char))))
 				break
 			case "main._Ctype_int":
+			case "main._Ctype_short":
 				protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(int32(rf.Int())))
 				break
 			case "main._Ctype_uint",
@@ -567,9 +574,11 @@ func SendEQPacket(sessionId int, opcode int, structPtr unsafe.Pointer, structSiz
 	}
 
 	applyFields(reflectEQStruct, protoMessage)
+	LogEQInfo("123serializing proto message %v :: %v", reflectEQStruct, protoMessage)
 
 	bytes, err := proto.Marshal(protoMessage)
 	if err != nil {
+		LogEQInfo("Error serializing proto message %v :: %v", opcode, err)
 		return
 	}
 	messageBytes = append(messageBytes, bytes...)

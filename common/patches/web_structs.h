@@ -282,6 +282,13 @@ namespace Web
 			float bounding_radius; // used in melee, overrides calc
 			struct TintProfile equipment_tint;
 			uint8 lfg; // 0=off, 1=lfg on
+			struct Spawn_Struct* next;
+		};
+
+		struct Spawns_Struct
+		{
+			uint32 spawn_count;
+			struct Spawn_Struct *spawns;
 		};
 
 		/*
@@ -3300,7 +3307,7 @@ namespace Web
 			char key[11];
 			uint32_t error_str_id;
 			uint32_t failed_attempts;
-			int32_t lsid;
+			uint32_t lsid;
 			bool success;
 			bool show_player_count;
 		};

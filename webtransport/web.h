@@ -29,7 +29,7 @@ namespace EQ
 		private:
 			std::function<void(std::shared_ptr<EQWebStream>)> m_on_new_connection;
 			std::function<void(std::shared_ptr<EQWebStream>, DbProtocolStatus, DbProtocolStatus)> m_on_connection_state_change;
-			std::map<int, std::shared_ptr<EQWebStream>> m_streams;
+			std::map<int, std::shared_ptr<EQWebStream>> m_streams = {};
 
 			friend class EQWebStream;
 		};
