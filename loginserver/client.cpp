@@ -148,8 +148,7 @@ void Client::DoSucccessfulWebLogin(const std::string& in_account_name, int db_ac
 	login_reply.success = true;
 	login_reply.show_player_count = server.options.IsShowPlayerCountEnabled();
 	login_reply.error_str_id = 101;
-	memcpy(login_reply.key, m_key.c_str(), m_key.size());
-
+	strcpy(login_reply.key, m_key.c_str());
 	auto outapp = std::make_unique<EQApplicationPacket>(OP_LoginAccepted, outsize);
 	outapp->WriteData(&login_reply, sizeof(login_reply));
 

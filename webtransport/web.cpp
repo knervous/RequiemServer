@@ -38,7 +38,7 @@
 #include "../../common/op_codes.h"
 #include "../../common/platform.h"
 #include "../../loginserver/login_types.h"
-#include "strings.h"
+#include "../../common/strings.h"
 
 using namespace Web::structs;
 
@@ -78,7 +78,6 @@ extern "C"
 	}
 	void Go_LogMessage(char* msg) {
 		LogInfo("{}", msg);
-		delete msg;
 	}
 }
 
@@ -86,6 +85,17 @@ extern "C"
 EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOptions &options) : EQStreamManagerInterface(options)
 {
 	#ifdef _WINDOWS
+	HINSTANCE web_go_dll = LoadLibraryA("web_go.dll");
+	auto err = GetLastError();
+	if (!web_go_dll) {
+		LogWarning("Could not load dll for webtransport.");
+		return;
+	}
+
+	Loaded_StartServer = reinterpret_cast<Go_StartServer>(GetProcAddress(web_go_dll, "StartServer"));
+	Loaded_SendPacket = reinterpret_cast<Go_SendPacket>(GetProcAddress(web_go_dll, "SendPacket"));
+	Loaded_CloseConnection = reinterpret_cast<Go_CloseConnection>(GetProcAddress(web_go_dll, "CloseConnection"));
+	Loaded_StopServer = reinterpret_cast<Go_StopServer>(GetProcAddress(web_go_dll, "StopServer"));
 
 	#else
 		auto go_webtransport_lib = dlopen("./web_go.so", RTLD_NOW);
@@ -94,13 +104,17 @@ EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOp
     	Loaded_CloseConnection = reinterpret_cast<Go_CloseConnection>(dlsym(go_webtransport_lib, "CloseConnection"));
     	Loaded_StopServer = reinterpret_cast<Go_StopServer>(dlsym(go_webtransport_lib, "StopServer"));
 	#endif
-	
-	Loaded_StartServer(options.daybreak_options.port, this, &Go_OnNewConnection, &Go_OnConnectionClosed, &Go_OnClientPacket, &Go_OnError, &Go_LogMessage);
+	if (Loaded_StartServer != NULL) {
+		Loaded_StartServer(options.daybreak_options.port, this, &Go_OnNewConnection, &Go_OnConnectionClosed, &Go_OnClientPacket, &Go_OnError, &Go_LogMessage);
+	}
 }
 
 EQ::Net::EQWebStreamManager::~EQWebStreamManager()
 {
-	Loaded_StopServer();
+	if (Loaded_StopServer != NULL) {
+		Loaded_StopServer();
+	}
+	
 }
 
 void EQ::Net::EQWebStreamManager::SetOptions(const EQStreamManagerInterfaceOptions &options)

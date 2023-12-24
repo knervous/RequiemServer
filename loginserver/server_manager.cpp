@@ -135,7 +135,7 @@ std::unique_ptr<EQApplicationPacket> ServerManager::CreateServerListPacketWeb(Cl
 		servers.push_back(server);
 		
 	}
-	login_server_response.servers = &servers[0];
+	login_server_response.servers = servers.size() > 0 ? &servers[0] : nullptr;
 	auto outapp = std::make_unique<EQApplicationPacket>(OP_ServerListResponse, login_server_size);
 	outapp->WriteData(&login_server_response, login_server_size);
 

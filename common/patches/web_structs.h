@@ -229,15 +229,15 @@ namespace Web
 			uint8 max_hp;	 // (name prolly wrong)takes on the value 100 for players, 100 or 110 for NPCs and 120 for PC corpses...
 			uint8 findable;	 // 0=can't be found, 1=can be found
 
-			uint16 delta_heading; // change in heading
-			uint16 x;			  // x coord
-			uint16 y;			  // y coord
-			uint16 animation;	  // animation
-			uint16 z;			  // z coord
-			uint16 delta_y;		  // change in y
-			uint16 delta_x;		  // change in x
-			uint16 heading;		  // heading
-			uint16 delta_z;		  // change in z
+			int delta_heading; // change in heading
+			int x;			  // x coord
+			int y;			  // y coord
+			int animation;	  // animation
+			int z;			  // z coord
+			int delta_y;		  // change in y
+			int delta_x;		  // change in x
+			unsigned int heading;		  // heading
+			int delta_z;		  // change in z
 			uint8 eyecolor1;	  // Player's left eye color
 
 			uint8 showhelm; // 0=no, 1=yes

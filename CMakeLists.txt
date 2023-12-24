@@ -350,11 +350,7 @@ MESSAGE(STATUS "* zlib:                                  ${ZLIB_LIBRARY_TYPE} *"
 MESSAGE(STATUS "**************************************************")
 
 #setup server libs and headers
-SET(SERVER_LIBS common ${DATABASE_LIBRARY_LIBS} ${ZLIB_LIBRARY_LIBS} ${Boost_LIBRARIES} uv_a fmt RecastNavigation::Detour)
-
-IF(NOT MSVC)
-	SET(SERVER_LIBS ${SERVER_LIBS} webtransport)
-ENDIF()
+SET(SERVER_LIBS common webtransport ${DATABASE_LIBRARY_LIBS} ${ZLIB_LIBRARY_LIBS} ${Boost_LIBRARIES} uv_a fmt RecastNavigation::Detour)
 
 INCLUDE_DIRECTORIES(SYSTEM "${DATABASE_LIBRARY_INCLUDE}")
 INCLUDE_DIRECTORIES(SYSTEM "${ZLIB_LIBRARY_INCLUDE}")

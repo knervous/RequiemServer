@@ -814,7 +814,7 @@ namespace Web
 			doors.push_back(door);
 		}
 		eq->count = door_count;
-		eq->doors = &doors[0];
+		eq->doors = doors.size() > 0 ? &doors[0] : nullptr;
 		FINISH_ENCODE();
 	}
 
@@ -1444,7 +1444,7 @@ namespace Web
 
 			emu_ptr += sizeof(CharacterSelectEntry_Struct);
 		}
-		eq->characters = &characters[0];
+		eq->characters = characters.size() > 0 ? &characters[0] : nullptr;
 		eq->character_count = characters.size();
 		FINISH_ENCODE();
 	}
@@ -1770,7 +1770,7 @@ namespace Web
 			spawns.push_back(spawn);
 		}
 		eq->spawn_count = spawn_count;
-		eq->spawns = &spawns[0];
+		eq->spawns = spawns.size() > 0 ?  &spawns[0] : nullptr;
 		
 	}
 

@@ -37,7 +37,9 @@ func LogEQInfo(message string, args ...any) {
 	if logInfoFunc == nil {
 		return
 	}
-	C.bridge_log_message(C.CString(fmt.Sprintf(message, args...)), logInfoFunc)
+	str := C.CString(fmt.Sprintf(message, args...))
+	C.bridge_log_message(str, logInfoFunc)
+	C.free(unsafe.Pointer(str))
 }
 
 //export CloseConnection
