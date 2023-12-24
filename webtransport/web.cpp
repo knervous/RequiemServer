@@ -88,7 +88,7 @@ EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOp
 	HINSTANCE web_go_dll = LoadLibraryA("web_go.dll");
 	auto err = GetLastError();
 	if (!web_go_dll) {
-		LogWarning("Could not load dll for webtransport.");
+		LogWarning("Could not load dll for webtransport. Error {0}", err);
 		return;
 	}
 
