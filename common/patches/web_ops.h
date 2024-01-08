@@ -17,6 +17,8 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+// Server --> Client re-mapped opcodes since we need data binding for every op code we can't share
+#define OP_ApproveName_Server 5040
 
 // out-going packets that require an ENCODE translation:
 E(OP_Action)
@@ -81,10 +83,14 @@ E(OP_ZoneEntry)
 E(OP_ZoneServerReady)
 E(OP_ZoneSpawns)
 E(OP_SpawnDoor)
+E(OP_SendMaxCharacters)
+E(OP_GuildsList)
+E(OP_ApproveName)
 
 
 // incoming packets that require a DECODE translation:
 D(OP_SendLoginInfo)
+D(OP_DeleteCharacter)
 D(OP_AdventureMerchantSell)
 D(OP_ApplyPoison)
 D(OP_AugmentItem)

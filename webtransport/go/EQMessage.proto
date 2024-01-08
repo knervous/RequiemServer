@@ -905,18 +905,8 @@ message Surname {
   string lastname = 2;
 }
 
-message GuildsListEntry {
-  string name = 1;
-}
-
 message GuildsList {
-  repeated int32 head = 1;
-  repeated GuildsListEntry guilds = 2;
-}
-
-message GuildUpdate {
-  int32 guild_id = 1;
-  GuildsListEntry entry = 2;
+  repeated StringList guilds = 1;
 }
 
 message MoneyOnCorpse {
@@ -2563,11 +2553,21 @@ enum OpCodes {
   OP_ServerListResponse = 459 [(messageType) = "eq.LoginServerResponse"];
 
   // World
+  OP_ApproveName = 40 [(messageType) = "eq.NameApprove"];
+  OP_CharacterCreate = 77 [(messageType) = "eq.CharCreate"];
+  OP_DeleteCharacter = 119 [(messageType) = "eq.String"];
+  OP_ApproveName_Server = 5040 [(messageType) = "eq.Int"];
   OP_EnterWorld = 160 [(messageType) = "eq.EnterWorld"];
-  OP_SendLoginInfo = 448 [(messageType) = "eq.LoginInfo"];
-  OP_WebInitiateConnection = 591 [(messageType) = "eq.WebInitiateConnection"];
+  OP_ExpansionInfo = 162 [(messageType) = "eq.Int"];
+  OP_GuildsList = 245 [(messageType) = "eq.GuildsList"];
+  OP_PostEnterWorld = 391 [(messageType) = "eq.Int"];
   OP_SendCharInfo = 444 [(messageType) = "eq.CharacterSelect"];
+  OP_SendLoginInfo = 448 [(messageType) = "eq.LoginInfo"];
+  OP_SendMaxCharacters = 449 [(messageType) = "eq.Int"];
+  OP_SendMembership = 450 [(messageType) = "eq.Zero"];
+  OP_SendMembershipDetails = 451 [(messageType) = "eq.Zero"];
   OP_ZoneServerInfo = 585 [(messageType) = "eq.ZoneServerInfo"];
+  OP_WebInitiateConnection = 591 [(messageType) = "eq.WebInitiateConnection"];
 
   // Zone
   OP_ZoneEntry = 581 [(messageType) = "eq.ClientZoneEntry"];
@@ -2787,7 +2787,6 @@ enum OpCodes {
   OP_TributeInfo = 542 [(messageType) = "eq.TributeAbility"];
   OP_GuildTributeInfo = 247 [(messageType) = "eq.GuildTributeAbility"];
   OP_SendTitleList = 453 [(messageType) = "eq.TitleList"];
-  OP_SendMaxCharacters = 449 [(messageType) = "eq.MaxCharacters"];
   OP_AAExpUpdate = 5 [(messageType) = "eq.AAExpUpdate"];
   OP_Action = 8 [(messageType) = "eq.Action"];
   OP_AdventureData = 11 [(messageType) = "eq.AdventureRequestResponse"];
@@ -2863,7 +2862,6 @@ enum OpCodes {
   OP_CancelTask = 71 [(messageType) = "eq.CancelTask"];
   OP_Command = 99 [(messageType) = "eq.PetCommand"];
   OP_DynamicWall = 136 [(messageType) = "eq.DynamicWall"];
-  OP_GuildsList = 245 [(messageType) = "eq.GuildsListEntry"];
   OP_LFGuild = 295 [(messageType) = "eq.LFGuild_SearchPlayer"];
   OP_LoadSpellSet = 300 [(messageType) = "eq.LoadSpellSet"];
   OP_LogServer = 312 [(messageType) = "eq.LogServer"];
@@ -2892,6 +2890,7 @@ enum OpCodes {
   Nested_CharSelectEquip = 1002
       [(messageType) = "eq.CharSelectEquip", (repeatedField) = "equip"];
   Nested_Tint = 1003 [(messageType) = "eq.Tint"];
+  Nested_StringList = 1004 [(messageType) = "eq.StringList"];
 
   // EQEmu OP Codes Unhandled
   OP_ExploreUnknown = 1;
@@ -2917,7 +2916,6 @@ enum OpCodes {
   OP_AltCurrencyReclaim = 34;
   OP_AltCurrencySell = 35;
   OP_AltCurrencySellSelection = 36;
-  OP_ApproveName = 40;
   OP_AssistGroup = 44;
   OP_AugmentInfo = 45;
   OP_AutoFire = 49;
@@ -2929,7 +2927,6 @@ enum OpCodes {
   OP_CancelSneakHide = 70;
   OP_CashReward = 73;
   OP_ChangeSize = 75;
-  OP_CharacterCreate = 77;
   OP_CharacterCreateRequest = 78;
   OP_ChatMessage = 81;
   OP_ClearAA = 82;
@@ -2945,7 +2942,6 @@ enum OpCodes {
   OP_CrystalCreate = 113;
   OP_CrystalReclaim = 114;
   OP_DelegateAbility = 118;
-  OP_DeleteCharacter = 119;
   OP_DeleteCharge = 120;
   OP_DeletePetition = 122;
   OP_DenyResponse = 125;
@@ -2974,7 +2970,6 @@ enum OpCodes {
   OP_DzSetLeaderName = 154;
   OP_DzSwapPlayer = 155;
   OP_EnterChat = 159;
-  OP_ExpansionInfo = 162;
   OP_Feedback = 165;
   OP_FellowshipUpdate = 167;
   OP_FindPersonReply = 168;
@@ -3074,7 +3069,6 @@ enum OpCodes {
   OP_Poll = 388;
   OP_PollResponse = 389;
   OP_PopupResponse = 390;
-  OP_PostEnterWorld = 391;
   OP_PreLogoutReply = 393;
   OP_PVPLeaderBoardDetailsReply = 395;
   OP_PVPLeaderBoardDetailsRequest = 396;
@@ -3099,8 +3093,6 @@ enum OpCodes {
   OP_RezzComplete = 434;
   OP_Sacrifice = 436;
   OP_SendFindableNPCs = 446;
-  OP_SendMembership = 450;
-  OP_SendMembershipDetails = 451;
   OP_SendSystemStats = 452;
   OP_SessionReady = 460;
   OP_SetChatServer = 461;

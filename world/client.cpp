@@ -1647,7 +1647,7 @@ bool Client::OPCharCreate(char *name, CharCreate_Struct *cc)
 	LogInfo("Beard [{}] Beardcolor [{}]", cc->beard, cc->beardcolor);
 
 	/* Validate the char creation struct */
-	if (m_ClientVersionBit & EQ::versions::maskSoFAndLater) {
+	if (m_ClientVersionBit != EQ::versions::bitWeb && m_ClientVersionBit & EQ::versions::maskSoFAndLater) {
 		if (!CheckCharCreateInfoSoF(cc)) {
 			LogInfo("CheckCharCreateInfo did not validate the request (bad race/class/stats)");
 			return false;
@@ -1714,7 +1714,7 @@ bool Client::OPCharCreate(char *name, CharCreate_Struct *cc)
 	pp.pvp = database.GetServerType() == 1 ? 1 : 0;
 
 	/* If it is an SoF Client and the SoF Start Zone rule is set, send new chars there */
-	if (m_ClientVersionBit & EQ::versions::maskSoFAndLater) {
+	if (m_ClientVersionBit != EQ::versions::bitWeb && m_ClientVersionBit & EQ::versions::maskSoFAndLater) {
 		LogInfo("Found [SoFStartZoneID] rule setting [{}]", RuleI(World, SoFStartZoneID));
 		if (RuleI(World, SoFStartZoneID) > 0) {
 			pp.zone_id = RuleI(World, SoFStartZoneID);
@@ -1730,7 +1730,7 @@ bool Client::OPCharCreate(char *name, CharCreate_Struct *cc)
 		}
 	}
 	/* use normal starting zone logic to either get defaults, or if startzone was set, load that from the db table.*/
-	bool ValidStartZone = content_db.GetStartZone(&pp, cc, m_ClientVersionBit & EQ::versions::maskTitaniumAndEarlier);
+	bool ValidStartZone = content_db.GetStartZone(&pp, cc, m_ClientVersionBit == EQ::versions::bitWeb || m_ClientVersionBit & EQ::versions::maskTitaniumAndEarlier);
 
 	if (!ValidStartZone){
 		return false;

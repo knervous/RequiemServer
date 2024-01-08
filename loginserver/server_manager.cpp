@@ -95,7 +95,7 @@ std::unique_ptr<EQApplicationPacket> ServerManager::CreateServerListPacketWeb(Cl
 	};
 
 	int count = 0;
-	std::vector<Web::structs::WebLoginWorldServer_Struct> servers;
+	std::vector<Web::structs::WebLoginWorldServer_Struct*> servers;
 	for (const auto& world_server : m_world_servers)
 	{
 		if (!world_server->IsAuthorized()) {
@@ -124,18 +124,18 @@ std::unique_ptr<EQApplicationPacket> ServerManager::CreateServerListPacketWeb(Cl
 		);
 
 		
-		Web::structs::WebLoginWorldServer_Struct server;
+		auto server = new Web::structs::WebLoginWorldServer_Struct{};
 		world_server->SerializeForWebClientServerList(server, use_local_ip);
 		count++;
 		if (!servers.empty()) {
-			servers.back().next = &server;
+			servers.back()->next = server;
 		} else if (count == server_count) {
-			server.next = nullptr;
+			server->next = nullptr;
 		}
 		servers.push_back(server);
 		
 	}
-	login_server_response.servers = servers.size() > 0 ? &servers[0] : nullptr;
+	login_server_response.servers = servers.size() > 0 ? servers[0] : nullptr;
 	auto outapp = std::make_unique<EQApplicationPacket>(OP_ServerListResponse, login_server_size);
 	outapp->WriteData(&login_server_response, login_server_size);
 

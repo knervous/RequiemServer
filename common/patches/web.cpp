@@ -789,10 +789,11 @@ namespace Web
 		SETUP_DIRECT_ENCODE(Door_Struct, structs::DoorSpawns_Struct);
 		int door_count = __packet->size / sizeof(Door_Struct);
 
-		std::vector<structs::Door_Struct> doors;
+		std::vector<structs::Door_Struct*> doors;
 		for (int r = 0; r < door_count; r++)
 		{
-			structs::Door_Struct door{
+			auto door =  (structs::Door_Struct*)malloc(sizeof(structs::Door_Struct));
+			*door = (structs::Door_Struct) {
 				.name = "",
 				.y_pos = emu[r].yPos,
 				.x_pos = emu[r].xPos,
@@ -806,15 +807,15 @@ namespace Web
 				.invert_state = emu[r].invert_state,
 				.door_param = emu[r].door_param,
 				.next = nullptr};
-			strncpy(door.name, emu[r].name, sizeof(door.name));
+			strncpy(door->name, emu[r].name, sizeof(door->name));
 			if (!doors.empty())
 			{
-				doors.back().next = &door;
+				doors.back()->next = door;
 			}
 			doors.push_back(door);
 		}
 		eq->count = door_count;
-		eq->doors = doors.size() > 0 ? &doors[0] : nullptr;
+		eq->doors = doors.size() > 0 ? doors[0] : nullptr;
 		FINISH_ENCODE();
 	}
 
@@ -827,6 +828,13 @@ namespace Web
 		OUT(raid_leadership_exp);
 		OUT(raid_leadership_points);
 
+		FINISH_ENCODE();
+	}
+
+	ENCODE(OP_SendMaxCharacters)
+	{
+		SETUP_DIRECT_ENCODE(MaxCharacters_Struct, structs::Int_Struct);
+		eq->value = emu->max_chars;
 		FINISH_ENCODE();
 	}
 
@@ -1398,11 +1406,12 @@ namespace Web
 		CharacterSelectEntry_Struct *emu_cse = (CharacterSelectEntry_Struct *)nullptr;
 
 		size_t char_index = 0;
-		std::vector<Web::structs::CharacterSelectEntry_Struct> characters;
+		std::vector<Web::structs::CharacterSelectEntry_Struct*> characters;
 		for (; char_index < emu->CharCount && char_index < 8; ++char_index)
 		{
 			emu_cse = (CharacterSelectEntry_Struct *)emu_ptr;
-			Web::structs::CharacterSelectEntry_Struct character{
+			auto character = (structs::CharacterSelectEntry_Struct*)malloc(sizeof(structs::CharacterSelectEntry_Struct));
+			*character = (structs::CharacterSelectEntry_Struct) {
 				.name = "",
 				.char_class = emu_cse->Class,
 				.race = emu_cse->Race > 473 ? 1 : emu_cse->Race,
@@ -1421,33 +1430,34 @@ namespace Web
 				.next = nullptr,
 			};
 
-			memcpy(character.name, emu_cse->Name, 64);
+			memcpy(character->name, emu_cse->Name, 64);
 
 			for (int index = 0; index < EQ::textures::materialCount; ++index)
 			{
 				auto color = emu_cse->Equip[index].Color;
-				character.equip[index].color = {
+				character->equip[index].color = {
 					.blue = (uint8)(color),
 					.green = (uint8)(color >> 8),
 					.red = (uint8)(color >> 16),
 					.use_tint = (uint8)(color >> 24),
 				};
-				character.equip[index].material = emu_cse->Equip[index].Material;
+				character->equip[index].material = emu_cse->Equip[index].Material;
 			}
 
 			if (!characters.empty())
 			{
-				characters.back().next = &character;
+				characters.back()->next = character;
 			}
 
 			characters.push_back(character);
 
 			emu_ptr += sizeof(CharacterSelectEntry_Struct);
 		}
-		eq->characters = characters.size() > 0 ? &characters[0] : nullptr;
+		eq->characters = characters.size() > 0 ? characters[0] : nullptr;
 		eq->character_count = characters.size();
 		FINISH_ENCODE();
 	}
+
 
 	ENCODE(OP_SetFace)
 	{
@@ -1672,6 +1682,46 @@ namespace Web
 		delete inapp;
 	}
 
+	ENCODE(OP_GuildsList)
+	{
+		EQApplicationPacket *in = *p;
+		*p = nullptr;
+
+		uint32 NumberOfGuilds = in->size / 64;
+		char *InBuffer = (char *)in->pBuffer;
+
+		auto names = std::vector<structs::StringList*>{};
+		structs::StringList* last;
+		for (unsigned int i = 0; i < NumberOfGuilds; ++i)
+		{
+			if (InBuffer[0])
+			{
+				auto guild_name = (structs::StringList *)malloc(sizeof(structs::StringList));
+				*guild_name = (structs::StringList) {
+					.str = InBuffer,
+					.next = nullptr,
+				};
+				if (!names.empty())
+				{
+					names.back()->next = guild_name;
+				}
+				names.push_back(guild_name);
+				last = guild_name;
+			}
+			InBuffer += 64;
+		}
+
+
+		structs::GuildsList_Struct guildlist_struct{
+			.guilds = names.size() > 0 ? names.at(0) : nullptr
+		};
+		auto guildlist_packet =
+			new EQApplicationPacket(OP_GuildsList, (sizeof(structs::GuildsList_Struct)));
+		guildlist_packet->WriteData(&guildlist_struct, sizeof(structs::GuildsList_Struct));
+		dest->FastQueuePacket(&guildlist_packet);
+		delete[] in->pBuffer;
+	}
+
 	ENCODE(OP_WearChange)
 	{
 		ENCODE_LENGTH_EXACT(WearChange_Struct);
@@ -1692,10 +1742,11 @@ namespace Web
 		SETUP_DIRECT_ENCODE(Spawn_Struct, structs::Spawns_Struct);
 		int spawn_count = __packet->size / sizeof(Spawn_Struct);
 
-		std::vector<structs::Spawn_Struct> spawns;
+		std::vector<structs::Spawn_Struct*> spawns;
 		for (int r = 0; r < spawn_count; r++)
 		{
-			structs::Spawn_Struct spawn{
+			auto spawn = (structs::Spawn_Struct*)malloc(sizeof(structs::Spawn_Struct));
+			*spawn = (structs::Spawn_Struct) {
 			.gm = emu->gm,
 			.aaitle = emu->aaitle,
 			.anon = emu->anon,
@@ -1752,10 +1803,10 @@ namespace Web
 				
 			};
 
-			strncpy(spawn.title, emu[r].title, sizeof(spawn.title));
-			strncpy(spawn.last_name, emu[r].lastName, sizeof(spawn.last_name));
-			strncpy(spawn.name, emu[r].name, sizeof(spawn.name));
-			strncpy(spawn.suffix, emu[r].suffix, sizeof(spawn.suffix));
+			strncpy(spawn->title, emu[r].title, sizeof(spawn->title));
+			strncpy(spawn->last_name, emu[r].lastName, sizeof(spawn->last_name));
+			strncpy(spawn->name, emu[r].name, sizeof(spawn->name));
+			strncpy(spawn->suffix, emu[r].suffix, sizeof(spawn->suffix));
 
 			for (int k = EQ::textures::textureBegin; k < EQ::textures::materialCount; k++)
 			{
@@ -1765,13 +1816,24 @@ namespace Web
 
 			if (!spawns.empty())
 			{
-				spawns.back().next = &spawn;
+				spawns.back()->next = spawn;
 			}
 			spawns.push_back(spawn);
 		}
 		eq->spawn_count = spawn_count;
-		eq->spawns = spawns.size() > 0 ?  &spawns[0] : nullptr;
-		
+		eq->spawns = spawns.size() > 0 ?  spawns[0] : nullptr;
+		FINISH_ENCODE();
+	}
+
+
+
+
+	// These are shared op codes from client <--> server that need bidirectional treatment. By default we map client-->server to data bindings
+	ENCODE(OP_ApproveName) {
+		SETUP_DIRECT_ENCODE(structs::Int_Struct, structs::Int_Struct);
+		eq->value = (int)__emu_buffer[0];
+		__packet->SetOpcode((EmuOpcode)OP_ApproveName_Server);
+		FINISH_ENCODE();
 	}
 
 	// DECODE methods
@@ -1795,6 +1857,13 @@ namespace Web
 
 		FINISH_DIRECT_DECODE();
 	}
+
+	DECODE(OP_DeleteCharacter)
+	{
+		SETUP_DIRECT_DECODE(char*, structs::String_Struct);
+		__packet->pBuffer = (unsigned char*)eq->value;
+	}
+
 	DECODE(OP_AdventureMerchantSell)
 	{
 		DECODE_LENGTH_EXACT(structs::Adventure_Sell_Struct);

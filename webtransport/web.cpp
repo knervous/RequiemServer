@@ -99,6 +99,10 @@ EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOp
 
 	#else
 		auto go_webtransport_lib = dlopen("./web_go.so", RTLD_NOW);
+		if (go_webtransport_lib == nullptr) {
+			LogWarning("Could not load dll for webtransport");
+			return;
+		}
     	Loaded_StartServer = reinterpret_cast<Go_StartServer>(dlsym(go_webtransport_lib, "StartServer"));
     	Loaded_SendPacket = reinterpret_cast<Go_SendPacket>(dlsym(go_webtransport_lib, "SendPacket"));
     	Loaded_CloseConnection = reinterpret_cast<Go_CloseConnection>(dlsym(go_webtransport_lib, "CloseConnection"));

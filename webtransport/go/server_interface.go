@@ -1,6 +1,8 @@
 package main
 
 // #include "c/c_bridge.h"
+// #include <stdio.h>
+// #include <stdlib.h>
 import "C"
 
 import (
@@ -35,9 +37,7 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		}
 		return pbtype.New().Interface(), reflect.ValueOf(eqStruct).Elem(), nil
 	}
-	if (OpCodes)(opcode) != OpCodes_OP_ClientUpdate {
-		fmt.Println("OP CODE: ", (OpCodes)(opcode))
-	}
+
 	switch (OpCodes)(opcode) {
 	// Login
 	case OpCodes_OP_LoginAccepted:
@@ -53,6 +53,10 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		return tie((*C.struct_EnterWorld_Struct)(structPtr))
 	case OpCodes_OP_ZoneServerInfo:
 		return tie((*C.struct_ZoneServerInfo_Struct)(structPtr))
+	case OpCodes_OP_ExpansionInfo, OpCodes_OP_SendMaxCharacters, OpCodes_OP_ApproveName_Server:
+		return tie((*C.struct_Int_Struct)(structPtr))
+	case OpCodes_OP_PostEnterWorld, OpCodes_OP_SendMembership, OpCodes_OP_SendMembershipDetails:
+		return tie((*C.struct_Zero_Struct)(structPtr))
 	// Zone
 	case OpCodes_OP_ClearObject:
 		return tie((*C.struct_Zero_Struct)(structPtr))
@@ -122,9 +126,6 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 
 	case OpCodes_OP_SendTitleList:
 		return tie((*C.struct_TitleList_Struct)(structPtr))
-
-	case OpCodes_OP_SendMaxCharacters:
-		return tie((*C.struct_MaxCharacters_Struct)(structPtr))
 
 	case OpCodes_OP_AAExpUpdate:
 		return tie((*C.struct_AAExpUpdate_Struct)(structPtr))
@@ -367,7 +368,7 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		return tie((*C.struct_DynamicWall_Struct)(structPtr))
 
 	case OpCodes_OP_GuildsList:
-		return tie((*C.struct_GuildsListEntry_Struct)(structPtr))
+		return tie((*C.struct_GuildsList_Struct)(structPtr))
 
 	case OpCodes_OP_LFGuild:
 		return tie((*C.struct_LFGuild_SearchPlayer_Struct)(structPtr))
@@ -419,11 +420,16 @@ func eqStructToProtobuf(opcode OpCodes, structPtr unsafe.Pointer) (protoMessage 
 		return tie((*C.struct_CharSelectEquip_Struct)(structPtr))
 	case OpCodes_Nested_Tint:
 		return tie((*C.struct_Tint_Struct)(structPtr))
+	case OpCodes_Nested_StringList:
+		return tie((*C.struct_StringList)(structPtr))
 	}
 	return nil, reflect.ValueOf(nil), errors.New("OpCode not found for server to client")
 }
 
 func applyFields(reflectEQStruct reflect.Value, protoMessage protoreflect.ProtoMessage) {
+	if !reflectEQStruct.IsValid() {
+		return
+	}
 	fields := protoMessage.ProtoReflect().Descriptor().Fields()
 	for i := 0; i < fields.Len(); i++ {
 		field := fields.Get(i)
@@ -433,9 +439,6 @@ func applyFields(reflectEQStruct reflect.Value, protoMessage protoreflect.ProtoM
 		if rf.IsValid() {
 			// Map of flexible pointer in C struct to proto repeated field
 			mapNestedStructToRepeated := func(nestedOpcode OpCodes) {
-				enumOptions := OpCodes.Descriptor(nestedOpcode).Values().ByNumber(nestedOpcode.Enum().Number()).Options()
-				arrFieldName := proto.GetExtension(enumOptions, E_RepeatedField).(string)
-				nestedField := protoMessage.ProtoReflect().Descriptor().Fields().ByName(protoreflect.Name(arrFieldName))
 				next := rf.UnsafePointer()
 				for {
 					if next == nil {
@@ -446,8 +449,9 @@ func applyFields(reflectEQStruct reflect.Value, protoMessage protoreflect.ProtoM
 						LogEQInfo("Err in nested struct %v", err)
 					}
 					applyFields(reflectEQStruct, nestedMessage)
-					arr := protoMessage.ProtoReflect().Mutable(nestedField).List()
+					arr := protoMessage.ProtoReflect().Mutable(field).List()
 					arr.Append(protoreflect.ValueOf(nestedMessage.ProtoReflect()))
+					defer C.free(next)
 					next = reflectEQStruct.FieldByName("next").UnsafePointer()
 				}
 			}
@@ -459,8 +463,8 @@ func applyFields(reflectEQStruct reflect.Value, protoMessage protoreflect.ProtoM
 			case "*main._Ctype_char":
 				protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(C.GoString(rf.Interface().(*C.char))))
 				break
-			case "main._Ctype_int":
-			case "main._Ctype_short":
+			case "main._Ctype_int",
+				"main._Ctype_short":
 				protoMessage.ProtoReflect().Set(field, protoreflect.ValueOf(int32(rf.Int())))
 				break
 			case "main._Ctype_uint",
@@ -499,7 +503,7 @@ func applyFields(reflectEQStruct reflect.Value, protoMessage protoreflect.ProtoM
 
 				// Linked list flexible pointers
 				flexOpCode, found, isPtr := nestedStructToOpCode(cType)
-				if found && isPtr {
+				if found && isPtr && field.Cardinality() == protoreflect.Repeated {
 					mapNestedStructToRepeated(flexOpCode)
 					break
 				}
@@ -574,13 +578,16 @@ func SendEQPacket(sessionId int, opcode int, structPtr unsafe.Pointer, structSiz
 	}
 
 	applyFields(reflectEQStruct, protoMessage)
-	LogEQInfo("123serializing proto message %v :: %v", reflectEQStruct, protoMessage)
 
 	bytes, err := proto.Marshal(protoMessage)
 	if err != nil {
 		LogEQInfo("Error serializing proto message %v :: %v", opcode, err)
 		return
 	}
+	// if (OpCodes)(opcode) != OpCodes_OP_ClientUpdate {
+	// 	fmt.Println("OP CODE: ", (OpCodes)(opcode))
+	// 	fmt.Println(reflectEQStruct)
+	// }
 	messageBytes = append(messageBytes, bytes...)
 	session.session.SendMessage(messageBytes)
 }

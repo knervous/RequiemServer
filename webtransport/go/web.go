@@ -2,6 +2,7 @@ package main
 
 // #include "c/c_bridge.h"
 // #include <stdlib.h>
+// #cgo CFLAGS: -g -Wall -O0
 import "C"
 
 import (

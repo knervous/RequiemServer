@@ -1038,39 +1038,39 @@ bool WorldServer::ValidateWorldServerAdminLogin(
 	return false;
 }
 
-void WorldServer::SerializeForWebClientServerList(Web::structs::WebLoginWorldServer_Struct &out, bool use_local_ip) const
+void WorldServer::SerializeForWebClientServerList(Web::structs::WebLoginWorldServer_Struct *out, bool use_local_ip) const
 {
-	strcpy(out.ip, (use_local_ip ? GetLocalIP() : GetRemoteIP()).c_str());
+	strcpy(out->ip, (use_local_ip ? GetLocalIP() : GetRemoteIP()).c_str());
 	switch (GetServerListID()) {
 		case LS::ServerType::Legends:
-			out.server_type = LS::ServerTypeFlags::Legends;
+			out->server_type = LS::ServerTypeFlags::Legends;
 			break;
 		case LS::ServerType::Preferred:
-			out.server_type = LS::ServerTypeFlags::Preferred;
+			out->server_type = LS::ServerTypeFlags::Preferred;
 			break;
 		default:
-			out.server_type = LS::ServerTypeFlags::Standard;
+			out->server_type = LS::ServerTypeFlags::Standard;
 			break;
 	}
-	out.server_id = GetServerId();
-	strcpy(out.long_name, GetServerLongName().c_str());
-	strcpy(out.country_code, "en");
-	strcpy(out.language_code, "us");
+	out->server_id = GetServerId();
+	strcpy(out->long_name, GetServerLongName().c_str());
+	strcpy(out->country_code, "en");
+	strcpy(out->language_code, "us");
 
 	// 0 = Up, 1 = Down, 2 = Up, 3 = down, 4 = locked, 5 = locked(down)
 	if (GetStatus() < 0) {
 		if (GetZonesBooted() == 0) {
-			out.status = LS::ServerStatusFlags::Down;
+			out->status = LS::ServerStatusFlags::Down;
 		}
 		else {
-			out.status = LS::ServerStatusFlags::Locked;
+			out->status = LS::ServerStatusFlags::Locked;
 		}
 	}
 	else {
-		out.status = LS::ServerStatusFlags::Up;
+		out->status = LS::ServerStatusFlags::Up;
 	}
 
-	out.players_online = GetPlayersOnline();
+	out->players_online = GetPlayersOnline();
 }
 
 void WorldServer::SerializeForClientServerList(SerializeBuffer &out, bool use_local_ip) const

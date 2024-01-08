@@ -1247,21 +1247,14 @@ namespace Web
 			char lastname[32];
 		};
 
-		struct GuildsListEntry_Struct
-		{
-			char name[64];
-		};
-
 		struct GuildsList_Struct
 		{
-			uint8 head[64]; // First on guild list seems to be empty...
-			struct GuildsListEntry_Struct guilds[1500];
+			struct StringList* guilds;
 		};
 
 		struct GuildUpdate_Struct
 		{
-			uint32 guild_id;
-			struct GuildsListEntry_Struct entry;
+			struct StringList* guilds;
 		};
 
 		/*

@@ -43,6 +43,12 @@ func opcodeToEQStruct(opcode OpCodes) (reflect.Value, protoreflect.ProtoMessage)
 	// World
 	case OpCodes_OP_EnterWorld:
 		return tie(&C.struct_EnterWorld_Struct{})
+	case OpCodes_OP_ApproveName:
+		return tie(&C.struct_NameApprove_Struct{})
+	case OpCodes_OP_CharacterCreate:
+		return tie(&C.struct_CharCreate_Struct{})
+	case OpCodes_OP_DeleteCharacter:
+		return tie(&C.struct_String_Struct{})
 
 	// Zone
 	case OpCodes_OP_ZoneEntry:

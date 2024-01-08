@@ -149,7 +149,7 @@ public:
 
 	bool HandleNewLoginserverRegisteredOnly(Database::DbWorldRegistration &world_registration);
 	bool HandleNewLoginserverInfoUnregisteredAllowed(Database::DbWorldRegistration &world_registration);
-	void SerializeForWebClientServerList(Web::structs::WebLoginWorldServer_Struct &out, bool use_local_ip) const;
+	void SerializeForWebClientServerList(Web::structs::WebLoginWorldServer_Struct *out, bool use_local_ip) const;
 	void SerializeForClientServerList(class SerializeBuffer& out, bool use_local_ip) const;
 
 private:
