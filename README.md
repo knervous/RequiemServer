@@ -1,3 +1,6 @@
+# Requiem Fork
+This is the Requiem branch of the fork of EQEMulator Core Server.
+
 # EQEmulator Core Server
 | Drone (Linux x64) | Drone (Windows x64)   |
 |:---:|:---:|
