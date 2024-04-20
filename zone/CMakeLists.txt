@@ -284,9 +284,6 @@ SET(zone_headers
     zone_reload.h
     zone_cli.cpp)
 
-ADD_EXECUTABLE(zone ${zone_sources} ${zone_headers})
-
-INSTALL(TARGETS zone RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 IF (WIN32 AND EQEMU_BUILD_PCH)
     TARGET_PRECOMPILE_HEADERS(zone PRIVATE ../common/pch/pch.h)
@@ -295,7 +292,104 @@ IF (WIN32 AND EQEMU_BUILD_PCH)
 ENDIF()
 
 ADD_DEFINITIONS(-DZONE)
+SET(BUILD_DIR ${PROJECT_BINARY_DIR}/bin)
 
-TARGET_LINK_LIBRARIES(zone ${ZONE_LIBS})
+## DOTNET
+## Swig exec: swig -csharp -c++ -I../../../submodules/fmt/include -outfile DotNetTypes/dotnet_quests.cs questinterface.i
+set(dotnet_sources
+    dotnet_quests/dotnet_quest_interface.h
+    dotnet_quests/dotnet_quest_interface.cpp
+    dotnet_quests/dotnet_runtime.h
+    dotnet_quests/dotnet_runtime.cpp
+)
+
+execute_process(COMMAND dotnet --info OUTPUT_VARIABLE DOTNET_INFO)
+string(REGEX MATCH "Base Path:[ ]*([^\n\r]*)" DOTNET_BASE_PATH_MATCH "${DOTNET_INFO}")
+set(DOTNET_BASE_PATH "${CMAKE_MATCH_1}")
+get_filename_component(UP_ONE_DIR "${DOTNET_BASE_PATH}" DIRECTORY)
+get_filename_component(UP_TWO_DIRS "${UP_ONE_DIR}" DIRECTORY)
+file(GLOB_RECURSE LIBNETHOST_PATHS LIST_DIRECTORIES true "${UP_TWO_DIRS}/packs/**/native")
+
+MESSAGE(STATUS "DOTNET_BASE_PATH PATHS ${UP_TWO_DIRS}")
+
+foreach(DIR IN LISTS LIBNETHOST_PATHS)
+    if("${DIR}" MATCHES "native$")
+        SET(NETHOST_PATH "${DIR}")
+        break()
+    endif()
+endforeach()
+
+
+set(NETHOST_LIBRARY_NAME "")
+
+if(WIN32)
+    set(NETHOST_LIBRARY_NAME "nethost.lib")
+else()
+    set(NETHOST_LIBRARY_NAME "libnethost.a")
+endif()
+
+MESSAGE(STATUS "Looking for ${NETHOST_LIBRARY_NAME}")
+add_library(questinterface SHARED dotnet_quests/questinterface/questinterface_wrap.cxx)
+
+file(GLOB_RECURSE DOTNET_QUESTS_SOURCES 
+     "dotnet_quests/questinterface/DotNetTypes/**/*")
+
+file(GLOB_RECURSE DOTNET_BRIDGE_SOURCES 
+    "dotnet_quests/questinterface/DotNetBridge/**/*")
+add_custom_target(dotnet_questinterface
+  COMMAND dotnet restore
+  COMMAND dotnet publish "${CMAKE_SOURCE_DIR}/zone/dotnet_quests/questinterface/questinterface.sln" -c Release --output "${BUILD_DIR}/dotnet"
+  DEPENDS questinterface ${DOTNET_QUESTS_SOURCES} ${DOTNET_BRIDGE_SOURCES}
+  WORKING_DIRECTORY  "${CMAKE_SOURCE_DIR}/zone/dotnet_quests/questinterface"
+  COMMENT "Building DotNet questinterface .NET solution..."
+)
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}/zone
+)
+
+# Create symlinks to shared lib and dotnet folder 
+if(UNIX AND NOT APPLE)
+  if(IS_DIRECTORY "/home/eqemu")
+  execute_process(COMMAND sudo bash ${CMAKE_CURRENT_SOURCE_DIR}/dotnet_quests/setup.sh
+    RESULT_VARIABLE script_result
+    OUTPUT_VARIABLE script_output)
+
+    # Check the result
+    if(NOT script_result EQUAL "0")
+        message(FATAL_ERROR "Script failed: ${script_output}")
+    else()
+        message(STATUS "Setup script succeeded: ${script_output}")
+    endif()
+
+  endif()
+endif()
+
+add_library(dotnet_quests SHARED ${zone_sources} ${zone_headers} ${dotnet_sources})
+
+set_target_properties(dotnet_quests PROPERTIES PREFIX "")
+set_target_properties(questinterface PROPERTIES PREFIX "")
+
+target_include_directories(dotnet_quests PRIVATE ${NETHOST_PATH})
+
+target_link_libraries(dotnet_quests ${PERL_LIBRARY} ${ZONE_LIBS} "${NETHOST_PATH}/${NETHOST_LIBRARY_NAME}")
+target_link_libraries(questinterface dotnet_quests)
+
+set_target_properties(dotnet_quests PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${BUILD_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY ${BUILD_DIR} # For static libs or import libs on Windows
+    RUNTIME_OUTPUT_DIRECTORY ${BUILD_DIR} # For Windows DLLs
+)
+
+set_target_properties(questinterface PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${BUILD_DIR}/dotnet
+    ARCHIVE_OUTPUT_DIRECTORY ${BUILD_DIR}/dotnet # For static libs or import libs on Windows
+    RUNTIME_OUTPUT_DIRECTORY ${BUILD_DIR}/dotnet # For Windows DLLs
+)
+
+ADD_EXECUTABLE(zone zone.cpp)
+add_dependencies(zone dotnet_questinterface)
+TARGET_LINK_LIBRARIES(zone dotnet_quests)
+
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

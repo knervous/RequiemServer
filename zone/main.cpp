@@ -51,6 +51,7 @@
 #include "guild_mgr.h"
 #include "task_manager.h"
 #include "quest_parser_collection.h"
+#include "dotnet_quests/dotnet_quest_interface.h"
 #include "embparser.h"
 #include "lua_parser.h"
 #include "questmgr.h"
@@ -438,6 +439,8 @@ int main(int argc, char **argv)
 	}
 
 	parse = new QuestParserCollection();
+
+	parse->RegisterQuestInterface(new DotnetParser(), "cs");
 #ifdef LUA_EQEMU
 	parse->RegisterQuestInterface(LuaParser::Instance(), "lua");
 #endif
@@ -448,7 +451,6 @@ int main(int argc, char **argv)
 
 	/* Load Perl Event Export Settings */
 	parse->LoadPerlEventExportSettings(parse->perl_event_export_settings);
-
 #endif
 
 	//now we have our parser, load the quests

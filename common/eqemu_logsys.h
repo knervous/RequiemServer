@@ -58,14 +58,22 @@ namespace Logs {
 		Commands,
 		Crash,
 		Debug,
+		#ifdef SWIG_VERSION
+		EQDoors,
+		#else
 		Doors,
+		#endif
 		Error,
 		Guilds,
 		Inventory,
 		Launcher,
 		Netcode,
 		Normal, // deprecated
+		#ifdef SWIG_VERSION
+		EQObject,
+		#else
 		Object,
+		#endif
 		Pathing,
 		QSServer, // deprecated
 		Quests,
@@ -81,7 +89,11 @@ namespace Logs {
 		Tribute,
 		UCSServer, // deprecated
 		WebInterfaceServer, // deprecated
+		#ifdef SWIG_VERSION
+		EQWorldServer,
+		#else
 		WorldServer, // deprecated
+		#endif
 		ZoneServer, // deprecated
 		MySQLError,
 		MySQLQuery,
@@ -130,7 +142,11 @@ namespace Logs {
 		CombatRecord,
 		Hate,
 		Discord,
-		Faction,
+		#ifdef SWIG_VERSION
+		EQFaction,
+		#else
+		Faction, // deprecated
+		#endif
 		PacketServerClient,
 		PacketClientServer,
 		PacketServerToServer,
