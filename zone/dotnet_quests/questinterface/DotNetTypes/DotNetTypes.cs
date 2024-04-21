@@ -876,6 +876,7 @@ public class EventMap
         {QuestEventID.EVENT_DAMAGE_TAKEN, "DamageTaken"},
         {QuestEventID.EVENT_ITEM_CLICK_CAST_CLIENT, "ItemClickCastClient"},
         {QuestEventID.EVENT_ITEM_CLICK_CLIENT, "ItemClickClient"},
+        {QuestEventID.EVENT_GROUP_CHANGE, "GroupChange"},
         {QuestEventID.EVENT_DESTROY_ITEM_CLIENT, "DestroyItemClient"},
         {QuestEventID.EVENT_TARGET_CHANGE, "TargetChange"},
         {QuestEventID.EVENT_DROP_ITEM_CLIENT, "DropItemClient"},
