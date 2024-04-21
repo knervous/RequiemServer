@@ -89,6 +89,26 @@ typedef enum {
 } EmuAppearance;
 
 namespace Chat {
+#ifdef SWIG_VERSION
+	const uint16 EQ_White       = 0;
+	const uint16 EQ_DimGray     = 1;
+	const uint16 EQ_Default     = 1;
+	const uint16 EQ_Green       = 2;
+	const uint16 EQ_BrightBlue  = 3;
+	const uint16 EQ_LightBlue   = 4;
+	const uint16 EQ_Magenta     = 5;
+	const uint16 EQ_Gray        = 6;
+	const uint16 EQ_LightGray   = 7;
+	const uint16 EQ_NPCQuestSay = 10;
+	const uint16 EQ_DarkGray    = 12;
+	const uint16 EQ_Red         = 13;
+	const uint16 EQ_Lime        = 14;
+	const uint16 EQ_Yellow      = 15;
+	const uint16 EQ_Blue        = 16;
+	const uint16 EQ_LightNavy   = 17;
+	const uint16 EQ_Cyan        = 18;
+	const uint16 EQ_Black       = 20;
+#else
 	const uint16 White       = 0;
 	const uint16 DimGray     = 1;
 	const uint16 Default     = 1;
@@ -107,7 +127,7 @@ namespace Chat {
 	const uint16 LightNavy   = 17;
 	const uint16 Cyan        = 18;
 	const uint16 Black       = 20;
-
+#endif
 	/**
 	 * User colors
 	 */

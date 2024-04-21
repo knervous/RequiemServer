@@ -114,7 +114,7 @@ PlayerEventLogs     player_event_logs;
 
 void CatchSignal(int sig_num);
 
-inline void UpdateWindowTitle(std::string new_title)
+inline void UpdateWindowTitle(std::string new_title) 
 {
 #ifdef _WINDOWS
 	SetConsoleTitle(new_title.c_str());

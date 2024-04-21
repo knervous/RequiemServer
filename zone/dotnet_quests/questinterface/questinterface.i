@@ -24,6 +24,7 @@
 %ignore Mob::GetPosition;
 %ignore Mob::GetRelativePosition;
 %ignore Client::GetLastPositionBeforeBulkUpdate;
+%ignore Client::GetParcelTimer;
 %ignore ZoneSpellsBlocked::m_Location;
 %ignore ZoneSpellsBlocked::m_Difference;
 %ignore Trap::m_Position;
@@ -78,6 +79,8 @@
 %ignore ZoneDatabase::SetServerFilters;
 %ignore QuestEventSubroutines;
 %ignore QuestManager::ClearTimers;
+%ignore DBcore::QueryDatabase;
+%ignore DBcore::QueryDatabaseMulti;
 
 %ignore RuleManager::InvalidBool;
 %ignore RuleManager::InvalidReal;
@@ -133,6 +136,10 @@
 #include "../../../common/item_data.h"
 #include "../../../common/eqemu_logsys.h"
 #include "../../../common/zone_store.h"
+#include "../../../common/servertalk.h"
+#include "../../../common/shareddb.h"
+#include "../../../common/database.h"
+#include "../../../common/dbcore.h"
 
 #include "../../common.h"
 #include "../../entity.h"
@@ -287,7 +294,10 @@ namespace glm {
 %include "../../../common/eq_constants.h"
 %include "../../../common/dynamic_zone_base.h"
 %include "../../../common/zone_store.h"
-
+%include "../../../common/servertalk.h"
+%include "../../../common/shareddb.h"
+%include "../../../common/database.h"
+%include "../../../common/dbcore.h"
 
 %include "../../common.h"
 %include "../../entity.h"
@@ -340,7 +350,6 @@ namespace glm {
 %include "../../../common/rulesys.h"
 
 
-
 // Typedefs
 typedef uint8_t byte;
 typedef uint8_t uint8;
@@ -373,8 +382,24 @@ typedef int64_t int64;
     }
 }
 
+%extend ZoneDatabase {
+    std::vector<std::vector<std::string>> QueryDB(const std::string& query) {
+        auto results = $self->QueryDatabase(query);
+        std::vector<std::vector<std::string>> result;
+        for (auto& row = results.begin(); row != results.end(); ++row) {
+            std::vector<std::string> string_row;
+            for (int i = 0; i < row.GetFieldCount(); i++) {
+                string_row.push_back(std::string(row[i]));
+            }
+            result.push_back(string_row);
+        }
+        return result;
+    }
+}
+
 %template(ExtraDataVector) std::vector<std::any>;
 %template(StringVector) std::vector<std::string>;
+%template(StringListVector) std::vector<std::vector<std::string>>;
 %template(ItemVector) std::vector<EQ::ItemInstance*>;
 %template(MobVector) std::vector<Mob*>;
 %template(PacketVector) std::vector<EQApplicationPacket*>;

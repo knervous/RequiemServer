@@ -254,8 +254,11 @@ public:
 
 	void SetPrimaryWeaponOrnamentation(uint32 model_id);
 	void SetSecondaryWeaponOrnamentation(uint32 model_id);
-
+#ifdef SWIG_VERSION
+	void SendChatLineBreak(uint16 color = Chat::EQ_White);
+#else
 	void SendChatLineBreak(uint16 color = Chat::White);
+#endif
 
 	bool GotoPlayer(std::string player_name);
 	bool GotoPlayerGroup(const std::string& player_name);

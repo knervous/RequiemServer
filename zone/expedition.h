@@ -90,8 +90,11 @@ public:
 
 	bool IsLocked() const { return m_is_locked; }
 	void SetLocked(bool lock_expedition, ExpeditionLockMessage lock_msg,
+	#ifdef SWIG_VERSION
+		bool update_db = false, uint32_t msg_color = Chat::EQ_Yellow);
+	#else
 		bool update_db = false, uint32_t msg_color = Chat::Yellow);
-
+	#endif
 	void AddLockout(const std::string& event_name, uint32_t seconds);
 	void AddLockoutDuration(const std::string& event_name, int seconds, bool members_only = true);
 	void AddReplayLockout(uint32_t seconds);
