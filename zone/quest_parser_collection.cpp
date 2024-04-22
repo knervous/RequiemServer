@@ -895,8 +895,7 @@ QuestInterface* QuestParserCollection::GetQIByPlayerQuest(std::string& filename)
 	);
 
 	const std::string& dotnet_path_global = fmt::format(
-		"dotnet_quests/{}",
-		QUEST_GLOBAL_DIRECTORY
+		"dotnet_quests/global"
 	);
 
 	const std::string& zone_path = fmt::format(
