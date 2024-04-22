@@ -619,6 +619,10 @@ bool SharedDatabase::GetSharedBank(uint32 id, EQ::InventoryProfile *inv, bool is
 			inst->SetCustomDataString(data_str);
 		}
 
+		if (generate_cb) {
+			generate_cb(inst);
+		}
+
 		// theoretically inst can be nullptr ... this would be very bad ...
 		const int16 put_slot_id = inv->PutItem(slot_id, *inst);
 		safe_delete(inst);
@@ -772,6 +776,10 @@ bool SharedDatabase::GetInventory(uint32 char_id, EQ::InventoryProfile *inv)
 			}
 		}
 
+		if (generate_cb) {
+			generate_cb(inst);
+		}
+
 		int16 put_slot_id;
 		if (slot_id >= 8000 && slot_id <= 8999) {
 			put_slot_id = inv->PushCursor(*inst);
@@ -877,6 +885,10 @@ bool SharedDatabase::GetInventory(uint32 account_id, char *name, EQ::InventoryPr
 			}
 		}
 
+		if (generate_cb) {
+			generate_cb(inst);
+		}
+		
 		int16 put_slot_id;
 		if (slot_id >= 8000 && slot_id <= 8999)
 			put_slot_id = inv->PushCursor(*inst);
@@ -1424,6 +1436,9 @@ EQ::ItemInstance* SharedDatabase::CreateItem(
 		inst->SetOrnamentIcon(ornamenticon);
 		inst->SetOrnamentationIDFile(ornamentidfile);
 		inst->SetOrnamentHeroModel(ornament_hero_model);
+		if (generate_cb) {
+			generate_cb(inst);
+		}
 	}
 
 	return inst;
@@ -1467,6 +1482,9 @@ EQ::ItemInstance* SharedDatabase::CreateItem(
 		inst->SetOrnamentIcon(ornamenticon);
 		inst->SetOrnamentationIDFile(ornamentidfile);
 		inst->SetOrnamentHeroModel(ornament_hero_model);
+		if (generate_cb) {
+			generate_cb(inst);
+		}
 	}
 
 	return inst;
