@@ -140,6 +140,7 @@
 #include "../../../common/shareddb.h"
 #include "../../../common/database.h"
 #include "../../../common/dbcore.h"
+#include "../../../common/loot.h"
 
 #include "../../common.h"
 #include "../../entity.h"
@@ -298,6 +299,7 @@ namespace glm {
 %include "../../../common/shareddb.h"
 %include "../../../common/database.h"
 %include "../../../common/dbcore.h"
+%include "../../../common/loot.h"
 
 %include "../../common.h"
 %include "../../entity.h"
@@ -398,6 +400,7 @@ typedef int64_t int64;
 }
 
 %template(ExtraDataVector) std::vector<std::any>;
+%template(LootItemVector) std::list<LootItem*>;
 %template(StringVector) std::vector<std::string>;
 %template(StringListVector) std::vector<std::vector<std::string>>;
 %template(ItemVector) std::vector<EQ::ItemInstance*>;

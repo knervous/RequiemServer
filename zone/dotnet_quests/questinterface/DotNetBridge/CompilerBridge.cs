@@ -543,12 +543,12 @@ public static class DotNetQuest
         var npcName = npc?.GetOrigName() ?? "";
         var uniqueName = npc?.GetName() ?? "";
         // If we have this case covered for local zone and being invoked through global don't honor global invoke
-        if (global && MethodExistsAndIsConcrete(questAssembly_?.GetType(npcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(NpcEvent)))
+        if (global && MethodExistsAndIsConcrete(questAssembly_?.GetType(npcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
         {
             return;
         }
         var assembly = global ? globalAssembly_ : questAssembly_;
-        if (MethodExistsAndIsConcrete(assembly?.GetType(npcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(NpcEvent)))
+        if (MethodExistsAndIsConcrete(assembly?.GetType(npcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
         {
             object? npcObject;
             var npcType = assembly?.GetType(npcName);
@@ -574,6 +574,43 @@ public static class DotNetQuest
                 npc = npc,
                 mob = mob,
             }]);
+            return;
+        }
+
+        // At this point we haven't handled the event--the NPC was not explicitly defined in global or local
+        // We can also define an ALL_NPC class that will invoke on any npc if this method is defined
+        var allNpcName = "ALL_NPC";
+        if (global && MethodExistsAndIsConcrete(questAssembly_?.GetType(allNpcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
+        {
+            return;
+        }
+        if (MethodExistsAndIsConcrete(assembly?.GetType(allNpcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
+        {
+            object? npcObject;
+            var npcType = assembly?.GetType(allNpcName);
+            if (npcType == null)
+            {
+                return;
+            }
+            if (npcMap.ContainsKey(allNpcName))
+            {
+                npcObject = npcMap[allNpcName];
+            }
+            else
+            {
+                npcObject = Activator.CreateInstance(npcType);
+                if (npcObject == null)
+                {
+                    return;
+                }
+                npcMap[uniqueName] = npcObject;
+            }
+            var npcMethod = npcType.GetMethod(EventMap.NpcMethodMap[id]);
+            npcMethod?.Invoke(npcObject, [new NpcEvent(globals, npcEventArgs) {
+                npc = npc,
+                mob = mob,
+            }]);
+            return;
         }
     }
 
@@ -581,12 +618,12 @@ public static class DotNetQuest
     {
         QuestEventID id = (QuestEventID)playerEventArgs.QuestEventId;
         // If we have this case covered for local zone and being invoked through global don't honor global invoke
-        if (global && MethodExistsAndIsConcrete(questAssembly_?.GetType("Player")?.GetMethod(EventMap.PlayerMethodMap[id]), typeof(PlayerEvent)))
+        if (global && MethodExistsAndIsConcrete(questAssembly_?.GetType("Player")?.GetMethod(EventMap.PlayerMethodMap[id]), typeof(IPlayerEvent)))
         {
             return;
         }
         var assembly = global ? globalAssembly_ : questAssembly_;
-        if (MethodExistsAndIsConcrete(assembly?.GetType("Player")?.GetMethod(EventMap.PlayerMethodMap[id]), typeof(PlayerEvent)))
+        if (MethodExistsAndIsConcrete(assembly?.GetType("Player")?.GetMethod(EventMap.PlayerMethodMap[id]), typeof(IPlayerEvent)))
         {
             var player = EqFactory.CreateClient(playerEventArgs.Client, false);
             object? playerObject;
@@ -619,9 +656,19 @@ public static class DotNetQuest
     private static void ItemEvent(EventArgs itemEventArgs)
     {
         QuestEventID id = (QuestEventID)itemEventArgs.QuestEventId;
-        if (MethodExistsAndIsConcrete(questAssembly_?.GetType("Item")?.GetMethod(EventMap.ItemMethodMap[id]), typeof(ItemEvent)))
+        if (MethodExistsAndIsConcrete(questAssembly_?.GetType("Item")?.GetMethod(EventMap.ItemMethodMap[id]), typeof(IItemEvent)))
         {
             questAssembly_?.GetType("Item")?.GetMethod(EventMap.ItemMethodMap[id])?.Invoke(Activator.CreateInstance(questAssembly_?.GetType("Item")), [new ItemEvent(globals, itemEventArgs) {
+                client = EqFactory.CreateClient(itemEventArgs.Client, false),
+                mob = EqFactory.CreateMob(itemEventArgs.Mob, false),
+                item = EqFactory.CreateItemInstance(itemEventArgs.Item, false),
+            }]);
+            return;
+        }
+        // Supply our own global option
+        if (MethodExistsAndIsConcrete(globalAssembly_?.GetType("Item")?.GetMethod(EventMap.ItemMethodMap[id]), typeof(IItemEvent)))
+        {
+            globalAssembly_?.GetType("Item")?.GetMethod(EventMap.ItemMethodMap[id])?.Invoke(Activator.CreateInstance(globalAssembly_?.GetType("Item")), [new ItemEvent(globals, itemEventArgs) {
                 client = EqFactory.CreateClient(itemEventArgs.Client, false),
                 mob = EqFactory.CreateMob(itemEventArgs.Mob, false),
                 item = EqFactory.CreateItemInstance(itemEventArgs.Item, false),
@@ -632,7 +679,7 @@ public static class DotNetQuest
     private static void SpellEvent(EventArgs spellEventArgs)
     {
         QuestEventID id = (QuestEventID)spellEventArgs.QuestEventId;
-        if (MethodExistsAndIsConcrete(questAssembly_?.GetType("Spell")?.GetMethod(EventMap.SpellMethodMap[id]), typeof(SpellEvent)))
+        if (MethodExistsAndIsConcrete(questAssembly_?.GetType("Spell")?.GetMethod(EventMap.SpellMethodMap[id]), typeof(ISpellEvent)))
         {
             questAssembly_?.GetType("Spell")?.GetMethod(EventMap.SpellMethodMap[id])?.Invoke(Activator.CreateInstance(questAssembly_?.GetType("Spell")), [new SpellEvent(globals, spellEventArgs) {
                 client = EqFactory.CreateClient(spellEventArgs.Client, false),
@@ -649,7 +696,7 @@ public static class DotNetQuest
             ? Marshal.PtrToStringUni(encounterEventArgs.EncounterName)
             : Marshal.PtrToStringUTF8(encounterEventArgs.EncounterName);
         string encounterType = $"Encounter_{encounter}";
-        if (MethodExistsAndIsConcrete(questAssembly_?.GetType(encounterType)?.GetMethod(EventMap.EncounterMethodMap[id]), typeof(EncounterEvent)))
+        if (MethodExistsAndIsConcrete(questAssembly_?.GetType(encounterType)?.GetMethod(EventMap.EncounterMethodMap[id]), typeof(IEncounterEvent)))
         {
             questAssembly_?.GetType(encounterType)?.GetMethod(EventMap.EncounterMethodMap[id])?.Invoke(Activator.CreateInstance(questAssembly_.GetType(encounterType)), [new EncounterEvent(globals, encounterEventArgs) {
 
@@ -663,7 +710,7 @@ public static class DotNetQuest
         QuestEventID id = (QuestEventID)botEventArgs.QuestEventId;
         var bot = EqFactory.CreateBot(botEventArgs.Bot, false);
         var client = EqFactory.CreateClient(botEventArgs.Client, false);
-        if (MethodExistsAndIsConcrete(questAssembly_?.GetType("Bot")?.GetMethod(EventMap.BotMethodMap[id]), typeof(BotEvent)))
+        if (MethodExistsAndIsConcrete(questAssembly_?.GetType("Bot")?.GetMethod(EventMap.BotMethodMap[id]), typeof(IBotEvent)))
         {
             questAssembly_?.GetType("Bot")?.GetMethod(EventMap.BotMethodMap[id])?.Invoke(Activator.CreateInstance(questAssembly_.GetType("Bot")), [new BotEvent(globals, botEventArgs) {
                 bot = bot,

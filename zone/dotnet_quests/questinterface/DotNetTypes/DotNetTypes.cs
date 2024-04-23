@@ -410,10 +410,12 @@ public abstract class IItemEvent
 {
     public virtual void ItemClick(ItemEvent e) {}
     public virtual void ItemClickCast(ItemEvent e) {}
+    public virtual void ItemGenerate(ItemEvent e) {}
     public virtual void ItemEnterZone(ItemEvent e) {}
     public virtual void Timer(ItemEvent e) {}
     public virtual void WeaponProc(ItemEvent e) {}
     public virtual void Loot(ItemEvent e) {}
+    public virtual void DropItem(ItemEvent e) {}
     public virtual void EquipItem(ItemEvent e) {}
     public virtual void UnequipItem(ItemEvent e) {}
     public virtual void AugmentItem(ItemEvent e) {}
@@ -903,6 +905,8 @@ public class EventMap
 
     public static readonly Dictionary<QuestEventID, string> ItemMethodMap = new Dictionary<QuestEventID, string>() {
         {QuestEventID.EVENT_ITEM_CLICK, "ItemClick"},
+        {QuestEventID.EVENT_DROP_ITEM, "ItemDrop"},
+        {QuestEventID.EVENT_ITEM_GENERATE, "ItemGenerate"},
         {QuestEventID.EVENT_ITEM_CLICK_CAST, "ItemClickCast"},
         {QuestEventID.EVENT_ITEM_ENTER_ZONE, "ItemEnterZone"},
         {QuestEventID.EVENT_TIMER, "Timer"},

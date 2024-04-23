@@ -895,8 +895,7 @@ QuestInterface* QuestParserCollection::GetQIByPlayerQuest(std::string& filename)
 	);
 
 	const std::string& dotnet_path_global = fmt::format(
-		"dotnet_quests/{}",
-		QUEST_GLOBAL_DIRECTORY
+		"dotnet_quests/global"
 	);
 
 	const std::string& zone_path = fmt::format(
@@ -1082,6 +1081,10 @@ QuestInterface* QuestParserCollection::GetQIByItemQuest(std::string item_script,
 		zone->GetShortName()
 	);
 
+	const std::string& dotnet_global_path = fmt::format(
+		"dotnet_quests/global"
+	);
+
 	const std::string& zone_versioned_path = fmt::format(
 		"{}/{}/v{}/items",
 		path.GetQuestsPath(),
@@ -1093,6 +1096,7 @@ QuestInterface* QuestParserCollection::GetQIByItemQuest(std::string item_script,
 		fmt::format("{}/{}", zone_versioned_path, item_script), // Local versioned by Item Script ./quests/zone/v0/items/10.ext
 		fmt::format("{}/{}", zone_path, item_script), // Local
 		fmt::format("{}/{}", dotnet_path, "item"), // Dotnet
+		fmt::format("{}/{}", dotnet_global_path, "item"), // Dotnet Global
 		fmt::format("{}/{}", global_path, item_script), // Global
 		fmt::format("{}/default", zone_path), // Local Default
 		fmt::format("{}/default", global_path) // Global Default
