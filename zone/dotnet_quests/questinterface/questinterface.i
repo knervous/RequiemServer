@@ -134,6 +134,7 @@
 #include "../../../common/eq_constants.h"
 #include "../../../common/item_instance.h"
 #include "../../../common/item_data.h"
+#include "../../../common/inventory_profile.h"
 #include "../../../common/eqemu_logsys.h"
 #include "../../../common/zone_store.h"
 #include "../../../common/servertalk.h"
@@ -211,6 +212,7 @@ void FreeVec3(glm::vec3* ptr);
 %include <std_string.i>
 %include <csharp/std_string.i>
 %include <std_unordered_map.i>
+%include <std_map.i>
 %include <std_shared_ptr.i>
 %include <stdint.i>
 
@@ -275,6 +277,19 @@ namespace glm {
 %typemap(csin) glm::vec3 %{
     (nint)vec3.getCPtr(new vec3($csinput.x, $csinput.y, $csinput.z))
 %}
+
+
+
+// Typedefs
+typedef uint8_t byte;
+typedef uint8_t uint8;
+typedef uint16_t uint16;
+typedef uint32_t uint32;
+typedef uint64_t uint64;
+typedef int8_t int8;
+typedef int16_t int16;
+typedef int32_t int32;
+typedef int64_t int64;
 
 %include "../../../common/ruletypes.h"
 %include "../../../common/eq_packet.h"
@@ -346,24 +361,15 @@ namespace glm {
 %include "../../task_manager.h"
 %include "../../task_client_state.h"
 
-%include "../../../common/item_instance.h"
-%include "../../../common/item_data.h"
 %include "../../../common/eqemu_logsys.h"
 %include "../../../common/rulesys.h"
+%include "../../../common/item_instance.h"
+%include "../../../common/item_data.h"
+%include "../../../common/inventory_profile.h"
 
 
-// Typedefs
-typedef uint8_t byte;
-typedef uint8_t uint8;
-typedef uint16_t uint16;
-typedef uint32_t uint32;
-typedef uint64_t uint64;
-typedef int8_t int8;
-typedef int16_t int16;
-typedef int32_t int32;
-typedef int64_t int64;
 
-
+%template(IntItemMap) std::map<int16, EQ::ItemInstance*>;
 %template(LinkedListNewSpawn) LinkedList<NewSpawn_Struct*>;
 %template(LinkedListSpawn2) LinkedList<Spawn2*>;
 %template(LinkedListZonePoint) LinkedList<ZonePoint*>;
@@ -423,8 +429,10 @@ typedef int64_t int64;
 %template(IntTrapMap) std::unordered_map<unsigned short, Trap *>;
 %template(IntBeaconMap) std::unordered_map<unsigned short, Beacon *>;
 %template(IntEncounterMap) std::unordered_map<unsigned short, Encounter *>;
+
 %template(ProximityList) std::list<NPC *>;
 %template(GroupList) std::list<Group *>;
 %template(RaidList) std::list<Raid *>;
 %template(AreaList) std::list<Area>;
 %template(ArrayHateList) std::list<struct_HateList*>;
+
