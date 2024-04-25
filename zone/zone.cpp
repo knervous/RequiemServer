@@ -604,7 +604,12 @@ void Zone::LoadTempMerchantData()
 	std::map<uint32, std::list<TempMerchantList> >::iterator temp_merchant_table_entry;
 
 	uint32 npc_id = 0;
+	std::vector<std::string> item_ids_to_purge;
 	for (auto row = results.begin(); row != results.end(); ++row) {
+		if (database.GetItem(Strings::ToUnsignedInt(row[3])) == nullptr) {
+			item_ids_to_purge.push_back(row[3]);
+			continue;
+		}
 		TempMerchantList temp_merchant_list;
 		temp_merchant_list.npcid = Strings::ToUnsignedInt(row[0]);
 		if (npc_id != temp_merchant_list.npcid) {
@@ -632,6 +637,18 @@ void Zone::LoadTempMerchantData()
 		);
 
 		temp_merchant_table_entry->second.push_back(temp_merchant_list);
+	}
+	if (!item_ids_to_purge.empty()) {
+		database.QueryDatabase(
+			fmt::format(
+				SQL(
+					DELETE
+					FROM merchantlist_temp
+					WHERE itemid IN ({})
+				),
+				Strings::Implode(", ", item_ids_to_purge)
+			)
+		);
 	}
 }
 
