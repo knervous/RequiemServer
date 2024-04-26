@@ -2576,7 +2576,8 @@ void ZoneDatabase::SaveMerchantTemp(
 	uint32 zone_id,
 	uint32 instance_id,
 	uint32 item_id,
-	uint32 charges
+	uint32 charges,
+	const std::string& custom_data
 )
 {
 	auto e = MerchantlistTempRepository::NewEntity();
@@ -2587,6 +2588,7 @@ void ZoneDatabase::SaveMerchantTemp(
 	e.instance_id = instance_id;
 	e.itemid      = item_id;
 	e.charges     = charges;
+	e.custom_data = custom_data;
 
 	MerchantlistTempRepository::ReplaceOne(*this, e);
 }

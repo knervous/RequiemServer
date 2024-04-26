@@ -19,12 +19,13 @@
 class BaseMerchantlistTempRepository {
 public:
 	struct MerchantlistTemp {
-		uint32_t npcid;
-		uint32_t slot;
-		int32_t  zone_id;
-		int32_t  instance_id;
-		uint32_t itemid;
-		uint32_t charges;
+		uint32_t    npcid;
+		uint32_t    slot;
+		int32_t     zone_id;
+		int32_t     instance_id;
+		uint32_t    itemid;
+		uint32_t    charges;
+		std::string custom_data;
 	};
 
 	static std::string PrimaryKey()
@@ -41,6 +42,7 @@ public:
 			"instance_id",
 			"itemid",
 			"charges",
+			"custom_data",
 		};
 	}
 
@@ -53,6 +55,7 @@ public:
 			"instance_id",
 			"itemid",
 			"charges",
+			"custom_data",
 		};
 	}
 
@@ -99,6 +102,7 @@ public:
 		e.instance_id = 0;
 		e.itemid      = 0;
 		e.charges     = 1;
+		e.custom_data = "";
 
 		return e;
 	}
@@ -141,6 +145,7 @@ public:
 			e.instance_id = row[3] ? static_cast<int32_t>(atoi(row[3])) : 0;
 			e.itemid      = row[4] ? static_cast<uint32_t>(strtoul(row[4], nullptr, 10)) : 0;
 			e.charges     = row[5] ? static_cast<uint32_t>(strtoul(row[5], nullptr, 10)) : 1;
+			e.custom_data = row[6] ? row[6] : "";
 
 			return e;
 		}
@@ -180,6 +185,7 @@ public:
 		v.push_back(columns[3] + " = " + std::to_string(e.instance_id));
 		v.push_back(columns[4] + " = " + std::to_string(e.itemid));
 		v.push_back(columns[5] + " = " + std::to_string(e.charges));
+		v.push_back(columns[6] + " = '" + Strings::Escape(e.custom_data) + "'");
 
 		auto results = db.QueryDatabase(
 			fmt::format(
@@ -207,6 +213,7 @@ public:
 		v.push_back(std::to_string(e.instance_id));
 		v.push_back(std::to_string(e.itemid));
 		v.push_back(std::to_string(e.charges));
+		v.push_back("'" + Strings::Escape(e.custom_data) + "'");
 
 		auto results = db.QueryDatabase(
 			fmt::format(
@@ -242,6 +249,7 @@ public:
 			v.push_back(std::to_string(e.instance_id));
 			v.push_back(std::to_string(e.itemid));
 			v.push_back(std::to_string(e.charges));
+			v.push_back("'" + Strings::Escape(e.custom_data) + "'");
 
 			insert_chunks.push_back("(" + Strings::Implode(",", v) + ")");
 		}
@@ -281,6 +289,7 @@ public:
 			e.instance_id = row[3] ? static_cast<int32_t>(atoi(row[3])) : 0;
 			e.itemid      = row[4] ? static_cast<uint32_t>(strtoul(row[4], nullptr, 10)) : 0;
 			e.charges     = row[5] ? static_cast<uint32_t>(strtoul(row[5], nullptr, 10)) : 1;
+			e.custom_data = row[6] ? row[6] : "";
 
 			all_entries.push_back(e);
 		}
@@ -311,6 +320,7 @@ public:
 			e.instance_id = row[3] ? static_cast<int32_t>(atoi(row[3])) : 0;
 			e.itemid      = row[4] ? static_cast<uint32_t>(strtoul(row[4], nullptr, 10)) : 0;
 			e.charges     = row[5] ? static_cast<uint32_t>(strtoul(row[5], nullptr, 10)) : 1;
+			e.custom_data = row[6] ? row[6] : "";
 
 			all_entries.push_back(e);
 		}
@@ -391,6 +401,7 @@ public:
 		v.push_back(std::to_string(e.instance_id));
 		v.push_back(std::to_string(e.itemid));
 		v.push_back(std::to_string(e.charges));
+		v.push_back("'" + Strings::Escape(e.custom_data) + "'");
 
 		auto results = db.QueryDatabase(
 			fmt::format(
@@ -419,6 +430,7 @@ public:
 			v.push_back(std::to_string(e.instance_id));
 			v.push_back(std::to_string(e.itemid));
 			v.push_back(std::to_string(e.charges));
+			v.push_back("'" + Strings::Escape(e.custom_data) + "'");
 
 			insert_chunks.push_back("(" + Strings::Implode(",", v) + ")");
 		}

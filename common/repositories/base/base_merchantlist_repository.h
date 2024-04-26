@@ -22,6 +22,7 @@ public:
 		int32_t     merchantid;
 		uint32_t    slot;
 		int32_t     item;
+		std::string custom_data;
 		int16_t     faction_required;
 		uint8_t     level_required;
 		uint8_t     min_status;
@@ -49,6 +50,7 @@ public:
 			"merchantid",
 			"slot",
 			"item",
+			"custom_data",
 			"faction_required",
 			"level_required",
 			"min_status",
@@ -72,6 +74,7 @@ public:
 			"merchantid",
 			"slot",
 			"item",
+			"custom_data",
 			"faction_required",
 			"level_required",
 			"min_status",
@@ -129,6 +132,7 @@ public:
 		e.merchantid             = 0;
 		e.slot                   = 0;
 		e.item                   = 0;
+		e.custom_data            = "";
 		e.faction_required       = -100;
 		e.level_required         = 0;
 		e.min_status             = 0;
@@ -182,20 +186,21 @@ public:
 			e.merchantid             = row[0] ? static_cast<int32_t>(atoi(row[0])) : 0;
 			e.slot                   = row[1] ? static_cast<uint32_t>(strtoul(row[1], nullptr, 10)) : 0;
 			e.item                   = row[2] ? static_cast<int32_t>(atoi(row[2])) : 0;
-			e.faction_required       = row[3] ? static_cast<int16_t>(atoi(row[3])) : -100;
-			e.level_required         = row[4] ? static_cast<uint8_t>(strtoul(row[4], nullptr, 10)) : 0;
-			e.min_status             = row[5] ? static_cast<uint8_t>(strtoul(row[5], nullptr, 10)) : 0;
-			e.max_status             = row[6] ? static_cast<uint8_t>(strtoul(row[6], nullptr, 10)) : 255;
-			e.alt_currency_cost      = row[7] ? static_cast<uint16_t>(strtoul(row[7], nullptr, 10)) : 0;
-			e.classes_required       = row[8] ? static_cast<int32_t>(atoi(row[8])) : 65535;
-			e.probability            = row[9] ? static_cast<int32_t>(atoi(row[9])) : 100;
-			e.bucket_name            = row[10] ? row[10] : "";
-			e.bucket_value           = row[11] ? row[11] : "";
-			e.bucket_comparison      = row[12] ? static_cast<uint8_t>(strtoul(row[12], nullptr, 10)) : 0;
-			e.min_expansion          = row[13] ? static_cast<int8_t>(atoi(row[13])) : -1;
-			e.max_expansion          = row[14] ? static_cast<int8_t>(atoi(row[14])) : -1;
-			e.content_flags          = row[15] ? row[15] : "";
-			e.content_flags_disabled = row[16] ? row[16] : "";
+			e.custom_data            = row[3] ? row[3] : "";
+			e.faction_required       = row[4] ? static_cast<int16_t>(atoi(row[4])) : -100;
+			e.level_required         = row[5] ? static_cast<uint8_t>(strtoul(row[5], nullptr, 10)) : 0;
+			e.min_status             = row[6] ? static_cast<uint8_t>(strtoul(row[6], nullptr, 10)) : 0;
+			e.max_status             = row[7] ? static_cast<uint8_t>(strtoul(row[7], nullptr, 10)) : 255;
+			e.alt_currency_cost      = row[8] ? static_cast<uint16_t>(strtoul(row[8], nullptr, 10)) : 0;
+			e.classes_required       = row[9] ? static_cast<int32_t>(atoi(row[9])) : 65535;
+			e.probability            = row[10] ? static_cast<int32_t>(atoi(row[10])) : 100;
+			e.bucket_name            = row[11] ? row[11] : "";
+			e.bucket_value           = row[12] ? row[12] : "";
+			e.bucket_comparison      = row[13] ? static_cast<uint8_t>(strtoul(row[13], nullptr, 10)) : 0;
+			e.min_expansion          = row[14] ? static_cast<int8_t>(atoi(row[14])) : -1;
+			e.max_expansion          = row[15] ? static_cast<int8_t>(atoi(row[15])) : -1;
+			e.content_flags          = row[16] ? row[16] : "";
+			e.content_flags_disabled = row[17] ? row[17] : "";
 
 			return e;
 		}
@@ -232,20 +237,21 @@ public:
 		v.push_back(columns[0] + " = " + std::to_string(e.merchantid));
 		v.push_back(columns[1] + " = " + std::to_string(e.slot));
 		v.push_back(columns[2] + " = " + std::to_string(e.item));
-		v.push_back(columns[3] + " = " + std::to_string(e.faction_required));
-		v.push_back(columns[4] + " = " + std::to_string(e.level_required));
-		v.push_back(columns[5] + " = " + std::to_string(e.min_status));
-		v.push_back(columns[6] + " = " + std::to_string(e.max_status));
-		v.push_back(columns[7] + " = " + std::to_string(e.alt_currency_cost));
-		v.push_back(columns[8] + " = " + std::to_string(e.classes_required));
-		v.push_back(columns[9] + " = " + std::to_string(e.probability));
-		v.push_back(columns[10] + " = '" + Strings::Escape(e.bucket_name) + "'");
-		v.push_back(columns[11] + " = '" + Strings::Escape(e.bucket_value) + "'");
-		v.push_back(columns[12] + " = " + std::to_string(e.bucket_comparison));
-		v.push_back(columns[13] + " = " + std::to_string(e.min_expansion));
-		v.push_back(columns[14] + " = " + std::to_string(e.max_expansion));
-		v.push_back(columns[15] + " = '" + Strings::Escape(e.content_flags) + "'");
-		v.push_back(columns[16] + " = '" + Strings::Escape(e.content_flags_disabled) + "'");
+		v.push_back(columns[3] + " = '" + Strings::Escape(e.custom_data) + "'");
+		v.push_back(columns[4] + " = " + std::to_string(e.faction_required));
+		v.push_back(columns[5] + " = " + std::to_string(e.level_required));
+		v.push_back(columns[6] + " = " + std::to_string(e.min_status));
+		v.push_back(columns[7] + " = " + std::to_string(e.max_status));
+		v.push_back(columns[8] + " = " + std::to_string(e.alt_currency_cost));
+		v.push_back(columns[9] + " = " + std::to_string(e.classes_required));
+		v.push_back(columns[10] + " = " + std::to_string(e.probability));
+		v.push_back(columns[11] + " = '" + Strings::Escape(e.bucket_name) + "'");
+		v.push_back(columns[12] + " = '" + Strings::Escape(e.bucket_value) + "'");
+		v.push_back(columns[13] + " = " + std::to_string(e.bucket_comparison));
+		v.push_back(columns[14] + " = " + std::to_string(e.min_expansion));
+		v.push_back(columns[15] + " = " + std::to_string(e.max_expansion));
+		v.push_back(columns[16] + " = '" + Strings::Escape(e.content_flags) + "'");
+		v.push_back(columns[17] + " = '" + Strings::Escape(e.content_flags_disabled) + "'");
 
 		auto results = db.QueryDatabase(
 			fmt::format(
@@ -270,6 +276,7 @@ public:
 		v.push_back(std::to_string(e.merchantid));
 		v.push_back(std::to_string(e.slot));
 		v.push_back(std::to_string(e.item));
+		v.push_back("'" + Strings::Escape(e.custom_data) + "'");
 		v.push_back(std::to_string(e.faction_required));
 		v.push_back(std::to_string(e.level_required));
 		v.push_back(std::to_string(e.min_status));
@@ -316,6 +323,7 @@ public:
 			v.push_back(std::to_string(e.merchantid));
 			v.push_back(std::to_string(e.slot));
 			v.push_back(std::to_string(e.item));
+			v.push_back("'" + Strings::Escape(e.custom_data) + "'");
 			v.push_back(std::to_string(e.faction_required));
 			v.push_back(std::to_string(e.level_required));
 			v.push_back(std::to_string(e.min_status));
@@ -366,20 +374,21 @@ public:
 			e.merchantid             = row[0] ? static_cast<int32_t>(atoi(row[0])) : 0;
 			e.slot                   = row[1] ? static_cast<uint32_t>(strtoul(row[1], nullptr, 10)) : 0;
 			e.item                   = row[2] ? static_cast<int32_t>(atoi(row[2])) : 0;
-			e.faction_required       = row[3] ? static_cast<int16_t>(atoi(row[3])) : -100;
-			e.level_required         = row[4] ? static_cast<uint8_t>(strtoul(row[4], nullptr, 10)) : 0;
-			e.min_status             = row[5] ? static_cast<uint8_t>(strtoul(row[5], nullptr, 10)) : 0;
-			e.max_status             = row[6] ? static_cast<uint8_t>(strtoul(row[6], nullptr, 10)) : 255;
-			e.alt_currency_cost      = row[7] ? static_cast<uint16_t>(strtoul(row[7], nullptr, 10)) : 0;
-			e.classes_required       = row[8] ? static_cast<int32_t>(atoi(row[8])) : 65535;
-			e.probability            = row[9] ? static_cast<int32_t>(atoi(row[9])) : 100;
-			e.bucket_name            = row[10] ? row[10] : "";
-			e.bucket_value           = row[11] ? row[11] : "";
-			e.bucket_comparison      = row[12] ? static_cast<uint8_t>(strtoul(row[12], nullptr, 10)) : 0;
-			e.min_expansion          = row[13] ? static_cast<int8_t>(atoi(row[13])) : -1;
-			e.max_expansion          = row[14] ? static_cast<int8_t>(atoi(row[14])) : -1;
-			e.content_flags          = row[15] ? row[15] : "";
-			e.content_flags_disabled = row[16] ? row[16] : "";
+			e.custom_data            = row[3] ? row[3] : "";
+			e.faction_required       = row[4] ? static_cast<int16_t>(atoi(row[4])) : -100;
+			e.level_required         = row[5] ? static_cast<uint8_t>(strtoul(row[5], nullptr, 10)) : 0;
+			e.min_status             = row[6] ? static_cast<uint8_t>(strtoul(row[6], nullptr, 10)) : 0;
+			e.max_status             = row[7] ? static_cast<uint8_t>(strtoul(row[7], nullptr, 10)) : 255;
+			e.alt_currency_cost      = row[8] ? static_cast<uint16_t>(strtoul(row[8], nullptr, 10)) : 0;
+			e.classes_required       = row[9] ? static_cast<int32_t>(atoi(row[9])) : 65535;
+			e.probability            = row[10] ? static_cast<int32_t>(atoi(row[10])) : 100;
+			e.bucket_name            = row[11] ? row[11] : "";
+			e.bucket_value           = row[12] ? row[12] : "";
+			e.bucket_comparison      = row[13] ? static_cast<uint8_t>(strtoul(row[13], nullptr, 10)) : 0;
+			e.min_expansion          = row[14] ? static_cast<int8_t>(atoi(row[14])) : -1;
+			e.max_expansion          = row[15] ? static_cast<int8_t>(atoi(row[15])) : -1;
+			e.content_flags          = row[16] ? row[16] : "";
+			e.content_flags_disabled = row[17] ? row[17] : "";
 
 			all_entries.push_back(e);
 		}
@@ -407,20 +416,21 @@ public:
 			e.merchantid             = row[0] ? static_cast<int32_t>(atoi(row[0])) : 0;
 			e.slot                   = row[1] ? static_cast<uint32_t>(strtoul(row[1], nullptr, 10)) : 0;
 			e.item                   = row[2] ? static_cast<int32_t>(atoi(row[2])) : 0;
-			e.faction_required       = row[3] ? static_cast<int16_t>(atoi(row[3])) : -100;
-			e.level_required         = row[4] ? static_cast<uint8_t>(strtoul(row[4], nullptr, 10)) : 0;
-			e.min_status             = row[5] ? static_cast<uint8_t>(strtoul(row[5], nullptr, 10)) : 0;
-			e.max_status             = row[6] ? static_cast<uint8_t>(strtoul(row[6], nullptr, 10)) : 255;
-			e.alt_currency_cost      = row[7] ? static_cast<uint16_t>(strtoul(row[7], nullptr, 10)) : 0;
-			e.classes_required       = row[8] ? static_cast<int32_t>(atoi(row[8])) : 65535;
-			e.probability            = row[9] ? static_cast<int32_t>(atoi(row[9])) : 100;
-			e.bucket_name            = row[10] ? row[10] : "";
-			e.bucket_value           = row[11] ? row[11] : "";
-			e.bucket_comparison      = row[12] ? static_cast<uint8_t>(strtoul(row[12], nullptr, 10)) : 0;
-			e.min_expansion          = row[13] ? static_cast<int8_t>(atoi(row[13])) : -1;
-			e.max_expansion          = row[14] ? static_cast<int8_t>(atoi(row[14])) : -1;
-			e.content_flags          = row[15] ? row[15] : "";
-			e.content_flags_disabled = row[16] ? row[16] : "";
+			e.custom_data            = row[3] ? row[3] : "";
+			e.faction_required       = row[4] ? static_cast<int16_t>(atoi(row[4])) : -100;
+			e.level_required         = row[5] ? static_cast<uint8_t>(strtoul(row[5], nullptr, 10)) : 0;
+			e.min_status             = row[6] ? static_cast<uint8_t>(strtoul(row[6], nullptr, 10)) : 0;
+			e.max_status             = row[7] ? static_cast<uint8_t>(strtoul(row[7], nullptr, 10)) : 255;
+			e.alt_currency_cost      = row[8] ? static_cast<uint16_t>(strtoul(row[8], nullptr, 10)) : 0;
+			e.classes_required       = row[9] ? static_cast<int32_t>(atoi(row[9])) : 65535;
+			e.probability            = row[10] ? static_cast<int32_t>(atoi(row[10])) : 100;
+			e.bucket_name            = row[11] ? row[11] : "";
+			e.bucket_value           = row[12] ? row[12] : "";
+			e.bucket_comparison      = row[13] ? static_cast<uint8_t>(strtoul(row[13], nullptr, 10)) : 0;
+			e.min_expansion          = row[14] ? static_cast<int8_t>(atoi(row[14])) : -1;
+			e.max_expansion          = row[15] ? static_cast<int8_t>(atoi(row[15])) : -1;
+			e.content_flags          = row[16] ? row[16] : "";
+			e.content_flags_disabled = row[17] ? row[17] : "";
 
 			all_entries.push_back(e);
 		}
@@ -498,6 +508,7 @@ public:
 		v.push_back(std::to_string(e.merchantid));
 		v.push_back(std::to_string(e.slot));
 		v.push_back(std::to_string(e.item));
+		v.push_back("'" + Strings::Escape(e.custom_data) + "'");
 		v.push_back(std::to_string(e.faction_required));
 		v.push_back(std::to_string(e.level_required));
 		v.push_back(std::to_string(e.min_status));
@@ -537,6 +548,7 @@ public:
 			v.push_back(std::to_string(e.merchantid));
 			v.push_back(std::to_string(e.slot));
 			v.push_back(std::to_string(e.item));
+			v.push_back("'" + Strings::Escape(e.custom_data) + "'");
 			v.push_back(std::to_string(e.faction_required));
 			v.push_back(std::to_string(e.level_required));
 			v.push_back(std::to_string(e.min_status));

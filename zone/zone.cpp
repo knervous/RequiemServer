@@ -402,7 +402,7 @@ bool Zone::LoadGroundSpawns() {
 	return(true);
 }
 
-int Zone::SaveTempItem(uint32 merchantid, uint32 npcid, uint32 item, int32 charges, bool sold) {
+int Zone::SaveTempItem(uint32 merchantid, uint32 npcid, uint32 item, int32 charges, bool sold, const std::string& custom_data) {
 
 	LogInventory("[{}] [{}] charges of [{}]", ((sold) ? "Sold" : "Bought"),
 		charges, item);
@@ -463,7 +463,7 @@ int Zone::SaveTempItem(uint32 merchantid, uint32 npcid, uint32 item, int32 charg
 					ml.origslot = ml.slot;
 				}
 				if (ml.charges > 0) {
-					database.SaveMerchantTemp(npcid, ml.origslot, GetZoneID(), GetInstanceID(), item, ml.charges);
+					database.SaveMerchantTemp(npcid, ml.origslot, GetZoneID(), GetInstanceID(), item, ml.charges, custom_data);
 					tmp_merlist.push_back(ml);
 				} else {
 					database.DeleteMerchantTemp(npcid, ml.origslot, GetZoneID(), GetInstanceID());
@@ -523,7 +523,7 @@ int Zone::SaveTempItem(uint32 merchantid, uint32 npcid, uint32 item, int32 charg
 
 		first_empty_mslot = idx;
 
-		database.SaveMerchantTemp(npcid, first_empty_slot, GetZoneID(), GetInstanceID(), item, charges);
+		database.SaveMerchantTemp(npcid, first_empty_slot, GetZoneID(), GetInstanceID(), item, charges, custom_data);
 		tmp_merlist = tmpmerchanttable[npcid];
 		TempMerchantList ml2;
 		ml2.charges = charges;
@@ -532,6 +532,7 @@ int Zone::SaveTempItem(uint32 merchantid, uint32 npcid, uint32 item, int32 charg
 		ml2.npcid = npcid;
 		ml2.slot = first_empty_mslot;
 		ml2.origslot = first_empty_slot;
+		ml2.custom_data = custom_data;
 		tmp_merlist.push_back(ml2);
 		tmpmerchanttable[npcid] = tmp_merlist;
 		return ml2.slot;
@@ -588,7 +589,8 @@ void Zone::LoadTempMerchantData()
 				npcid,
 				slot,
 				charges,
-				itemid
+				itemid,
+				custom_data
 				FROM merchantlist_temp
 				WHERE npcid IN ({})
 				AND zone_id = {}
@@ -604,12 +606,7 @@ void Zone::LoadTempMerchantData()
 	std::map<uint32, std::list<TempMerchantList> >::iterator temp_merchant_table_entry;
 
 	uint32 npc_id = 0;
-	std::vector<std::string> item_ids_to_purge;
 	for (auto row = results.begin(); row != results.end(); ++row) {
-		if (database.GetItem(Strings::ToUnsignedInt(row[3])) == nullptr) {
-			item_ids_to_purge.push_back(row[3]);
-			continue;
-		}
 		TempMerchantList temp_merchant_list;
 		temp_merchant_list.npcid = Strings::ToUnsignedInt(row[0]);
 		if (npc_id != temp_merchant_list.npcid) {
@@ -622,10 +619,11 @@ void Zone::LoadTempMerchantData()
 			npc_id = temp_merchant_list.npcid;
 		}
 
-		temp_merchant_list.slot     = Strings::ToUnsignedInt(row[1]);
-		temp_merchant_list.charges  = Strings::ToUnsignedInt(row[2]);
-		temp_merchant_list.item     = Strings::ToUnsignedInt(row[3]);
-		temp_merchant_list.origslot = temp_merchant_list.slot;
+		temp_merchant_list.slot        = Strings::ToUnsignedInt(row[1]);
+		temp_merchant_list.charges     = Strings::ToUnsignedInt(row[2]);
+		temp_merchant_list.item        = Strings::ToUnsignedInt(row[3]);
+		temp_merchant_list.custom_data = row[4];
+		temp_merchant_list.origslot    = temp_merchant_list.slot;
 
 		LogMerchants(
 			"Loading merchant temp items npc_id [{}] slot [{}] charges [{}] item [{}] origslot [{}]",
@@ -637,18 +635,6 @@ void Zone::LoadTempMerchantData()
 		);
 
 		temp_merchant_table_entry->second.push_back(temp_merchant_list);
-	}
-	if (!item_ids_to_purge.empty()) {
-		database.QueryDatabase(
-			fmt::format(
-				SQL(
-					DELETE
-					FROM merchantlist_temp
-					WHERE itemid IN ({})
-				),
-				Strings::Implode(", ", item_ids_to_purge)
-			)
-		);
 	}
 }
 
@@ -673,6 +659,7 @@ void Zone::LoadNewMerchantData(uint32 merchantid) {
 		MerchantList ml;
 		ml.id                = merchantid;
 		ml.item              = e.item;
+		ml.custom_data       = e.custom_data;
 		ml.slot              = e.slot;
 		ml.faction_required  = e.faction_required;
 		ml.level_required    = e.level_required;
@@ -751,6 +738,7 @@ void Zone::LoadMerchants()
 				.id = static_cast<uint32>(e.merchantid),
 				.slot = e.slot,
 				.item = static_cast<uint32>(e.item),
+				.custom_data = e.custom_data,
 				.faction_required = e.faction_required,
 				.level_required = static_cast<int8>(e.level_required),
 				.min_status = e.min_status,

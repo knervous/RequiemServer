@@ -3988,6 +3988,7 @@ struct MerchantList {
 	uint32      id;
 	uint32      slot;
 	uint32      item;
+	std::string custom_data;
 	int16       faction_required;
 	int8        level_required;
 	uint8       min_status;
@@ -4006,6 +4007,7 @@ struct TempMerchantList {
 	uint32	item;
 	uint32	charges; //charges/quantity
 	uint32	origslot;
+	std::string custom_data;
 };
 
 struct AltCurrencyDefinition_Struct {

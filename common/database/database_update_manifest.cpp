@@ -5520,6 +5520,22 @@ ALTER TABLE `lootdrop_entries` ADD `content_flags_disabled` varchar(100) NULL;
 				ALTER TABLE `npc_types`
 				ADD COLUMN `is_parcel_merchant` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `keeps_sold_items`;
 		)"
+	},
+	ManifestEntry{
+		.version = 9272,
+		.description = "2024_04_25_merchant_custom_data.sql",
+		.check = R"(
+			SELECT * FROM information_schema.columns 
+			WHERE `COLUMN_NAME`='custom_data' AND (`TABLE_NAME` = 'merchantlist' OR `TABLE_NAME`='merchantlist_temp');
+		)",
+		.condition = "empty",
+		.match = "",
+		.sql = R"(ALTER TABLE `merchantlist_temp`
+			ADD COLUMN `custom_data` TEXT NULL;
+
+			ALTER TABLE `merchantlist`
+			ADD COLUMN `custom_data` TEXT NULL AFTER `item`;
+		)"
 	}
 // -- template; copy/paste this when you need to create a new entry
 //	ManifestEntry{
