@@ -402,6 +402,9 @@ public static class DotNetQuest
             GC.WaitForPendingFinalizers();
         }
 
+        npcMap.Clear();
+        playerMap.Clear();
+
         if (!File.Exists(projPath))
         {
             Console.WriteLine($"Project path does not exist for global at {projPath}");

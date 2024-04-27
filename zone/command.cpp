@@ -421,6 +421,57 @@ int command_add(std::string command_name, std::string description, uint8 admin, 
 	return 0;
 }
 
+/*
+ * command_put
+ * put a command to the command list; api method
+ *
+ * Parameters:
+ *	command_name - the command ex: "spawn"
+ *	description - text description of command for #help
+ *	admin - default admin level required to use command
+ *	function - pointer to function that handles command
+ *
+ */
+int command_put(std::string command_name, std::string description, uint8 admin, CmdFuncPtr function)
+{
+	if (command_name.empty()) {
+		LogError("command_put() - Command added with empty name string - check command.cpp");
+		return -1;
+	}
+
+	if (!function) {
+		LogError("command_put() - Command [{}] added without a valid function pointer - check command.cpp", command_name);
+		return -1;
+	}
+
+	if (commandlist.count(command_name)) {
+		LogWarning("command_put() - Command [{}] is overwriting existing command name", command_name);
+
+		commands_map[command_name]   = admin;
+		commandaliases[command_name] = command_name;
+		auto record = commandlist[command_name];
+		record->admin = admin;
+		record->description = description;
+		record->function = function;
+		return 0;
+	}
+
+	auto c = new CommandRecord;
+
+	c->admin       = admin;
+	c->description = description;
+	c->function    = function;
+
+	commands_map[command_name]   = admin;
+	commandlist[command_name]    = c;
+	commandaliases[command_name] = command_name;
+
+	command_delete_list.push_back(c);
+	command_count++;
+
+	return 0;
+}
+
 uint8 GetCommandStatus(std::string command_name)
 {
 	return commands_map[command_name];

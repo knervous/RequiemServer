@@ -789,8 +789,10 @@ void SharedDatabase::RunGenerateCallback(EQ::ItemInstance* inst) {
 		// And assign to our local cache. This should only happen once per zone per item that hasn't synced
 		EQ::ItemData* data = nullptr;
 
-		// Client side limit for item links, 5 bytes.
-		uint32 next_id = 0xFFFFF; 
+		// We define the boundary in shared_memory as the upper bound 0xFFFFF with a buffer at the end
+		// For our custom say links
+		uint32 next_id = SAYLINK_ITEM_ID - 10001;
+		
 		// Strategy here is to assign free item ID from the upper bound with decrementing ID.
 		// This makes lookup faster for reassigning to cache.
 		// Eventually this will start overwriting *real* items but not likely unless the number of dynamic

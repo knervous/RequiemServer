@@ -98,6 +98,8 @@
 %ignore ListElement::ListElement(const ListElement<Spawn2*>&);
 %ignore ListElement::ListElement(const ListElement<ZonePoint*>&);
 
+%ignore CommandRecord;
+
 %{
 
 #include <string>
@@ -142,6 +144,7 @@
 #include "../../../common/database.h"
 #include "../../../common/dbcore.h"
 #include "../../../common/loot.h"
+#include "../../../common/seperator.h"
 
 #include "../../common.h"
 #include "../../entity.h"
@@ -215,7 +218,8 @@ void FreeVec3(glm::vec3* ptr);
 %include <std_map.i>
 %include <std_shared_ptr.i>
 %include <stdint.i>
-
+%include <typemaps.i>
+%include <cpointer.i>
 %inline %{
 std::string GetRuleValue(const std::string& rule) {
     std::string out("");
@@ -227,6 +231,16 @@ SPDat_Spell_Struct GetSpellById(int spell_id) {
 }
 
 %}
+
+%pragma(csharp) modulecode=%{
+    public delegate void CmdFuncPtr(IntPtr client, IntPtr separator);
+%}
+
+%typemap(cstype) CmdFuncPtr "CmdFuncPtr";
+%typemap(imtype) CmdFuncPtr "IntPtr";
+%typemap(csimtype) CmdFuncPtr "IntPtr";
+%typemap(csin) CmdFuncPtr "global::System.Runtime.InteropServices.Marshal.GetFunctionPointerForDelegate($csinput)"
+
 
 %{
 using namespace EQ;
@@ -315,6 +329,7 @@ typedef int64_t int64;
 %include "../../../common/database.h"
 %include "../../../common/dbcore.h"
 %include "../../../common/loot.h"
+%include "../../../common/seperator.h"
 
 %include "../../common.h"
 %include "../../entity.h"
@@ -404,6 +419,8 @@ typedef int64_t int64;
         return result;
     }
 }
+
+
 
 %template(ExtraDataVector) std::vector<std::any>;
 %template(LootItemVector) std::list<LootItem*>;
