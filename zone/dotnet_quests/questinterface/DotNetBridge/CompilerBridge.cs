@@ -468,6 +468,9 @@ public static class DotNetQuest
                     Console.WriteLine($"Loading global assembly from: {globalAssemblyPath}");
                     globalAssembly_ = globalAssemblyContext.LoadFromAssemblyPath(globalAssemblyPath);
                     logSys?.QuestDebug($"Successfully compiled global .NET quests with {globalAssembly_.GetTypes().Count()} exported types.");
+                    if (globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init") != null) {
+                        globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init")?.Invoke(null, []);
+                    }
                 }
             }
             catch (Exception e)
