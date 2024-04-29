@@ -180,14 +180,10 @@ public static class DotNetQuest
         timers.Clear();
         timers.Add(PollForChanges(zoneDir, ReloadZoneAsync));
         timers.Add(PollForChanges(globalDir, ReloadGlobalAsync));
-        Task.Run(() => {
-            // Let the first two polls happen first before we bind this
-            Thread.Sleep(1000 * 5);
-             timers.Add(PollForChanges(commonLibDir, () => {
+        timers.Add(PollForChanges(commonLibDir, () => {
                 ReloadZoneAsync();
                 ReloadGlobalAsync();
             }, true));
-        });
        
     }
     public static void ReloadZone()
