@@ -220,6 +220,8 @@ void FreeVec3(glm::vec3* ptr);
 %include <stdint.i>
 %include <typemaps.i>
 %include <cpointer.i>
+
+
 %inline %{
 std::string GetRuleValue(const std::string& rule) {
     std::string out("");
@@ -232,8 +234,15 @@ SPDat_Spell_Struct GetSpellById(int spell_id) {
 
 %}
 
+%{
+using namespace EQ;
+using namespace Logs;
+using namespace glm;
+using namespace AA;
+%}
+
 %pragma(csharp) modulecode=%{
-    public delegate void CmdFuncPtr(IntPtr client, IntPtr separator);
+public delegate void CmdFuncPtr(IntPtr client, IntPtr separator);
 %}
 
 %typemap(cstype) CmdFuncPtr "CmdFuncPtr";
@@ -241,13 +250,6 @@ SPDat_Spell_Struct GetSpellById(int spell_id) {
 %typemap(csimtype) CmdFuncPtr "IntPtr";
 %typemap(csin) CmdFuncPtr "global::System.Runtime.InteropServices.Marshal.GetFunctionPointerForDelegate($csinput)"
 
-
-%{
-using namespace EQ;
-using namespace Logs;
-using namespace glm;
-using namespace AA;
-%}
 
 namespace glm {
     %typedef int length_t;

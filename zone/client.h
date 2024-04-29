@@ -90,6 +90,9 @@ namespace EQ
 #define XTARGET_HARDCAP 20
 #define MAX_SPECIALIZED_SKILL 50
 
+typedef void (Client::*ClientPacketProc)(const EQApplicationPacket *app);
+
+extern ClientPacketProc ConnectedOpcodes[_maxEmuOpcode];
 extern Zone* zone;
 extern TaskManager *task_manager;
 

@@ -800,7 +800,9 @@ void SharedDatabase::RunGenerateCallback(EQ::ItemInstance* inst) {
 		// It would be essential to run that on high volume servers.
 		for (;;) {
 			if (items_hash->exists(next_id)) {
-				if (items_hash->at(next_id).Comment == key) {
+				std::string comment(items_hash->at(next_id).Comment);
+				auto comment_split = Strings::Split(comment, ";;");
+				if (comment_split.size() > 0 && comment_split[0] == key) {
 					data = &items_hash->at(next_id);
 					break;
 				}
@@ -811,10 +813,16 @@ void SharedDatabase::RunGenerateCallback(EQ::ItemInstance* inst) {
 				break;
 			}
 		}
+		// We had this in the mem mapped file, we can cache it for faster lookup in our unordered_map
 		if (data != nullptr) {
 			inst->SetID(data->ID);
 			generated_item_cache[key] = data->ID;
-		} else {
+		} else { // We've never seen this item before, insert it
+			// We use charmfile for ExtraInformation to display extra stats on an item
+			if (!inst->GetCustomData("extra_info").empty()) {
+				inst->SetCharmFile(std::to_string(next_id));
+				inst->SetComment(key + ";;" + inst->GetCustomData("extra_info"));
+			}
 			inst->SetID((uint32)next_id);
 			items_hash->insert(next_id, *inst->GetItem());
 			generated_item_cache[key] = next_id;

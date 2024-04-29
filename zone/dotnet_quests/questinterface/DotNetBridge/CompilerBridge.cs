@@ -78,7 +78,6 @@ public static class DotNetQuest
     private static Dictionary<string, object> npcMap = new Dictionary<string, object>();
     private static Dictionary<string, object> playerMap = new Dictionary<string, object>();
 
-    private static DateTime lastCheck = DateTime.MinValue;
     private static bool reloading = false;
     private static bool questReload = false;
     private static EQGlobals globals;
@@ -88,22 +87,22 @@ public static class DotNetQuest
     private static System.Timers.Timer PollForChanges(string path, string commonPath, Action callback)
     {
         var timer = new System.Timers.Timer(500);
+        bool runOnce = false;
+        DateTime lastCheck = DateTime.MinValue;
+
         timer.Elapsed += (sender, args) =>
         {
-            if (reloading)
-            {
-                return;
-            }
             var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly).Concat(Directory.GetFiles(commonPath, "*.cs", SearchOption.AllDirectories))
                 .Max(file => File.GetLastWriteTimeUtc(file));
-
-            if (lastWriteTime > lastCheck)
+            if (!runOnce) {
+                runOnce = true;
+                lastCheck = lastWriteTime;
+            }
+            else if (lastWriteTime > lastCheck)
             {
-                reloading = true;
                 logSys?.QuestDebug($"Detected change in .cs file in {path}- Reloading dotnet quests");
                 Console.WriteLine($"Detected change in .cs file in {path}- Reloading dotnet quests");
                 callback();
-                reloading = false;
                 lastCheck = lastWriteTime;
             }
         };
@@ -178,6 +177,10 @@ public static class DotNetQuest
             timer.Stop();
         }
         timers.Clear();
+
+        ReloadZoneAsync();
+        ReloadGlobalAsync();
+
         timers.Add(PollForChanges(zoneDir, commonLibDir, ReloadZoneAsync));
         timers.Add(PollForChanges(globalDir, commonLibDir, ReloadGlobalAsync));
        
@@ -386,7 +389,8 @@ public static class DotNetQuest
 
         if (File.Exists(globalAssemblyPath))
         {
-            logSys?.QuestDebug($"Zone dotnet lib up to date");
+            Console.WriteLine($"Global dotnet lib up to date");
+            logSys?.QuestDebug($"Global dotnet lib up to date");
             if (globalAssemblyContext == null)
             {
                 try
@@ -394,6 +398,7 @@ public static class DotNetQuest
                     globalAssemblyContext = new CollectibleAssemblyLoadContext(outPath);
                     globalAssembly_ = globalAssemblyContext.LoadFromAssemblyPath(globalAssemblyPath);
                     logSys?.QuestDebug($"Successfully loaded .NET global quests with {globalAssembly_.GetTypes().Count()} exported types.");
+                    Console.WriteLine($"Successfully loaded .NET global quests with {globalAssembly_.GetTypes().Count()} exported types.");
                     questReload = false;
                     return;
 
@@ -401,7 +406,7 @@ public static class DotNetQuest
                 catch (Exception e)
                 {
                     logSys?.QuestError($"Error loading existing global lib, continuing to recompile. {e.Message}");
-
+                    Console.WriteLine($"Error loading existing global lib, continuing to recompile. {e.Message}");
                 }
 
             }
@@ -462,6 +467,7 @@ public static class DotNetQuest
         {
             if (process == null)
             {
+                Console.WriteLine($"Process was null when loading global quests");
                 logSys?.QuestError($"Process was null when loading global quests");
                 return;
             }
@@ -472,6 +478,9 @@ public static class DotNetQuest
                 string errorOutput = process.StandardError.ReadToEnd();
                 if (errorOutput.Length > 0 || output.Contains("FAILED"))
                 {
+                    Console.WriteLine($"Error compiling global quests:");
+                    Console.WriteLine(errorOutput);
+                    Console.WriteLine(output);
                     logSys?.QuestError($"Error compiling global quests:");
                     logSys?.QuestError(errorOutput);
                     logSys?.QuestError(output);
