@@ -85,7 +85,7 @@ public static class DotNetQuest
 
     private static List<System.Timers.Timer> timers = new List<System.Timers.Timer>();
 
-    private static System.Timers.Timer PollForChanges(string path, Action callback, bool recursive = false)
+    private static System.Timers.Timer PollForChanges(string path, string commonPath, Action callback)
     {
         var timer = new System.Timers.Timer(500);
         timer.Elapsed += (sender, args) =>
@@ -94,7 +94,7 @@ public static class DotNetQuest
             {
                 return;
             }
-            var lastWriteTime = Directory.GetFiles(path, "*.cs", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
+            var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly).Concat(Directory.GetFiles(commonPath, "*.cs", SearchOption.AllDirectories))
                 .Max(file => File.GetLastWriteTimeUtc(file));
 
             if (lastWriteTime > lastCheck)
@@ -178,12 +178,8 @@ public static class DotNetQuest
             timer.Stop();
         }
         timers.Clear();
-        timers.Add(PollForChanges(zoneDir, ReloadZoneAsync));
-        timers.Add(PollForChanges(globalDir, ReloadGlobalAsync));
-        timers.Add(PollForChanges(commonLibDir, () => {
-                ReloadZoneAsync();
-                ReloadGlobalAsync();
-            }, true));
+        timers.Add(PollForChanges(zoneDir, commonLibDir, ReloadZoneAsync));
+        timers.Add(PollForChanges(globalDir, commonLibDir, ReloadGlobalAsync));
        
     }
     public static void ReloadZone()
