@@ -999,12 +999,13 @@ public enum CastingSlot
     AltAbility = 0xFF
 };
 
-public delegate void CmdFunc(Client client, Seperator separator);
+public delegate void CmdFunc(Client client, string msg);
 
 public class EQCommands {
     public static int AddCommand(string name, string description, AccountStatus admin_level, CmdFunc fn) {
         return questinterface.command_put(name, description, (byte)admin_level, (clientPtr, seperatorPtr) => {
-            fn.Invoke(EqFactory.CreateClient(clientPtr, false), EqFactory.CreateSeperator(seperatorPtr, false));
+            var sep = EqFactory.CreateSeperator(seperatorPtr, false);
+            fn.Invoke(EqFactory.CreateClient(clientPtr, false), sep.msg);
         });
     }
 }

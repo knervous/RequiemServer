@@ -85,7 +85,7 @@ public static class DotNetQuest
 
     private static List<System.Timers.Timer> timers = new List<System.Timers.Timer>();
 
-    private static System.Timers.Timer PollForChanges(string path, Action callback)
+    private static System.Timers.Timer PollForChanges(string path, Action callback, bool recursive = false)
     {
         var timer = new System.Timers.Timer(500);
         timer.Elapsed += (sender, args) =>
@@ -94,7 +94,7 @@ public static class DotNetQuest
             {
                 return;
             }
-            var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly)
+            var lastWriteTime = Directory.GetFiles(path, "*.cs", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
                 .Max(file => File.GetLastWriteTimeUtc(file));
 
             if (lastWriteTime > lastCheck)
@@ -140,6 +140,18 @@ public static class DotNetQuest
                 // Update MD5 with file content
                 md5.TransformBlock(contentBytes, 0, contentBytes.Length, null, 0);
             }
+            // Always include common lib
+            var workingDirectory = Directory.GetCurrentDirectory();
+            var commonDirPath = $"{workingDirectory}/dotnet_quests/common/lib";
+            if (Directory.Exists(commonDirPath)) {
+                foreach (string file in Directory.GetFiles(commonDirPath, "*.cs", SearchOption.AllDirectories))
+                {
+                    // Hash based on file contents, we don't care about arbitrary resaves
+                    byte[] contentBytes = File.ReadAllBytes(file);
+                    // Update MD5 with file content
+                    md5.TransformBlock(contentBytes, 0, contentBytes.Length, null, 0);
+                }
+            }
 
             // Finalize the hash calculation
             md5.TransformFinalBlock(new byte[0], 0, 0); // Necessary to finalize the hash calculation
@@ -156,6 +168,7 @@ public static class DotNetQuest
         var workingDirectory = Directory.GetCurrentDirectory();
         var zoneDir = Path.Combine(workingDirectory, "dotnet_quests", zone?.GetShortName() ?? "");
         var globalDir = Path.Combine(workingDirectory, "dotnet_quests", "global");
+        var commonLibDir = Path.Combine(workingDirectory, "dotnet_quests", "common", "lib");
         logSys?.QuestDebug($"Watching for *.cs file changes in {zoneDir}");
         Console.WriteLine($"Watching for *.cs file changes in {zoneDir}");
         logSys?.QuestDebug($"Watching for *.cs file changes in {globalDir}");
@@ -167,6 +180,15 @@ public static class DotNetQuest
         timers.Clear();
         timers.Add(PollForChanges(zoneDir, ReloadZoneAsync));
         timers.Add(PollForChanges(globalDir, ReloadGlobalAsync));
+        Task.Run(() => {
+            // Let the first two polls happen first before we bind this
+            Thread.Sleep(1000 * 5);
+             timers.Add(PollForChanges(commonLibDir, () => {
+                ReloadZoneAsync();
+                ReloadGlobalAsync();
+            }, true));
+        });
+       
     }
     public static void ReloadZone()
     {
