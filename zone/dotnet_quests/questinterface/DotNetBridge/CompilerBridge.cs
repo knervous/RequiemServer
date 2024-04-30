@@ -91,10 +91,9 @@ public static class DotNetQuest
 
         timer.Elapsed += (sender, args) =>
         {
-            var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly))
-                .Max(file => File.GetLastWriteTimeUtc(file));
+            var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly).Max(file => File.GetLastWriteTimeUtc(file));
 
-            else if (lastWriteTime > lastCheck)
+            if (lastWriteTime > lastCheck)
             {
                 logSys?.QuestDebug($"Detected change in .cs file in {path}- Reloading dotnet quests");
                 Console.WriteLine($"Detected change in .cs file in {path}- Reloading dotnet quests");
