@@ -451,6 +451,10 @@ public static class DotNetQuest
                     {
                         globalAssemblyContext = new CollectibleAssemblyLoadContext(outPath);
                         globalAssembly_ = globalAssemblyContext.LoadFromAssemblyPath(globalAssemblyPath);
+                        if (globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init") != null)
+                        {
+                            globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init")?.Invoke(null, []);
+                        }
                         logSys?.QuestDebug($"Successfully loaded .NET global quests with {globalAssembly_.GetTypes().Count()} exported types.");
                         questReload = false;
                         return;
@@ -475,6 +479,10 @@ public static class DotNetQuest
                 {
                     globalAssemblyContext = new CollectibleAssemblyLoadContext(outPath);
                     globalAssembly_ = globalAssemblyContext.LoadFromAssemblyPath(globalAssemblyPath);
+                    if (globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init") != null)
+                    {
+                        globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init")?.Invoke(null, []);
+                    }
                     logSys?.QuestDebug($"Successfully loaded .NET global quests with {globalAssembly_.GetTypes().Count()} exported types.");
                     questReload = false;
                     return;
