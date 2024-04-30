@@ -2296,8 +2296,26 @@ void Client::ReadBook(BookRequest_Struct *book) {
 		//invalid book... coming up on non-book items.
 		return;
 	}
+	std::string booktxt2;
 
-	std::string booktxt2 = content_db.GetBook(txtfile, &book_language);
+	try {
+        uint32 id = std::stoul(std::string(txtfile));
+		auto itemData = database.GetItem(id);
+		if (itemData != nullptr) {
+			std::string comment(itemData->Comment);
+			if (!comment.empty()) {
+				auto comment_split = Strings::Split(comment, ";;");
+				if (comment_split.size() > 1) {
+					booktxt2 = std::string(comment_split[1]);
+				}
+			}
+		}
+    } catch (...) {}
+
+	if (booktxt2.empty()) {
+		booktxt2 = content_db.GetBook(txtfile, &book_language);
+	}
+	
 	int length = booktxt2.length();
 
 	if (booktxt2[0] != '\0') {

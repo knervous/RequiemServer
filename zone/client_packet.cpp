@@ -13937,6 +13937,8 @@ void Client::Handle_OP_ShopPlayerBuy(const EQApplicationPacket *app)
 	merchantid = tmp->CastToNPC()->MerchantType;
 
 	uint32 item_id = 0;
+	std::string custom_data = "";
+
 	std::list<MerchantList> merlist = zone->merchanttable[merchantid];
 	std::list<MerchantList>::const_iterator itr;
 	for (itr = merlist.begin(); itr != merlist.end(); ++itr) {
@@ -13947,6 +13949,7 @@ void Client::Handle_OP_ShopPlayerBuy(const EQApplicationPacket *app)
 
 		if (mp->itemslot == ml.slot) {
 			item_id = ml.item;
+			custom_data = ml.custom_data;
 			break;
 		}
 	}
@@ -13962,6 +13965,7 @@ void Client::Handle_OP_ShopPlayerBuy(const EQApplicationPacket *app)
 				item_id = ml.item;
 				tmpmer_used = true;
 				prevcharges = ml.charges;
+				custom_data = ml.custom_data;
 				break;
 			}
 		}
@@ -14011,7 +14015,7 @@ void Client::Handle_OP_ShopPlayerBuy(const EQApplicationPacket *app)
 	else if ( item->MaxCharges >= 1)
 		charges = item->MaxCharges;
 
-	EQ::ItemInstance* inst = database.CreateItem(item, charges);
+	EQ::ItemInstance* inst = database.CreateItem(item, charges, 0, 0, 0, 0, 0, 0, false, custom_data);
 
 	int SinglePrice = 0;
 	if (RuleB(Merchant, UsePriceMod))
@@ -14088,8 +14092,15 @@ void Client::Handle_OP_ShopPlayerBuy(const EQApplicationPacket *app)
 	}
 	QueuePacket(outapp);
 	if (inst && tmpmer_used) {
+		// Allow continuity with an original ID.
+		std::string original_id = inst->GetCustomData("original_id");
+		if (!original_id.empty()) {
+			try {
+				item_id = std::stoi(original_id);
+			} catch(...) {}
+		}
 		int32 new_charges = prevcharges - mp->quantity;
-		zone->SaveTempItem(merchantid, tmp->GetNPCTypeID(), item_id, new_charges);
+		zone->SaveTempItem(merchantid, tmp->GetNPCTypeID(), item_id, new_charges, false, inst->GetCustomDataString());
 		if (new_charges <= 0) {
 			auto delitempacket = new EQApplicationPacket(OP_ShopDelItem, sizeof(Merchant_DelItem_Struct));
 			Merchant_DelItem_Struct* delitem = (Merchant_DelItem_Struct*)delitempacket->pBuffer;
@@ -14118,7 +14129,7 @@ void Client::Handle_OP_ShopPlayerBuy(const EQApplicationPacket *app)
 			.npc_id = tmp->GetNPCTypeID(),
 			.merchant_name = tmp->GetCleanName(),
 			.merchant_type = tmp->CastToNPC()->MerchantType,
-			.item_id = item->ID,
+			.item_id = item_id,
 			.item_name = item->Name,
 			.charges = static_cast<int16>(mpo->quantity),
 			.cost = mpo->price,
@@ -14251,6 +14262,14 @@ void Client::Handle_OP_ShopPlayerSell(const EQApplicationPacket *app)
 		Message(Chat::Red, "You seemed to have misplaced that item..");
 		return;
 	}
+	// Allow continuity with an original ID.
+	std::string original_id = inst->GetCustomData("original_id");
+	if (!original_id.empty()) {
+		try {
+			itemid = std::stoi(original_id);
+		} catch(...) {}
+	}
+	
 	if (mp->quantity > 1)
 	{
 		if ((inst->GetCharges() < 0) || (mp->quantity > (uint32)inst->GetCharges()))
@@ -14310,7 +14329,8 @@ void Client::Handle_OP_ShopPlayerSell(const EQApplicationPacket *app)
 				vendor->GetNPCTypeID(),
 				itemid,
 				charges,
-				true
+				true,
+				inst->GetCustomDataString()
 			)
 			) > 0) {
 			EQ::ItemInstance *inst2 = inst->Clone();

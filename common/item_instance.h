@@ -158,6 +158,13 @@ namespace EQ
     			mutable_item->Comment[sizeof(mutable_item->Comment) - 1] = '\0';
 			}
 		}
+		const void SetCharmFile(const std::string& file) {  
+			if (m_item) { 
+				auto mutable_item = const_cast<ItemData*>(m_item);
+				std::strncpy(mutable_item->CharmFile, file.c_str(), sizeof(mutable_item->CharmFile) - 1);
+    			mutable_item->CharmFile[sizeof(mutable_item->CharmFile) - 1] = '\0';
+			}
+		}
 		// Accessors
 		const uint32 GetID() const { return ((m_item) ? m_item->ID : 0); }
 		const uint32 GetItemScriptID() const { return ((m_item) ? m_item->ScriptFileID : 0); }

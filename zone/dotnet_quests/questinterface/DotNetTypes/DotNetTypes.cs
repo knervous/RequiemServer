@@ -52,6 +52,11 @@ public class EqFactory
         return new Client(Cptr, own);
     }
 
+    public static Seperator CreateSeperator(nint Cptr, bool own)
+    {
+        return new Seperator(Cptr, own);
+    }
+
     public static Bot CreateBot(nint Cptr, bool own)
     {
         return new Bot(Cptr, own);
@@ -994,3 +999,15 @@ public enum CastingSlot
     Discipline = 23,
     AltAbility = 0xFF
 };
+
+public delegate void CmdFunc(Client client, string msg);
+
+public class EQCommands {
+    public static int AddCommand(string name, string description, AccountStatus admin_level, CmdFunc fn) {
+        return questinterface.command_put(name, description, (byte)admin_level, (clientPtr, seperatorPtr) => {
+            var sep = EqFactory.CreateSeperator(seperatorPtr, false);
+            fn.Invoke(EqFactory.CreateClient(clientPtr, false), sep.msg);
+        });
+    }
+}
+

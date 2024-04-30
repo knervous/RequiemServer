@@ -78,32 +78,31 @@ public static class DotNetQuest
     private static Dictionary<string, object> npcMap = new Dictionary<string, object>();
     private static Dictionary<string, object> playerMap = new Dictionary<string, object>();
 
-    private static DateTime lastCheck = DateTime.MinValue;
     private static bool reloading = false;
     private static bool questReload = false;
     private static EQGlobals globals;
 
     private static List<System.Timers.Timer> timers = new List<System.Timers.Timer>();
 
-    private static System.Timers.Timer PollForChanges(string path, Action callback)
+    private static System.Timers.Timer PollForChanges(string path, string commonPath, Action callback)
     {
         var timer = new System.Timers.Timer(500);
+        bool runOnce = false;
+        DateTime lastCheck = DateTime.MinValue;
+
         timer.Elapsed += (sender, args) =>
         {
-            if (reloading)
-            {
-                return;
-            }
-            var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly)
+            var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly).Concat(Directory.GetFiles(commonPath, "*.cs", SearchOption.AllDirectories))
                 .Max(file => File.GetLastWriteTimeUtc(file));
-
-            if (lastWriteTime > lastCheck)
+            if (!runOnce) {
+                runOnce = true;
+                lastCheck = lastWriteTime;
+            }
+            else if (lastWriteTime > lastCheck)
             {
-                reloading = true;
                 logSys?.QuestDebug($"Detected change in .cs file in {path}- Reloading dotnet quests");
                 Console.WriteLine($"Detected change in .cs file in {path}- Reloading dotnet quests");
                 callback();
-                reloading = false;
                 lastCheck = lastWriteTime;
             }
         };
@@ -140,6 +139,18 @@ public static class DotNetQuest
                 // Update MD5 with file content
                 md5.TransformBlock(contentBytes, 0, contentBytes.Length, null, 0);
             }
+            // Always include common lib
+            var workingDirectory = Directory.GetCurrentDirectory();
+            var commonDirPath = $"{workingDirectory}/dotnet_quests/common/lib";
+            if (Directory.Exists(commonDirPath)) {
+                foreach (string file in Directory.GetFiles(commonDirPath, "*.cs", SearchOption.AllDirectories))
+                {
+                    // Hash based on file contents, we don't care about arbitrary resaves
+                    byte[] contentBytes = File.ReadAllBytes(file);
+                    // Update MD5 with file content
+                    md5.TransformBlock(contentBytes, 0, contentBytes.Length, null, 0);
+                }
+            }
 
             // Finalize the hash calculation
             md5.TransformFinalBlock(new byte[0], 0, 0); // Necessary to finalize the hash calculation
@@ -156,6 +167,7 @@ public static class DotNetQuest
         var workingDirectory = Directory.GetCurrentDirectory();
         var zoneDir = Path.Combine(workingDirectory, "dotnet_quests", zone?.GetShortName() ?? "");
         var globalDir = Path.Combine(workingDirectory, "dotnet_quests", "global");
+        var commonLibDir = Path.Combine(workingDirectory, "dotnet_quests", "common", "lib");
         logSys?.QuestDebug($"Watching for *.cs file changes in {zoneDir}");
         Console.WriteLine($"Watching for *.cs file changes in {zoneDir}");
         logSys?.QuestDebug($"Watching for *.cs file changes in {globalDir}");
@@ -165,8 +177,13 @@ public static class DotNetQuest
             timer.Stop();
         }
         timers.Clear();
-        timers.Add(PollForChanges(zoneDir, ReloadZoneAsync));
-        timers.Add(PollForChanges(globalDir, ReloadGlobalAsync));
+
+        ReloadZoneAsync();
+        ReloadGlobalAsync();
+
+        timers.Add(PollForChanges(zoneDir, commonLibDir, ReloadZoneAsync));
+        timers.Add(PollForChanges(globalDir, commonLibDir, ReloadGlobalAsync));
+       
     }
     public static void ReloadZone()
     {
@@ -372,7 +389,8 @@ public static class DotNetQuest
 
         if (File.Exists(globalAssemblyPath))
         {
-            logSys?.QuestDebug($"Zone dotnet lib up to date");
+            Console.WriteLine($"Global dotnet lib up to date");
+            logSys?.QuestDebug($"Global dotnet lib up to date");
             if (globalAssemblyContext == null)
             {
                 try
@@ -380,6 +398,7 @@ public static class DotNetQuest
                     globalAssemblyContext = new CollectibleAssemblyLoadContext(outPath);
                     globalAssembly_ = globalAssemblyContext.LoadFromAssemblyPath(globalAssemblyPath);
                     logSys?.QuestDebug($"Successfully loaded .NET global quests with {globalAssembly_.GetTypes().Count()} exported types.");
+                    Console.WriteLine($"Successfully loaded .NET global quests with {globalAssembly_.GetTypes().Count()} exported types.");
                     questReload = false;
                     return;
 
@@ -387,7 +406,7 @@ public static class DotNetQuest
                 catch (Exception e)
                 {
                     logSys?.QuestError($"Error loading existing global lib, continuing to recompile. {e.Message}");
-
+                    Console.WriteLine($"Error loading existing global lib, continuing to recompile. {e.Message}");
                 }
 
             }
@@ -401,6 +420,9 @@ public static class DotNetQuest
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
+
+        npcMap.Clear();
+        playerMap.Clear();
 
         if (!File.Exists(projPath))
         {
@@ -445,6 +467,7 @@ public static class DotNetQuest
         {
             if (process == null)
             {
+                Console.WriteLine($"Process was null when loading global quests");
                 logSys?.QuestError($"Process was null when loading global quests");
                 return;
             }
@@ -455,6 +478,9 @@ public static class DotNetQuest
                 string errorOutput = process.StandardError.ReadToEnd();
                 if (errorOutput.Length > 0 || output.Contains("FAILED"))
                 {
+                    Console.WriteLine($"Error compiling global quests:");
+                    Console.WriteLine(errorOutput);
+                    Console.WriteLine(output);
                     logSys?.QuestError($"Error compiling global quests:");
                     logSys?.QuestError(errorOutput);
                     logSys?.QuestError(output);
@@ -465,6 +491,9 @@ public static class DotNetQuest
                     Console.WriteLine($"Loading global assembly from: {globalAssemblyPath}");
                     globalAssembly_ = globalAssemblyContext.LoadFromAssemblyPath(globalAssemblyPath);
                     logSys?.QuestDebug($"Successfully compiled global .NET quests with {globalAssembly_.GetTypes().Count()} exported types.");
+                    if (globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init") != null) {
+                        globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init")?.Invoke(null, []);
+                    }
                 }
             }
             catch (Exception e)

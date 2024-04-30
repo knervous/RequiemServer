@@ -819,21 +819,17 @@ const EQ::ItemData* EQ::ItemInstance::GetUnscaledItem() const
 
 std::string EQ::ItemInstance::GetCustomDataString() const {
 	std::string ret_val;
-	auto iter = m_custom_data.begin();
-	while (iter != m_custom_data.end()) {
-		if (ret_val.length() > 0) {
-			ret_val += "^";
-		}
-		ret_val += iter->first;
-		ret_val += "^";
-		ret_val += iter->second;
-		++iter;
-
-		if (ret_val.length() > 0) {
-			ret_val += "^";
-		}
-	}
-	return ret_val;
+    auto iter = m_custom_data.begin();
+    while (iter != m_custom_data.end()) {
+        if (ret_val.length() > 0) {
+            ret_val += "^";
+        }
+        ret_val += iter->first;
+        ret_val += "^";
+        ret_val += iter->second;
+        ++iter;
+    }
+    return ret_val;
 }
 
 void EQ::ItemInstance::SetCustomDataString(const std::string& str)

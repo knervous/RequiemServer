@@ -23,6 +23,7 @@
 #include "../common/memory_mapped_file.h"
 #include "../common/eqemu_exception.h"
 #include "../common/item_data.h"
+#include "../common/features.h"
 
 void LoadItems(SharedDatabase *database, const std::string &prefix) {
 	EQ::IPCMutex mutex("items");
@@ -35,8 +36,10 @@ void LoadItems(SharedDatabase *database, const std::string &prefix) {
 	if(items == -1) {
 		EQ_EXCEPT("Shared Memory", "Unable to get any items from the database.");
 	}
-	items = 0xFFFFF; // Max for client link IDs, 2^20
-	max_item = 0xFFFFF;
+	// We are using the max SAYLINK_ITEM_ID since we can't provide links for anything higher than this
+	// in the client, minus a reasonable amount for generating our own custom say links at the upper bound
+	items = SAYLINK_ITEM_ID - 10000;
+	max_item = SAYLINK_ITEM_ID - 10000;
 	uint32 size = static_cast<uint32>(EQ::FixedMemoryHashSet<EQ::ItemData>::estimated_size(items, max_item));
 
 	auto Config = EQEmuConfig::get();
