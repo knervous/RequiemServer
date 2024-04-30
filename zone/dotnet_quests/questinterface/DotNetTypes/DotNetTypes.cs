@@ -431,6 +431,7 @@ public abstract class IItemEvent
     public virtual void TimerResume(ItemEvent e) {}
     public virtual void TimerStart(ItemEvent e) {}
     public virtual void TimerStop(ItemEvent e) {}
+    public virtual void ScaleCalc(ItemEvent e) { }
 }
 
 
@@ -926,7 +927,8 @@ public class EventMap
         {QuestEventID.EVENT_TIMER_PAUSE, "TimerPause"},
         {QuestEventID.EVENT_TIMER_RESUME, "TimerResume"},
         {QuestEventID.EVENT_TIMER_START, "TimerStart"},
-        {QuestEventID.EVENT_TIMER_STOP, "TimerStop"}
+        {QuestEventID.EVENT_TIMER_STOP, "TimerStop"},
+        {QuestEventID.EVENT_SCALE_CALC, "ScaleCalc"},
     };
 
     public static readonly Dictionary<QuestEventID, string> SpellMethodMap = new Dictionary<QuestEventID, string>() {
@@ -973,7 +975,7 @@ public class EventMap
         {QuestEventID.EVENT_ENTITY_VARIABLE_DELETE, "EntityVariableDelete"},
         {QuestEventID.EVENT_ENTITY_VARIABLE_SET, "EntityVariableSet"},
         {QuestEventID.EVENT_ENTITY_VARIABLE_UPDATE, "EntityVariableUpdate"},
-        {QuestEventID.EVENT_SPELL_BLOCKED, "SpellBlocked"}
+        {QuestEventID.EVENT_SPELL_BLOCKED, "SpellBlocked"},
 
     };
 }
