@@ -14,7 +14,6 @@ class Captain_Tillin : INpcEvent
 
     public void Say(NpcEvent e)
     {
-        e.SetupDebug();
         // Set a break point anywhere between these two calls and
         // Timeout will be 20 mins by default but client will disconnect us sooner
         // When it hits 0% latency. Maybe figure out a way to continue message loop
@@ -22,7 +21,6 @@ class Captain_Tillin : INpcEvent
         e.npc.Say($"Hail {e.mob.GetCleanName()}!");
         e.npc.Say($"A line I want to continue on much later after debugging.");
 
-        e.ResetDebug();
         
         e.npc.Say($"Hail {e.mob.GetCleanName()}! Spend your time wisely in the city of Qeynos. Do not let your mind wander to thoughts of bravado or crime. My guards can easily put to rest any outbreaks. Good day to you, citizen!");
     }

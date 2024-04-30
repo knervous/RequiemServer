@@ -78,32 +78,31 @@ public static class DotNetQuest
     private static Dictionary<string, object> npcMap = new Dictionary<string, object>();
     private static Dictionary<string, object> playerMap = new Dictionary<string, object>();
 
-    private static DateTime lastCheck = DateTime.MinValue;
-    private static bool reloading = false;
     private static bool questReload = false;
     private static EQGlobals globals;
 
     private static List<System.Timers.Timer> timers = new List<System.Timers.Timer>();
 
-    private static System.Timers.Timer PollForChanges(string path, Action callback)
+    private static System.Timers.Timer PollForChanges(string path, string commonPath, Action callback)
     {
+
         var timer = new System.Timers.Timer(500);
+        DateTime lastCheck = Directory.Exists(path) && Directory.Exists(commonPath) ? Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly).Concat(Directory.GetFiles(commonPath, "*.cs", SearchOption.AllDirectories))
+                .Max(file => File.GetLastWriteTimeUtc(file)) : DateTime.MinValue;
         timer.Elapsed += (sender, args) =>
         {
-            if (reloading)
-            {
+            if (!Directory.Exists(path) || !Directory.Exists(commonPath)) {
                 return;
             }
-            var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly)
+            
+            var lastWriteTime = Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly).Concat(Directory.GetFiles(commonPath, "*.cs", SearchOption.AllDirectories))
                 .Max(file => File.GetLastWriteTimeUtc(file));
 
             if (lastWriteTime > lastCheck)
             {
-                reloading = true;
                 logSys?.QuestDebug($"Detected change in .cs file in {path}- Reloading dotnet quests");
                 Console.WriteLine($"Detected change in .cs file in {path}- Reloading dotnet quests");
                 callback();
-                reloading = false;
                 lastCheck = lastWriteTime;
             }
         };
@@ -131,9 +130,19 @@ public static class DotNetQuest
 
     private static string GetDirHash(string path)
     {
+        if (!Directory.Exists(path))
+        {
+            Console.WriteLine($"DirHash path not found: {path}");
+            questinterface.LogSys.QuestError($"DirHash path not found: {path}");
+            return "";
+        }
+        var workingDirectory = Directory.GetCurrentDirectory();
+        var commonDir = Path.Combine(workingDirectory, "dotnet_quests", "common", "lib");
         using (MD5 md5 = MD5.Create())
         {
-            foreach (string file in Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly).Concat(Directory.GetFiles(path, "*.csproj", SearchOption.TopDirectoryOnly)))
+            foreach (string file in Directory.GetFiles(path, "*.cs", SearchOption.TopDirectoryOnly)
+                    .Concat(Directory.GetFiles(path, "*.csproj", SearchOption.TopDirectoryOnly))
+                    .Concat(File.Exists(commonDir) ? Directory.GetFiles(commonDir, "*.cs", SearchOption.AllDirectories) : []))
             {
                 // Hash based on file contents, we don't care about arbitrary resaves
                 byte[] contentBytes = File.ReadAllBytes(file);
@@ -156,21 +165,80 @@ public static class DotNetQuest
         var workingDirectory = Directory.GetCurrentDirectory();
         var zoneDir = Path.Combine(workingDirectory, "dotnet_quests", zone?.GetShortName() ?? "");
         var globalDir = Path.Combine(workingDirectory, "dotnet_quests", "global");
+        var commonDir = Path.Combine(workingDirectory, "dotnet_quests", "common", "lib");
+        var commonDll = Path.Combine(workingDirectory, "dotnet_quests", "out", "common.dll");
+
         logSys?.QuestDebug($"Watching for *.cs file changes in {zoneDir}");
         Console.WriteLine($"Watching for *.cs file changes in {zoneDir}");
         logSys?.QuestDebug($"Watching for *.cs file changes in {globalDir}");
         Console.WriteLine($"Watching for *.cs file changes in {globalDir}");
+
         foreach (var timer in timers)
         {
             timer.Stop();
         }
         timers.Clear();
-        timers.Add(PollForChanges(zoneDir, ReloadZoneAsync));
-        timers.Add(PollForChanges(globalDir, ReloadGlobalAsync));
+
+        // Build common if it doesn't exist
+        if (!File.Exists(commonDll)) {
+            var directoryPath = $"{workingDirectory}/dotnet_quests/common";
+            var outPath = $"{workingDirectory}/dotnet_quests/out";
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = Path.Combine(workingDirectory + "/bin/dotnet/DotNetCompiler"),
+                Arguments = $"common common {outPath} {directoryPath}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+                WorkingDirectory = directoryPath,
+            };
+
+            using (var process = Process.Start(startInfo))
+            {
+                if (process == null)
+                {
+                    logSys?.QuestError($"Process was null when compiling common dll");
+                    return;
+                }
+                try
+                {
+                    string output = process.StandardOutput.ReadToEnd().Trim();
+                    process.WaitForExit();
+                    string errorOutput = process.StandardError.ReadToEnd();
+                    if (errorOutput.Length > 0 || output.Contains("FAILED"))
+                    {
+                        logSys?.QuestError($"Error compiling common:");
+                        logSys?.QuestError(errorOutput);
+                        logSys?.QuestError(output);
+                    }
+                    else
+                    {
+                        Console.WriteLine(output);
+                        logSys?.QuestDebug($"Successfully compiled .NET quests common lib");
+                    }
+                }
+                catch (Exception e)
+                {
+                    logSys?.QuestError($"Exception in compiling common lib {e.Message}");
+                }
+            }
+        }
+        if (Directory.Exists(zoneDir)) {
+            ReloadZone();
+        }
+        if (Directory.Exists(globalDir)) {
+            ReloadGlobalWithLock();
+        }
+        
+        timers.Add(PollForChanges(zoneDir, commonDir, ReloadZoneAsync));
+        timers.Add(PollForChanges(globalDir, commonDir, ReloadGlobalAsync));
     }
     public static void ReloadZone()
     {
         questReload = true;
+        npcMap.Clear();
+        playerMap.Clear();
         var zoneName = zone?.GetShortName() ?? "";
         var workingDirectory = Directory.GetCurrentDirectory();
         var directoryPath = $"{workingDirectory}/dotnet_quests/{zoneName}";
@@ -182,6 +250,7 @@ public static class DotNetQuest
         Console.WriteLine($"Looking for {questAssemblyPath}");
         if (File.Exists(questAssemblyPath))
         {
+            Console.WriteLine($"Zone dotnet lib up to date");
             logSys?.QuestDebug($"Zone dotnet lib up to date");
             if (assemblyContext_ == null)
             {
@@ -189,6 +258,7 @@ public static class DotNetQuest
                 {
                     assemblyContext_ = new CollectibleAssemblyLoadContext(outPath);
                     questAssembly_ = assemblyContext_.LoadFromAssemblyPath(questAssemblyPath);
+                    Console.WriteLine($"Successfully loaded .NET quests with {questAssembly_.GetTypes().Count()} exported types.");
                     logSys?.QuestDebug($"Successfully loaded .NET quests with {questAssembly_.GetTypes().Count()} exported types.");
                     questReload = false;
                     return;
@@ -196,6 +266,7 @@ public static class DotNetQuest
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine($"Error loading existing lib, continuing to recompile. {e.Message}");
                     logSys?.QuestError($"Error loading existing lib, continuing to recompile. {e.Message}");
 
                 }
@@ -211,9 +282,6 @@ public static class DotNetQuest
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
-
-        npcMap.Clear();
-        playerMap.Clear();
 
 
         if (!File.Exists(projPath))
@@ -276,6 +344,10 @@ public static class DotNetQuest
                 {
                     Console.WriteLine(output);
                     Console.WriteLine($"Loading quest assembly from: {questAssemblyPath}");
+                    if (!File.Exists(questAssemblyPath)) {
+                        ReloadZone();
+                        return;
+                    }
                     questAssembly_ = assemblyContext_.LoadFromAssemblyPath(questAssemblyPath);
                     logSys?.QuestDebug($"Successfully compiled .NET quests with {questAssembly_.GetTypes().Count()} exported types.");
                 }
@@ -295,11 +367,28 @@ public static class DotNetQuest
 
     public static void ReloadZoneAsync()
     {
+        Console.WriteLine("Reload zone async");
         Task.Run(() => ReloadZone());
+    }
+
+    private static string GlobalAssemblyPath
+    {
+        get
+        {
+            var workingDirectory = Directory.GetCurrentDirectory();
+            var hash = GetDirHash($"{workingDirectory}/dotnet_quests/global");
+            var globalGuid = $"global-{hash}";
+            return $"{workingDirectory}/dotnet_quests/out/{globalGuid}.dll";
+        }
     }
 
     private static void ReloadGlobalWithLock()
     {
+        if (File.Exists(GlobalAssemblyPath))
+        {
+            ReloadGlobal(false);
+            return;
+        }
         using (var mutex = new LockfileMutex("lockGlobalQuestsReload.lock"))
         {
             var firstAcquire = mutex.Acquire();
@@ -309,10 +398,15 @@ public static class DotNetQuest
             {
                 while (!mutex.Acquire())
                 {
-                    if (counter++ % 10 == 0) {
+                    if (counter++ % 10 == 0)
+                    {
                         Console.WriteLine("Waiting to acquire global lock...");
                     }
                     Thread.Sleep(100);
+                    if (File.Exists(GlobalAssemblyPath))
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -323,6 +417,8 @@ public static class DotNetQuest
     public static void ReloadGlobal(bool firstAcquire)
     {
         questReload = true;
+        npcMap.Clear();
+        playerMap.Clear();
         var workingDirectory = Directory.GetCurrentDirectory();
         var directoryPath = $"{workingDirectory}/dotnet_quests/global";
         var outPath = $"{workingDirectory}/dotnet_quests/out";
@@ -336,7 +432,7 @@ public static class DotNetQuest
         {
             var counter = 0;
             var continueBuild = false;
-            while (!File.Exists(globalAssemblyPath))
+            while (!File.Exists(GlobalAssemblyPath))
             {
                 Console.WriteLine($"Waiting for another process to build {globalAssemblyPath} before continuing {counter} / 20");
                 Thread.Sleep(1000);
@@ -372,7 +468,7 @@ public static class DotNetQuest
 
         if (File.Exists(globalAssemblyPath))
         {
-            logSys?.QuestDebug($"Zone dotnet lib up to date");
+            logSys?.QuestDebug($"Global dotnet lib up to date");
             if (globalAssemblyContext == null)
             {
                 try
@@ -401,9 +497,6 @@ public static class DotNetQuest
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
-
-        npcMap.Clear();
-        playerMap.Clear();
 
         if (!File.Exists(projPath))
         {
@@ -466,9 +559,14 @@ public static class DotNetQuest
                 {
                     Console.WriteLine(output);
                     Console.WriteLine($"Loading global assembly from: {globalAssemblyPath}");
+                    if (!File.Exists(globalAssemblyPath)) {
+                        ReloadGlobal(true);
+                        return;
+                    }
                     globalAssembly_ = globalAssemblyContext.LoadFromAssemblyPath(globalAssemblyPath);
                     logSys?.QuestDebug($"Successfully compiled global .NET quests with {globalAssembly_.GetTypes().Count()} exported types.");
-                    if (globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init") != null) {
+                    if (globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init") != null)
+                    {
                         globalAssembly_.GetType("ZoneLoad")?.GetMethod("Init")?.Invoke(null, []);
                     }
                 }
@@ -592,25 +690,14 @@ public static class DotNetQuest
         }
         if (MethodExistsAndIsConcrete(assembly?.GetType(allNpcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
         {
-            object? npcObject;
             var npcType = assembly?.GetType(allNpcName);
+            object? npcObject = Activator.CreateInstance(npcType);
+
             if (npcType == null)
             {
                 return;
             }
-            if (npcMap.ContainsKey(allNpcName))
-            {
-                npcObject = npcMap[allNpcName];
-            }
-            else
-            {
-                npcObject = Activator.CreateInstance(npcType);
-                if (npcObject == null)
-                {
-                    return;
-                }
-                npcMap[uniqueName] = npcObject;
-            }
+           
             var npcMethod = npcType.GetMethod(EventMap.NpcMethodMap[id]);
             npcMethod?.Invoke(npcObject, [new NpcEvent(globals, npcEventArgs) {
                 npc = npc,
