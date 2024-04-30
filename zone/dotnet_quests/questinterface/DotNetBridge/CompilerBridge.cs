@@ -419,6 +419,10 @@ public static class DotNetQuest
         questReload = true;
         npcMap.Clear();
         playerMap.Clear();
+        if (globalAssembly_?.GetType("ZoneLoad")?.GetMethod("Dispose") != null)
+        {
+            globalAssembly_.GetType("ZoneLoad")?.GetMethod("Dispose")?.Invoke(null, []);
+        }
         var workingDirectory = Directory.GetCurrentDirectory();
         var directoryPath = $"{workingDirectory}/dotnet_quests/global";
         var outPath = $"{workingDirectory}/dotnet_quests/out";

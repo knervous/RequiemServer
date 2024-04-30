@@ -25,6 +25,7 @@ int command_init(void);
 void command_deinit(void);
 int command_add(std::string command_name, std::string description, uint8 admin, CmdFuncPtr function);
 int command_put(std::string command_name, std::string description, uint8 admin, CmdFuncPtr function);
+int command_delete(std::string command_name);
 int command_notavail(Client *c, std::string message, bool ignore_status);
 int command_realdispatch(Client *c, std::string message, bool ignore_status);
 uint8 GetCommandStatus(std::string command_name);

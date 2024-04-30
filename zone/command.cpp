@@ -378,6 +378,33 @@ void command_deinit(void)
 }
 
 /*
+ * command_remove
+ * removes a command from the command list; api method
+ *
+ * Parameters:
+ *	command_name - the command ex: "spawn"
+ *
+ */
+int command_delete(std::string command_name) {
+	if (commands_map.find(command_name) != commands_map.end()) {
+		auto command = commandlist[command_name];
+		for (auto c : command_delete_list) {
+			if (command == c) {
+				delete c;
+				break;
+			}
+		}
+		command_count--;
+
+		commands_map.erase(command_name);
+		commandlist.erase(command_name);
+		commandaliases.erase(command_name);
+	}
+	return 0;
+}
+
+
+/*
  * command_add
  * adds a command to the command list; used by command_init
  *
@@ -420,6 +447,7 @@ int command_add(std::string command_name, std::string description, uint8 admin, 
 
 	return 0;
 }
+
 
 /*
  * command_put
