@@ -494,7 +494,6 @@ int command_put(std::string command_name, std::string description, uint8 admin, 
 	commandlist[command_name]    = c;
 	commandaliases[command_name] = command_name;
 
-	command_delete_list.push_back(c);
 	command_count++;
 
 	return 0;
