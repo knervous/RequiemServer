@@ -58,7 +58,7 @@ public:
 		auto results = db.QueryDatabase(
 			fmt::format(
 				"SELECT c.name, COUNT(p.id), c.id FROM character_data c "
-				"JOIN character_parcels p ON p.char_id = c.id "
+				"LEFT JOIN character_parcels p ON p.char_id = c.id "
 				"WHERE c.name = '{}' "
 				"LIMIT 1",
 				character_name)
@@ -77,6 +77,37 @@ public:
 		}
 
 		return all_entries;
+	}
+
+	static int GetNextFreeParcelSlot(Database& db, const uint32 character_id, const uint32 max_slots)
+	{
+		const auto& l = CharacterParcelsRepository::GetWhere(
+			db,
+			fmt::format(
+				"char_id = '{}' ORDER BY slot_id ASC",
+				character_id
+			)
+		);
+
+		if (l.empty()) {
+			return PARCEL_BEGIN_SLOT;
+		}
+
+		for (uint32 i = PARCEL_BEGIN_SLOT; i <= max_slots; i++) {
+			auto it = std::find_if(
+				l.cbegin(),
+				l.cend(),
+				[&](const auto &x) {
+					return x.slot_id == i;
+				}
+			);
+
+			if (it == l.end()) {
+				return i;
+			}
+		}
+
+		return INVALID_INDEX;
 	}
 };
 

@@ -118,6 +118,8 @@ Bot::Bot(NPCType *npcTypeData, Client* botOwner) : NPC(npcTypeData, nullptr, glm
 	mana_regen = CalcManaRegen();
 	end_regen = CalcEnduranceRegen();
 
+	SetExtraHaste(database.botdb.GetBotExtraHasteByID(GetBotID()), false);
+
 	strcpy(name, GetCleanName());
 	memset(&_botInspectMessage, 0, sizeof(InspectMessage_Struct));
 }
@@ -445,6 +447,8 @@ Bot::Bot(
 	}
 
 	cur_end = max_end;
+
+	SetExtraHaste(database.botdb.GetBotExtraHasteByID(GetBotID()), false);
 }
 
 Bot::~Bot() {
@@ -4341,7 +4345,7 @@ void Bot::PerformTradeWithClient(int16 begin_slot_id, int16 end_slot_id, Client*
 	}
 }
 
-bool Bot::Death(Mob *killer_mob, int64 damage, uint16 spell_id, EQ::skills::SkillType attack_skill, KilledByTypes killed_by)
+bool Bot::Death(Mob *killer_mob, int64 damage, uint16 spell_id, EQ::skills::SkillType attack_skill, KilledByTypes killed_by, bool is_buff_tic)
 {
 	if (!NPC::Death(killer_mob, damage, spell_id, attack_skill)) {
 		return false;

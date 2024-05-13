@@ -5516,16 +5516,75 @@ ALTER TABLE `lootdrop_entries` ADD `content_flags_disabled` varchar(100) NULL;
 				COLLATE='latin1_swedish_ci'
 				ENGINE=InnoDB
 				AUTO_INCREMENT=1;
-
-				ALTER TABLE `npc_types`
-				ADD COLUMN `is_parcel_merchant` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `keeps_sold_items`;
 		)"
 	},
 	ManifestEntry{
-		.version = 9272,
+		.version     = 9272,
+		.description = "2024_04_23_add_parcel_support_for_augmented_items.sql",
+		.check       = "SHOW COLUMNS FROM `character_parcels` LIKE 'aug_slot_1'",
+		.condition   = "empty",
+		.match       = "",
+		.sql         = R"(
+ALTER TABLE `character_parcels`
+	ADD COLUMN `aug_slot_1` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `item_id`,
+	ADD COLUMN `aug_slot_2` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `aug_slot_1`,
+	ADD COLUMN `aug_slot_3` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `aug_slot_2`,
+	ADD COLUMN `aug_slot_4` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `aug_slot_3`,
+	ADD COLUMN `aug_slot_5` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `aug_slot_4`,
+	ADD COLUMN `aug_slot_6` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `aug_slot_5`;
+)"
+	},
+	ManifestEntry{
+		.version = 9273,
+		.description = "2024_04_24_door_close_timer.sql",
+		.check = "SHOW COLUMNS FROM `doors` LIKE 'close_timer_ms'",
+		.condition = "empty",
+		.match = "",
+		.sql = R"(
+ALTER TABLE `doors`
+ADD COLUMN `close_timer_ms` smallint(8) UNSIGNED NOT NULL DEFAULT 5000 AFTER `is_ldon_door`;
+)",
+		.content_schema_update = true
+	},
+	ManifestEntry{
+		.version = 9274,
+		.description = "2024_05_02_parcel_npc_content.sql",
+		.check = "SHOW COLUMNS FROM `npc_types` LIKE 'is_parcel_merchant'",
+		.condition = "empty",
+		.match = "",
+		.sql = R"(
+ALTER TABLE `npc_types`
+ADD COLUMN `is_parcel_merchant` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `keeps_sold_items`;
+)",
+		.content_schema_update = true
+	},
+	ManifestEntry{
+		.version = 9275,
+		.description = "2024_04_28_character_extra_haste.sql",
+		.check = "SHOW COLUMNS FROM `character_data` LIKE 'extra_haste'",
+		.condition = "empty",
+		.match = "",
+		.sql = R"(
+ALTER TABLE `character_data`
+ADD COLUMN `extra_haste` int(11) NOT NULL DEFAULT 0 AFTER `wis`;
+)"
+	},
+	ManifestEntry{
+		.version = 9276,
+		.description = "2024_05_12_fix_guild_bank_dup_issue.sql",
+		.check = "SHOW COLUMNS FROM `guild_bank` WHERE FIELD = 'qty' AND Type LIKE '%unsigned';",
+		.condition = "not_empty",
+		.match = "",
+		.sql = R"(
+ALTER TABLE `guild_bank`
+	CHANGE COLUMN `qty` `qty` INT(10) NOT NULL DEFAULT '0' AFTER `itemid`;
+)"
+	},
+	ManifestEntry {
+		.version = 9277,
 		.description = "2024_04_25_merchant_custom_data.sql",
 		.check = R"(
-			SELECT * FROM information_schema.columns 
+			SELECT * FROM information_schema.columns
 			WHERE `COLUMN_NAME`='custom_data' AND (`TABLE_NAME` = 'merchantlist' OR `TABLE_NAME`='merchantlist_temp');
 		)",
 		.condition = "empty",

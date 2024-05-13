@@ -240,6 +240,7 @@ Client::Client(EQStreamInterface *ieqs) : Mob(
 	runmode = false;
 	linkdead_timer.Disable();
 	zonesummon_id = 0;
+	zonesummon_instance_id = 0;
 	zonesummon_ignorerestrictions = 0;
 	bZoning              = false;
 	m_lock_save_position = false;
@@ -3929,7 +3930,7 @@ void Client::Sacrifice(Client *caster)
 	if (GetLevel() >= RuleI(Spells, SacrificeMinLevel) && GetLevel() <= RuleI(Spells, SacrificeMaxLevel)) {
 		int exploss = (int)(GetLevel() * (GetLevel() / 18.0) * 12000);
 		if (exploss < GetEXP()) {
-			SetEXP(GetEXP() - exploss, GetAAXP());
+			SetEXP(ExpSource::Sacrifice, GetEXP() - exploss, GetAAXP(), false);
 			SendLogoutPackets();
 
 			// make our become corpse packet, and queue to ourself before OP_Death.
@@ -5036,15 +5037,15 @@ void Client::HandleLDoNOpen(NPC *target)
 			{
 				if(GetRaid())
 				{
-					GetRaid()->SplitExp(target->GetLevel()*target->GetLevel()*2625/10, target);
+					GetRaid()->SplitExp(ExpSource::LDoNChest, target->GetLevel()*target->GetLevel()*2625/10, target);
 				}
 				else if(GetGroup())
 				{
-					GetGroup()->SplitExp(target->GetLevel()*target->GetLevel()*2625/10, target);
+					GetGroup()->SplitExp(ExpSource::LDoNChest, target->GetLevel()*target->GetLevel()*2625/10, target);
 				}
 				else
 				{
-					AddEXP(target->GetLevel()*target->GetLevel()*2625/10, GetLevelCon(target->GetLevel()));
+					AddEXP(ExpSource::LDoNChest, target->GetLevel()*target->GetLevel()*2625/10, GetLevelCon(target->GetLevel()));
 				}
 			}
 			target->Death(this, 0, SPELL_UNKNOWN, EQ::skills::SkillHandtoHand);
@@ -5246,7 +5247,7 @@ void Client::SummonAndRezzAllCorpses()
 	int RezzExp = entity_list.RezzAllCorpsesByCharID(CharacterID());
 
 	if(RezzExp > 0)
-		SetEXP(GetEXP() + RezzExp, GetAAXP(), true);
+		SetEXP(ExpSource::Resurrection, GetEXP() + RezzExp, GetAAXP(), true);
 
 	Message(Chat::Yellow, "All your corpses have been summoned to your feet and have received a 100% resurrection.");
 }
@@ -7580,6 +7581,16 @@ void Client::SetFactionLevel(
 		current_value = GetCharacterFactionLevel(e.faction_id);
 		faction_before = current_value;
 
+#ifdef LUA_EQEMU
+		int32 lua_ret = 0;
+		bool ignore_default = false;
+		lua_ret = LuaParser::Instance()->UpdatePersonalFaction(this, e.value, e.faction_id, current_value, e.temp, faction_minimum, faction_maximum, ignore_default);
+
+		if (ignore_default) {
+			e.value = lua_ret;
+		}
+#endif
+
 		UpdatePersonalFaction(
 			character_id,
 			e.value,
@@ -7634,6 +7645,16 @@ void Client::SetFactionLevel2(uint32 char_id, int32 faction_id, uint8 char_class
 		//Get the faction modifiers
 		current_value = GetCharacterFactionLevel(faction_id);
 		faction_before_hit = current_value;
+
+#ifdef LUA_EQEMU
+		int32 lua_ret = 0;
+		bool ignore_default = false;
+		lua_ret = LuaParser::Instance()->UpdatePersonalFaction(this, value, faction_id, current_value, temp, this_faction_min, this_faction_max, ignore_default);
+
+		if (ignore_default) {
+			value = lua_ret;
+		}
+#endif
 
 		UpdatePersonalFaction(char_id, value, faction_id, &current_value, temp, this_faction_min, this_faction_max);
 
@@ -8305,7 +8326,7 @@ void Client::QuestReward(Mob* target, uint32 copper, uint32 silver, uint32 gold,
 	}
 
 	if (exp > 0) {
-		AddEXP(exp);
+		AddEXP(ExpSource::Quest, exp);
 	}
 
 	QueuePacket(outapp, true, Client::CLIENT_CONNECTED);
@@ -8350,7 +8371,7 @@ void Client::QuestReward(Mob* target, const QuestReward_Struct &reward, bool fac
 	}
 
 	if (reward.exp_reward > 0) {
-		AddEXP(reward.exp_reward);
+		AddEXP(ExpSource::Quest, reward.exp_reward);
 	}
 
 	QueuePacket(outapp, true, Client::CLIENT_CONNECTED);
@@ -12410,4 +12431,15 @@ std::vector<Mob*> Client::GetRaidOrGroupOrSelf(bool clients_only)
 	}
 
 	return v;
+}
+
+uint16 Client::GetSkill(EQ::skills::SkillType skill_id) const
+{
+	if (skill_id <= EQ::skills::HIGHEST_SKILL) {
+		return (itembonuses.skillmod[skill_id] > 0 ? (itembonuses.skillmodmax[skill_id] > 0 ? std::min(
+			m_pp.skills[skill_id] + itembonuses.skillmodmax[skill_id],
+			m_pp.skills[skill_id] * (100 + itembonuses.skillmod[skill_id]) / 100
+		) : m_pp.skills[skill_id] * (100 + itembonuses.skillmod[skill_id]) / 100) : m_pp.skills[skill_id]);
+	}
+	return 0;
 }

@@ -946,6 +946,10 @@ bool Mob::SpellEffect(Mob* caster, uint16 spell_id, float partial, int level_ove
 #endif
 				if (IsClient()) {
 					if (CastToClient()->GetGM() || RuleB(Character, BindAnywhere)) {
+						if (CastToClient()->GetGM()) {
+							Message(Chat::White, "Your GM flag allows you to bind anywhere.");
+						}
+
 						auto action_packet =
 						    new EQApplicationPacket(OP_Action, sizeof(Action_Struct));
 						Action_Struct* action = (Action_Struct*) action_packet->pBuffer;
@@ -3387,6 +3391,8 @@ bool Mob::SpellEffect(Mob* caster, uint16 spell_id, float partial, int level_ove
 			case SE_ImprovedInvisAnimals:
 			case SE_InvisVsUndead:
 			case SE_InvisVsUndead2:
+			case SE_Shield_Target:
+			case SE_ReduceSkill:
 			{
 				break;
 			}
