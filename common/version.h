@@ -42,13 +42,8 @@
  * Manifest: https://github.com/EQEmu/Server/blob/master/utils/sql/db_update_manifest.txt
  */
 
-<<<<<<< HEAD
-#define CURRENT_BINARY_DATABASE_VERSION 9272
-#define CURRENT_BINARY_BOTS_DATABASE_VERSION 9043
-=======
-#define CURRENT_BINARY_DATABASE_VERSION 9276
+#define CURRENT_BINARY_DATABASE_VERSION 9277
 #define CURRENT_BINARY_BOTS_DATABASE_VERSION 9044
->>>>>>> upstream/master
 
 #endif
 
