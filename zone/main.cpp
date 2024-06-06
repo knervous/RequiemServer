@@ -442,7 +442,7 @@ int main(int argc, char **argv)
 
 	parse->RegisterQuestInterface(new DotnetParser(), "cs");
 #ifdef LUA_EQEMU
-	parse->RegisterQuestInterface(LuaParser::Instance(), "lua");
+	//parse->RegisterQuestInterface(LuaParser::Instance(), "lua");
 #endif
 
 #ifdef EMBPERL
