@@ -1007,7 +1007,7 @@ public delegate void CmdFunc(Client client, string msg);
 public class EQCommands {
 
     public static List<string> Commands = [];
-    public static int AddCommand(string name, string description, AccountStatus admin_level, CmdFunc fn) {
+    public static int AddCommand(string name, string description, byte admin_level, CmdFunc fn) {
         questinterface.LogSys.QuestDebug($"Adding command: {name}");
         Commands.Add(name);
         return questinterface.command_put(name, description, (byte)admin_level, (clientPtr, seperatorPtr) => {

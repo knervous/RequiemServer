@@ -902,8 +902,13 @@ void Client::BulkSendMerchantInventory(int merchant_id, int npcid) {
 
 			auto inst = database.CreateItem(item, charges, 0, 0, 0, 0, 0, 0, false, ml.custom_data);
 			if (inst) {
-				auto item_price = static_cast<uint32>(item->Price * RuleR(Merchant, SellCostMod) * item->SellRate);
+				auto item_price = static_cast<uint32>(item->Price * item->SellRate);
 				auto item_charges = charges ? charges : 1;
+
+				// Don't use SellCostMod if using UseClassicPriceMod
+				if (!RuleB(Merchant, UseClassicPriceMod)) {
+					item_price *= RuleR(Merchant, SellCostMod);
+				}
 
 				if (RuleB(Merchant, UsePriceMod)) {
 					item_price *= Client::CalcPriceMod(npc);
@@ -948,8 +953,13 @@ void Client::BulkSendMerchantInventory(int merchant_id, int npcid) {
 			auto charges = item->MaxCharges;
 			auto inst = database.CreateItem(item, charges, 0, 0, 0, 0, 0, 0, false, ml.custom_data);
 			if (inst) {
-				auto item_price = static_cast<uint32>(item->Price * RuleR(Merchant, SellCostMod) * item->SellRate);
+				auto item_price = static_cast<uint32>(item->Price * item->SellRate);
 				auto item_charges = charges ? charges : 1;
+
+				// Don't use SellCostMod if using UseClassicPriceMod
+				if (!RuleB(Merchant, UseClassicPriceMod)) {
+					item_price *= RuleR(Merchant, SellCostMod);
+				}
 
 				if (RuleB(Merchant, UsePriceMod)) {
 					item_price *= Client::CalcPriceMod(npc);
@@ -984,22 +994,22 @@ void Client::BulkSendMerchantInventory(int merchant_id, int npcid) {
 uint8 Client::WithCustomer(uint16 NewCustomer){
 
 	if(NewCustomer == 0) {
-		CustomerID = 0;
+		SetCustomerID(0);
 		return 0;
 	}
 
-	if(CustomerID == 0) {
-		CustomerID = NewCustomer;
+	if(GetCustomerID() == 0) {
+		SetCustomerID(NewCustomer);
 		return 1;
 	}
 
 	// Check that the player browsing our wares hasn't gone away.
 
-	Client* c = entity_list.GetClientByID(CustomerID);
+	Client* c = entity_list.GetClientByID(GetCustomerID());
 
 	if(!c) {
 		LogTrading("Previous customer has gone away");
-		CustomerID = NewCustomer;
+		SetCustomerID(NewCustomer);
 		return 1;
 	}
 
@@ -1708,7 +1718,7 @@ void Client::OPGMTrainSkill(const EQApplicationPacket *app)
 
 		if (skilllevel == 0) {
 			//this is a new skill..
-			uint16 t_level = SkillTrainLevel(skill, GetClass());
+			uint16 t_level = GetSkillTrainLevel(skill, GetClass());
 
 			if (t_level == 0) {
 				LogSkills("Tried to train a new skill [{}] which is invalid for this race/class.", skill);

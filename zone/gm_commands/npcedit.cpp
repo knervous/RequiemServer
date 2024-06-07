@@ -100,21 +100,25 @@ void command_npcedit(Client *c, const Seperator *sep)
 		}
 	} else if (!strcasecmp(sep->arg[1], "bodytype")) {
 		if (sep->IsNumber(2)) {
-			auto body_type_id   = static_cast<uint8_t>(Strings::ToUnsignedInt(sep->arg[2]));
-			auto body_type_name = EQ::constants::GetBodyTypeName(static_cast<bodyType>(body_type_id));
+			const uint8 body_type_id = static_cast<uint8>(Strings::ToUnsignedInt(sep->arg[2]));
+			const std::string& body_type_name = BodyType::GetName(body_type_id);
+			if (Strings::EqualFold(body_type_name, "UNKNOWN BODY TYPE")) {
+				c->Message(
+					Chat::White,
+					fmt::format(
+						"Body Type {} does not exist.",
+						body_type_id
+					).c_str()
+				);
+				return;
+			}
+
 			n.bodytype = body_type_id;
 			d = fmt::format(
-				"{} is now using Body Type {}.",
+				"{} is now using Body Type {} ({}).",
 				npc_id_string,
-				(
-					!body_type_name.empty() ?
-					fmt::format(
-						"{} ({})",
-						body_type_name,
-						body_type_id
-					) :
-					std::to_string(body_type_id)
-				)
+				body_type_name,
+				body_type_id
 			);
 		} else {
 			c->Message(Chat::White, "Usage: #npcedit bodytype [Body Type ID] - Sets an NPC's Bodytype");
@@ -1666,7 +1670,7 @@ void command_npcedit(Client *c, const Seperator *sep)
 	} else if (!strcasecmp(sep->arg[1], "set_grid")) {
 		if (sep->IsNumber(2)) {
 			const uint32 grid_id = Strings::ToUnsignedInt(sep->arg[2]);
-			if (grid_id) {
+			if (grid_id >= 0) {
 				d = fmt::format(
 					"{} now has a Grid ID of {} on Spawn Group ID {}.",
 					npc_id_string,
@@ -1674,14 +1678,15 @@ void command_npcedit(Client *c, const Seperator *sep)
 					Strings::Commify(std::to_string(t->GetSpawnGroupId()))
 				);
 				auto query = fmt::format(
-					"UPDATE spawn2 SET pathgrid = {} WHERE spawngroupID = {} AND version = {}",
+					"UPDATE spawn2 SET pathgrid = {} WHERE spawngroupID = {} AND version = {} AND zone = '{}'",
 					grid_id,
 					t->GetSpawnGroupId(),
-					zone->GetInstanceVersion()
+					zone->GetInstanceVersion(),
+					zone->GetShortName()
 				);
 				content_db.QueryDatabase(query);
 			} else {
-				c->Message(Chat::White, "Grid ID must be greater than 0.");
+				c->Message(Chat::White, "Grid ID must be greater than or equal to 0.");
 				return;
 			}
 		} else {

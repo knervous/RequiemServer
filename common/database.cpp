@@ -206,9 +206,19 @@ void Database::LoginIP(uint32 account_id, const std::string& login_ip)
 	QueryDatabase(query);
 }
 
-int16 Database::CheckStatus(uint32 account_id)
+int16 Database::GetAccountStatus(uint32 account_id)
 {
-	return AccountRepository::GetAccountStatus(*this, account_id);
+	auto e = AccountRepository::FindOne(*this, account_id);
+
+	if (e.suspendeduntil > 0 && e.suspendeduntil < std::time(nullptr)) {
+		e.status         = 0;
+		e.suspendeduntil = 0;
+		e.suspend_reason = "";
+
+		AccountRepository::UpdateOne(*this, e);
+	}
+
+	return e.status;
 }
 
 uint32 Database::CreateAccount(
@@ -741,7 +751,7 @@ bool Database::SetVariable(const std::string& name, const std::string& value)
 	auto l = VariablesRepository::GetWhere(
 		*this,
 		fmt::format(
-			"`name` = '{}'",
+			"`varname` = '{}'",
 			Strings::Escape(name)
 		)
 	);
