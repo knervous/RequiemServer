@@ -2309,14 +2309,14 @@ bool Perl_Mob_IsRunning(Mob* self) // @categories Script Utility
 	return self->IsRunning();
 }
 
-void Perl_Mob_SetBodyType(Mob* self, int32 type) // @categories Stats and Attributes
+void Perl_Mob_SetBodyType(Mob* self, uint8 body_type_id) // @categories Stats and Attributes
 {
-	self->SetBodyType(static_cast<bodyType>(type), false);
+	self->SetBodyType(body_type_id, false);
 }
 
-void Perl_Mob_SetBodyType(Mob* self, int32 type, bool overwrite_orig) // @categories Stats and Attributes
+void Perl_Mob_SetBodyType(Mob* self, uint8 body_type_id, bool overwrite_orig) // @categories Stats and Attributes
 {
-	self->SetBodyType(static_cast<bodyType>(type), overwrite_orig);
+	self->SetBodyType(body_type_id, overwrite_orig);
 }
 
 void Perl_Mob_SetDeltas(Mob* self, float delta_x, float delta_y, float delta_z, float delta_h) // @categories Script Utility
@@ -3427,7 +3427,7 @@ bool Perl_Mob_IsAlwaysAggro(Mob* self)
 
 std::string Perl_Mob_GetDeityName(Mob* self)
 {
-	return EQ::deity::GetDeityName(static_cast<EQ::deity::DeityType>(self->GetDeity()));
+	return Deity::GetName(self->GetDeity());
 }
 
 perl::array Perl_Mob_GetBuffs(Mob* self)
@@ -4023,8 +4023,8 @@ void perl_register_mob()
 	package.add("SetAllowBeneficial", &Perl_Mob_SetAllowBeneficial);
 	package.add("SetAppearance", (void(*)(Mob*, int))&Perl_Mob_SetAppearance);
 	package.add("SetAppearance", (void(*)(Mob*, int, bool))&Perl_Mob_SetAppearance);
-	package.add("SetBodyType", (void(*)(Mob*, int32))&Perl_Mob_SetBodyType);
-	package.add("SetBodyType", (void(*)(Mob*, int32, bool))&Perl_Mob_SetBodyType);
+	package.add("SetBodyType", (void(*)(Mob*, uint8))&Perl_Mob_SetBodyType);
+	package.add("SetBodyType", (void(*)(Mob*, uint8, bool))&Perl_Mob_SetBodyType);
 	package.add("SetBucket", (void(*)(Mob*, std::string, std::string))&Perl_Mob_SetBucket);
 	package.add("SetBucket", (void(*)(Mob*, std::string, std::string, std::string))&Perl_Mob_SetBucket);
 	package.add("SetBuffDuration", (void(*)(Mob*, int))&Perl_Mob_SetBuffDuration);
