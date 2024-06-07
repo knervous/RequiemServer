@@ -5,7 +5,7 @@
 %module questinterface
 
 %ignore Mob::GetSeeInvisibleLevelFromNPCStat;
-%ignore Mob::SpecialAbility::timer;
+%ignore Mob::MobSpecialAbility::timer;
 %ignore Mob::GetSpecialAbilityTimer;
 %ignore Mob::GetAIThinkTimer;
 %ignore Mob::GetAttackTimer;
@@ -99,6 +99,20 @@
 %ignore ListElement::ListElement(const ListElement<ZonePoint*>&);
 
 %ignore CommandRecord;
+
+%ignore ComparisonType::GetName;
+%ignore AccountStatus::GetName;
+%ignore Bug::GetName;
+%ignore Bug::IsValid;
+%ignore BuffEffectType::None;
+%ignore InformationFlag::None;
+%ignore SpecialAbility::Max;
+%ignore SpecialAbility::IsValid;
+%ignore SpecialAbility::GetName;
+%ignore ComparisonType::IsValid;
+%ignore AccountStatus::Max;
+%ignore AccountStatus::GetName;
+
 
 %{
 
@@ -269,7 +283,7 @@ namespace glm {
     Vec4 vec = System.Runtime.InteropServices.Marshal.PtrToStructure<Vec4>(ptr);
     questinterfacePINVOKE.FreeVec4(new System.Runtime.InteropServices.HandleRef(null, (IntPtr)ptr)); // Implement this in C++ and expose via P/Invoke
     $excode
-    return vec; 
+    return vec;
 }
 %typemap(csin) glm::vec4 %{
     (nint)vec4.getCPtr(new vec4($csinput.x, $csinput.y, $csinput.z, $csinput.w))
@@ -288,7 +302,7 @@ namespace glm {
     Vec3 vec = System.Runtime.InteropServices.Marshal.PtrToStructure<Vec3>(ptr);
     questinterfacePINVOKE.FreeVec3(new System.Runtime.InteropServices.HandleRef(null, (IntPtr)ptr)); // Implement this in C++ and expose via P/Invoke
     $excode
-    return vec; 
+    return vec;
 }
 %typemap(csin) glm::vec3 %{
     (nint)vec3.getCPtr(new vec3($csinput.x, $csinput.y, $csinput.z))
