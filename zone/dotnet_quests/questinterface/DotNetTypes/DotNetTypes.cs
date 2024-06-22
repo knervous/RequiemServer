@@ -312,6 +312,7 @@ public abstract class INpcEvent
     public virtual void EntityVariableUpdate(NpcEvent e) {}
     public virtual void SpellEffectBot(NpcEvent e) {}
     public virtual void SpellEffectBuffTicBot(NpcEvent e) {}
+    public virtual void SpellBlocked(NpcEvent e) { }
 }
 
 
@@ -432,6 +433,7 @@ public abstract class IItemEvent
     public virtual void TimerStart(ItemEvent e) {}
     public virtual void TimerStop(ItemEvent e) {}
     public virtual void ScaleCalc(ItemEvent e) { }
+    public virtual void DestroyItem(ItemEvent e) { }    
 }
 
 
@@ -812,6 +814,7 @@ public class EventMap
         {QuestEventID.EVENT_ENTITY_VARIABLE_UPDATE, "EntityVariableUpdate"},
         {QuestEventID.EVENT_SPELL_EFFECT_BOT, "SpellEffectBot"},
         {QuestEventID.EVENT_SPELL_EFFECT_BUFF_TIC_BOT, "SpellEffectBuffTicBot"},
+        {QuestEventID.EVENT_SPELL_BLOCKED, "SpellBlocked"}
     };
 
     public static readonly Dictionary<QuestEventID, string> PlayerMethodMap = new Dictionary<QuestEventID, string>() {
@@ -929,6 +932,7 @@ public class EventMap
         {QuestEventID.EVENT_TIMER_START, "TimerStart"},
         {QuestEventID.EVENT_TIMER_STOP, "TimerStop"},
         {QuestEventID.EVENT_SCALE_CALC, "ScaleCalc"},
+        {QuestEventID.EVENT_DESTROY_ITEM, "DestroyItem"},
     };
 
     public static readonly Dictionary<QuestEventID, string> SpellMethodMap = new Dictionary<QuestEventID, string>() {
