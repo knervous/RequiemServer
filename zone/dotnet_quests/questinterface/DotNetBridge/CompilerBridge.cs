@@ -658,8 +658,12 @@ public static class DotNetQuest
         var mob = EqFactory.CreateMob(npcEventArgs.Mob, false);
         var npcName = npc?.GetOrigName() ?? "";
         var uniqueName = npc?.GetName() ?? "";
+        var wasHashNpc = npcName.Contains("#");
+        npcName = npcName.Replace("#", "").Trim();
+        uniqueName = uniqueName.Replace("#", "").Trim();
+        
         // If we have this case covered for local zone and being invoked through global don't honor global invoke
-        if (global && MethodExistsAndIsConcrete(questAssembly_?.GetType(npcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
+        if (global && !wasHashNpc && MethodExistsAndIsConcrete(questAssembly_?.GetType(npcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
         {
             return;
         }
@@ -691,6 +695,38 @@ public static class DotNetQuest
                 mob = mob,
             }]);
             return;
+        }
+
+        // Let's handle hash NPCs. They only come in through global events but if they're not defined globally, we can try a local implementation
+        if (wasHashNpc) {
+            if (MethodExistsAndIsConcrete(questAssembly_?.GetType(npcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
+            {
+                object? npcObject;
+                var npcType = questAssembly_?.GetType(npcName);
+                if (npcType == null)
+                {
+                    return;
+                }
+                if (npcMap.ContainsKey(uniqueName))
+                {
+                    npcObject = npcMap[uniqueName];
+                }
+                else
+                {
+                    npcObject = Activator.CreateInstance(npcType);
+                    if (npcObject == null)
+                    {
+                        return;
+                    }
+                    npcMap[uniqueName] = npcObject;
+                }
+                var npcMethod = npcType.GetMethod(EventMap.NpcMethodMap[id]);
+                npcMethod?.Invoke(npcObject, [new NpcEvent(globals, npcEventArgs) {
+                    npc = npc,
+                    mob = mob,
+                }]);
+                return;
+            }
         }
 
         // At this point we haven't handled the event--the NPC was not explicitly defined in global or local
