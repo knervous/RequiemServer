@@ -473,7 +473,7 @@ int main(int argc, char **argv)
 			parse->EventItem(EVENT_ITEM_GENERATE, nullptr, inst, nullptr, std::string{}, 0, &args);
 		}
 	});
-	
+
 	//now we have our parser, load the quests
 	LogInfo("Loading quests");
 	parse->ReloadQuests();

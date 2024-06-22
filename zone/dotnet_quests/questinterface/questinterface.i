@@ -201,6 +201,7 @@
 #include "../../spawn2.h"
 #include "../../spawngroup.h"
 #include "../../zonedb.h"
+#include "../../dialogue_window.h"
 #include "../../worldserver.h"
 #include "../../questmgr.h"
 #include "../../dynamic_zone.h"
@@ -368,6 +369,7 @@ typedef int64_t int64;
 %include "../../spawn2.h"
 %include "../../spawngroup.h"
 %include "../../zonedb.h"
+%include "../../dialogue_window.h"
 %include "../../worldserver.h"
 %include "../../questmgr.h"
 %include "../../dynamic_zone.h"
@@ -401,6 +403,9 @@ typedef int64_t int64;
 
 
 %template(IntItemMap) std::map<int16, EQ::ItemInstance*>;
+%template(StringStringMap) std::map<std::string, std::string>;
+%template(StringIntMap) std::map<std::string, int>;
+%template(IntStringMap2) std::map<int, std::string>;
 %template(LinkedListNewSpawn) LinkedList<NewSpawn_Struct*>;
 %template(LinkedListSpawn2) LinkedList<Spawn2*>;
 %template(LinkedListZonePoint) LinkedList<ZonePoint*>;
