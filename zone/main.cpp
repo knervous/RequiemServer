@@ -442,12 +442,12 @@ int main(int argc, char **argv)
 
 	parse->RegisterQuestInterface(new DotnetParser(), "cs");
 #ifdef LUA_EQEMU
-	//parse->RegisterQuestInterface(LuaParser::Instance(), "lua");
+	parse->RegisterQuestInterface(LuaParser::Instance(), "lua");
 #endif
 
 #ifdef EMBPERL
 	auto perl_parser = new PerlembParser();
-	//parse->RegisterQuestInterface(perl_parser, "pl");
+	parse->RegisterQuestInterface(perl_parser, "pl");
 
 #ifdef __linux__
 	std::string current_version = CURRENT_VERSION;
