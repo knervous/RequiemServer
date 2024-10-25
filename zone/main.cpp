@@ -447,7 +447,7 @@ int main(int argc, char **argv)
 
 #ifdef EMBPERL
 	auto perl_parser = new PerlembParser();
-	parse->RegisterQuestInterface(perl_parser, "pl");
+	//parse->RegisterQuestInterface(perl_parser, "pl");
 
 #ifdef __linux__
 	std::string current_version = CURRENT_VERSION;
@@ -465,7 +465,7 @@ int main(int argc, char **argv)
 #endif
 
 	/* Load Perl Event Export Settings */
-	parse->LoadPerlEventExportSettings(parse->perl_event_export_settings);
+	//parse->LoadPerlEventExportSettings(parse->perl_event_export_settings);
 #endif
 	database.SetItemInstanceGenerateCallback([](EQ::ItemInstance* inst) {
 		if (parse->ItemHasQuestSub(inst, EVENT_ITEM_GENERATE)) {

@@ -312,6 +312,7 @@ public abstract class INpcEvent
     public virtual void EntityVariableUpdate(NpcEvent e) {}
     public virtual void SpellEffectBot(NpcEvent e) {}
     public virtual void SpellEffectBuffTicBot(NpcEvent e) {}
+    public virtual void SpellBlocked(NpcEvent e) { }
 }
 
 
@@ -431,6 +432,8 @@ public abstract class IItemEvent
     public virtual void TimerResume(ItemEvent e) {}
     public virtual void TimerStart(ItemEvent e) {}
     public virtual void TimerStop(ItemEvent e) {}
+    public virtual void ScaleCalc(ItemEvent e) { }
+    public virtual void DestroyItem(ItemEvent e) { }    
 }
 
 
@@ -811,6 +814,7 @@ public class EventMap
         {QuestEventID.EVENT_ENTITY_VARIABLE_UPDATE, "EntityVariableUpdate"},
         {QuestEventID.EVENT_SPELL_EFFECT_BOT, "SpellEffectBot"},
         {QuestEventID.EVENT_SPELL_EFFECT_BUFF_TIC_BOT, "SpellEffectBuffTicBot"},
+        {QuestEventID.EVENT_SPELL_BLOCKED, "SpellBlocked"}
     };
 
     public static readonly Dictionary<QuestEventID, string> PlayerMethodMap = new Dictionary<QuestEventID, string>() {
@@ -883,6 +887,7 @@ public class EventMap
         {QuestEventID.EVENT_DAMAGE_TAKEN, "DamageTaken"},
         {QuestEventID.EVENT_ITEM_CLICK_CAST_CLIENT, "ItemClickCastClient"},
         {QuestEventID.EVENT_ITEM_CLICK_CLIENT, "ItemClickClient"},
+        {QuestEventID.EVENT_GROUP_CHANGE, "GroupChange"},
         {QuestEventID.EVENT_DESTROY_ITEM_CLIENT, "DestroyItemClient"},
         {QuestEventID.EVENT_TARGET_CHANGE, "TargetChange"},
         {QuestEventID.EVENT_DROP_ITEM_CLIENT, "DropItemClient"},
@@ -925,7 +930,9 @@ public class EventMap
         {QuestEventID.EVENT_TIMER_PAUSE, "TimerPause"},
         {QuestEventID.EVENT_TIMER_RESUME, "TimerResume"},
         {QuestEventID.EVENT_TIMER_START, "TimerStart"},
-        {QuestEventID.EVENT_TIMER_STOP, "TimerStop"}
+        {QuestEventID.EVENT_TIMER_STOP, "TimerStop"},
+        {QuestEventID.EVENT_SCALE_CALC, "ScaleCalc"},
+        {QuestEventID.EVENT_DESTROY_ITEM, "DestroyItem"},
     };
 
     public static readonly Dictionary<QuestEventID, string> SpellMethodMap = new Dictionary<QuestEventID, string>() {
@@ -972,7 +979,7 @@ public class EventMap
         {QuestEventID.EVENT_ENTITY_VARIABLE_DELETE, "EntityVariableDelete"},
         {QuestEventID.EVENT_ENTITY_VARIABLE_SET, "EntityVariableSet"},
         {QuestEventID.EVENT_ENTITY_VARIABLE_UPDATE, "EntityVariableUpdate"},
-        {QuestEventID.EVENT_SPELL_BLOCKED, "SpellBlocked"}
+        {QuestEventID.EVENT_SPELL_BLOCKED, "SpellBlocked"},
 
     };
 }
@@ -1013,7 +1020,7 @@ public class EQCommands {
         });
     }
 
-    public static void FlushCommands() {
+public static void FlushCommands() {
         foreach (var c in Commands) {
             questinterface.LogSys.QuestDebug($"Removing command: {c}");
             questinterface.command_delete(c);

@@ -661,7 +661,13 @@ public static class DotNetQuest
         var wasHashNpc = npcName.Contains("#");
         npcName = npcName.Replace("#", "").Trim();
         uniqueName = uniqueName.Replace("#", "").Trim();
-        
+
+        // Things like invisible men don't have names
+        if (npcName == "")
+        {
+            return;
+        }
+
         // If we have this case covered for local zone and being invoked through global don't honor global invoke
         if (global && !wasHashNpc && MethodExistsAndIsConcrete(questAssembly_?.GetType(npcName)?.GetMethod(EventMap.NpcMethodMap[id]), typeof(INpcEvent)))
         {
