@@ -70,6 +70,8 @@ namespace EQ
 #include "../common/data_verification.h"
 #include "../common/repositories/character_parcels_repository.h"
 #include "../common/repositories/trader_repository.h"
+#include "../common/guild_base.h"
+#include "../common/repositories/buyer_buy_lines_repository.h"
 
 #ifdef _WINDOWS
 	// since windows defines these within windef.h (which windows.h include)
@@ -197,6 +199,7 @@ struct RespawnOption
 	float heading;
 };
 
+
 // do not ask what all these mean because I have no idea!
 // named from the client's CEverQuest::GetInnateDesc, they're missing some
 enum eInnateSkill {
@@ -282,6 +285,8 @@ public:
 
 	std::vector<Mob*> GetRaidOrGroupOrSelf(bool clients_only = false);
 
+	bool CheckIfAlreadyDead();
+
 	void AI_Init();
 	void AI_Start(uint32 iMoveDelay = 0);
 	void AI_Stop();
@@ -294,6 +299,7 @@ public:
 	void TraderPriceUpdate(const EQApplicationPacket *app);
 	void SendBazaarDone(uint32 trader_id);
 	void SendBulkBazaarTraders();
+	void SendBulkBazaarBuyers();
 	void DoBazaarInspect(const BazaarInspect_Struct &in);
 	void SendBazaarDeliveryCosts();
 	static std::string DetermineMoneyString(uint64 copper);
@@ -313,8 +319,10 @@ public:
 	bool TryStacking(EQ::ItemInstance* item, uint8 type = ItemPacketTrade, bool try_worn = true, bool try_cursor = true);
 	void SendTraderPacket(Client* trader, uint32 Unknown72 = 51);
 	void SendBuyerPacket(Client* Buyer);
+	void SendBuyerToBarterWindow(Client* buyer, uint32 action);
 	GetItems_Struct* GetTraderItems();
 	void SendBazaarWelcome();
+	void SendBarterWelcome();
 	void DyeArmor(EQ::TintProfile* dye);
 	void DyeArmorBySlot(uint8 slot, uint8 red, uint8 green, uint8 blue, uint8 use_tint = 0x00);
 	uint8 SlotConvert(uint8 slot,bool bracer=false);
@@ -381,14 +389,35 @@ public:
 	uint32 GetCustomerID() { return customer_id; }
 	void SetCustomerID(uint32 id) { customer_id = id; }
 
-	void SendBuyerResults(char *SearchQuery, uint32 SearchID);
+	void   SetBuyerID(uint32 id) { m_buyer_id = id; }
+	uint32 GetBuyerID() { return m_buyer_id; }
+	bool   IsBuyer() { return m_buyer_id != 0 ? true : false; }
+	void   SetBarterTime() { m_barter_time = time(nullptr); }
+	uint32 GetBarterTime() { return m_barter_time; }
+	void   SetBuyerWelcomeMessage(const char* welcome_message);
+	void   SendBuyerGreeting(uint32 char_id);
+	void   SendSellerBrowsing(const std::string &browser);
+	void   SendBuyerMode(bool status);
+	bool   IsInBuyerSpace();
+	void   SendBuyLineUpdate(const BuyerLineItems_Struct &buy_line);
+	void   CheckIfMovedItemIsPartOfBuyLines(uint32 item_id);
+
+	void SendBuyerResults(BarterSearchRequest_Struct& bsr);
 	void ShowBuyLines(const EQApplicationPacket *app);
 	void SellToBuyer(const EQApplicationPacket *app);
 	void ToggleBuyerMode(bool TurnOn);
-	void UpdateBuyLine(const EQApplicationPacket *app);
+	void ModifyBuyLine(const EQApplicationPacket *app);
+	void CreateStartingBuyLines(const EQApplicationPacket *app);
 	void BuyerItemSearch(const EQApplicationPacket *app);
-	void SetBuyerWelcomeMessage(const char* WelcomeMessage) { BuyerWelcomeMessage = WelcomeMessage; }
-	const char* GetBuyerWelcomeMessage() { return BuyerWelcomeMessage.c_str(); }
+	void SendWindowUpdatesToSellerAndBuyer(BuyerLineSellItem_Struct& blsi);
+	void SendBarterBuyerClientMessage(BuyerLineSellItem_Struct& blsi, BarterBuyerActions action, BarterBuyerSubActions sub_action, BarterBuyerSubActions error_code);
+	bool BuildBuyLineMap(std::map<uint32, BuylineItemDetails_Struct>& item_map, BuyerBuyLines_Struct& bl);
+	bool BuildBuyLineMapFromVector(std::map<uint32, BuylineItemDetails_Struct>& item_map, std::vector<BuyerLineItems_Struct>& bl);
+	void RemoveItemFromBuyLineMap(std::map<uint32, BuylineItemDetails_Struct>& item_map, const BuyerLineItems_Struct& bl);
+	bool ValidateBuyLineItems(std::map<uint32, BuylineItemDetails_Struct>& item_map);
+	int64 ValidateBuyLineCost(std::map<uint32, BuylineItemDetails_Struct>& item_map);
+	bool DoBarterBuyerChecks(BuyerLineSellItem_Struct& sell_line);
+	bool DoBarterSellerChecks(BuyerLineSellItem_Struct& sell_line);
 
 	void FillSpawnStruct(NewSpawn_Struct* ns, Mob* ForWho);
 	bool ShouldISpawnFor(Client *c) { return !GMHideMe(c) && !IsHoveringForRespawn(); }
@@ -740,11 +769,12 @@ public:
 	void GetRaidAAs(RaidLeadershipAA_Struct *into) const;
 	void ClearGroupAAs();
 	void UpdateGroupAAs(int32 points, uint32 type);
-	void SacrificeConfirm(Client* caster);
-	void Sacrifice(Client* caster);
+	void SacrificeConfirm(Mob* caster);
+	void Sacrifice(Mob* caster);
 	void GoToDeath();
 	inline const int32 GetInstanceID() const { return zone->GetInstanceID(); }
 	void SetZoning(bool in) { bZoning = in; }
+	bool IsZoning() { return bZoning; }
 
 	void ShowSpells(Client* c, ShowSpellType show_spell_type);
 
@@ -831,9 +861,11 @@ public:
 	void QuestReadBook(const char* text, uint8 type);
 	void SendMoneyUpdate();
 	bool TakeMoneyFromPP(uint64 copper, bool update_client = false);
+	bool TakeMoneyFromPPWithOverFlow(uint64 copper, bool update_client);
 	bool TakePlatinum(uint32 platinum, bool update_client = false);
 	void AddMoneyToPP(uint64 copper, bool update_client = false);
 	void AddMoneyToPP(uint32 copper, uint32 silver, uint32 gold, uint32 platinum, bool update_client = false);
+	void AddMoneyToPPWithOverflow(uint64 copper, bool update_client);
 	void AddPlatinum(uint32 platinu, bool update_client = false);
 	bool HasMoney(uint64 copper);
 	uint64 GetCarriedMoney();
@@ -972,6 +1004,8 @@ public:
 	void ChangeTributeSettings(TributeInfo_Struct *t);
 	void SendTributeTimer();
 	void ToggleTribute(bool enabled);
+	std::map<uint32, TributeData> GetTributeList();
+	uint32 LookupTributeItemID(uint32 tribute_id, uint32 tier);
 	void SendPathPacket(const std::vector<FindPerson_Point> &path);
 
 	inline PTimerList &GetPTimers() { return(p_timers); }
@@ -998,7 +1032,7 @@ public:
 	int GetSpentAA() { return m_pp.aapoints_spent; }
 	uint32 GetRequiredAAExperience();
 	void AutoGrantAAPoints();
-	void GrantAllAAPoints(uint8 unlock_level = 0);
+	void GrantAllAAPoints(uint8 unlock_level = 0, bool skip_grant_only = false);
 	bool HasAlreadyPurchasedRank(AA::Rank* rank);
 	void ListPurchasedAAs(Client *to, std::string search_criteria = std::string());
 
@@ -1060,6 +1094,8 @@ public:
 	int32 GetItemIDAt(int16 slot_id);
 	int32 GetAugmentIDAt(int16 slot_id, uint8 augslot);
 	bool PutItemInInventory(int16 slot_id, const EQ::ItemInstance& inst, bool client_update = false);
+	bool PutItemInInventoryWithStacking(EQ::ItemInstance* inst);
+	bool FindNumberOfFreeInventorySlotsWithSizeCheck(std::vector<BuyerLineTradeItems_Struct> items);
 	bool PushItemOnCursor(const EQ::ItemInstance& inst, bool client_update = false);
 	void SendCursorBuffer();
 	void DeleteItemInInventory(int16 slot_id, int16 quantity = 0, bool client_update = false, bool update_db = true);
@@ -1098,7 +1134,6 @@ public:
 	uint16 GetTraderID() { return trader_id; }
 	void SetTraderID(uint16 id) { trader_id = id; }
 
-	inline bool IsBuyer() const { return(Buyer); }
 	eqFilterMode GetFilter(eqFilterType filter_id) const { return ClientFilters[filter_id]; }
 	void SetFilter(eqFilterType filter_id, eqFilterMode filter_mode) { ClientFilters[filter_id] = filter_mode; }
 
@@ -1135,7 +1170,7 @@ public:
 	void RemoveNoRent(bool client_update = true);
 	void RemoveDuplicateLore(bool client_update = true);
 	void MoveSlotNotAllowed(bool client_update = true);
-	virtual void RangedAttack(Mob* other, bool CanDoubleAttack = false);
+	virtual bool RangedAttack(Mob* other, bool CanDoubleAttack = false);
 	virtual void ThrowingAttack(Mob* other, bool CanDoubleAttack = false);
 	void DoClassAttacks(Mob *ca_target, uint16 skill = -1, bool IsRiposte=false);
 
@@ -1217,7 +1252,7 @@ public:
 	bool PendingTranslocate;
 	time_t TranslocateTime;
 	bool PendingSacrifice;
-	std::string SacrificeCaster;
+	uint16 sacrifice_caster_id;
 	PendingTranslocate_Struct PendingTranslocateData;
 	void SendOPTranslocateConfirm(Mob *Caster, uint16 SpellID);
 
@@ -1392,7 +1427,11 @@ public:
 	{
 		return (task_state ? task_state->EnabledTaskCount(task_set_id) : -1);
 	}
-	inline int IsTaskCompleted(int task_id) { return (task_state ? task_state->IsTaskCompleted(task_id) : -1); }
+	inline bool IsTaskCompleted(int task_id) { return (task_state ? task_state->IsTaskCompleted(task_id) : false); }
+	inline bool AreTasksCompleted(std::vector<int> task_ids)
+	{
+		return (task_state ? task_state->AreTasksCompleted(task_ids) : false);
+	}
 	inline void ShowClientTasks(Client *client) { if (task_state) { task_state->ShowClientTasks(this, client); }}
 	inline void CancelAllTasks() { if (task_state) { task_state->CancelAllTasks(this); }}
 	inline int GetActiveTaskCount() { return (task_state ? task_state->GetActiveTaskCount() : 0); }
@@ -1762,9 +1801,6 @@ public:
 
 	uint32 trapid; //ID of trap player has triggered. This is cleared when the player leaves the trap's radius, or it despawns.
 
-	void SetLastPositionBeforeBulkUpdate(glm::vec4 in_last_position_before_bulk_update);
-	glm::vec4 &GetLastPositionBeforeBulkUpdate();
-
 	Raid *p_raid_instance;
 
 	void ShowDevToolsMenu();
@@ -1915,8 +1951,8 @@ private:
 	uint8 firstlogon;
 	uint32 mercid; // current merc
 	uint8 mercSlot; // selected merc slot
-	bool Buyer;
-	std::string BuyerWelcomeMessage;
+	uint32                                                         m_buyer_id;
+	uint32                                                         m_barter_time;
 	int32                                                          m_parcel_platinum;
 	int32                                                          m_parcel_gold;
 	int32                                                          m_parcel_silver;
@@ -1980,9 +2016,10 @@ private:
 	void ZonePC(uint32 zoneID, uint32 instance_id, float x, float y, float z, float heading, uint8 ignorerestrictions, ZoneMode zm);
 	void ProcessMovePC(uint32 zoneID, uint32 instance_id, float x, float y, float z, float heading, uint8 ignorerestrictions = 0, ZoneMode zm = ZoneSolicited);
 
+	void SendTopLevelInventory();
+
 	glm::vec4 m_ZoneSummonLocation;
 	uint16 zonesummon_id;
-	uint8 zonesummon_instance_id;
 	uint8 zonesummon_ignorerestrictions;
 	ZoneMode zone_mode;
 
@@ -2000,8 +2037,6 @@ private:
 	Timer fishing_timer;
 	Timer endupkeep_timer;
 	Timer autosave_timer;
-	Timer client_scan_npc_aggro_timer;
-	Timer client_zone_wide_full_position_update_timer;
 	Timer tribute_timer;
 
 	Timer proximity_timer;
@@ -2018,16 +2053,29 @@ private:
 	Timer afk_toggle_timer;
 	Timer helm_toggle_timer;
 	Timer aggro_meter_timer;
-	Timer mob_close_scan_timer;
-	Timer position_update_timer; /* Timer used when client hasn't updated within a 10 second window */
 	Timer consent_throttle_timer;
 	Timer dynamiczone_removal_timer;
 	Timer task_request_timer;
 	Timer pick_lock_timer;
 	Timer parcel_timer;	//Used to limit the number of parcels to one every 30 seconds (default).  Changable via rule.
+	Timer lazy_load_bank_check_timer;
+	Timer bandolier_throttle_timer;
+
+	bool m_lazy_load_bank            = false;
+	int  m_lazy_load_sent_bank_slots = 0;
 
 	glm::vec3 m_Proximity;
-	glm::vec4 last_position_before_bulk_update;
+
+	// client aggro
+	Timer m_client_npc_aggro_scan_timer;
+	void CheckClientToNpcAggroTimer();
+	void ClientToNpcAggroProcess();
+
+	// bulk position updates
+	glm::vec4 m_last_position_before_bulk_update;
+	Timer     m_client_zone_wide_full_position_update_timer;
+	Timer     m_position_update_timer;
+	void CheckSendBulkClientPositionUpdate();
 
 	void BulkSendInventoryItems();
 
@@ -2144,7 +2192,6 @@ private:
 	bool m_has_quest_compass = false;
 	std::vector<uint32_t> m_dynamic_zone_ids;
 
-
 public:
 	enum BotOwnerOption : size_t {
 		booDeathMarquee,
@@ -2186,6 +2233,7 @@ private:
 	bool CanTradeFVNoDropItem();
 	void SendMobPositions();
 	void PlayerTradeEventLog(Trade *t, Trade *t2);
+	void NPCHandinEventLog(Trade* t, NPC* n);
 
 	// full and partial mail key cache
 	std::string m_mail_key_full;

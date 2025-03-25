@@ -318,6 +318,7 @@ std::unique_ptr<EQ::ItemInstance> ZoneDatabase::LoadSingleTraderItem(uint32 char
 
 	if (results.empty()) {
 		LogTrading("Could not find item serial number {} for character id {}", serial_number, char_id);
+		return nullptr;
 	}
 
 	int item_id = results.at(0).item_id;
@@ -413,24 +414,6 @@ void ZoneDatabase::UpdateTraderItemPrice(int char_id, uint32 item_id, uint32 cha
 			char_id
 		);
 	}
-}
-
-void ZoneDatabase::DeleteBuyLines(uint32 CharID) {
-
-	if(CharID==0) {
-        const std::string query = "DELETE FROM buyer";
-		auto results = QueryDatabase(query);
-        if (!results.Success())
-			LogDebug("[CLIENT] Failed to delete all buyer items data, the error was: [{}]\n",results.ErrorMessage().c_str());
-
-        return;
-	}
-
-    std::string query = StringFormat("DELETE FROM buyer WHERE charid = %i", CharID);
-	auto results = QueryDatabase(query);
-	if (!results.Success())
-			LogDebug("[CLIENT] Failed to delete buyer item data for charid: [{}], the error was: [{}]\n",CharID,results.ErrorMessage().c_str());
-
 }
 
 void ZoneDatabase::AddBuyLine(uint32 CharID, uint32 BuySlot, uint32 ItemID, const char* ItemName, uint32 Quantity, uint32 Price) {
@@ -688,12 +671,16 @@ bool ZoneDatabase::LoadCharacterLeadershipAbilities(uint32 character_id, PlayerP
 	return true;
 }
 
-bool ZoneDatabase::LoadCharacterDisciplines(uint32 character_id, PlayerProfile_Struct* pp){
+bool ZoneDatabase::LoadCharacterDisciplines(Client* c)
+{
+	if (!c) {
+		return false;
+	}
 
 	const auto& l = CharacterDisciplinesRepository::GetWhere(
 		database, fmt::format(
 			"`id` = {} ORDER BY `slot_id`",
-			character_id
+			c->CharacterID()
 		)
 	);
 
@@ -701,15 +688,17 @@ bool ZoneDatabase::LoadCharacterDisciplines(uint32 character_id, PlayerProfile_S
 		return false;
 	}
 
-	for (int slot_id = 0; slot_id < MAX_PP_DISCIPLINES; slot_id++) { // Initialize Disciplines
-		pp->disciplines.values[slot_id] = 0;
+	for (int slot_id = 0; slot_id < MAX_PP_DISCIPLINES; slot_id++) {
+		c->GetPP().disciplines.values[slot_id] = 0;
 	}
 
 	for (const auto& e : l) {
 		if (IsValidSpell(e.disc_id) && e.slot_id < MAX_PP_DISCIPLINES) {
-			pp->disciplines.values[e.slot_id] = e.disc_id;
+			c->GetPP().disciplines.values[e.slot_id] = e.disc_id;
 		}
 	}
+
+	c->SendDisciplineUpdate();
 
 	return true;
 }
@@ -1344,7 +1333,8 @@ bool ZoneDatabase::SaveCharacterInvSnapshot(uint32 character_id) {
 		" `custom_data`,"
 		" `ornamenticon`,"
 		" `ornamentidfile`,"
-		" `ornament_hero_model`"
+		" `ornament_hero_model`,"
+		" `guid`"
 		") "
 		"SELECT"
 		" %u,"
@@ -1363,7 +1353,8 @@ bool ZoneDatabase::SaveCharacterInvSnapshot(uint32 character_id) {
 		" `custom_data`,"
 		" `ornamenticon`,"
 		" `ornamentidfile`,"
-		" `ornament_hero_model` "
+		" `ornament_hero_model`,"
+		" `guid` "
 		"FROM"
 		" `inventory` "
 		"WHERE"
@@ -1624,7 +1615,8 @@ bool ZoneDatabase::RestoreCharacterInvSnapshot(uint32 character_id, uint32 times
 		" `custom_data`,"
 		" `ornamenticon`,"
 		" `ornamentidfile`,"
-		" `ornament_hero_model`"
+		" `ornament_hero_model`,"
+		" `guid`"
 		") "
 		"SELECT"
 		" `charid`,"
@@ -1642,7 +1634,8 @@ bool ZoneDatabase::RestoreCharacterInvSnapshot(uint32 character_id, uint32 times
 		" `custom_data`,"
 		" `ornamenticon`,"
 		" `ornamentidfile`,"
-		" `ornament_hero_model` "
+		" `ornament_hero_model`, "
+		" `guid` "
 		"FROM"
 		" `inventory_snapshots` "
 		"WHERE"
@@ -3481,6 +3474,9 @@ bool ZoneDatabase::LoadFactionData()
 	}
 
     auto& fmr_row = faction_max_results.begin();
+	if (fmr_row[0] == nullptr) {
+		return false;
+	}
 
 	max_faction = Strings::ToUnsignedInt(fmr_row[0]);
 	faction_array = new Faction *[max_faction + 1];

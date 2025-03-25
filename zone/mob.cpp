@@ -128,8 +128,9 @@ Mob::Mob(
 	attack_anim_timer(500),
 	position_update_melee_push_timer(500),
 	hate_list_cleanup_timer(6000),
-	mob_close_scan_timer(6000),
-	mob_check_moving_timer(1000)
+	m_scan_close_mobs_timer(6000),
+	m_mob_check_moving_timer(1000),
+	bot_attack_flag_timer(10000)
 {
 	mMovementManager = &MobMovementManager::Get();
 	mMovementManager->AddMob(this);
@@ -400,6 +401,10 @@ Mob::Mob(
 	pet_owner_npc     = false;
 	pet_targetlock_id = 0;
 
+	//bot attack flag
+	bot_attack_flags.clear();
+	bot_attack_flag_timer.Disable();
+
 	attacked_count = 0;
 	mezzed         = false;
 	stunned        = false;
@@ -512,7 +517,7 @@ Mob::Mob(
 
 	m_manual_follow = false;
 
-	mob_close_scan_timer.Trigger();
+	m_scan_close_mobs_timer.Trigger();
 
 	SetCanOpenDoors(true);
 
@@ -565,7 +570,7 @@ Mob::~Mob()
 	entity_list.RemoveMobFromCloseLists(this);
 	entity_list.RemoveAuraFromMobs(this);
 
-	close_mobs.clear();
+	m_close_mobs.clear();
 
 	LeaveHealRotationTargetPool();
 }
@@ -877,8 +882,9 @@ int Mob::_GetRunSpeed() const {
 
 int Mob::_GetFearSpeed() const {
 
-	if (IsRooted() || IsStunned() || IsMezzed())
+	if (IsRooted() || IsStunned() || IsMezzed()) {
 		return 0;
+	}
 
 	//float speed_mod = fearspeed;
 	int speed_mod = GetBaseFearSpeed();
@@ -2415,7 +2421,7 @@ void Mob::SendStatsWindow(Client* c, bool use_window)
 				DialogueWindow::TableCell(
 					fmt::format(
 						"{} ({})",
-						Strings::Commify(GetHaste()),
+						IsClient() ? Strings::Commify(CastToClient()->GetHaste()) : Strings::Commify(GetHaste()),
 						Strings::Commify(RuleI(Character, HasteCap))
 					)
 				)
@@ -2682,12 +2688,12 @@ void Mob::SendStatsWindow(Client* c, bool use_window)
 		).c_str()
 	);
 
-	if (GetHaste()) {
+	if ((IsClient() && CastToClient()->GetHaste()) || (!IsClient() && GetHaste())) {
 		c->Message(
 			Chat::White,
 			fmt::format(
 				"Haste: {}/{} (Item: {} + Spell: {} + Over: {})",
-				Strings::Commify(GetHaste()),
+				IsClient() ? Strings::Commify(CastToClient()->GetHaste()) : Strings::Commify(GetHaste()),
 				Strings::Commify(RuleI(Character, HasteCap)),
 				Strings::Commify(itembonuses.haste),
 				Strings::Commify(spellbonuses.haste + spellbonuses.hastetype2),
@@ -3214,6 +3220,14 @@ void Mob::ShowStats(Client* c)
 				"Combat Stats | Offense: {} Mitigation Armor Class: {}",
 				offense(EQ::skills::SkillHandtoHand),
 				GetMitigationAC()
+			).c_str()
+		);
+
+		c->Message(
+			Chat::White,
+			fmt::format(
+				"Combat Stats | Haste: {}",
+				GetHaste()
 			).c_str()
 		);
 
@@ -4054,7 +4068,8 @@ uint8 Mob::GetDefaultGender(uint16 in_race, uint8 in_gender) {
 		in_race == Race::Human2 ||
 		in_race == Race::ElvenGhost ||
 		in_race == Race::HumanGhost ||
-		in_race == Race::Coldain2
+		in_race == Race::Coldain2 ||
+		in_race == Race::Akheva
 	) {
 		if (in_gender >= Gender::Neuter) { // Male default for PC Races
 			return Gender::Male;
@@ -5003,7 +5018,7 @@ void Mob::Say(const char *format, ...)
 	int16 distance = 200;
 
 	if (RuleB(Chat, QuestDialogueUsesDialogueWindow)) {
-		for (auto &e : entity_list.GetCloseMobList(talker, (distance * distance))) {
+		for (auto &e : talker->GetCloseMobList(distance)) {
 			Mob *mob = e.second;
 			if (!mob) {
 				continue;
@@ -5431,10 +5446,19 @@ int Mob::GetHaste()
 		h += spellbonuses.hastetype2 > 10 ? 10 : spellbonuses.hastetype2;
 
 	// 26+ no cap, 1-25 10
-	if (level > 25 || (IsClient() && RuleB(Character, IgnoreLevelBasedHasteCaps))) // 26+
+	if (
+		level > 25 ||
+		(
+			(IsNPC() && RuleB(NPC, NPCIgnoreLevelBasedHasteCaps)) ||
+			(IsBot() && RuleB(Bots, BotsIgnoreLevelBasedHasteCaps)) ||
+			(IsMerc() && RuleB(Mercs, MercsIgnoreLevelBasedHasteCaps))
+		)
+	) {
 		h += itembonuses.haste;
-	else // 1-25
+	}
+	else { // 1-25
 		h += itembonuses.haste > 10 ? 10 : itembonuses.haste;
+	}
 
 	// mobs are different!
 	Mob *owner = nullptr;
@@ -5446,23 +5470,36 @@ int Mob::GetHaste()
 		cap = 10 + level;
 		cap += std::max(0, owner->GetLevel() - 39) + std::max(0, owner->GetLevel() - 60);
 	} else {
-		cap = 150;
+		cap = (IsNPC() ? RuleI(NPC, NPCHasteCap) : IsBot() ? RuleI(Bots, BotsHasteCap) : IsMerc() ? RuleI(Mercs, MercsHasteCap) : 150);
 	}
 
 	if(h > cap)
 		h = cap;
 
 	// 51+ 25 (despite there being higher spells...), 1-50 10
-	if (level > 50 || (IsClient() && RuleB(Character, IgnoreLevelBasedHasteCaps))) { // 51+
-		cap = RuleI(Character, Hastev3Cap);
-		if (spellbonuses.hastetype3 > cap) {
-			h += cap;
-		} else {
-			h += spellbonuses.hastetype3;
+	if (
+		(IsNPC() && !RuleB(NPC, NPCIgnoreLevelBasedHasteCaps)) ||
+		(IsBot() && !RuleB(Bots, BotsIgnoreLevelBasedHasteCaps)) ||
+		(IsMerc() && !RuleB(Mercs, MercsIgnoreLevelBasedHasteCaps))
+	) {
+		if (level > 50) { // 51+
+			cap = (IsNPC() ? RuleI(NPC, NPCHastev3Cap) : IsBot() ? RuleI(Bots, BotsHastev3Cap) : IsMerc() ? RuleI(Mercs, MercsHastev3Cap) : RuleI(Character, Hastev3Cap));
+
+			if (spellbonuses.hastetype3 > cap) {
+				h += cap;
+			}
+			else {
+				h += spellbonuses.hastetype3;
+			}
 		}
-	} else { // 1-50
-		h += spellbonuses.hastetype3 > 10 ? 10 : spellbonuses.hastetype3;
+		else { // 1-50
+			h += spellbonuses.hastetype3 > 10 ? 10 : spellbonuses.hastetype3;
+		}
 	}
+	else {
+		h += spellbonuses.hastetype3;
+	}
+
 	h += extra_haste;	//GM granted haste.
 
 	return 100 + h;
@@ -5477,37 +5514,13 @@ void Mob::SetTarget(Mob *mob)
 	target = mob;
 	entity_list.UpdateHoTT(this);
 
-	const auto has_target_change_event = (
-		parse->HasQuestSub(GetNPCTypeID(), EVENT_TARGET_CHANGE) ||
-		parse->PlayerHasQuestSub(EVENT_TARGET_CHANGE) ||
-		parse->BotHasQuestSub(EVENT_TARGET_CHANGE)
-	);
-
 	if (IsClient() && CastToClient()->admin > AccountStatus::GMMgmt) {
 		DisplayInfo(mob);
 	}
 
-	if (has_target_change_event) {
-		std::vector<std::any> args;
+	std::vector<std::any> args = { mob };
 
-		args.emplace_back(mob);
-
-		if (IsNPC()) {
-			if (parse->HasQuestSub(GetNPCTypeID(), EVENT_TARGET_CHANGE)) {
-				parse->EventNPC(EVENT_TARGET_CHANGE, CastToNPC(), mob, "", 0, &args);
-			}
-		} else if (IsClient()) {
-			if (parse->PlayerHasQuestSub(EVENT_TARGET_CHANGE)) {
-				parse->EventPlayer(EVENT_TARGET_CHANGE, CastToClient(), "", 0, &args);
-			}
-
-			CastToClient()->SetBotPrecombat(false); // Any change in target will nullify this flag (target == mob checked above)
-		} else if (IsBot()) {
-			if (parse->BotHasQuestSub(EVENT_TARGET_CHANGE)) {
-				parse->EventBot(EVENT_TARGET_CHANGE, CastToBot(), mob, "", 0, &args);
-			}
-		}
-	}
+	parse->EventMob(EVENT_TARGET_CHANGE, this, mob, [&]() { return ""; }, 0, &args);
 
 	if (IsPet() && GetOwner() && GetOwner()->IsClient()) {
 		GetOwner()->CastToClient()->UpdateXTargetType(MyPetTarget, mob);
@@ -5680,22 +5693,10 @@ bool Mob::ClearEntityVariables()
 		return false;
 	}
 
-	if (
-		(IsBot() && parse->BotHasQuestSub(EVENT_ENTITY_VARIABLE_DELETE)) ||
-		(IsClient() && parse->PlayerHasQuestSub(EVENT_ENTITY_VARIABLE_DELETE)) ||
-		(IsNPC() && parse->HasQuestSub(GetNPCTypeID(), EVENT_ENTITY_VARIABLE_DELETE))
-	) {
-		for (const auto& e : m_EntityVariables) {
-			std::vector<std::any> args = { e.first, e.second };
+	for (const auto& e : m_EntityVariables) {
+		std::vector<std::any> args = { e.first, e.second };
 
-			if (IsBot()) {
-				parse->EventBot(EVENT_ENTITY_VARIABLE_DELETE, CastToBot(), nullptr, "", 0, &args);
-			} else if (IsClient()) {
-				parse->EventPlayer(EVENT_ENTITY_VARIABLE_DELETE, CastToClient(), "", 0, &args);
-			} else if (IsNPC()) {
-				parse->EventNPC(EVENT_ENTITY_VARIABLE_DELETE, CastToNPC(), nullptr, "", 0, &args);
-			}
-		}
+		parse->EventMob(EVENT_ENTITY_VARIABLE_DELETE, this, nullptr, [&]() { return ""; }, 0, &args);
 	}
 
 	m_EntityVariables.clear();
@@ -5713,23 +5714,10 @@ bool Mob::DeleteEntityVariable(std::string variable_name)
 		return false;
 	}
 
+	std::vector<std::any> args = { v->first, v->second };
+	parse->EventMob(EVENT_ENTITY_VARIABLE_DELETE, this, nullptr, [&]() { return ""; }, 0, &args);
+
 	m_EntityVariables.erase(v);
-
-	if (
-		(IsBot() && parse->BotHasQuestSub(EVENT_ENTITY_VARIABLE_DELETE)) ||
-		(IsClient() && parse->PlayerHasQuestSub(EVENT_ENTITY_VARIABLE_DELETE)) ||
-		(IsNPC() && parse->HasQuestSub(GetNPCTypeID(), EVENT_ENTITY_VARIABLE_DELETE))
-	) {
-		std::vector<std::any> args = { v->first, v->second };
-
-		if (IsBot()) {
-			parse->EventBot(EVENT_ENTITY_VARIABLE_DELETE, CastToBot(), nullptr, "", 0, &args);
-		} else if (IsClient()) {
-			parse->EventPlayer(EVENT_ENTITY_VARIABLE_DELETE, CastToClient(), "", 0, &args);
-		} else if (IsNPC()) {
-			parse->EventNPC(EVENT_ENTITY_VARIABLE_DELETE, CastToNPC(), nullptr, "", 0, &args);
-		}
-	}
 
 	return true;
 }
@@ -5777,32 +5765,16 @@ void Mob::SetEntityVariable(std::string variable_name, std::string variable_valu
 		return;
 	}
 
-	const QuestEventID event_id = (
-		!EntityVariableExists(variable_name) ?
-		EVENT_ENTITY_VARIABLE_SET :
-		EVENT_ENTITY_VARIABLE_UPDATE
-	);
+	std::vector<std::any> args;
 
-	if (
-		(IsBot() && parse->BotHasQuestSub(event_id)) ||
-		(IsClient() && parse->PlayerHasQuestSub(event_id)) ||
-		(IsNPC() && parse->HasQuestSub(GetNPCTypeID(), event_id))
-	) {
-		std::vector<std::any> args;
+	if (!EntityVariableExists(variable_name)) {
+		args = { variable_name, variable_value };
 
-		if (event_id != EVENT_ENTITY_VARIABLE_UPDATE) {
-			args = { variable_name, variable_value };
-		} else {
-			args = { variable_name, GetEntityVariable(variable_name), variable_value };
-		}
+		parse->EventMob(EVENT_ENTITY_VARIABLE_SET, this, nullptr, [&]() { return ""; }, 0, &args);
+	} else {
+		args = { variable_name, GetEntityVariable(variable_name), variable_value };
 
-		if (IsBot()) {
-			parse->EventBot(event_id, CastToBot(), nullptr, "", 0, &args);
-		} else if (IsClient()) {
-			parse->EventPlayer(event_id, CastToClient(), "", 0, &args);
-		} else if (IsNPC()) {
-			parse->EventNPC(event_id, CastToNPC(), nullptr, "", 0, &args);
-		}
+		parse->EventMob(EVENT_ENTITY_VARIABLE_UPDATE, this, nullptr, [&]() { return ""; }, 0, &args);
 	}
 
 	m_EntityVariables[variable_name] = variable_value;
@@ -6140,9 +6112,7 @@ int32 Mob::GetPositionalDmgTakenAmt(Mob *attacker)
 
 void Mob::SetBottomRampageList()
 {
-	auto &mob_list = entity_list.GetCloseMobList(this);
-
-	for (auto &e : mob_list) {
+	for (auto &e : GetCloseMobList()) {
 		auto mob = e.second;
 		if (!mob) {
 			continue;
@@ -6167,9 +6137,7 @@ void Mob::SetBottomRampageList()
 
 void Mob::SetTopRampageList()
 {
-	auto &mob_list = entity_list.GetCloseMobList(this);
-
-	for (auto &e : mob_list) {
+	for (auto &e : GetCloseMobList()) {
 		auto mob = e.second;
 		if (!mob) {
 			continue;
@@ -8579,4 +8547,81 @@ void Mob::SetExtraHaste(int haste, bool need_to_save)
 			CharacterDataRepository::UpdateOne(database, e);
 		}
 	}
+}
+
+bool Mob::IsCloseToBanker()
+{
+	for (auto &e: GetCloseMobList()) {
+		auto mob = e.second;
+		if (mob && mob->IsNPC() && mob->GetClass() == Class::Banker) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool Mob::HasBotAttackFlag(Mob* tar) {
+	if (!tar) {
+		return false;
+	}
+
+	std::vector<uint32> l = tar->GetBotAttackFlags();
+
+	for (uint32 e : l) {
+		if (IsBot() && e == CastToBot()->GetBotOwnerCharacterID()) {
+			return true;
+		}
+
+		if (IsClient() && e == CastToClient()->CharacterID()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+const uint16 scan_close_mobs_timer_moving = 6000; // 6 seconds
+const uint16 scan_close_mobs_timer_idle   = 60000; // 60 seconds
+
+void Mob::CheckScanCloseMobsMovingTimer()
+{
+	LogAIScanCloseDetail(
+		"Mob [{}] {}moving, scan timer [{}]",
+		GetCleanName(),
+		IsMoving() ? "" : "NOT ",
+		m_scan_close_mobs_timer.GetRemainingTime()
+	);
+
+	// If the moving timer triggers, lets see if we are moving or idle to restart the appropriate
+	// dynamic timer
+	if (m_mob_check_moving_timer.Check()) {
+		// If the mob is still moving, restart the moving timer
+		if (moving) {
+			if (m_scan_close_mobs_timer.GetRemainingTime() > scan_close_mobs_timer_moving) {
+				LogAIScanCloseDetail("Mob [{}] Restarting with moving timer", GetCleanName());
+				m_scan_close_mobs_timer.Disable();
+				m_scan_close_mobs_timer.Start(scan_close_mobs_timer_moving);
+				m_scan_close_mobs_timer.Trigger();
+			}
+		}
+		// If the mob is not moving, restart the idle timer
+		else if (m_scan_close_mobs_timer.GetDuration() == scan_close_mobs_timer_moving) {
+			LogAIScanCloseDetail("Mob [{}] Restarting with idle timer", GetCleanName());
+			m_scan_close_mobs_timer.Disable();
+			m_scan_close_mobs_timer.Start(scan_close_mobs_timer_idle);
+		}
+	}
+}
+
+void Mob::ScanCloseMobProcess()
+{
+	if (m_scan_close_mobs_timer.Check()) {
+		entity_list.ScanCloseMobs(this);
+	}
+}
+
+std::unordered_map<uint16, Mob *> &Mob::GetCloseMobList(float distance)
+{
+	return entity_list.GetCloseMobList(this, distance);
 }

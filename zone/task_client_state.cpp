@@ -869,7 +869,12 @@ int ClientTaskState::IncrementDoneCount(
 	if (task_data->type != TaskType::Shared) {
 		// live messages for each increment of non-shared tasks
 		auto activity_type = task_data->activity_information[activity_id].activity_type;
-		int msg_count = activity_type == TaskActivityType::GiveCash ? 1 : count;
+		int msg_count = 1;
+
+		if (activity_type != TaskActivityType::GiveCash) {
+			msg_count = std::min(count, RuleI(TaskSystem, MaxUpdateMessages));
+		}
+
 		for (int i = 0; i < msg_count; ++i) {
 			client->MessageString(Chat::DefaultText, TASK_UPDATED, task_data->title.c_str());
 		}
@@ -1578,25 +1583,35 @@ int ClientTaskState::TaskTimeLeft(int task_id)
 	return -1;
 }
 
-int ClientTaskState::IsTaskCompleted(int task_id)
+bool ClientTaskState::IsTaskCompleted(int task_id)
 {
-
-	// Returns:	-1 if RecordCompletedTasks is not true
-	//		+1 if the task has been completed
-	//		0 if the task has not been completed
-
-	if (!(RuleB(TaskSystem, RecordCompletedTasks))) {
-		return -1;
+	if (!RuleB(TaskSystem, RecordCompletedTasks)) {
+		return false;
 	}
 
-	for (auto &completed_task : m_completed_tasks) {
-		LogTasks("Comparing completed task [{}] with [{}]", completed_task.task_id, task_id);
-		if (completed_task.task_id == task_id) {
-			return 1;
+	for (const auto& e : m_completed_tasks) {
+		LogTasks("Comparing completed task [{}] with [{}]", e.task_id, task_id);
+		if (e.task_id == task_id) {
+			return true;
 		}
 	}
 
-	return 0;
+	return false;
+}
+
+bool ClientTaskState::AreTasksCompleted(const std::vector<int>& task_ids)
+{
+	if (!RuleB(TaskSystem, RecordCompletedTasks)) {
+		return false;
+	}
+
+	for (const auto& e : task_ids) {
+		if (!IsTaskCompleted(e)) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool ClientTaskState::TaskOutOfTime(TaskType task_type, int index)

@@ -484,7 +484,7 @@ public:
 	bool IsOfClientBotMerc() const override { return true; }
 
 	bool GetRangerAutoWeaponSelect() { return _rangerAutoWeaponSelect; }
-	EQ::constants::StanceType GetBotStance() { return _botStance; }
+	uint8 GetBotStance() { return _botStance; }
 	uint8 GetChanceToCastBySpellType(uint32 spellType);
 	bool GetBotEnforceSpellSetting() { return m_enforce_spell_settings; }
 	float GetBotCasterMaxRange(float melee_distance_max);
@@ -605,12 +605,11 @@ public:
 	void SetPetChooser(bool p) { _petChooser = p; }
 	void SetBotOwner(Mob* botOwner) { this->_botOwner = botOwner; }
 	void SetRangerAutoWeaponSelect(bool enable) { GetClass() == Class::Ranger ? _rangerAutoWeaponSelect = enable : _rangerAutoWeaponSelect = false; }
-	void SetBotStance(EQ::constants::StanceType botStance) {
-		if (botStance >= EQ::constants::stancePassive && botStance <= EQ::constants::stanceBurnAE)
-			_botStance = botStance;
-		else
-			_botStance = EQ::constants::stancePassive;
-	}
+#ifdef SWIG_VERSION
+	void SetBotStance(uint8 stance_id) { _botStance = Stance::Stance_IsValid(stance_id) ? stance_id : Stance::Stance_Passive; }
+#else
+	void SetBotStance(uint8 stance_id) { _botStance = Stance::IsValid(stance_id) ? stance_id : Stance::Passive; }
+#endif
 	void SetBotCasterRange(uint32 bot_caster_range) { m_bot_caster_range = bot_caster_range; }
 	uint32 GetSpellRecastTimer(uint16 spell_id = 0);
 	bool CheckSpellRecastTimer(uint16 spell_id = 0);
@@ -753,7 +752,7 @@ public:
 	//Raid additions
 	Raid* p_raid_instance;
 
-	static uint8 spell_casting_chances[SPELL_TYPE_COUNT][Class::PLAYER_CLASS_COUNT][EQ::constants::STANCE_TYPE_COUNT][cntHSND];
+	static uint8 spell_casting_chances[SPELL_TYPE_COUNT][Class::PLAYER_CLASS_COUNT][Stance::AEBurn][cntHSND];
 
 	bool BotCastMez(Mob* tar, uint8 botLevel, bool checked_los, BotSpell& botSpell, Raid* raid);
 	bool BotCastHeal(Mob* tar, uint8 botLevel, uint8 botClass, BotSpell& botSpell, Raid* raid);
@@ -870,7 +869,7 @@ private:
 	std::string _suffix;
 	uint32 _lastZoneId;
 	bool _rangerAutoWeaponSelect;
-	EQ::constants::StanceType _botStance;
+	uint8 _botStance;
 	unsigned int RestRegenHP;
 	unsigned int RestRegenMana;
 	unsigned int RestRegenEndurance;

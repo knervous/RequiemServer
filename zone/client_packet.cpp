@@ -65,6 +65,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "../common/repositories/account_repository.h"
 #include "../common/repositories/character_corpses_repository.h"
 #include "../common/repositories/guild_tributes_repository.h"
+#include "../common/repositories/buyer_buy_lines_repository.h"
 
 #include "../common/events/player_event_logs.h"
 #include "../common/repositories/character_stats_record_repository.h"
@@ -368,13 +369,7 @@ void MapOpcodes()
 	ConnectedOpcodes[OP_Save] = &Client::Handle_OP_Save;
 	ConnectedOpcodes[OP_SaveOnZoneReq] = &Client::Handle_OP_SaveOnZoneReq;
 	ConnectedOpcodes[OP_SelectTribute] = &Client::Handle_OP_SelectTribute;
-
-	// Use or Ignore sense heading based on rule.
-	bool train = RuleB(Skills, TrainSenseHeading);
-
-	ConnectedOpcodes[OP_SenseHeading] =
-		(train) ? &Client::Handle_OP_SenseHeading : &Client::Handle_OP_Ignore;
-
+	ConnectedOpcodes[OP_SenseHeading] = &Client::Handle_OP_SenseHeading;
 	ConnectedOpcodes[OP_SenseTraps] = &Client::Handle_OP_SenseTraps;
 	ConnectedOpcodes[OP_SetGuildMOTD] = &Client::Handle_OP_SetGuildMOTD;
 	ConnectedOpcodes[OP_SetRunMode] = &Client::Handle_OP_SetRunMode;
@@ -764,8 +759,6 @@ void Client::CompleteConnect()
 
 	entity_list.SendIllusionWearChange(this);
 
-	entity_list.SendTraders(this);
-
 	SendWearChangeAndLighting(EQ::textures::LastTexture);
 	Mob* pet = GetPet();
 	if (pet) {
@@ -793,13 +786,15 @@ void Client::CompleteConnect()
 		parse->EventPlayer(EVENT_ENTER_ZONE, this, "", 0);
 	}
 
+	DeleteEntityVariable(SEE_BUFFS_FLAG);
+
 	// the way that the client deals with positions during the initial spawn struct
 	// is subtly different from how it deals with getting a position update
 	// if a mob is slightly in the wall or slightly clipping a floor they will be
 	// sent to a succor point
 	SendMobPositions();
 
-	SetLastPositionBeforeBulkUpdate(GetPosition());
+	m_last_position_before_bulk_update = GetPosition();
 
 	/* This sub event is for if a player logs in for the first time since entering world. */
 	if (firstlogon == 1) {
@@ -939,12 +934,13 @@ void Client::CompleteConnect()
 	}
 
 	database.LoadAuras(this); // this ends up spawning them so probably safer to load this later (here)
+	database.LoadCharacterDisciplines(this);
 
 	entity_list.RefreshClientXTargets(this);
 
 	worldserver.RequestTellQueue(GetName());
 
-	entity_list.ScanCloseMobs(close_mobs, this, true);
+	entity_list.ScanCloseMobs(this);
 
 	if (GetGM() && IsDevToolsEnabled()) {
 		ShowDevToolsMenu();
@@ -1323,7 +1319,6 @@ void Client::Handle_Connect_OP_ZoneEntry(const EQApplicationPacket *app)
 	database.LoadCharacterInspectMessage(cid, &m_inspect_message); /* Load Character Inspect Message */
 	database.LoadCharacterSpellBook(cid, &m_pp); /* Load Character Spell Book */
 	database.LoadCharacterMemmedSpells(cid, &m_pp);  /* Load Character Memorized Spells */
-	database.LoadCharacterDisciplines(cid, &m_pp); /* Load Character Disciplines */
 	database.LoadCharacterLanguages(cid, &m_pp); /* Load Character Languages */
 	database.LoadCharacterLeadershipAbilities(cid, &m_pp); /* Load Character Leadership AA's */
 	database.LoadCharacterTribute(this); /* Load CharacterTribute */
@@ -3290,6 +3285,10 @@ void Client::Handle_OP_AugmentItem(const EQApplicationPacket *app)
 							}
 						}
 
+						if (new_aug->GetItem()->Attuneable) {
+							new_aug->SetAttuned(true);
+						}
+
 						tobe_auged->PutAugment(in_augment->augment_index, *new_aug);
 						tobe_auged->UpdateOrnamentationInfo();
 
@@ -3643,29 +3642,39 @@ void Client::Handle_OP_AutoFire(const EQApplicationPacket *app)
 void Client::Handle_OP_Bandolier(const EQApplicationPacket *app)
 {
 	// Although there are three different structs for OP_Bandolier, they are all the same size.
-	//
 	if (app->size != sizeof(BandolierCreate_Struct)) {
 		LogDebug("Size mismatch in OP_Bandolier expected [{}] got [{}]", sizeof(BandolierCreate_Struct), app->size);
 		DumpPacket(app);
 		return;
 	}
 
-	BandolierCreate_Struct *bs = (BandolierCreate_Struct*)app->pBuffer;
+	auto bs = (BandolierCreate_Struct*) app->pBuffer;
 
-	switch (bs->Action)
-	{
-	case bandolierCreate:
-		CreateBandolier(app);
-		break;
-	case bandolierRemove:
-		RemoveBandolier(app);
-		break;
-	case bandolierSet:
-		SetBandolier(app);
-		break;
-	default:
-		LogDebug("Unknown Bandolier action [{}]", bs->Action);
-		break;
+	switch (bs->Action) {
+		case bandolierCreate:
+			CreateBandolier(app);
+			break;
+		case bandolierRemove:
+			RemoveBandolier(app);
+			break;
+		case bandolierSet:
+			if (bandolier_throttle_timer.GetDuration() && !bandolier_throttle_timer.Check()) {
+				Message(
+					Chat::White,
+					fmt::format(
+						"You may only modify your bandolier once every {}.",
+						Strings::ToLower(Strings::MillisecondsToTime(RuleI(Character, BandolierSwapDelay)))
+					).c_str()
+				);
+				SendTopLevelInventory();
+				break;
+			}
+
+			SetBandolier(app);
+			break;
+		default:
+			LogDebug("Unknown Bandolier action [{}]", bs->Action);
+			break;
 	}
 }
 
@@ -3763,116 +3772,104 @@ void Client::Handle_OP_Barter(const EQApplicationPacket *app)
 	}
 
 	char* Buf = (char *)app->pBuffer;
+	auto in = (BuyerGeneric_Struct *)app->pBuffer;
 
 	// The first 4 bytes of the packet determine the action. A lot of Barter packets require the
 	// packet the client sent, sent back to it as an acknowledgement.
 	//
-	uint32 Action = VARSTRUCT_DECODE_TYPE(uint32, Buf);
+	//uint32 Action = VARSTRUCT_DECODE_TYPE(uint32, Buf);
 
 
-	switch (Action)
-	{
+	switch (in->action) {
 
-	case Barter_BuyerSearch:
-	{
-		BuyerItemSearch(app);
-		break;
-	}
-
-	case Barter_SellerSearch:
-	{
-		BarterSearchRequest_Struct *bsr = (BarterSearchRequest_Struct*)app->pBuffer;
-		SendBuyerResults(bsr->SearchString, bsr->SearchID);
-		break;
-	}
-
-	case Barter_BuyerModeOn:
-	{
-		if (!IsTrader()) {
-			ToggleBuyerMode(true);
+		case Barter_BuyerSearch: {
+			BuyerItemSearch(app);
+			break;
 		}
-		else {
-			Buf = (char *)app->pBuffer;
-			VARSTRUCT_ENCODE_TYPE(uint32, Buf, Barter_BuyerModeOff);
-			Message(Chat::Red, "You cannot be a Trader and Buyer at the same time.");
+
+		case Barter_SellerSearch: {
+			auto bsr = (BarterSearchRequest_Struct *) app->pBuffer;
+			SendBuyerResults(*bsr);
+			break;
 		}
-		QueuePacket(app);
-		break;
-	}
 
-	case Barter_BuyerModeOff:
-	{
-		QueuePacket(app);
-		ToggleBuyerMode(false);
-		break;
-	}
+		case Barter_BuyerModeOn: {
+			if (!IsTrader()) {
+				ToggleBuyerMode(true);
+			}
+			else {
+				ToggleBuyerMode(false);
+				Message(Chat::Red, "You cannot be a Trader and Buyer at the same time.");
+			}
+			break;
+		}
 
-	case Barter_BuyerItemUpdate:
-	{
-		UpdateBuyLine(app);
-		break;
-	}
+		case Barter_BuyerModeOff: {
+			ToggleBuyerMode(false);
+			break;
+		}
 
-	case Barter_BuyerItemRemove:
-	{
-		BuyerRemoveItem_Struct* bris = (BuyerRemoveItem_Struct*)app->pBuffer;
-		database.RemoveBuyLine(CharacterID(), bris->BuySlot);
-		QueuePacket(app);
-		break;
-	}
+		case Barter_BuyerItemUpdate: {
+			ModifyBuyLine(app);
+			break;
+		}
 
-	case Barter_SellItem:
-	{
-		SellToBuyer(app);
-		break;
-	}
+		case Barter_BuyerItemStart: {
+			CreateStartingBuyLines(app);
+			break;
+		}
 
-	case Barter_BuyerInspectBegin:
-	{
-		ShowBuyLines(app);
-		break;
-	}
+		case Barter_BuyerItemRemove: {
+			auto bris = (BuyerRemoveItem_Struct *) app->pBuffer;
+			BuyerBuyLinesRepository::DeleteBuyLine(database, CharacterID(), bris->buy_slot_id);
+			QueuePacket(app);
+			break;
+		}
 
-	case Barter_BuyerInspectEnd:
-	{
-		BuyerInspectRequest_Struct* bir = (BuyerInspectRequest_Struct*)app->pBuffer;
-		Client *Buyer = entity_list.GetClientByID(bir->BuyerID);
-		if (Buyer)
-			Buyer->WithCustomer(0);
+		case Barter_SellItem: {
+			SellToBuyer(app);
+			break;
+		}
 
-		break;
-	}
+		case Barter_BuyerInspectBegin: {
+			ShowBuyLines(app);
+			break;
+		}
 
-	case Barter_BarterItemInspect:
-	{
-		BarterItemSearchLinkRequest_Struct* bislr = (BarterItemSearchLinkRequest_Struct*)app->pBuffer;
+		case Barter_BuyerInspectEnd: {
+			auto bir   = (BuyerInspectRequest_Struct *) app->pBuffer;
+			auto buyer = entity_list.GetClientByID(bir->buyer_id);
+			if (buyer) {
+				buyer->WithCustomer(0);
+			}
 
-		const EQ::ItemData* item = database.GetItem(bislr->ItemID);
+			break;
+		}
+		case Barter_BarterItemInspect: {
+			auto               bislr = (BarterItemSearchLinkRequest_Struct *) app->pBuffer;
+			const EQ::ItemData *item = database.GetItem(bislr->item_id);
 
-		if (!item)
-			Message(Chat::Red, "Error: This item does not exist!");
-		else
-		{
-			EQ::ItemInstance* inst = database.CreateItem(item);
-			if (inst)
-			{
+			if (!item) {
+				Message(Chat::Red, "Error: This item does not exist!");
+				return;
+			}
+
+			EQ::ItemInstance *inst = database.CreateItem(item);
+			if (inst) {
 				SendItemPacket(0, inst, ItemPacketViewLink);
 				safe_delete(inst);
 			}
-		}
 		break;
 	}
-
 	case Barter_Welcome:
 	{
-		//SendBazaarWelcome();
+		SendBarterWelcome();
 		break;
 	}
 
-	case Barter_WelcomeMessageUpdate:
-	{
-		BuyerWelcomeMessageUpdate_Struct* bwmu = (BuyerWelcomeMessageUpdate_Struct*)app->pBuffer;
-		SetBuyerWelcomeMessage(bwmu->WelcomeMessage);
+	case Barter_WelcomeMessageUpdate: {
+		auto bwmu = (BuyerWelcomeMessageUpdate_Struct *) app->pBuffer;
+		SetBuyerWelcomeMessage(bwmu->welcome_message);
 		break;
 	}
 
@@ -3896,15 +3893,20 @@ void Client::Handle_OP_Barter(const EQApplicationPacket *app)
 		break;
 	}
 
-	case Barter_Unknown23:
+	case Barter_Greeting:
 	{
-		// Sent by SoD client for no discernible reason.
+		auto data = (BuyerGreeting_Struct *)app->pBuffer;
+		SendBuyerGreeting(data->buyer_id);
+	}
+	case Barter_OpenBarterWindow:
+	{
+		SendBulkBazaarBuyers();
 		break;
 	}
 
 	default:
 		Message(Chat::Red, "Unrecognised Barter action.");
-		LogTrading("Unrecognised Barter Action [{}]", Action);
+		LogTrading("Unrecognised Barter Action [{}]", in->action);
 
 	}
 }
@@ -4986,6 +4988,10 @@ void Client::Handle_OP_ClientUpdate(const EQApplicationPacket *app) {
 			TraderEndTrader();
 		}
 
+		if (IsBuyer()) {
+			ToggleBuyerMode(false);
+		}
+
 		/* Break Hide if moving without sneaking and set rewind timer if moved */
 		if ((hidden || improved_hidden) && !sneaking) {
 			hidden = false;
@@ -5006,103 +5012,9 @@ void Client::Handle_OP_ClientUpdate(const EQApplicationPacket *app) {
 
 	SetMoving(!(cy == m_Position.y && cx == m_Position.x));
 
-	/**
-	 * Client aggro scanning
-	 */
-	const uint16 client_scan_npc_aggro_timer_idle   = RuleI(Aggro, ClientAggroCheckIdleInterval);
-	const uint16 client_scan_npc_aggro_timer_moving = RuleI(Aggro, ClientAggroCheckMovingInterval);
-
-	LogAggroDetail(
-		"ClientUpdate [{}] {}moving, scan timer [{}]",
-		GetCleanName(),
-		IsMoving() ? "" : "NOT ",
-		client_scan_npc_aggro_timer.GetRemainingTime()
-	);
-
-	if (IsMoving()) {
-		if (client_scan_npc_aggro_timer.GetRemainingTime() > client_scan_npc_aggro_timer_moving) {
-			LogAggroDetail("Client [{}] Restarting with moving timer", GetCleanName());
-			client_scan_npc_aggro_timer.Disable();
-			client_scan_npc_aggro_timer.Start(client_scan_npc_aggro_timer_moving);
-			client_scan_npc_aggro_timer.Trigger();
-		}
-	}
-	else if (client_scan_npc_aggro_timer.GetDuration() == client_scan_npc_aggro_timer_moving) {
-		LogAggroDetail("Client [{}] Restarting with idle timer", GetCleanName());
-		client_scan_npc_aggro_timer.Disable();
-		client_scan_npc_aggro_timer.Start(client_scan_npc_aggro_timer_idle);
-	}
-
-	/**
-	 * Client mob close list cache scan timer
-	 */
-	const uint16 client_mob_close_scan_timer_moving = 6000;
-	const uint16 client_mob_close_scan_timer_idle   = 60000;
-
-	LogAIScanCloseDetail(
-		"Client [{}] {}moving, scan timer [{}]",
-		GetCleanName(),
-		IsMoving() ? "" : "NOT ",
-		mob_close_scan_timer.GetRemainingTime()
-	);
-
-	if (IsMoving()) {
-		if (mob_close_scan_timer.GetRemainingTime() > client_mob_close_scan_timer_moving) {
-			LogAIScanCloseDetail("Client [{}] Restarting with moving timer", GetCleanName());
-			mob_close_scan_timer.Disable();
-			mob_close_scan_timer.Start(client_mob_close_scan_timer_moving);
-			mob_close_scan_timer.Trigger();
-		}
-	}
-	else if (mob_close_scan_timer.GetDuration() == client_mob_close_scan_timer_moving) {
-		LogAIScanCloseDetail("Client [{}] Restarting with idle timer", GetCleanName());
-		mob_close_scan_timer.Disable();
-		mob_close_scan_timer.Start(client_mob_close_scan_timer_idle);
-	}
-
-	/**
-	 * On a normal basis we limit mob movement updates based on distance
-	 * This ensures we send a periodic full zone update to a client that has started moving after 5 or so minutes
-	 *
-	 * For very large zones we will also force a full update based on distance
-	 *
-	 * We ignore a small distance around us so that we don't interrupt already pathing deltas as those npcs will appear
-	 * to full stop when they are actually still pathing
-	 */
-
-	float distance_moved                      = DistanceNoZ(GetLastPositionBeforeBulkUpdate(), GetPosition());
-	bool  moved_far_enough_before_bulk_update = distance_moved >= zone->GetNpcPositionUpdateDistance();
-	bool  is_ready_to_update                  = (
-		client_zone_wide_full_position_update_timer.Check() || moved_far_enough_before_bulk_update
-	);
-
-	if (IsMoving() && is_ready_to_update) {
-		LogDebug("[[{}]] Client Zone Wide Position Update NPCs", GetCleanName());
-
-		auto &mob_movement_manager = MobMovementManager::Get();
-		auto &mob_list             = entity_list.GetMobList();
-
-		for (auto &it : mob_list) {
-			Mob *entity = it.second;
-			if (!entity->IsNPC()) {
-				continue;
-			}
-
-			int animation_speed = 0;
-			if (entity->IsMoving()) {
-				if (entity->IsRunning()) {
-					animation_speed = (entity->IsFeared() ? entity->GetFearSpeed() : entity->GetRunspeed());
-				}
-				else {
-					animation_speed = entity->GetWalkspeed();
-				}
-			}
-
-			mob_movement_manager.SendCommandToClients(entity, 0.0, 0.0, 0.0, 0.0, animation_speed, ClientRangeAny, this);
-		}
-
-		SetLastPositionBeforeBulkUpdate(GetPosition());
-	}
+	CheckClientToNpcAggroTimer();
+	CheckScanCloseMobsMovingTimer();
+	CheckSendBulkClientPositionUpdate();
 
 	int32 new_animation = ppu->animation;
 
@@ -10434,7 +10346,7 @@ void Client::Handle_OP_Mend(const EQApplicationPacket *app)
 
 	int mendhp = GetMaxHP() / 4;
 	int currenthp = GetHP();
-	if (zone->random.Int(0, 199) < (int)GetSkill(EQ::skills::SkillMend)) {
+	if (zone->random.Int(0, RuleI(Character, MendAlwaysSucceedValue)) < (int)GetSkill(EQ::skills::SkillMend)) {
 
 		int criticalchance = spellbonuses.CriticalMend + itembonuses.CriticalMend + aabonuses.CriticalMend;
 
@@ -10514,7 +10426,7 @@ void Client::Handle_OP_MercenaryCommand(const EQApplicationPacket *app)
 				//check to see if selected option is a valid stance slot (option is the slot the stance is in, not the actual stance)
 				if (option >= 0 && option < numStances)
 				{
-					merc->SetStance((EQ::constants::StanceType)mercTemplate->Stances[option]);
+					merc->SetStance(mercTemplate->Stances[option]);
 					GetMercInfo().Stance = mercTemplate->Stances[option];
 
 					Log(Logs::General, Logs::Mercenaries, "Set Stance: %u for %s (%s)", merc->GetStance(), merc->GetName(), GetName());
@@ -10913,7 +10825,121 @@ void Client::Handle_OP_MoveItem(const EQApplicationPacket *app)
 
 void Client::Handle_OP_MoveMultipleItems(const EQApplicationPacket *app)
 {
-	Kick("Unimplemented move multiple items"); // TODO: lets not desync though
+	// This packet is only sent from the client if we ctrl click items in inventory
+	if (m_ClientVersionBit & EQ::versions::maskRoF2AndLater) {
+		if (!CharacterID()) {
+			LinkDead();
+			return;
+		}
+
+		if (app->size < sizeof(MultiMoveItem_Struct)) {
+			LinkDead();
+			return; // Not enough data to be a valid packet
+		}
+
+		const MultiMoveItem_Struct* multi_move = reinterpret_cast<const MultiMoveItem_Struct*>(app->pBuffer);
+		if (app->size != sizeof(MultiMoveItem_Struct) + sizeof(MultiMoveItemSub_Struct) * multi_move->count) {
+			LinkDead();
+			return; // Packet size does not match expected size
+		}
+
+		const int16 from_parent = multi_move->moves[0].from_slot.Slot;
+		const int16 to_parent   = multi_move->moves[0].to_slot.Slot;
+
+		// CTRL + left click drops an item into a bag without opening it.
+		// This can be a bag, in which case it tries to fill the target bag with the contents of the bag on the cursor
+		// CTRL + right click swaps the contents of two bags if a bag is on your cursor and you ctrl-right click on another bag.
+
+		// We need to check if this is a swap or just an addition (left click or right click)
+		// Check if any component of this transaction is coming from anywhere other than the cursor
+		bool left_click = true;
+		for (int i = 0; i < multi_move->count; i++) {
+			if (multi_move->moves[i].from_slot.Slot != EQ::invslot::slotCursor) {
+				left_click = false;
+			}
+		}
+
+		// This is a left click which is purely additive. This should always be cursor object or cursor bag contents into general\bank\whatever bag
+		if (left_click) {
+			for (int i = 0; i < multi_move->count; i++) {
+				MoveItem_Struct* mi = new MoveItem_Struct();
+				mi->from_slot 	= multi_move->moves[i].from_slot.SubIndex == -1 ? multi_move->moves[i].from_slot.Slot : m_inv.CalcSlotId(multi_move->moves[i].from_slot.Slot, multi_move->moves[i].from_slot.SubIndex);
+				mi->to_slot = m_inv.CalcSlotId(multi_move->moves[i].to_slot.Slot, multi_move->moves[i].to_slot.SubIndex);
+
+				if (multi_move->moves[i].to_slot.Type == EQ::invtype::typeBank) { // Target is bank inventory
+					mi->to_slot = m_inv.CalcSlotId(multi_move->moves[i].to_slot.Slot + EQ::invslot::BANK_BEGIN, multi_move->moves[i].to_slot.SubIndex);
+				} else if (multi_move->moves[i].to_slot.Type == EQ::invtype::typeSharedBank) { // Target is shared bank inventory
+					mi->to_slot = m_inv.CalcSlotId(multi_move->moves[i].to_slot.Slot + EQ::invslot::SHARED_BANK_BEGIN, multi_move->moves[i].to_slot.SubIndex);
+				}
+
+				// This sends '1' as the stack count for unstackable items, which our titanium-era SwapItem blows up
+				if (m_inv.GetItem(mi->from_slot)->IsStackable()) {
+					mi->number_in_stack = multi_move->moves[i].number_in_stack;
+				} else {
+					mi->number_in_stack = 0;
+				}
+
+				if (!SwapItem(mi) && IsValidSlot(mi->from_slot) && IsValidSlot(mi->to_slot)) {
+					bool error = false;
+					SwapItemResync(mi);
+					InterrogateInventory(this, false, true, false, error, false);
+					if (error) {
+						InterrogateInventory(this, true, false, true, error);
+					}
+				}
+			}
+		// This is the swap.
+		// Client behavior is just to move stacks without combining them
+		// Items get rearranged to fill the 'top' of the bag first
+		} else {
+			struct MoveInfo {
+				EQ::ItemInstance* item;
+				uint16 to_slot;
+			};
+
+			std::vector<MoveInfo> items;
+    		items.reserve(multi_move->count);
+
+			for (int i = 0; i < multi_move->count; i++) {
+				// These are always bags, so we don't need to worry about raw items in slotCursor
+				uint16 from_slot   = m_inv.CalcSlotId(multi_move->moves[i].from_slot.Slot, multi_move->moves[i].from_slot.SubIndex);
+				if (multi_move->moves[i].from_slot.Type == EQ::invtype::typeBank) { // Target is bank inventory
+					from_slot = m_inv.CalcSlotId(multi_move->moves[i].from_slot.Slot + EQ::invslot::BANK_BEGIN, multi_move->moves[i].from_slot.SubIndex);
+				} else if (multi_move->moves[i].from_slot.Type == EQ::invtype::typeSharedBank) { // Target is shared bank inventory
+					from_slot = m_inv.CalcSlotId(multi_move->moves[i].from_slot.Slot + EQ::invslot::SHARED_BANK_BEGIN, multi_move->moves[i].from_slot.SubIndex);
+				}
+
+				uint16 to_slot   = m_inv.CalcSlotId(multi_move->moves[i].to_slot.Slot, multi_move->moves[i].to_slot.SubIndex);
+				if (multi_move->moves[i].to_slot.Type == EQ::invtype::typeBank) { // Target is bank inventory
+					to_slot = m_inv.CalcSlotId(multi_move->moves[i].to_slot.Slot + EQ::invslot::BANK_BEGIN, multi_move->moves[i].to_slot.SubIndex);
+				} else if (multi_move->moves[i].to_slot.Type == EQ::invtype::typeSharedBank) { // Target is shared bank inventory
+					to_slot = m_inv.CalcSlotId(multi_move->moves[i].to_slot.Slot + EQ::invslot::SHARED_BANK_BEGIN, multi_move->moves[i].to_slot.SubIndex);
+				}
+
+				// I wasn't able to produce any error states on purpose.
+				MoveInfo move{
+					.item = m_inv.PopItem(from_slot), // Don't delete the instance here
+					.to_slot = to_slot
+				};
+
+				if (move.item) {
+					items.push_back(move);
+					database.SaveInventory(CharacterID(), NULL, from_slot); // We have to manually save inventory here.
+				} else {
+					LinkDead();
+					return; // Prevent inventory desync here. Forcing a resync would be better, but we don't have a MoveItem struct to work with.
+				}
+			}
+
+			for (const MoveInfo& move : items) {
+				PutItemInInventory(move.to_slot, *move.item); // This saves inventory too
+			}
+		}
+
+	} else {
+		LinkDead(); // This packet should not be sent by an older client
+		return;
+	}
 }
 
 void Client::Handle_OP_OpenContainer(const EQApplicationPacket *app)
@@ -11958,15 +11984,7 @@ void Client::Handle_OP_PopupResponse(const EQApplicationPacket *app)
 
 	auto t = GetTarget();
 	if (t) {
-		if (t->IsNPC()) {
-			if (parse->HasQuestSub(t->GetNPCTypeID(), EVENT_POPUP_RESPONSE)) {
-				parse->EventNPC(EVENT_POPUP_RESPONSE, t->CastToNPC(), this, std::to_string(popup_response->popupid), 0);
-			}
-		} else if (t->IsBot()) {
-			if (parse->BotHasQuestSub(EVENT_POPUP_RESPONSE)) {
-				parse->EventBot(EVENT_POPUP_RESPONSE, t->CastToBot(), this, std::to_string(popup_response->popupid), 0);
-			}
-		}
+		parse->EventBotMercNPC(EVENT_POPUP_RESPONSE, t, this, [&]() { return std::to_string(popup_response->popupid); });
 	}
 }
 
@@ -13020,14 +13038,14 @@ void Client::Handle_OP_ReadBook(const EQApplicationPacket *app)
 		LogError("Wrong size: OP_ReadBook, size=[{}], expected [{}]", app->size, sizeof(BookRequest_Struct));
 		return;
 	}
-	BookRequest_Struct* book = (BookRequest_Struct*)app->pBuffer;
-	ReadBook(book);
-	if (ClientVersion() >= EQ::versions::ClientVersion::SoF)
-	{
-		EQApplicationPacket EndOfBook(OP_FinishWindow, 0);
-		QueuePacket(&EndOfBook);
+
+	auto b = (BookRequest_Struct*) app->pBuffer;
+	ReadBook(b);
+
+	if (ClientVersion() >= EQ::versions::ClientVersion::SoF) {
+		EQApplicationPacket end_of_book(OP_FinishWindow, 0);
+		QueuePacket(&end_of_book);
 	}
-	return;
 }
 
 void Client::Handle_OP_RecipeAutoCombine(const EQApplicationPacket *app)
@@ -13561,11 +13579,11 @@ void Client::Handle_OP_Sacrifice(const EQApplicationPacket *app)
 	}
 
 	if (ss->Confirm) {
-		Client *Caster = entity_list.GetClientByName(SacrificeCaster.c_str());
+		Mob *Caster = entity_list.GetMob(sacrifice_caster_id);
 		if (Caster) Sacrifice(Caster);
 	}
 	PendingSacrifice = false;
-	SacrificeCaster.clear();
+	sacrifice_caster_id = 0;
 }
 
 void Client::Handle_OP_SafeFallSuccess(const EQApplicationPacket *app)	// bit of a misnomer, sent whenever safe fall is used (success of fail)
@@ -13608,14 +13626,24 @@ void Client::Handle_OP_SelectTribute(const EQApplicationPacket *app)
 
 void Client::Handle_OP_SenseHeading(const EQApplicationPacket *app)
 {
-	if (!HasSkill(EQ::skills::SkillSenseHeading))
+	if (!HasSkill(EQ::skills::SkillSenseHeading)) {
 		return;
+	}
 
-	int chancemod = 0;
+	if (RuleB(Skills, TrainSenseHeading)) {
+		CheckIncreaseSkill(EQ::skills::SkillSenseHeading, nullptr, 0);
+		return;
+	}
 
-	CheckIncreaseSkill(EQ::skills::SkillSenseHeading, nullptr, chancemod);
+	if (parse->PlayerHasQuestSub(EVENT_USE_SKILL)) {
+		const auto& export_string = fmt::format(
+			"{} {}",
+			EQ::skills::SkillSenseHeading,
+			GetRawSkill(EQ::skills::SkillSenseHeading)
+		);
 
-	return;
+		parse->EventPlayer(EVENT_USE_SKILL, this, export_string, 0);
+	}
 }
 
 void Client::Handle_OP_SenseTraps(const EQApplicationPacket *app)
@@ -14664,12 +14692,18 @@ void Client::Handle_OP_Sneak(const EQApplicationPacket *app)
 		sa_out->parameter = 0;
 		entity_list.QueueClients(this, outapp, true);
 		safe_delete(outapp);
-	}
-	else {
+	} else {
 		CheckIncreaseSkill(EQ::skills::SkillSneak, nullptr, 5);
 	}
+
 	float hidechance = ((GetSkill(EQ::skills::SkillSneak) / 300.0f) + .25) * 100;
+
+	if (RuleB(Character, SneakAlwaysSucceedOver100)) {
+		hidechance = std::max(10, (int)GetSkill(EQ::skills::SkillSneak));
+	}
+
 	float random = zone->random.Real(0, 99);
+
 	if (!was && random < hidechance) {
 		sneaking = true;
 	}
@@ -14882,14 +14916,15 @@ void Client::Handle_OP_Split(const EQApplicationPacket *app)
 	Group *group = nullptr;
 	Raid *raid = nullptr;
 
-	if (IsRaidGrouped())
+	if (IsRaidGrouped()) {
 		raid = GetRaid();
-	else if (IsGrouped())
+	} else if (IsGrouped()) {
 		group = GetGroup();
+	}
 
 	// is there an actual error message for this?
 	if (raid == nullptr && group == nullptr) {
-		Message(Chat::Red, "You can not split money if you're not in a group.");
+		MessageString(Chat::Red, SPLIT_NO_GROUP);
 		return;
 	}
 
@@ -14897,14 +14932,15 @@ void Client::Handle_OP_Split(const EQApplicationPacket *app)
 		10 * static_cast<uint64>(split->silver) +
 		100 * static_cast<uint64>(split->gold) +
 		1000 * static_cast<uint64>(split->platinum))) {
-		Message(Chat::Red, "You do not have enough money to do that split.");
+		MessageString(Chat::Red, SPLIT_FAIL);
 		return;
 	}
 
-	if (raid)
+	if (raid) {
 		raid->SplitMoney(raid->GetGroup(this), split->copper, split->silver, split->gold, split->platinum);
-	else if (group)
-		group->SplitMoney(split->copper, split->silver, split->gold, split->platinum, this);
+	} else if (group) {
+		group->SplitMoney(split->copper, split->silver, split->gold, split->platinum, this, true);
+	}
 
 	return;
 
@@ -15532,7 +15568,7 @@ void Client::Handle_OP_Trader(const EQApplicationPacket *app)
 			break;
 		}
 		case TraderOn: {
-			if (Buyer) {
+			if (IsBuyer()) {
 				TraderEndTrader();
 				Message(Chat::Red, "You cannot be a Trader and Buyer at the same time.");
 				return;
@@ -15578,7 +15614,7 @@ void Client::Handle_OP_TraderBuy(const EQApplicationPacket *app)
 	auto trader = entity_list.GetClientByID(in->trader_id);
 
 	switch (in->method) {
-		case ByVendor: {
+		case BazaarByVendor: {
 			if (trader) {
 				LogTrading("Buy item directly from vendor id <green>[{}] item_id <green>[{}] quantity <green>[{}] "
 						   "serial_number <green>[{}]",
@@ -15591,7 +15627,7 @@ void Client::Handle_OP_TraderBuy(const EQApplicationPacket *app)
 			}
 			break;
 		}
-		case ByParcel: {
+		case BazaarByParcel: {
 			if (!RuleB(Parcel, EnableParcelMerchants) || !RuleB(Bazaar, EnableParcelDelivery)) {
 				LogTrading(
 					"Bazaar purchase attempt by parcel delivery though 'Parcel:EnableParcelMerchants' or "
@@ -15601,7 +15637,7 @@ void Client::Handle_OP_TraderBuy(const EQApplicationPacket *app)
 					Chat::Yellow,
 					"The bazaar parcel delivey system is not enabled on this server.  Please visit the vendor directly in the Bazaar."
 				);
-				in->method     = ByParcel;
+				in->method     = BazaarByParcel;
 				in->sub_action = Failed;
 				TradeRequestFailed(app);
 				return;
@@ -15616,7 +15652,7 @@ void Client::Handle_OP_TraderBuy(const EQApplicationPacket *app)
 			BuyTraderItemOutsideBazaar(in, app);
 			break;
 		}
-		case ByDirectToInventory: {
+		case BazaarByDirectToInventory: {
 			if (!RuleB(Parcel, EnableDirectToInventoryDelivery)) {
 				LogTrading("Bazaar purchase attempt by direct inventory delivery though "
 						   "'Parcel:EnableDirectToInventoryDelivery' not enabled."
@@ -15625,7 +15661,7 @@ void Client::Handle_OP_TraderBuy(const EQApplicationPacket *app)
 					Chat::Yellow,
 					"Direct inventory delivey is not enabled on this server.  Please visit the vendor directly."
 				);
-				in->method     = ByDirectToInventory;
+				in->method     = BazaarByDirectToInventory;
 				in->sub_action = Failed;
 				TradeRequestFailed(app);
 				return;
@@ -15642,7 +15678,7 @@ void Client::Handle_OP_TraderBuy(const EQApplicationPacket *app)
 				Chat::Yellow,
 				"Direct inventory delivey is not yet implemented.  Please visit the vendor directly or purchase via parcel delivery."
 			);
-			in->method     = ByDirectToInventory;
+			in->method     = BazaarByDirectToInventory;
 			in->sub_action = Failed;
 			TradeRequestFailed(app);
 			break;
@@ -16041,7 +16077,8 @@ void Client::Handle_OP_WearChange(const EQApplicationPacket *app)
 		wc->hero_forge_model = GetHerosForgeModel(wc->wear_slot_id);
 
 	// we could maybe ignore this and just send our own from moveitem
-	entity_list.QueueClients(this, app, false);
+	// We probably need to skip this entirely when it is send as an ack, but not sure how to ID that.
+	entity_list.QueueClients(this, app, true);
 }
 
 void Client::Handle_OP_WhoAllRequest(const EQApplicationPacket *app)
@@ -16788,9 +16825,14 @@ void Client::Handle_OP_RaidClearNPCMarks(const EQApplicationPacket* app)
 
 void Client::RecordStats()
 {
+	const uint32 character_id = CharacterID();
+	if (!character_id) {
+		return;
+	}
+
 	auto r = CharacterStatsRecordRepository::FindOne(
 		database,
-		CharacterID()
+		character_id
 	);
 
 	r.status                   = Admin();
@@ -16868,8 +16910,8 @@ void Client::RecordStats()
 	if (r.character_id > 0) {
 		CharacterStatsRecordRepository::UpdateOne(database, r);
 	} else {
-		r.character_id = CharacterID();
-		r.created_at = std::time(nullptr);
+		r.character_id = character_id;
+		r.created_at   = std::time(nullptr);
 		CharacterStatsRecordRepository::InsertOne(database, r);
 	}
 }

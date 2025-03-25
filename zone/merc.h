@@ -146,6 +146,9 @@ public:
 	bool IsMedding() { return _medding; };
 	bool IsSuspended() { return _suspended; };
 
+	void Signal(int signal_id);
+	void SendPayload(int payload_id, std::string payload_value);
+
 	static uint32 CalcPurchaseCost( uint32 templateID , uint8 level, uint8 currency_type = 0);
 	static uint32 CalcUpkeepCost( uint32 templateID , uint8 level, uint8 currency_type = 0);
 
@@ -162,7 +165,7 @@ public:
 	uint8 GetTierID() { return _TierID; }
 	uint32 GetCostFormula() { return _CostFormula; }
 	uint32 GetMercNameType() { return _NameType; }
-	EQ::constants::StanceType GetStance() { return _currentStance; }
+	uint8 GetStance() { return _currentStance; }
 	int GetHatedCount() { return _hatedCount; }
 
 	inline const uint8 GetClientVersion() const { return _OwnerClientVersion; }
@@ -252,7 +255,7 @@ public:
 	void SetMercNameType( uint8 nametype ) { _NameType = nametype; }
 	void SetClientVersion(uint8 clientVersion) { _OwnerClientVersion = clientVersion; }
 	void SetSuspended(bool suspended) { _suspended = suspended; }
-	void SetStance( EQ::constants::StanceType stance ) { _currentStance = stance; }
+	void SetStance(uint8 stance_id) { _currentStance = stance_id; }
 	void SetHatedCount( int count ) { _hatedCount = count; }
 
 	void Sit();
@@ -364,7 +367,7 @@ private:
 	uint8 _CostFormula;
 	uint8 _NameType;
 	uint8 _OwnerClientVersion;
-	EQ::constants::StanceType _currentStance;
+	uint8 _currentStance;
 
 	EQ::InventoryProfile m_inv;
 	int64 max_end;

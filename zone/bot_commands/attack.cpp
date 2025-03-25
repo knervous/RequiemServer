@@ -35,12 +35,17 @@ void bot_command_attack(Client *c, const Seperator *sep)
 		return;
 	}
 
+	if (!c->HasBotAttackFlag(target_mob)) {
+		target_mob->SetBotAttackFlag(c->CharacterID());
+		target_mob->bot_attack_flag_timer.Start(10000);
+	}
+
 	size_t attacker_count = 0;
 	Bot *first_attacker = nullptr;
 	sbl.remove(nullptr);
 	for (auto bot_iter : sbl) {
 
-		if (bot_iter->GetAppearance() != eaDead && bot_iter->GetBotStance() != EQ::constants::stancePassive) {
+		if (bot_iter->GetAppearance() != eaDead && bot_iter->GetBotStance() != Stance::Passive) {
 
 			if (!first_attacker) {
 				first_attacker = bot_iter;

@@ -225,7 +225,8 @@ public:
 	void assigntask(int taskid, bool enforce_level_requirement = false);
 	void failtask(int taskid);
 	int tasktimeleft(int taskid);
-	int istaskcompleted(int taskid);
+	bool istaskcompleted(int task_id);
+	bool aretaskscompleted(const std::vector<int>& task_ids);
 	int enabledtaskcount(int taskset);
 	int firsttaskinset(int taskset);
 	int lasttaskinset(int taskset);
@@ -356,9 +357,12 @@ public:
 	void SendChannelMessage(Client* from, const char* to, uint8 channel_number, uint32 guild_id, uint8 language_id, uint8 language_skill, const char* message);
 	std::string GetAutoLoginCharacterNameByAccountID(uint32 account_id);
 	bool SetAutoLoginCharacterNameByAccountID(uint32 account_id, const std::string& character_name);
+	void SpawnCircle(uint32 npc_id, glm::vec4 position, float radius, uint32 points);
+	void SpawnGrid(uint32 npc_id, glm::vec4 position, float spacing, uint32 spawn_count);
 
 	Bot *GetBot() const;
 	Client *GetInitiator() const;
+	Merc* GetMerc() const;
 	NPC *GetNPC() const;
 	Mob *GetOwner() const;
 	EQ::InventoryProfile* GetInventory() const;

@@ -1214,25 +1214,23 @@ void Lua_Client::AddPVPPoints(uint32 points) {
 	self->AddPVPPoints(points);
 }
 
-void Lua_Client::AddCrystals(uint32 radiant, uint32 ebon) {
+void Lua_Client::AddCrystals(uint32 radiant_count, uint32 ebon_count) {
 	Lua_Safe_Call_Void();
 
-	if (ebon != 0) {
-		if (ebon > 0) {
-			self->AddEbonCrystals(ebon);
-			return;
+	if (ebon_count != 0) {
+		if (ebon_count > 0) {
+			self->AddEbonCrystals(ebon_count);
+		} else {
+			self->RemoveEbonCrystals(ebon_count);
 		}
-
-		self->RemoveEbonCrystals(ebon);
 	}
 
-	if (radiant != 0) {
-		if (radiant > 0) {
-			self->AddRadiantCrystals(radiant);
-			return;
+	if (radiant_count != 0) {
+		if (radiant_count > 0) {
+			self->AddRadiantCrystals(radiant_count);
+		} else {
+			self->RemoveRadiantCrystals(radiant_count);
 		}
-
-		self->RemoveRadiantCrystals(radiant);
 	}
 }
 
@@ -1411,9 +1409,9 @@ void Lua_Client::FailTask(int task) {
 	self->FailTask(task);
 }
 
-bool Lua_Client::IsTaskCompleted(int task) {
+bool Lua_Client::IsTaskCompleted(int task_id) {
 	Lua_Safe_Call_Bool();
-	return self->IsTaskCompleted(task) != 0;
+	return self->IsTaskCompleted(task_id);
 }
 
 bool Lua_Client::IsTaskActive(int task) {
@@ -1771,7 +1769,7 @@ int Lua_Client::CalcATK() {
 	return self->CalcATK();
 }
 
-void Lua_Client::FilteredMessage(Mob *sender, uint32 type, int filter, const char *message)
+void Lua_Client::FilteredMessage(Lua_Mob sender, uint32 type, int filter, const char *message)
 {
 	Lua_Safe_Call_Void();
 	self->FilteredMessage(sender, type, (eqFilterType)filter, message);
@@ -3218,6 +3216,12 @@ void Lua_Client::GrantAllAAPoints(uint8 unlock_level)
 	self->GrantAllAAPoints(unlock_level);
 }
 
+void Lua_Client::GrantAllAAPoints(uint8 unlock_level, bool skip_grant_only)
+{
+	Lua_Safe_Call_Void();
+	self->GrantAllAAPoints(unlock_level, skip_grant_only);
+}
+
 void Lua_Client::AddEbonCrystals(uint32 amount)
 {
 	Lua_Safe_Call_Void();
@@ -3381,6 +3385,57 @@ uint8 Lua_Client::GetSkillTrainLevel(int skill_id)
 	return self->GetSkillTrainLevel(static_cast<EQ::skills::SkillType>(skill_id), self->GetClass());
 }
 
+bool Lua_Client::AreTasksCompleted(luabind::object task_ids)
+{
+	Lua_Safe_Call_Int();
+
+	if (luabind::type(task_ids) != LUA_TTABLE) {
+		return false;
+	}
+
+	std::vector<int> v;
+	int index = 1;
+	while (luabind::type(task_ids[index]) != LUA_TNIL) {
+		auto current_id = task_ids[index];
+		int task_id = 0;
+		if (luabind::type(current_id) != LUA_TNIL) {
+			try {
+				task_id = luabind::object_cast<int>(current_id);
+			} catch(luabind::cast_failed &) {
+			}
+		} else {
+			break;
+		}
+
+		v.push_back(task_id);
+		++index;
+	}
+
+	if (v.empty()) {
+		return false;
+	}
+
+	return self->AreTasksCompleted(v);
+}
+
+void Lua_Client::AreaTaunt()
+{
+	Lua_Safe_Call_Void();
+	entity_list.AETaunt(self);
+}
+
+void Lua_Client::AreaTaunt(float range)
+{
+	Lua_Safe_Call_Void();
+	entity_list.AETaunt(self, range);
+}
+
+void Lua_Client::AreaTaunt(float range, int bonus_hate)
+{
+	Lua_Safe_Call_Void();
+	entity_list.AETaunt(self, range, bonus_hate);
+}
+
 luabind::scope lua_register_client() {
 	return luabind::class_<Lua_Client, Lua_Mob>("Client")
 	.def(luabind::constructor<>())
@@ -3427,6 +3482,10 @@ luabind::scope lua_register_client() {
 	.def("ApplySpellRaid", (void(Lua_Client::*)(int,int,int,bool))&Lua_Client::ApplySpellRaid)
 	.def("ApplySpellRaid", (void(Lua_Client::*)(int,int,int,bool,bool))&Lua_Client::ApplySpellRaid)
 	.def("ApplySpellRaid", (void(Lua_Client::*)(int,int,int,bool,bool,bool))&Lua_Client::ApplySpellRaid)
+	.def("AreTasksCompleted", (bool(Lua_Client::*)(luabind::object))&Lua_Client::AreTasksCompleted)
+	.def("AreaTaunt", (void(Lua_Client::*)(void))&Lua_Client::AreaTaunt)
+	.def("AreaTaunt", (void(Lua_Client::*)(float))&Lua_Client::AreaTaunt)
+	.def("AreaTaunt", (void(Lua_Client::*)(float, int))&Lua_Client::AreaTaunt)
 	.def("AssignTask", (void(Lua_Client::*)(int))&Lua_Client::AssignTask)
 	.def("AssignTask", (void(Lua_Client::*)(int,int))&Lua_Client::AssignTask)
 	.def("AssignTask", (void(Lua_Client::*)(int,int,bool))&Lua_Client::AssignTask)
@@ -3646,6 +3705,7 @@ luabind::scope lua_register_client() {
 	.def("GoFish", (void(Lua_Client::*)(void))&Lua_Client::GoFish)
 	.def("GrantAllAAPoints", (void(Lua_Client::*)(void))&Lua_Client::GrantAllAAPoints)
 	.def("GrantAllAAPoints", (void(Lua_Client::*)(uint8))&Lua_Client::GrantAllAAPoints)
+	.def("GrantAllAAPoints", (void(Lua_Client::*)(uint8,bool))&Lua_Client::GrantAllAAPoints)
 	.def("GrantAlternateAdvancementAbility", (bool(Lua_Client::*)(int, int))&Lua_Client::GrantAlternateAdvancementAbility)
 	.def("GrantAlternateAdvancementAbility", (bool(Lua_Client::*)(int, int, bool))&Lua_Client::GrantAlternateAdvancementAbility)
 	.def("GuildID", (uint32(Lua_Client::*)(void))&Lua_Client::GuildID)

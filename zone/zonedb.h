@@ -405,7 +405,6 @@ public:
 	/* Buyer/Barter  */
 	void AddBuyLine(uint32 CharID, uint32 BuySlot, uint32 ItemID, const char *ItemName, uint32 Quantity, uint32 Price);
 	void RemoveBuyLine(uint32 CharID, uint32 BuySlot);
-	void DeleteBuyLines(uint32 CharID);
 	void UpdateBuyLine(uint32 CharID, uint32 BuySlot, uint32 Quantity);
 
 
@@ -442,7 +441,7 @@ public:
 	bool LoadCharacterBindPoint(uint32 character_id, PlayerProfile_Struct* pp);
 	bool LoadCharacterCurrency(uint32 character_id, PlayerProfile_Struct* pp);
 	bool LoadCharacterData(uint32 character_id, PlayerProfile_Struct* pp, ExtendedProfile_Struct* m_epp);
-	bool LoadCharacterDisciplines(uint32 character_id, PlayerProfile_Struct* pp);
+	bool LoadCharacterDisciplines(Client* c);
 	bool LoadCharacterFactionValues(uint32 character_id, faction_map & val_list);
 	bool LoadCharacterLanguages(uint32 character_id, PlayerProfile_Struct* pp);
 	bool LoadCharacterLeadershipAbilities(uint32 character_id, PlayerProfile_Struct* pp);
@@ -567,9 +566,6 @@ public:
 	bool		GetPoweredPetEntry(const std::string& pet_type, int16 pet_power, PetRecord* r);
 	bool		GetBasePetItems(int32 equipmentset, uint32 *items);
 	BeastlordPetData::PetStruct GetBeastlordPetData(uint16 race_id);
-	void		AddLootTableToNPC(NPC* npc, uint32 loottable_id, ItemList* itemlist, uint32* copper, uint32* silver, uint32* gold, uint32* plat);
-	void		AddLootDropToNPC(NPC* npc, uint32 lootdrop_id, ItemList* item_list, uint8 droplimit, uint8 mindrop);
-	uint32		GetMaxNPCSpellsID();
 	uint32		GetMaxNPCSpellsEffectsID();
 	bool GetAuraEntry(uint16 spell_id, AuraRecord &record);
 	void LoadGlobalLoot();

@@ -8,6 +8,7 @@ class EntityList;
 class Lua_Mob;
 class Lua_Client;
 class Lua_Bot;
+class Lua_Merc;
 class Lua_NPC;
 class Lua_Door;
 class Lua_Corpse;
@@ -142,6 +143,22 @@ public:
 	Lua_Mob_List GetCloseMobList(Lua_Mob mob);
 	Lua_Mob_List GetCloseMobList(Lua_Mob mob, float distance);
 	Lua_Mob_List GetCloseMobList(Lua_Mob mob, float distance, bool ignore_self);
+	void AreaAttack(Lua_Mob attacker, float distance);
+	void AreaAttack(Lua_Mob attacker, float distance, int16 slot_id);
+	void AreaAttack(Lua_Mob attacker, float distance, int16 slot_id, int count);
+	void AreaAttack(Lua_Mob attacker, float distance, int16 slot_id, int count, bool is_from_spell);
+	void AreaAttack(Lua_Mob attacker, float distance, int16 slot_id, int count, bool is_from_spell, int attack_rounds);
+	void AreaSpell(Lua_Mob caster, Lua_Mob center, uint16 spell_id);
+	void AreaSpell(Lua_Mob caster, Lua_Mob center, uint16 spell_id, bool affect_caster);
+	void AreaSpell(Lua_Mob caster, Lua_Mob center, uint16 spell_id, bool affect_caster, int16 resist_adjust);
+	void AreaSpell(Lua_Mob caster, Lua_Mob center, uint16 spell_id, bool affect_caster, int16 resist_adjust, int max_targets);
+	void AreaTaunt(Lua_Client caster);
+	void AreaTaunt(Lua_Client caster, float range);
+	void AreaTaunt(Lua_Client caster, float range, int bonus_hate);
+	void MassGroupBuff(Lua_Mob caster, Lua_Mob center, uint16 spell_id);
+	void MassGroupBuff(Lua_Mob caster, Lua_Mob center, uint16 spell_id, bool affect_caster);
+	Lua_NPC_List GetNPCsByIDs(luabind::adl::object npc_ids);
+	Lua_NPC_List GetNPCsByExcludedIDs(luabind::adl::object npc_ids);
 };
 
 #endif

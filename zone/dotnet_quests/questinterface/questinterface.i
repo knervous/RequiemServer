@@ -27,6 +27,9 @@
 %ignore Client::GetParcelTimer;
 %ignore ZoneSpellsBlocked::m_Location;
 %ignore ZoneSpellsBlocked::m_Difference;
+%ignore Mob::m_scan_close_mobs_timer;
+%ignore Mob::m_mob_check_moving_timer;
+%ignore Mob::bot_attack_flag_timer;
 %ignore Trap::m_Position;
 %ignore worldserver;
 %ignore spells;
@@ -72,6 +75,7 @@
 %ignore Zone::spawn2_timer;
 %ignore Zone::hot_reload_timer;
 %ignore Zone::GetInitgridsTimer;
+%ignore SwarmPet::duration;
 %ignore Spawn2::GetTimer;
 %ignore ZoneDatabase::AddLootTableToNPC;
 %ignore ZoneDatabase::AddLootDropToNPC;
@@ -81,6 +85,7 @@
 %ignore QuestManager::ClearTimers;
 %ignore DBcore::QueryDatabase;
 %ignore DBcore::QueryDatabaseMulti;
+%ignore EQ::Timer;
 
 %ignore RuleManager::InvalidBool;
 %ignore RuleManager::InvalidReal;

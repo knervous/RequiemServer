@@ -198,7 +198,7 @@ void bot_command_clone(Client *c, const Seperator *sep)
 		return;
 	}
 
-	int clone_stance = EQ::constants::stancePassive;
+	int clone_stance = Stance::Passive;
 	if (!database.botdb.LoadStance(my_bot->GetBotID(), clone_stance)) {
 		c->Message(
 			Chat::White,
@@ -857,7 +857,7 @@ void bot_command_spawn(Client *c, const Seperator *sep)
 		c->Message(
 			Chat::White,
 			fmt::format(
-				"Usage: {} [bot_name]",
+				"Usage: {} [bot_name] [optional: silent]",
 				sep->arg[0]
 			).c_str()
 		);
@@ -1045,9 +1045,17 @@ void bot_command_spawn(Client *c, const Seperator *sep)
 		message_index = VALIDATECLASSID(my_bot->GetClass());
 	}
 
-	if (c->GetBotOption(Client::booSpawnMessageSay)) {
+	std::string silent_confirm = sep->arg[2];
+	bool silentTell = false;
+
+	if (!silent_confirm.compare("silent")) {
+		silentTell = true;
+	}
+
+	if (!silentTell && c->GetBotOption(Client::booSpawnMessageSay)) {
 		Bot::BotGroupSay(my_bot, bot_spawn_message[message_index].c_str());
-	} else if (c->GetBotOption(Client::booSpawnMessageTell)) {
+	}
+	else if (!silentTell && c->GetBotOption(Client::booSpawnMessageTell)) {
 		my_bot->OwnerMessage(bot_spawn_message[message_index]);
 	}
 }
@@ -1058,33 +1066,47 @@ void bot_command_stance(Client *c, const Seperator *sep)
 		return;
 	if (helper_is_help_or_usage(sep->arg[1])) {
 		c->Message(Chat::White, "usage: %s [current | value: 1-9] ([actionable: target | byname] ([actionable_name]))", sep->arg[0]);
-		c->Message(Chat::White, "value: %u(%s), %u(%s), %u(%s), %u(%s), %u(%s), %u(%s), %u(%s)",
-				   EQ::constants::stancePassive, EQ::constants::GetStanceName(EQ::constants::stancePassive),
-				   EQ::constants::stanceBalanced, EQ::constants::GetStanceName(EQ::constants::stanceBalanced),
-				   EQ::constants::stanceEfficient, EQ::constants::GetStanceName(EQ::constants::stanceEfficient),
-				   EQ::constants::stanceReactive, EQ::constants::GetStanceName(EQ::constants::stanceReactive),
-				   EQ::constants::stanceAggressive, EQ::constants::GetStanceName(EQ::constants::stanceAggressive),
-				   EQ::constants::stanceAssist, EQ::constants::GetStanceName(EQ::constants::stanceAssist),
-				   EQ::constants::stanceBurn, EQ::constants::GetStanceName(EQ::constants::stanceBurn),
-				   EQ::constants::stanceEfficient2, EQ::constants::GetStanceName(EQ::constants::stanceEfficient2),
-				   EQ::constants::stanceBurnAE, EQ::constants::GetStanceName(EQ::constants::stanceBurnAE)
+		c->Message(
+			Chat::White,
+			fmt::format(
+				"Value: {} ({}), {} ({}), {} ({}), {} ({}), {} ({}), {} ({}), {} ({}), {} ({}), {} ({})",
+				Stance::Passive,
+				Stance::GetName(Stance::Passive),
+				Stance::Balanced,
+				Stance::GetName(Stance::Balanced),
+				Stance::Efficient,
+				Stance::GetName(Stance::Efficient),
+				Stance::Reactive,
+				Stance::GetName(Stance::Reactive),
+				Stance::Aggressive,
+				Stance::GetName(Stance::Aggressive),
+				Stance::Assist,
+				Stance::GetName(Stance::Assist),
+				Stance::Burn,
+				Stance::GetName(Stance::Burn),
+				Stance::Efficient2,
+				Stance::GetName(Stance::Efficient2),
+				Stance::AEBurn,
+				Stance::GetName(Stance::AEBurn)
+			).c_str()
 		);
 		return;
 	}
 	int ab_mask = (ActionableBots::ABM_Target | ActionableBots::ABM_ByName);
 
 	bool current_flag = false;
-	auto bst = EQ::constants::stanceUnknown;
+	uint8 bst = Stance::Unknown;
 
 	if (!strcasecmp(sep->arg[1], "current"))
 		current_flag = true;
 	else if (sep->IsNumber(1)) {
-		bst = (EQ::constants::StanceType)Strings::ToInt(sep->arg[1]);
-		if (bst < EQ::constants::stanceUnknown || bst > EQ::constants::stanceBurnAE)
-			bst = EQ::constants::stanceUnknown;
+		bst = static_cast<uint8>(Strings::ToUnsignedInt(sep->arg[1]));
+		if (!Stance::IsValid(bst)) {
+			bst = Stance::Unknown;
+		}
 	}
 
-	if (!current_flag && bst == EQ::constants::stanceUnknown) {
+	if (!current_flag && bst == Stance::Unknown) {
 		c->Message(Chat::White, "A [current] argument or valid numeric [value] is required to use this command");
 		return;
 	}
@@ -1106,8 +1128,8 @@ void bot_command_stance(Client *c, const Seperator *sep)
 			bot_iter,
 			fmt::format(
 				"My current stance is {} ({}).",
-				EQ::constants::GetStanceName(bot_iter->GetBotStance()),
-				static_cast<int>(bot_iter->GetBotStance())
+				Stance::GetName(bot_iter->GetBotStance()),
+				bot_iter->GetBotStance()
 			).c_str()
 		);
 	}

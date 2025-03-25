@@ -159,7 +159,7 @@ namespace EQ
 		#ifndef SWIG
 		using namespace RoF2::invslot::enum_;
 		#endif
-		
+
 
 		using RoF2::invslot::SLOT_INVALID;
 		using RoF2::invslot::SLOT_BEGIN;
@@ -279,19 +279,6 @@ namespace EQ
 		const size_t SAY_LINK_CLOSER_SIZE = 1;
 		const size_t SAY_LINK_MAXIMUM_SIZE = (SAY_LINK_OPENER_SIZE + SAY_LINK_BODY_SIZE + SAY_LINK_TEXT_SIZE + SAY_LINK_CLOSER_SIZE);
 
-		enum StanceType : int {
-			stanceUnknown = 0,
-			stancePassive,
-			stanceBalanced,
-			stanceEfficient,
-			stanceReactive,
-			stanceAggressive,
-			stanceAssist,
-			stanceBurn,
-			stanceEfficient2,
-			stanceBurnAE
-		};
-
 		enum BotSpellIDs : int {
 			Warrior = 3001,
 			Cleric,
@@ -344,73 +331,6 @@ namespace EQ
 			Laying,
 			Looting
 		};
-		#ifdef SWIG_VERSION
-		enum EQObjectTypes : int {
-		#else
-		enum ObjectTypes : int {
-		#endif
-			SmallBag,
-			LargeBag,
-			Quiver,
-			BeltPouch,
-			WristPouch,
-			Backpack,
-			SmallChest,
-			LargeChest,
-			Bandolier,
-			Medicine,
-			Tinkering,
-			Lexicon,
-			PoisonMaking,
-			Quest,
-			MixingBowl,
-			Baking,
-			Tailoring,
-			Blacksmithing,
-			Fletching,
-			Brewing,
-			JewelryMaking,
-			Pottery,
-			Kiln,
-			KeyMaker,
-			ResearchWIZ,
-			ResearchMAG,
-			ResearchNEC,
-			ResearchENC,
-			Unknown,
-			ResearchPractice,
-			Alchemy,
-			HighElfForge,
-			DarkElfForge,
-			OgreForge,
-			DwarfForge,
-			GnomeForge,
-			BarbarianForge,
-			IksarForge,
-			HumanForgeOne,
-			HumanForgeTwo,
-			HalflingTailoringOne,
-			HalflingTailoringTwo,
-			EruditeTailoring,
-			WoodElfTailoring,
-			WoodElfFletching,
-			IksarPottery,
-			Fishing,
-			TrollForge,
-			WoodElfForge,
-			HalflingForge,
-			EruditeForge,
-			Merchant,
-			FroglokForge,
-			Augmenter,
-			Churn,
-			TransformationMold,
-			DetransformationMold,
-			Unattuner,
-			TradeskillBag,
-			CollectibleBag,
-			NoDeposit
-		};
 
 		enum WeatherTypes : uint8 {
 			None,
@@ -437,9 +357,6 @@ namespace EQ
 			Proximity
 		};
 
-		const char *GetStanceName(StanceType stance_type);
-		int ConvertStanceTypeToIndex(StanceType stance_type);
-
 		extern const std::map<uint8, std::string>& GetLanguageMap();
 		std::string GetLanguageName(uint8 language_id);
 
@@ -448,9 +365,6 @@ namespace EQ
 
 		extern const std::map<int8, std::string>& GetFlyModeMap();
 		std::string GetFlyModeName(int8 flymode_id);
-
-		extern const std::map<uint8, std::string>& GetAccountStatusMap();
-		std::string GetAccountStatusName(uint8 account_status);
 
 		extern const std::map<uint8, std::string>& GetConsiderLevelMap();
 		std::string GetConsiderLevelName(uint8 consider_level);
@@ -463,9 +377,6 @@ namespace EQ
 
 		extern const std::map<uint8, std::string>& GetSpawnAnimationMap();
 		std::string GetSpawnAnimationName(uint8 animation_id);
-
-		extern const std::map<int, std::string>& GetObjectTypeMap();
-		std::string GetObjectTypeName(int object_type);
 
 		extern const std::map<uint8, std::string>& GetWeatherTypeMap();
 		std::string GetWeatherTypeName(uint8 weather_type);
@@ -481,10 +392,6 @@ namespace EQ
 
 		extern const std::map<uint32, std::string>& GetConsiderColorMap();
 		std::string GetConsiderColorName(uint32 consider_color);
-
-		const int STANCE_TYPE_FIRST = stancePassive;
-		const int STANCE_TYPE_LAST = stanceBurnAE;
-		const int STANCE_TYPE_COUNT = stanceBurnAE;
 
 	} /*constants*/
 
@@ -552,7 +459,7 @@ namespace EQ
 			Raid,
 			Guild
 		};
-	}; // namespace consent
+	};
 } /*EQEmu*/
 
 enum ServerLockType : int {
@@ -798,7 +705,11 @@ namespace Bug {
 		constexpr uint32 Crash          = 2;
 		constexpr uint32 TargetInfo     = 4;
 		constexpr uint32 CharacterFlags = 8;
+#ifdef SWIG_VERSION
+		constexpr uint32 InformationFlag_Unknown    = 4294967280;
+#else
 		constexpr uint32 Unknown        = 4294967280;
+#endif
 	}
 
 	uint32 GetID(const std::string& category_name);
@@ -821,5 +732,67 @@ static std::map<uint32, std::string> bug_category_names = {
 	{ Bug::Category::LoNTCG,        "LoN - TCG" },
 	{ Bug::Category::Mercenaries,   "Mercenaries" }
 };
+
+	namespace Stance {
+#ifdef SWIG_VERSION
+	constexpr uint32 Stance_Unknown    = 0;
+	constexpr uint32 Stance_Passive    = 1;
+#else
+	constexpr uint32 Unknown    = 0;
+	constexpr uint32 Passive    = 1;
+#endif
+	constexpr uint32 Balanced   = 2;
+	constexpr uint32 Efficient  = 3;
+	constexpr uint32 Reactive   = 4;
+	constexpr uint32 Aggressive = 5;
+	constexpr uint32 Assist     = 6;
+	constexpr uint32 Burn       = 7;
+	constexpr uint32 Efficient2 = 8;
+	constexpr uint32 AEBurn     = 9;
+
+#ifdef SWIG_VERSION
+	std::string Stance_GetName(uint8 stance_id);
+	uint8 Stance_GetIndex(uint8 stance_id);
+	bool Stance_IsValid(uint8 stance_id);
+#else
+	std::string GetName(uint8 stance_id);
+	uint8 GetIndex(uint8 stance_id);
+	bool IsValid(uint8 stance_id);
+#endif
+}
+
+static std::map<uint32, std::string> stance_names = {
+#ifdef SWIG_VERSION
+	{ Stance::Stance_Unknown,    "Unknown" },
+	{ Stance::Stance_Passive,    "Passive" },
+#else
+	{ Stance::Unknown,    "Unknown" },
+	{ Stance::Passive,    "Passive" },
+#endif
+
+	{ Stance::Balanced,   "Balanced" },
+	{ Stance::Efficient,  "Efficient" },
+	{ Stance::Reactive,   "Reactive" },
+	{ Stance::Aggressive, "Aggressive" },
+	{ Stance::Assist,     "Assist" },
+	{ Stance::Burn,       "Burn" },
+	{ Stance::Efficient2, "Efficient" },
+	{ Stance::AEBurn,     "AE Burn" }
+};
+
+namespace PCNPCOnlyFlagType {
+	constexpr int PC  = 1;
+	#ifdef SWIG_VERSION
+		constexpr int FlagType_NPC = 2;
+	#else
+		constexpr int NPC = 2;
+	#endif
+}
+
+namespace BookType {
+	constexpr uint8 Scroll   = 0;
+	constexpr uint8 Book     = 1;
+	constexpr uint8 ItemInfo = 2;
+}
 
 #endif /*COMMON_EMU_CONSTANTS_H*/

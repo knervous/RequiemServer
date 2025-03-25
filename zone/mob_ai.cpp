@@ -1391,29 +1391,8 @@ void Mob::AI_Process() {
 				StopNavigation();
 			}
 		}
-		else if (zone->CanDoCombat() && CastToNPC()->GetNPCAggro() && AI_scan_area_timer && AI_scan_area_timer->Check()) {
-
-			/**
-			 * NPC to NPC aggro (npc_aggro flag set)
-			 */
-			for (auto &close_mob : close_mobs) {
-				Mob *mob = close_mob.second;
-
-				if (mob->IsClient()) {
-					continue;
-				}
-
-				if (CheckWillAggro(mob)) {
-					AddToHateList(mob);
-				}
-			}
-
-			AI_scan_area_timer->Disable();
-			AI_scan_area_timer->Start(
-				RandomTimer(RuleI(NPC, NPCToNPCAggroTimerMin), RuleI(NPC, NPCToNPCAggroTimerMax)),
-				false
-			);
-
+		else if (zone->CanDoCombat() && IsNPC() && CastToNPC()->GetNPCAggro() && AI_scan_area_timer && AI_scan_area_timer->Check()) {
+			CastToNPC()->DoNpcToNpcAggroScan();
 		}
 		else if (AI_movement_timer->Check() && !IsRooted()) {
 			if (IsPet()) {
@@ -1776,6 +1755,8 @@ void Mob::AI_Event_Engaged(Mob *attacker, bool yell_for_help)
 
 	SetAppearance(eaStanding);
 
+	parse->EventBotMerc(EVENT_COMBAT, this, attacker, [&] { return "1"; });
+
 	if (IsNPC()) {
 		CastToNPC()->AIautocastspell_timer->Start(300, false);
 
@@ -1814,12 +1795,6 @@ void Mob::AI_Event_Engaged(Mob *attacker, bool yell_for_help)
 			}
 		}
 	}
-
-	if (IsBot()) {
-		if (parse->BotHasQuestSub(EVENT_COMBAT)) {
-			parse->EventBot(EVENT_COMBAT, CastToBot(), attacker, "1", 0);
-		}
-	}
 }
 
 // Note: Hate list may not be actually clear until after this function call completes
@@ -1840,27 +1815,19 @@ void Mob::AI_Event_NoLongerEngaged() {
 	StopNavigation();
 	ClearRampage();
 
+	parse->EventBotMercNPC(EVENT_COMBAT, this, nullptr, [&]() { return "0"; });
+
 	if (IsNPC()) {
 		SetPrimaryAggro(false);
 		SetAssistAggro(false);
 		if (CastToNPC()->GetCombatEvent() && GetHP() > 0) {
-			if (entity_list.GetNPCByID(GetID())) {
-				if (parse->HasQuestSub(GetNPCTypeID(), EVENT_COMBAT)) {
-					parse->EventNPC(EVENT_COMBAT, CastToNPC(), nullptr, "0", 0);
-				}
-
-				const uint32 emote_id = CastToNPC()->GetEmoteID();
-				if (emote_id) {
-					CastToNPC()->DoNPCEmote(EQ::constants::EmoteEventTypes::LeaveCombat, emote_id);
-				}
-
-				m_combat_record.Stop();
-				CastToNPC()->SetCombatEvent(false);
+			const uint32 emote_id = CastToNPC()->GetEmoteID();
+			if (emote_id) {
+				CastToNPC()->DoNPCEmote(EQ::constants::EmoteEventTypes::LeaveCombat, emote_id);
 			}
-		}
-	} else if (IsBot()) {
-		if (parse->BotHasQuestSub(EVENT_COMBAT)) {
-			parse->EventBot(EVENT_COMBAT, CastToBot(), nullptr, "0", 0);
+
+			m_combat_record.Stop();
+			CastToNPC()->SetCombatEvent(false);
 		}
 	}
 }
@@ -2929,25 +2896,6 @@ DBnpcspells_Struct *ZoneDatabase::GetNPCSpells(uint32 npc_spells_id)
 	}
 
 	return nullptr;
-}
-
-uint32 ZoneDatabase::GetMaxNPCSpellsID() {
-
-	std::string query = "SELECT max(id) from npc_spells";
-	auto results = QueryDatabase(query);
-	if (!results.Success()) {
-		return 0;
-	}
-
-    if (results.RowCount() != 1)
-        return 0;
-
-    auto row = results.begin();
-
-    if (!row[0])
-        return 0;
-
-    return Strings::ToInt(row[0]);
 }
 
 DBnpcspellseffects_Struct *ZoneDatabase::GetNPCSpellsEffects(uint32 iDBSpellsEffectsID)

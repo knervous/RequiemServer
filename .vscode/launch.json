@@ -48,7 +48,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/build/bin/world",
-			"cwd": "${workspaceFolder}/build/bin",
+			"cwd": "/home/eqemu/server",
 			"MIMode": "gdb",
 			"setupCommands": [
 				{
@@ -87,13 +87,13 @@
 			]
 		},
 		{
-			"name": "(gdb) zone neriakb",
+			"name": "(gdb) zone qeynos2",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/build/bin/zone",
-			"cwd": "${workspaceFolder}/build/bin",
+			"cwd": "/home/eqemu/server",
 			"args": [
-				"neriakb",
+				"qeynos2",
 			],
 			"MIMode": "gdb",
 			"setupCommands": [

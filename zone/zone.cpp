@@ -69,6 +69,7 @@
 #include "../common/repositories/alternate_currency_repository.h"
 #include "../common/repositories/graveyard_repository.h"
 #include "../common/repositories/trader_repository.h"
+#include "../common/repositories/buyer_repository.h"
 
 #include <time.h>
 
@@ -1199,13 +1200,6 @@ bool Zone::Init(bool is_static) {
 	LoadZoneObjects();
 	LoadZoneDoors();
 	LoadZoneBlockedSpells();
-
-	//clear trader items if we are loading the bazaar
-	if (strncasecmp(short_name, "bazaar", 6) == 0) {
-		TraderRepository::Truncate(database);
-		database.DeleteBuyLines(0);
-	}
-
 	LoadVeteranRewards();
 	LoadAlternateCurrencies();
 	LoadNPCEmotes(&npc_emote_list);
@@ -2695,6 +2689,22 @@ uint32 Zone::GetSpawnKillCount(uint32 in_spawnid) {
 		iterator.Advance();
 	}
 	return 0;
+}
+
+bool Zone::IsWaterZone(float z)
+{
+
+	switch (GetZoneID()) {
+		case Zones::KEDGE:
+			return true;
+		case Zones::POWATER:
+			if (z < 0.0f) {
+				return true;
+			}
+			return false;
+		default:
+			return false;
+	}
 }
 
 void Zone::SetIsHotzone(bool is_hotzone)

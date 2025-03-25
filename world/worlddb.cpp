@@ -34,7 +34,6 @@ WorldDatabase content_db;
 extern std::vector<RaceClassAllocation> character_create_allocations;
 extern std::vector<RaceClassCombos> character_create_race_class_combos;
 
-
 /**
  * @param account_id
  * @param out_app

@@ -45,8 +45,8 @@ struct SPDat_Spell_Struct;
 struct NPCFactionList;
 struct FactionAssociations;
 
-namespace EQ
-{
+
+namespace EQ {
 
 	struct ItemData;
 	class ItemInstance;
@@ -56,6 +56,11 @@ namespace EQ
 
 using ItemInstanceGenerateCallback = std::function<void(EQ::ItemInstance*)>;
 
+struct Book_Struct
+{
+	uint8       language;
+	std::string text;
+};
 
 /*
     This object is inherited by world and zone's DB object,
@@ -89,7 +94,7 @@ public:
 	SharedDatabase();
 	SharedDatabase(const char *host, const char *user, const char *passwd, const char *database, uint32 port);
 	virtual ~SharedDatabase();
-	
+
 	/**
 	 * Character
 	 */
@@ -142,7 +147,7 @@ public:
 		int admin
 	);
 
-	std::string GetBook(const char *txtfile, int16 *language);
+	Book_Struct GetBook(const std::string& text_file);
 
 	/**
 	 * items

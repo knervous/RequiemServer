@@ -66,6 +66,7 @@
 #endif
 
 #include "database.h"
+#include "data_verification.h"
 #include "eq_packet_structs.h"
 #include "extprofile.h"
 #include "strings.h"
@@ -77,6 +78,8 @@
 #include "zone_store.h"
 #include "repositories/merchantlist_temp_repository.h"
 #include "repositories/bot_data_repository.h"
+#include "repositories/trader_repository.h"
+#include "repositories/buyer_repository.h"
 
 extern Client client;
 
@@ -282,16 +285,31 @@ bool Database::SetAccountStatus(const std::string& account_name, int16 status)
 
 bool Database::ReserveName(uint32 account_id, const std::string& name)
 {
-	const auto& l = CharacterDataRepository::GetWhere(
-		*this,
-		fmt::format(
-			"`name` = '{}'",
-			Strings::Escape(name)
-		)
+	const std::string& where_filter = fmt::format(
+		"`name` = '{}'",
+		Strings::Escape(name)
 	);
 
-	if (!l.empty()) {
-		LogInfo("Account: [{}] tried to request name: [{}], but it is already taken", account_id, name);
+	if (RuleB(Bots, Enabled)) {
+		const auto& b = BotDataRepository::GetWhere(*this, where_filter);
+
+		if (!b.empty()) {
+			LogInfo("Account [{}] requested name [{}] but name is already taken by a bot", account_id, name);
+			return false;
+		}
+	}
+
+	const auto& c = CharacterDataRepository::GetWhere(*this, where_filter);
+
+	if (!c.empty()) {
+		LogInfo("Account [{}] requested name [{}] but name is already taken by a character", account_id, name);
+		return false;
+	}
+
+	const auto& n = NpcTypesRepository::GetWhere(*this, where_filter);
+
+	if (!n.empty()) {
+		LogInfo("Account [{}] requested name [{}] but name is already taken by an NPC", account_id, name);
 		return false;
 	}
 
@@ -306,13 +324,15 @@ bool Database::ReserveName(uint32 account_id, const std::string& name)
 		return false;
 	}
 
-	const int guild_id = RuleI(Character, DefaultGuild);
+	const uint32 guild_id   = RuleI(Character, DefaultGuild);
+	const uint8  guild_rank = EQ::Clamp(RuleI(Character, DefaultGuildRank), 0, 8);
 	if (guild_id != 0) {
 		if (e.id) {
 			auto g = GuildMembersRepository::NewEntity();
 
 			g.char_id  = e.id;
 			g.guild_id = guild_id;
+			g.rank_    = guild_rank;
 
 			GuildMembersRepository::InsertOne(*this, g);
 		}
@@ -1628,16 +1648,29 @@ uint32 Database::GetGuildIDByCharID(uint32 character_id)
 
 uint32 Database::GetGroupIDByCharID(uint32 character_id)
 {
-	const auto& e = GroupIdRepository::FindOne(*this, character_id);
+	const auto& e = GroupIdRepository::GetWhere(
+		*this,
+		fmt::format(
+			"`character_id` = {}",
+			character_id
+		)
+	);
 
-	return e.character_id ? e.group_id : 0;
+	return e.size() == 1 ? e.front().group_id : 0;
 }
 
 uint32 Database::GetRaidIDByCharID(uint32 character_id)
 {
-	const auto& e = RaidMembersRepository::FindOne(*this, character_id);
 
-	return e.charid ? e.raidid : 0;
+	const auto& e = RaidMembersRepository::GetWhere(
+		*this,
+		fmt::format(
+			"`charid` = {}",
+			character_id
+		)
+	);
+
+	return e.size() == 1 ? e.front().raidid : 0;
 }
 
 int64 Database::CountInvSnapshots()
@@ -1827,7 +1860,7 @@ bool Database::CopyCharacter(
 
 	const int64 new_character_id = (CharacterDataRepository::GetMaxId(*this) + 1);
 
-	std::vector<std::string> tables_to_zero_id = { "keyring", "data_buckets" };
+	std::vector<std::string> tables_to_zero_id = { "keyring", "data_buckets", "character_instance_safereturns" };
 
 	TransactionBegin();
 
@@ -2103,4 +2136,14 @@ void Database::PurgeCharacterParcels()
 void Database::ClearGuildOnlineStatus()
 {
 	GuildMembersRepository::ClearOnlineStatus(*this);
+}
+
+void Database::ClearTraderDetails()
+{
+	TraderRepository::Truncate(*this);
+}
+
+void Database::ClearBuyerDetails()
+{
+	BuyerRepository::DeleteBuyer(*this, 0);
 }

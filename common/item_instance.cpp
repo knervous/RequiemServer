@@ -32,10 +32,11 @@
 
 //#include <iostream>
 
-int32 NextItemInstSerialNumber = 1;
+int32 next_item_serial_number = 1;
+std::unordered_set<uint64> guids{};
 
-static inline int32 GetNextItemInstSerialNumber() {
-
+static inline int32 GetNextItemInstSerialNumber()
+{
 	// The Bazaar relies on each item a client has up for Trade having a unique
 	// identifier. This 'SerialNumber' is sent in Serialized item packets and
 	// is used in Bazaar packets to identify the item a player is buying or inspecting.
@@ -46,12 +47,18 @@ static inline int32 GetNextItemInstSerialNumber() {
 	// NextItemInstSerialNumber is the next one to hand out.
 	//
 	// It is very unlikely to reach 2,147,483,647. Maybe we should call abort(), rather than wrapping back to 1.
-	if(NextItemInstSerialNumber >= INT_MAX)
-		NextItemInstSerialNumber = 1;
-	else
-		NextItemInstSerialNumber++;
+	if (next_item_serial_number >= INT32_MAX) {
+		next_item_serial_number = 1;
+	}
+	else {
+		next_item_serial_number++;
+	}
 
-	return NextItemInstSerialNumber;
+	while (guids.contains(next_item_serial_number)) {
+		next_item_serial_number++;
+	}
+
+	return next_item_serial_number;
 }
 
 //
@@ -303,47 +310,34 @@ int8 EQ::ItemInstance::AvailableAugmentSlot(int32 augment_type) const
 		return INVALID_INDEX;
 	}
 
-	auto i = invaug::SOCKET_BEGIN;
-	for (; i <= invaug::SOCKET_END; ++i) {
-		if (GetItem(i)) {
-			continue;
-		}
-
-		if (
-			augment_type == -1 ||
-			(
-				m_item->AugSlotType[i] &&
-				((1 << (m_item->AugSlotType[i] - 1)) & augment_type)
-			)
-		) {
-			break;
+	for (int16 slot_id = invaug::SOCKET_BEGIN; slot_id <= invaug::SOCKET_END; ++slot_id) {
+		if (IsAugmentSlotAvailable(augment_type, slot_id)) {
+			return slot_id;
 		}
 	}
 
-	return (i <= invaug::SOCKET_END) ? i : INVALID_INDEX;
+	return INVALID_INDEX;
 }
 
 bool EQ::ItemInstance::IsAugmentSlotAvailable(int32 augment_type, uint8 slot) const
 {
-	if (!m_item || !m_item->IsClassCommon()) {
+	if (!m_item || !m_item->IsClassCommon() || GetItem(slot)) {
 		return false;
 	}
 
-	if (
+	return (
 		(
-			!GetItem(slot) &&
-			m_item->AugSlotVisible[slot]
+			augment_type == -1 ||
+			(
+				m_item->AugSlotType[slot] &&
+				((1 << (m_item->AugSlotType[slot] - 1)) & augment_type)
+			)
 		) &&
-		augment_type == -1 ||
 		(
-			m_item->AugSlotType[slot] &&
-			((1 << (m_item->AugSlotType[slot] - 1)) & augment_type)
+			RuleB(Items, AugmentItemAllowInvisibleAugments) ||
+			m_item->AugSlotVisible[slot]
 		)
-	) {
-		return true;
-	}
-
-	return false;
+	);
 }
 
 // Retrieve item inside container
@@ -1944,6 +1938,15 @@ int EQ::ItemInstance::GetItemSkillsStat(EQ::skills::SkillType skill, bool augmen
 	return stat;
 }
 
+void EQ::ItemInstance::AddGUIDToMap(uint64 existing_serial_number)
+{
+	guids.emplace(existing_serial_number);
+}
+
+void EQ::ItemInstance::ClearGUIDMap()
+{
+	guids.clear();
+}
 //
 // class EvolveInfo
 //

@@ -201,9 +201,12 @@ public:
 
 	void DisplayInfo(Mob *mob);
 
-	std::unordered_map<uint16, Mob *> close_mobs;
-	Timer                             mob_close_scan_timer;
-	Timer                             mob_check_moving_timer;
+	std::unordered_map<uint16, Mob *> m_close_mobs;
+	Timer                             m_scan_close_mobs_timer;
+	Timer                             m_mob_check_moving_timer;
+
+	// Bot attack flag
+	Timer bot_attack_flag_timer;
 
 	//Somewhat sorted: needs documenting!
 
@@ -234,13 +237,7 @@ public:
 	int compute_defense();
 	int GetTotalDefense(); // compute_defense + spell bonuses
 	bool CheckHitChance(Mob* attacker, DamageHitInfo &hit);
-	bool RollMeleeCritCheck(Mob *defender, EQ::skills::SkillType skill);
-	inline bool CanUndeadSlay() { return static_cast<bool>(GetUndeadSlayRate());}
-	inline bool IsUndeadForSlay() { return (GetBodyType() == BodyType::Undead || GetBodyType() == BodyType::SummonedUndead || GetBodyType() == BodyType::Vampire); }
-	int GetUndeadSlayRate();
-	void DoUndeadSlay(DamageHitInfo &hit, int crit_mod);
 	void TryCriticalHit(Mob *defender, DamageHitInfo &hit, ExtraAttackOptions *opts = nullptr);
-	bool TryUndeadSlay(Mob *defender, DamageHitInfo &hit, ExtraAttackOptions *opts = nullptr);
 	void TryPetCriticalHit(Mob *defender, DamageHitInfo &hit);
 	virtual bool TryFinishingBlow(Mob *defender, int64 &damage);
 	int TryHeadShot(Mob* defender, EQ::skills::SkillType skillInUse);
@@ -450,6 +447,7 @@ public:
 	void BuffFadeBySlot(int slot, bool iRecalcBonuses = true);
 	void BuffFadeDetrimentalByCaster(Mob *caster);
 	void BuffFadeBySitModifier();
+	void BuffFadeSongs();
 	void BuffDetachCaster(Mob *caster);
 	bool IsAffectedByBuffByGlobalGroup(GlobalGroup group);
 	void BuffModifyDurationBySpellID(uint16 spell_id, int32 newDuration);
@@ -684,6 +682,7 @@ public:
 	inline const float GetRelativeHeading() const { return m_RelativePosition.w; }
 	inline const float GetSize() const { return size; }
 	inline const float GetBaseSize() const { return base_size; }
+	inline const float SetBestZ(float z_coord) const { return z_coord + GetZOffset(); }
 	inline const GravityBehavior GetFlyMode() const { return flymode; }
 	bool IsBoat() const; // Checks races - used on mob instantiation
 	bool GetIsBoat() const { return is_boat; } // Set on instantiation for speed
@@ -723,6 +722,7 @@ public:
 	float GetMovespeed() const { return IsRunning() ? GetRunspeed() : GetWalkspeed(); }
 	bool IsRunning() const { return m_is_running; }
 	void SetRunning(bool val) { m_is_running = val; }
+	float GetCurrentSpeed() { return current_speed; }
 	virtual void GMMove(float x, float y, float z, float heading = 0.01, bool save_guard_spot = true);
 	virtual void GMMove(const glm::vec4 &position, bool save_guard_spot = true);
 	void SetDelta(const glm::vec4& delta);
@@ -1080,6 +1080,7 @@ public:
 	inline virtual bool HasOwner() { if (!GetOwnerID()){ return false; } return entity_list.GetMob(GetOwnerID()) != 0; }
 	inline virtual bool IsPet() { return HasOwner() && !IsMerc(); }
 	bool HasPet() const;
+	virtual bool IsCharmedPet() { return IsPet() && IsCharmed(); }
 	inline bool HasTempPetsActive() const { return(hasTempPet); }
 	inline void SetTempPetsActive(bool i) { hasTempPet = i; }
 	inline int16 GetTempPetCount() const { return count_TempPet; }
@@ -1104,6 +1105,11 @@ public:
 
 	bool invulnerable;
 	bool qglobal;
+
+	inline std::vector<uint32> GetBotAttackFlags() { return bot_attack_flags; }
+	inline void SetBotAttackFlag(uint32 value) { bot_attack_flags.push_back(value); }
+	inline void ClearBotAttackFlags() { bot_attack_flags.clear(); }
+	bool HasBotAttackFlag(Mob* tar);
 
 	virtual void SetAttackTimer();
 	inline void SetInvul(bool invul) { invulnerable=invul; }
@@ -1216,8 +1222,12 @@ public:
 	int GetFearSpeed() { return _GetFearSpeed(); }
 	bool IsFeared() { return (spellbonuses.IsFeared || flee_mode); } // This returns true if the mob is feared or fleeing due to low HP
 	inline void StartFleeing() { flee_mode = true; CalculateNewFearpoint(); }
+	void StopFleeing();
+	inline bool IsFleeing() { return flee_mode; }
 	void ProcessFlee();
 	void CheckFlee();
+	void FleeInfo(Mob* client);
+	int GetFleeRatio(Mob* other = nullptr);
 	inline bool IsBlind() { return spellbonuses.IsBlind; }
 
 	inline bool			CheckAggro(Mob* other) {return hate_list.IsEntOnHateList(other);}
@@ -1475,6 +1485,12 @@ public:
 	void CalcHeroicBonuses(StatBonuses* newbon);
 
 	DataBucketKey GetScopedBucketKeys();
+
+	bool IsCloseToBanker();
+
+	void ScanCloseMobProcess();
+	std::unordered_map<uint16, Mob *> &GetCloseMobList(float distance = 0.0f);
+	void CheckScanCloseMobsMovingTimer();
 
 protected:
 	void CommonDamage(Mob* other, int64 &damage, const uint16 spell_id, const EQ::skills::SkillType attack_skill, bool &avoidable, const int8 buffslot, const bool iBuffTic, eSpecialAttacks specal = eSpecialAttacks::None);
@@ -1859,6 +1875,9 @@ protected:
 	bool pet_owner_client; // Flags pets as belonging to a Client
 	bool pet_owner_npc;    // Flags pets as belonging to an NPC
 	uint32 pet_targetlock_id;
+
+	//bot attack flags
+	std::vector<uint32> bot_attack_flags;
 
 	glm::vec3 m_TargetRing;
 

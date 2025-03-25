@@ -696,7 +696,7 @@ void EntityList::AddNPC(NPC *npc, bool send_spawn_packet, bool dont_queue)
 	npc_list.emplace(std::pair<uint16, NPC *>(npc->GetID(), npc));
 	mob_list.emplace(std::pair<uint16, Mob *>(npc->GetID(), npc));
 
-	entity_list.ScanCloseMobs(npc->close_mobs, npc, true);
+	entity_list.ScanCloseMobs(npc);
 
 	if (parse->HasQuestSub(npc->GetNPCTypeID(), EVENT_SPAWN)) {
 		parse->EventNPC(EVENT_SPAWN, npc, nullptr, "", 0);
@@ -776,6 +776,10 @@ void EntityList::AddMerc(Merc *merc, bool SendSpawnPacket, bool dontqueue)
 
 		merc_list.emplace(std::pair<uint16, Merc *>(merc->GetID(), merc));
 		mob_list.emplace(std::pair<uint16, Mob *>(merc->GetID(), merc));
+
+		if (parse->MercHasQuestSub(EVENT_SPAWN)) {
+			parse->EventMerc(EVENT_SPAWN, merc, nullptr, "", 0);
+		}
 	}
 }
 
@@ -1655,7 +1659,10 @@ void EntityList::QueueClientsByTarget(Mob *sender, const EQApplicationPacket *ap
 					Send = clear_target_window;
 					if (c->GetGM() || RuleB(Spells, AlwaysSendTargetsBuffs)) {
 						if (c->GetGM()) {
-							c->Message(Chat::White, "Your GM flag allows you to always see your targets' buffs.");
+							if (!c->EntityVariableExists(SEE_BUFFS_FLAG)) {
+								c->Message(Chat::White, "Your GM flag allows you to always see your targets' buffs.");
+								c->SetEntityVariable(SEE_BUFFS_FLAG, "1");
+							}
 						}
 
 						Send = !clear_target_window;
@@ -1739,8 +1746,7 @@ void EntityList::QueueCloseClients(
 	}
 
 	float distance_squared = distance * distance;
-
-	for (auto &e : GetCloseMobList(sender, distance)) {
+	for (auto &e : sender->GetCloseMobList(distance)) {
 		Mob *mob = e.second;
 		if (!mob) {
 			continue;
@@ -2883,7 +2889,7 @@ bool EntityList::RemoveMobFromCloseLists(Mob *mob)
 			entity_id
 		);
 
-		it->second->close_mobs.erase(entity_id);
+		it->second->m_close_mobs.erase(entity_id);
 		++it;
 	}
 
@@ -2908,49 +2914,40 @@ void EntityList::RemoveAuraFromMobs(Mob *aura)
 	}
 }
 
-/**
- * The purpose of this system is so that we cache relevant entities that are "close"
- *
- * In general; it becomes incredibly expensive to run zone-wide checks against every single mob in the zone when in reality
- * we only care about entities closest to us
- *
- * A very simple example of where this is relevant is Aggro, the below example is skewed because the overall implementation
- * of Aggro was also tweaked in conjunction with close lists. We also scan more aggressively when entities are moving (1-6 seconds)
- * versus 60 seconds when idle. We also have entities that are moving add themselves to those closest to them so that their close
- * lists remain always up to date
- *
- * Before: Aggro checks for NPC to Client aggro | (40 clients in zone) x (525 npcs) x 2 (times a second) = 2,520,000 checks a minute
- * After: Aggro checks for NPC to Client aggro | (40 clients in zone) x (20-30 npcs) x 2 (times a second) = 144,000 checks a minute (This is actually far less today)
- *
- * Places in the code where this logic makes a huge impact
- *
- * Aggro checks (zone wide -> close)
- * Aura processing (zone wide -> close)
- * AE Taunt (zone wide -> close)
- * AOE Spells (zone wide -> close)
- * Bard Pulse AOE (zone wide -> close)
- * Mass Group Buff (zone wide -> close)
- * AE Attack (zone wide -> close)
- * Packet QueueCloseClients (zone wide -> close)
- * Check Close Beneficial Spells (Buffs; should I heal other npcs) (zone wide -> close)
- * AI Yell for Help (NPC Assist other NPCs) (zone wide -> close)
- *
- * All of the above makes a tremendous impact on the bottom line of cpu cycle performance because we run an order of magnitude
- * less checks by focusing our hot path logic down to a very small subset of relevant entities instead of looping an entire
- * entity list (zone wide)
- *
- * @param close_mobs
- * @param scanning_mob
- */
-void EntityList::ScanCloseMobs(
-	std::unordered_map<uint16, Mob *> &close_mobs,
-	Mob *scanning_mob,
-	bool add_self_to_other_lists
-)
+// The purpose of this system is so that we cache relevant entities that are "close"
+//
+// In general; it becomes incredibly expensive to run zone-wide checks against every single mob in the zone when in reality
+// we only care about entities closest to us
+//
+// A very simple example of where this is relevant is Aggro, the below example is skewed because the overall implementation
+// of Aggro was also tweaked in conjunction with close lists. We also scan more aggressively when entities are moving (1-6 seconds)
+// versus 60 seconds when idle. We also have entities that are moving add themselves to those closest to them so that their close
+// lists remain always up to date
+//
+// Before: Aggro checks for NPC to Client aggro | (40 clients in zone) x (525 npcs) x 2 (times a second) = 2,520,000 checks a minute
+// After: Aggro checks for NPC to Client aggro | (40 clients in zone) x (20-30 npcs) x 2 (times a second) = 144,000 checks a minute (This is // tually far less today)
+//
+// Places in the code where this logic makes a huge impact
+//
+// Aggro checks (zone wide -> close)
+// Aura processing (zone wide -> close)
+// AE Taunt (zone wide -> close)
+// AOE Spells (zone wide -> close)
+// Bard Pulse AOE (zone wide -> close)
+// Mass Group Buff (zone wide -> close)
+// AE Attack (zone wide -> close)
+// Packet QueueCloseClients (zone wide -> close)
+// Check Close Beneficial Spells (Buffs; should I heal other npcs) (zone wide -> close)
+// AI Yell for Help (NPC Assist other NPCs) (zone wide -> close)
+//
+// All of the above makes a tremendous impact on the bottom line of cpu cycle performance because we run an order of magnitude
+// less checks by focusing our hot path logic down to a very small subset of relevant entities instead of looping an entire
+// entity list (zone wide)
+void EntityList::ScanCloseMobs(Mob *scanning_mob)
 {
 	float scan_range = RuleI(Range, MobCloseScanDistance) * RuleI(Range, MobCloseScanDistance);
 
-	close_mobs.clear();
+	scanning_mob->m_close_mobs.clear();
 
 	for (auto &e : mob_list) {
 		auto mob = e.second;
@@ -2960,12 +2957,13 @@ void EntityList::ScanCloseMobs(
 
 		float distance = DistanceSquared(scanning_mob->GetPosition(), mob->GetPosition());
 		if (distance <= scan_range || mob->GetAggroRange() >= scan_range) {
-			close_mobs.emplace(std::pair<uint16, Mob *>(mob->GetID(), mob));
+			scanning_mob->m_close_mobs.emplace(std::pair<uint16, Mob *>(mob->GetID(), mob));
 
-			if (add_self_to_other_lists && scanning_mob->GetID() > 0) {
+			// add self to other mobs close list
+			if (scanning_mob->GetID() > 0) {
 				bool has_mob = false;
 
-				for (auto &cm: mob->close_mobs) {
+				for (auto &cm: mob->m_close_mobs) {
 					if (scanning_mob->GetID() == cm.first) {
 						has_mob = true;
 						break;
@@ -2973,7 +2971,7 @@ void EntityList::ScanCloseMobs(
 				}
 
 				if (!has_mob) {
-					mob->close_mobs.insert(std::pair<uint16, Mob *>(scanning_mob->GetID(), scanning_mob));
+					mob->m_close_mobs.insert(std::pair<uint16, Mob *>(scanning_mob->GetID(), scanning_mob));
 				}
 			}
 		}
@@ -2982,7 +2980,7 @@ void EntityList::ScanCloseMobs(
 	LogAIScanCloseDetail(
 		"[{}] Scanning Close List | list_size [{}] moving [{}]",
 		scanning_mob->GetCleanName(),
-		close_mobs.size(),
+		scanning_mob->m_close_mobs.size(),
 		scanning_mob->IsMoving() ? "true" : "false"
 	);
 }
@@ -4445,7 +4443,7 @@ void EntityList::QuestJournalledSayClose(
 	buf.WriteInt32(0);
 
 	if (RuleB(Chat, QuestDialogueUsesDialogueWindow)) {
-		for (auto &e : GetCloseMobList(sender, (dist * dist))) {
+		for (auto &e : sender->GetCloseMobList(dist)) {
 			Mob *mob = e.second;
 			if (!mob) {
 				continue;
@@ -4478,6 +4476,36 @@ void EntityList::QuestJournalledSayClose(
 	// client only bothers logging if target spawn ID matches, safe to send to everyone
 	QueueCloseClients(sender, outapp, false, dist);
 	delete outapp;
+}
+
+bool Entity::CheckCoordLosNoZLeaps(float cur_x, float cur_y, float cur_z,
+		float trg_x, float trg_y, float trg_z, float perwalk)
+{
+	if (zone->zonemap == nullptr) {
+		return true;
+	}
+
+	glm::vec3 myloc;
+	glm::vec3 oloc;
+	glm::vec3 hit;
+
+	myloc.x = cur_x;
+	myloc.y = cur_y;
+	myloc.z = cur_z+5;
+
+	oloc.x = trg_x;
+	oloc.y = trg_y;
+	oloc.z = trg_z+5;
+
+	if (myloc.x == oloc.x && myloc.y == oloc.y && myloc.z == oloc.z) {
+		return true;
+	}
+
+	if (!zone->zonemap->LineIntersectsZoneNoZLeaps(myloc,oloc,perwalk,&hit)) {
+		return true;
+	}
+
+	return false;
 }
 
 Corpse *EntityList::GetClosestCorpse(Mob *sender, const char *Name)
@@ -5618,7 +5646,7 @@ std::vector<Mob*> EntityList::GetTargetsForVirusEffect(Mob *spreader, Mob *origi
 
 	std::vector<Mob *> spreader_list        = {};
 	bool               is_detrimental_spell = IsDetrimentalSpell(spell_id);
-	for (auto          &it : entity_list.GetCloseMobList(spreader, range)) {
+	for (auto          &it : spreader->GetCloseMobList(range)) {
 		Mob *mob = it.second;
 		if (!mob) {
 			continue;
@@ -5748,7 +5776,7 @@ void EntityList::ReloadMerchants() {
 std::unordered_map<uint16, Mob *> &EntityList::GetCloseMobList(Mob *mob, float distance)
 {
 	if (distance <= RuleI(Range, MobCloseScanDistance)) {
-		return mob->close_mobs;
+		return mob->m_close_mobs;
 	}
 
 	return mob_list;
@@ -5912,4 +5940,40 @@ void EntityList::DamageArea(
 			e->Damage(sender, damage, SPELL_UNKNOWN, EQ::skills::SkillEagleStrike);
 		}
 	}
+}
+
+std::vector<NPC*> EntityList::GetNPCsByIDs(std::vector<uint32> npc_ids)
+{
+	std::vector<NPC*> v;
+
+	for (const auto& e : GetNPCList()) {
+		const auto& n = std::find(npc_ids.begin(), npc_ids.end(), e.second->GetNPCTypeID());
+		if (e.second) {
+			if (n != npc_ids.end()) {
+				continue;
+			}
+
+			v.emplace_back(e.second);
+		}
+	}
+
+	return v;
+}
+
+std::vector<NPC*> EntityList::GetExcludedNPCsByIDs(std::vector<uint32> npc_ids)
+{
+	std::vector<NPC*> v;
+
+	for (const auto& e : GetNPCList()) {
+		const auto& n = std::find(npc_ids.begin(), npc_ids.end(), e.second->GetNPCTypeID());
+		if (e.second) {
+			if (n == npc_ids.end()) {
+				continue;
+			}
+
+			v.emplace_back(e.second);
+		}
+	}
+
+	return v;
 }

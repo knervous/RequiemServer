@@ -1522,6 +1522,7 @@ bool IsSummonPetSpell(uint16 spell_id);
 bool IsSummonPCSpell(uint16 spell_id);
 bool IsPetSpell(uint16 spell_id);
 bool IsCharmSpell(uint16 spell_id);
+bool IsResurrectionSicknessSpell(uint16 spell_id);
 bool IsBlindSpell(uint16 spell_id);
 bool IsHealthSpell(uint16 spell_id);
 bool IsCastTimeReductionSpell(uint16 spell_id);
@@ -1624,5 +1625,8 @@ bool IsSpellUsableInThisZoneType(uint16 spell_id, uint8 zone_type);
 const char *GetSpellName(uint16 spell_id);
 int GetSpellStatValue(uint16 spell_id, const char* stat_identifier, uint8 slot = 0);
 bool IsCastRestrictedSpell(uint16 spell_id);
+bool IsAegolismSpell(uint16 spell_id);
+bool AegolismStackingIsSymbolSpell(uint16 spell_id);
+bool AegolismStackingIsArmorClassSpell(uint16 spell_id);
 
 #endif

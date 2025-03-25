@@ -60,6 +60,8 @@ class Bot;
 
 extern EntityList entity_list;
 
+constexpr const char* SEE_BUFFS_FLAG = "see_buffs_flag";
+
 class Entity
 {
 public:
@@ -114,6 +116,7 @@ public:
 	inline const time_t& GetSpawnTimeStamp() const { return spawn_timestamp; }
 
 	virtual const char* GetName() { return ""; }
+	bool CheckCoordLosNoZLeaps(float cur_x, float cur_y, float cur_z, float trg_x, float trg_y, float trg_z, float perwalk=1);
 
 	Bot* CastToBot();
 	const Bot* CastToBot() const;
@@ -432,23 +435,24 @@ public:
 	void	QueueToGroupsForNPCHealthAA(Mob* sender, const EQApplicationPacket* app);
 
 	void AEAttack(
-		Mob *attacker,
+		Mob* attacker,
 		float distance,
-		int Hand = EQ::invslot::slotPrimary,
-		int count = 0,
+		int16 slot_id = EQ::invslot::slotPrimary,
+		int hit_count = 0,
 		bool is_from_spell = false,
 		int attack_rounds = 1
 	);
-	void AETaunt(Client *caster, float range = 0, int32 bonus_hate = 0);
+	void AETaunt(Client* caster, float range = 0, int bonus_hate = 0);
 	void AESpell(
-		Mob *caster,
-		Mob *center,
+		Mob* caster,
+		Mob* center,
 		uint16 spell_id,
 		bool affect_caster = true,
 		int16 resist_adjust = 0,
-		int *max_targets = nullptr
+		int* max_targets = nullptr,
+		bool is_scripted = false
 	);
-	void MassGroupBuff(Mob *caster, Mob *center, uint16 spell_id, bool affect_caster = true);
+	void MassGroupBuff(Mob* caster, Mob* center, uint16 spell_id, bool affect_caster = true);
 
 	//trap stuff
 	Mob*	GetTrapTrigger(Trap* trap);
@@ -500,9 +504,10 @@ public:
 	Mob*	GetTargetForMez(Mob* caster);
 	uint32	CheckNPCsClose(Mob *center);
 
+	int		FleeAllyCount(Mob* attacker, Mob* skipped);
 	Corpse* GetClosestCorpse(Mob* sender, const char *Name);
 	void	TryWakeTheDead(Mob* sender, Mob* target, int32 spell_id, uint32 max_distance, uint32 duration, uint32 amount_pets);
-	NPC* GetClosestBanker(Mob* sender, uint32 &distance);
+	NPC*	GetClosestBanker(Mob* sender, uint32 &distance);
 	void	CameraEffect(uint32 duration, float intensity);
 	Mob*	GetClosestMobByBodyType(Mob* sender, uint8 BodyType, bool skip_client_pets=false);
 	void	ForceGroupUpdate(uint32 gid);
@@ -554,17 +559,16 @@ public:
 
 	std::unordered_map<uint16, Mob *> &GetCloseMobList(Mob *mob, float distance = 0.0f);
 
+	std::vector<NPC*> GetNPCsByIDs(std::vector<uint32> npc_ids);
+	std::vector<NPC*> GetExcludedNPCsByIDs(std::vector<uint32> npc_ids);
+
 	void	DepopAll(int NPCTypeID, bool StartSpawnTimer = true);
 
 	uint16 GetFreeID();
 	void RefreshAutoXTargets(Client *c);
 	void RefreshClientXTargets(Client *c);
 	void SendAlternateAdvancementStats();
-	void ScanCloseMobs(
-		std::unordered_map<uint16, Mob *> &close_mobs,
-		Mob *scanning_mob,
-		bool add_self_to_other_lists = false
-	);
+	void ScanCloseMobs(Mob *scanning_mob);
 
 	void GetTrapInfo(Client* c);
 	bool IsTrapGroupSpawned(uint32 trap_id, uint8 group);
