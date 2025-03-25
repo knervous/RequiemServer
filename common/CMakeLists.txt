@@ -125,6 +125,8 @@ SET(common_sources
     patches/rof2_limits.cpp
     patches/titanium.cpp
     patches/titanium_limits.cpp
+    patches/web.cpp
+    patches/web_limits.cpp
     patches/uf.cpp
     patches/uf_limits.cpp
     StackWalker/StackWalker.cpp
@@ -713,6 +715,10 @@ SET(common_headers
     patches/uf_limits.h
     patches/uf_ops.h
     patches/uf_structs.h
+    patches/web.h
+    patches/web_limits.h
+    patches/web_ops.h
+    patches/web_structs.h
     termcolor/rang.hpp
     stacktrace/backward.hpp
     StackWalker/StackWalker.h
@@ -795,6 +801,10 @@ SOURCE_GROUP(Patches FILES
     patches/titanium_limits.h
     patches/titanium_ops.h
     patches/titanium_structs.h
+    patches/web.h
+    patches/web_limits.h
+    patches/web_ops.h
+    patches/web_structs.h
     patches/uf.h
     patches/uf_limits.h
     patches/uf_ops.h
@@ -810,6 +820,8 @@ SOURCE_GROUP(Patches FILES
     patches/rof2_limits.cpp
     patches/titanium.cpp
     patches/titanium_limits.cpp
+    patches/web.cpp
+    patches/web_limits.cpp
     patches/uf.cpp
     patches/uf_limits.cpp
 )

@@ -627,4 +627,5 @@ N(OP_ZoneSpawns),
 N(OP_ZoneUnavail),
 N(OP_ResetAA),
 N(OP_UnderWorld),
+N(OP_WebInitiateConnection),
 // mail and chat opcodes located in ../mail_oplist.h

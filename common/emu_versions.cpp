@@ -76,6 +76,8 @@ uint32 EQ::versions::ConvertClientVersionToClientVersionBit(ClientVersion client
 		return bitRoF;
 	case ClientVersion::RoF2:
 		return bitRoF2;
+	case ClientVersion::Web:
+		return bitWeb;
 	default:
 		return bitUnknown;
 	}
@@ -96,6 +98,8 @@ EQ::versions::ClientVersion EQ::versions::ConvertClientVersionBitToClientVersion
 		return ClientVersion::RoF;
 	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::RoF2) - 1)) :
 		return ClientVersion::RoF2;
+	case ((uint32)1 << (static_cast<unsigned int>(ClientVersion::Web) - 1)):
+		return ClientVersion::Web;
 	default:
 		return ClientVersion::Unknown;
 	}
@@ -235,6 +239,8 @@ EQ::versions::ClientVersion EQ::versions::ConvertMobVersionToClientVersion(MobVe
 		return ClientVersion::RoF;
 	case MobVersion::RoF2:
 		return ClientVersion::RoF2;
+	case MobVersion::Web:
+		return ClientVersion::Web;
 	default:
 		return ClientVersion::Unknown;
 	}
@@ -258,6 +264,8 @@ EQ::versions::MobVersion EQ::versions::ConvertClientVersionToMobVersion(ClientVe
 		return MobVersion::RoF;
 	case ClientVersion::RoF2:
 		return MobVersion::RoF2;
+	case ClientVersion::Web:
+		return MobVersion::Web;
 	default:
 		return MobVersion::Unknown;
 	}
@@ -278,6 +286,8 @@ EQ::versions::MobVersion EQ::versions::ConvertPCMobVersionToOfflinePCMobVersion(
 		return MobVersion::OfflineRoF;
 	case MobVersion::RoF2:
 		return MobVersion::OfflineRoF2;
+	case MobVersion::Web:
+		return MobVersion::OfflineWeb;
 	default:
 		return MobVersion::Unknown;
 	}
@@ -298,6 +308,8 @@ EQ::versions::MobVersion EQ::versions::ConvertOfflinePCMobVersionToPCMobVersion(
 		return MobVersion::RoF;
 	case MobVersion::OfflineRoF2:
 		return MobVersion::RoF2;
+	case MobVersion::Web:
+		return MobVersion::OfflineWeb;
 	default:
 		return MobVersion::Unknown;
 	}
@@ -318,6 +330,8 @@ EQ::versions::ClientVersion EQ::versions::ConvertOfflinePCMobVersionToClientVers
 		return ClientVersion::RoF;
 	case MobVersion::OfflineRoF2:
 		return ClientVersion::RoF2;
+	case MobVersion::OfflineWeb:
+		return ClientVersion::Web;
 	default:
 		return ClientVersion::Unknown;
 	}
@@ -338,6 +352,8 @@ EQ::versions::MobVersion EQ::versions::ConvertClientVersionToOfflinePCMobVersion
 		return MobVersion::OfflineRoF;
 	case ClientVersion::RoF2:
 		return MobVersion::OfflineRoF2;
+	case ClientVersion::Web:
+		return MobVersion::OfflineWeb;
 	default:
 		return MobVersion::Unknown;
 	}
