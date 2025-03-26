@@ -46,10 +46,16 @@ func GenerateCertAndStartServer(port int) ([]byte, []byte) {
 
 func runHTTPServer(port int, certHash [32]byte) {
 	mux := http.NewServeMux()
+	fmt.Printf("Starting hash server on port %d", port)
 	mux.HandleFunc("/hash", func(w http.ResponseWriter, _ *http.Request) {
 		w.Write([]byte(b64.StdEncoding.EncodeToString(certHash[:])))
 	})
-	http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
+	if err != nil {
+		fmt.Println("Got error starting hash server")
+		fmt.Println(err)
+		panic(err)
+	}
 }
 
 func getTLSConf(start, end time.Time) (*tls.Config, []byte, error) {

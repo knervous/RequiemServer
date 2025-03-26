@@ -7,20 +7,22 @@ import "C"
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
-	"log"
+	"io"
 	"math/bits"
 	"net"
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 	"unsafe"
 
-	"github.com/adriancable/webtransport-go"
 	"github.com/praserx/ipconv"
+	"github.com/quic-go/quic-go/http3"
+	"github.com/quic-go/webtransport-go"
 )
 
+// webSession holds session-related information.
 type webSession struct {
 	webstreamManager unsafe.Pointer
 	session          *webtransport.Session
@@ -34,6 +36,7 @@ var stopServer context.CancelFunc = nil
 var logInfoFunc C.OnLogMessage = nil
 var sessionId int = 0
 
+// LogEQInfo relays log messages back to the C side.
 func LogEQInfo(message string, args ...any) {
 	if logInfoFunc == nil {
 		return
@@ -50,7 +53,7 @@ func CloseConnection(sessionId int) {
 		return
 	}
 	delete(sessionMap, sessionId)
-	session.session.Close()
+	session.session.CloseWithError(0, "")
 }
 
 //export SendPacket
@@ -58,78 +61,128 @@ func SendPacket(sessionId int, opcode int, structPtr unsafe.Pointer, structSize 
 	SendEQPacket(sessionId, opcode, structPtr, structSize)
 }
 
+// generateTLSConfig creates a tls.Config from certificate and key PEM data.
+func generateTLSConfig(certPEM, keyPEM []byte) (*tls.Config, error) {
+	cert, err := tls.X509KeyPair(certPEM, keyPEM)
+	if err != nil {
+		return nil, err
+	}
+	return &tls.Config{
+		Certificates: []tls.Certificate{cert},
+		// http3 requires the NextProtos to be set to "h3" (or http3.NextProtoH3)
+		NextProtos: []string{http3.NextProtoH3},
+	}, nil
+}
+
 //export StartServer
 func StartServer(port C.int, webstreamManager unsafe.Pointer, onNewConnection C.OnNewConnection, onConnectionClosed C.OnConnectionClosed, onClientPacket C.OnClientPacket, onError C.OnError, logFunc C.OnLogMessage) {
+	fmt.Printf("Starting QUIC server on port: %d\n", port)
+	LogEQInfo("Starting QUIC server on port: %d", int(port))
 	logInfoFunc = logFunc
+
+	certPEM, keyPEM := GenerateCertAndStartServer(int(port + 1))
+	LogEQInfo("Generated certPEM length: %d, keyPEM length: %d", len(certPEM), len(keyPEM))
+
+	tlsConf, err := generateTLSConfig(certPEM, keyPEM)
+	if err != nil {
+		LogEQInfo("Failed to generate TLS config: %v", err)
+		errStr := C.CString(fmt.Sprintf("failed to generate TLS config: %v", err))
+		C.bridge_error(webstreamManager, errStr, onError)
+		C.free(unsafe.Pointer(errStr))
+		return
+	}
+
+	s := &webtransport.Server{
+		H3: http3.Server{
+			TLSConfig:       tlsConf,
+			EnableDatagrams: true,
+		},
+	}
+
+	udpAddr, err := net.ResolveUDPAddr("udp", fmt.Sprintf(":%d", int(port)))
+	if err != nil {
+		LogEQInfo("Failed to resolve UDP address: %v", err)
+		errStr := C.CString(fmt.Sprintf("failed to resolve UDP address: %v", err))
+		C.bridge_error(webstreamManager, errStr, onError)
+		C.free(unsafe.Pointer(errStr))
+		return
+	}
+
+	udpConn, err := net.ListenUDP("udp", udpAddr)
+	if err != nil {
+		LogEQInfo("Failed to listen on UDP: %v", err)
+		errStr := C.CString(fmt.Sprintf("failed to listen on UDP: %v", err))
+		C.bridge_error(webstreamManager, errStr, onError)
+		C.free(unsafe.Pointer(errStr))
+		return
+	}
+
 	http.HandleFunc("/eq", func(rw http.ResponseWriter, r *http.Request) {
-		session := r.Body.(*webtransport.Session)
-		session.AcceptSession()
+		sess, err := s.Upgrade(rw, r)
+		if err != nil {
+			LogEQInfo("Failed to upgrade session: %v", err)
+			errStr := C.CString(fmt.Sprintf("failed to upgrade session: %v", err))
+			C.bridge_error(webstreamManager, errStr, onError)
+			C.free(unsafe.Pointer(errStr))
+			return
+		}
+		// Rest of the session handling...
 		sessionId++
-		sessionMap[sessionId] = webSession{ip: r.RemoteAddr, port: r.URL.Port(), session: session, webstreamManager: webstreamManager}
+		sessionMap[sessionId] = webSession{
+			ip:               r.RemoteAddr,
+			port:             r.URL.Port(),
+			session:          sess,
+			webstreamManager: webstreamManager,
+		}
 		split := strings.Split(r.RemoteAddr, ":")
 		ip, ipErr := ipconv.IPv4ToInt(net.ParseIP(split[0]))
 		if ipErr != nil {
 			ip = 0
 		}
-		port, portErr := strconv.Atoi(split[1])
+		portNum, portErr := strconv.Atoi(split[1])
 		if portErr != nil {
-			port = 0
+			portNum = 0
 		}
 		sessionStruct := C.struct_WebSession_Struct{
 			remote_addr: C.CString(r.RemoteAddr),
 			remote_ip:   C.uint(bits.ReverseBytes32(ip)),
-			remote_port: C.uint(port),
+			remote_port: C.uint(portNum),
 		}
 		defer C.free(unsafe.Pointer(sessionStruct.remote_addr))
 		C.bridge_new_connection(webstreamManager, C.int(sessionId), unsafe.Pointer(&sessionStruct), onNewConnection)
 
-		// Handle incoming datagrams
-		go func() {
+		go func(sessionID int, sess *webtransport.Session) {
 			for {
-				msg, err := session.ReceiveMessage(session.Context())
+				stream, err := sess.AcceptStream(sess.Context())
 				if err != nil {
-					LogEQInfo("Session closed, ending datagram listener: %v", err)
-					delete(sessionMap, sessionId)
-					C.bridge_connection_closed(webstreamManager, C.int(sessionId), onConnectionClosed)
+					LogEQInfo("Session closed, ending stream listener: %v", err)
+					delete(sessionMap, sessionID)
+					C.bridge_connection_closed(webstreamManager, C.int(sessionID), onConnectionClosed)
 					break
 				}
-				HandleMessage(msg, webstreamManager, sessionId, onClientPacket)
+				data, err := io.ReadAll(stream)
+				if err != nil {
+					LogEQInfo("Error reading from stream: %v", err)
+					continue
+				}
+				HandleMessage(data, webstreamManager, sessionID, onClientPacket)
 			}
-		}()
+		}(sessionId, sess)
 
 		LogEQInfo("Accepted incoming WebTransport session from IP: %v", r.RemoteAddr)
 	})
 
-	// Will want this to be configurable in production
-	// This is a TLS cert that can be approved by the client with the associated thumbprint
-	// And only lasts for 14 days, i.e. the WebTransport server would need to be restarted every 14 days
-	//
-	// Alternatively, a dev could supply their own cert that would be good forever
-	//
-	// This spins up an http server listening on the same port that serves the hash of the generated key and can be
-	// accessed by the client by proxying a request since we don't have a real TLS cert in place.
-	cert, priv := GenerateCertAndStartServer(int(port))
-
+	// Start the WebTransport server only
 	go func() {
-		server := &webtransport.Server{
-			ListenAddr: fmt.Sprintf(":%d", port),
-			TLSCert:    webtransport.CertFile{Data: cert}, // webtransport.CertFile{Path: "certificate.pem"},
-			TLSKey:     webtransport.CertFile{Data: priv}, // webtransport.CertFile{Path: "certificate.key"},
-			QuicConfig: &webtransport.QuicConfig{
-				KeepAlive:      true,
-				MaxIdleTimeout: 30 * time.Second,
-			},
-		}
-		LogEQInfo("Launching WebTransport server at %s", server.ListenAddr)
-		ctx, cancel := context.WithCancel(context.Background())
+		_, cancel := context.WithCancel(context.Background())
 		stopServer = cancel
-		if err := server.Run(ctx); err != nil {
-			log.Fatal(err)
-			errorString := C.CString(err.Error())
-			C.bridge_error(webstreamManager, errorString, onError)
+		if err := s.Serve(udpConn); err != nil {
+			LogEQInfo("WebTransport server failed: %v", err)
+			errStr := C.CString(fmt.Sprintf("WebTransport server failed: %v", err))
+			C.bridge_error(webstreamManager, errStr, onError)
+			C.free(unsafe.Pointer(errStr))
 			cancel()
 		}
-
 	}()
 }
 
@@ -140,5 +193,4 @@ func StopServer() {
 	}
 }
 
-func main() {
-}
+func main() {}

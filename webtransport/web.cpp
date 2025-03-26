@@ -26,6 +26,7 @@
 #include <netdb.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 #endif
 
 #include "../../common/eqemu_logsys.h"
@@ -98,18 +99,31 @@ EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOp
 	Loaded_StopServer = reinterpret_cast<Go_StopServer>(GetProcAddress(web_go_dll, "StopServer"));
 
 	#else
-		auto go_webtransport_lib = dlopen("./web_go.so", RTLD_NOW);
+		auto go_webtransport_lib = dlopen("./bin/web_go.so", RTLD_NOW);
 		if (go_webtransport_lib == nullptr) {
-			LogWarning("Could not load dll for webtransport");
+			const char* dl_error = dlerror(); // Get the error message
+			LogWarning("Could not load web_go.so for webtransport: {}", dl_error ? dl_error : "Unknown error");
+			LogWarning("Current working directory: {}", getcwd(nullptr, 0));
+
 			return;
 		}
-    	Loaded_StartServer = reinterpret_cast<Go_StartServer>(dlsym(go_webtransport_lib, "StartServer"));
-    	Loaded_SendPacket = reinterpret_cast<Go_SendPacket>(dlsym(go_webtransport_lib, "SendPacket"));
-    	Loaded_CloseConnection = reinterpret_cast<Go_CloseConnection>(dlsym(go_webtransport_lib, "CloseConnection"));
-    	Loaded_StopServer = reinterpret_cast<Go_StopServer>(dlsym(go_webtransport_lib, "StopServer"));
+		Loaded_StartServer = reinterpret_cast<Go_StartServer>(dlsym(go_webtransport_lib, "StartServer"));
+		Loaded_SendPacket = reinterpret_cast<Go_SendPacket>(dlsym(go_webtransport_lib, "SendPacket"));
+		Loaded_CloseConnection = reinterpret_cast<Go_CloseConnection>(dlsym(go_webtransport_lib, "CloseConnection"));
+		Loaded_StopServer = reinterpret_cast<Go_StopServer>(dlsym(go_webtransport_lib, "StopServer"));
+
+		// Optional: Check for dlsym errors
+		if (!Loaded_StartServer || !Loaded_SendPacket || !Loaded_CloseConnection || !Loaded_StopServer) {
+			const char* dlsym_error = dlerror();
+			LogWarning("Failed to load one or more symbols from web_go.so: {}", dlsym_error ? dlsym_error : "Unknown error");
+			dlclose(go_webtransport_lib); // Clean up if symbols fail
+			return;
+		}
 	#endif
 	if (Loaded_StartServer != NULL) {
 		Loaded_StartServer(options.daybreak_options.port, this, &Go_OnNewConnection, &Go_OnConnectionClosed, &Go_OnClientPacket, &Go_OnError, &Go_LogMessage);
+	} else {
+		LogWarning("Could not start server for webtransport");
 	}
 }
 

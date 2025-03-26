@@ -382,7 +382,7 @@ int main(int argc, char **argv)
 		}
 	);
 
-	EQStreamManagerInterfaceOptions web_opts(9500, false, false);
+	EQStreamManagerInterfaceOptions web_opts(3009, false, false);
 	EQ::Net::EQWebStreamManager eqWebStreamManager(web_opts);
 	eqWebStreamManager.OnNewConnection(
 		[&stream_identifier](std::shared_ptr<EQ::Net::EQWebStream> stream) {

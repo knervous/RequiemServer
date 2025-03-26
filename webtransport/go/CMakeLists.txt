@@ -37,13 +37,23 @@ if(NOT EXISTS "${PROTOC_GEN_GO_BIN}")
     message(STATUS "protoc-gen-go installed to ${CMAKE_CURRENT_SOURCE_DIR}/../bin")
 endif()
 
-# Ensure protoc-gen-go is executable
-execute_process(
-    COMMAND chmod +x "${PROTOC_GEN_GO_BIN}"
-    RESULT_VARIABLE CHMOD_RESULT
-)
-if(NOT CHMOD_RESULT EQUAL 0)
-    message(FATAL_ERROR "Failed to make protoc-gen-go executable at ${PROTOC_GEN_GO_BIN}")
+# Ensure protoc-gen-go is executable (Unix only)
+if(NOT WIN32)
+    execute_process(
+        COMMAND chmod +x "${PROTOC_GEN_GO_BIN}"
+        RESULT_VARIABLE CHMOD_RESULT
+    )
+    if(NOT CHMOD_RESULT EQUAL 0)
+        message(FATAL_ERROR "Failed to make protoc-gen-go executable at ${PROTOC_GEN_GO_BIN}")
+    endif()
+endif()
+
+# Define source and target paths for the library
+set(SOURCE_SO "${PROJECT_BINARY_DIR}/bin/${LIB}")
+set(TARGET_SO "/home/eqemu/server/bin/${LIB}")
+if(WIN32)
+    string(REPLACE "/" "\\" SOURCE_SO "${SOURCE_SO}") # Convert to Windows-style paths
+    set(TARGET_SO "C:\\eqemu\\server\\bin\\${LIB}")   # Example Windows path; adjust as needed
 endif()
 
 add_custom_command(
@@ -57,4 +67,31 @@ add_custom_command(
     COMMENT "Building Go library and output to ${PROJECT_BINARY_DIR}/bin/${LIB}"
 )
 
+# Add custom target for building the library
 add_custom_target(${TARGET} DEPENDS ${LIB})
+
+# Set the executable output path
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+
+# Add custom command to handle the symlink or copy based on platform
+if(WIN32)
+    # On Windows, copy the file
+    add_custom_command(
+        TARGET ${TARGET}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E echo "Copying ${SOURCE_SO} to ${TARGET_SO}"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SOURCE_SO}" "${TARGET_SO}"
+        COMMENT "Copying ${LIB} to target directory on Windows"
+    )
+else()
+    # On Unix, use CMake's file(CREATE_LINK) for symlink creation
+    add_custom_command(
+        TARGET ${TARGET}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E echo "Checking symlink for ${SOURCE_SO} at ${TARGET_SO}"
+        COMMAND ${CMAKE_COMMAND} -E remove "${TARGET_SO}" # Remove existing file/symlink if not a symlink
+        COMMAND ${CMAKE_COMMAND} -E create_symlink "${SOURCE_SO}" "${TARGET_SO}"
+        COMMAND ${CMAKE_COMMAND} -E echo "Symlink created for ${SOURCE_SO} at ${TARGET_SO}"
+        COMMENT "Creating or updating symlink for ${LIB} on Unix"
+    )
+endif()

@@ -1611,18 +1611,18 @@ namespace Web
 		dest->FastQueuePacket(&in, ack_req);
 	}
 
-	ENCODE(OP_Trader)
-	{
-		if ((*p)->size != sizeof(TraderBuy_Struct))
-		{
-			EQApplicationPacket *in = *p;
-			*p = nullptr;
-			dest->FastQueuePacket(&in, ack_req);
-			return;
-		}
+	// ENCODE(OP_Trader)
+	// {
+	// 	if ((*p)->size != sizeof(TraderBuy_Struct))
+	// 	{
+	// 		EQApplicationPacket *in = *p;
+	// 		*p = nullptr;
+	// 		dest->FastQueuePacket(&in, ack_req);
+	// 		return;
+	// 	}
 
-		ENCODE_FORWARD(OP_TraderBuy);
-	}
+	// 	ENCODE_FORWARD(OP_TraderBuy);
+	// }
 
 	// ENCODE(OP_TraderBuy)
 	// {

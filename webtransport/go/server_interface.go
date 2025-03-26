@@ -589,5 +589,5 @@ func SendEQPacket(sessionId int, opcode int, structPtr unsafe.Pointer, structSiz
 	// 	fmt.Println(reflectEQStruct)
 	// }
 	messageBytes = append(messageBytes, bytes...)
-	session.session.SendMessage(messageBytes)
+	session.session.SendDatagram(messageBytes)
 }
