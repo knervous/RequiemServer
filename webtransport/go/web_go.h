@@ -72,7 +72,7 @@ extern "C" {
 
 extern void CloseConnection(GoInt sessionId);
 extern void SendPacket(GoInt sessionId, GoInt opcode, void* structPtr, GoInt structSize);
-extern void StartServer(int port, void* webstreamManager, OnNewConnection onNewConnection, OnConnectionClosed onConnectionClosed, OnClientPacket onClientPacket, OnError onError, OnLogMessage logFunc);
+extern void StartServer(bool worldServer, void* webstreamManager, OnNewConnection onNewConnection, OnConnectionClosed onConnectionClosed, OnClientPacket onClientPacket, OnError onError, OnLogMessage logFunc);
 extern void StopServer();
 
 #ifdef __cplusplus

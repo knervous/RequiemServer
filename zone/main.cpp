@@ -587,7 +587,7 @@ int main(int argc, char **argv)
 			);
 		}
 		if (!webtransport_opened && Config->ZonePort != 0) {
-			EQStreamManagerInterfaceOptions web_opts(Config->ZonePort + 1000, false, false);
+			EQStreamManagerInterfaceOptions web_opts(Config->ZonePort + 5000, false, false);
 			eqwsm = std::make_unique<EQ::Net::EQWebStreamManager>(web_opts);
 			eqwsm->OnNewConnection(
 				[&stream_identifier](std::shared_ptr<EQ::Net::EQWebStream> stream) {
@@ -617,6 +617,7 @@ int main(int argc, char **argv)
 
 		if (worldserver.Connected()) {
 			worldwasconnected = true;
+			eqwsm->RegisterZone(zone->GetZoneID());
 		}
 		else {
 			if (worldwasconnected && is_zone_loaded) {

@@ -29,8 +29,8 @@ func opcodeToEQStruct(opcode OpCodes) (reflect.Value, protoreflect.ProtoMessage)
 	}
 
 	switch (OpCodes)(opcode) {
-	case OpCodes_OP_LoginWeb:
-		return tie(&C.struct_WebLogin_Struct{})
+	case OpCodes_OP_JWTLogin:
+		return tie(&C.struct_JWTLogin_Struct{})
 	case OpCodes_OP_ServerListRequest:
 		return tie(&C.struct_WebLoginServerRequest_Struct{})
 	case OpCodes_OP_PlayEverquestRequest:
@@ -633,6 +633,33 @@ func HandleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, o
 	opcode := binary.LittleEndian.Uint16(msg[0:2])
 	restBytes := msg[2:]
 
+	if (OpCodes)(opcode) == OpCodes_OP_JWTLogin {
+		LogEQInfo("Received OpCodes_OP_JWTLogin for session %d", sessionId)
+
+		loginMsg := &JWTLogin{}
+		err := proto.Unmarshal(restBytes, loginMsg)
+		if err != nil {
+			LogEQInfo("Failed to unmarshal OP_LoginWeb: %v", err)
+			return
+		}
+
+		userId, err := ValidateJWT(loginMsg.Token)
+		// If we fail validation we send a response packet back immediately
+		// Otherwise we fall through this block to handle the packet on the server side
+		if err != nil {
+			response := &JWTResponse{}
+
+			response.Status = 1
+			SendProtoPacket(sessionId, int(OpCodes_OP_JWTResponse), response)
+			return
+		}
+		loginMsg.Token = userId
+		restBytes, err = proto.Marshal(loginMsg)
+		if err != nil {
+			return
+		}
+	}
+	LogEQInfo("Got OP code %d", opcode)
 	reflectEQStruct, protoMessage := opcodeToEQStruct((OpCodes)(opcode))
 
 	proto.Unmarshal(restBytes, protoMessage)
@@ -641,6 +668,7 @@ func HandleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, o
 	size := 0
 	for i := 0; i < fields.Len(); i++ {
 		fieldName := fields.Get(i).Name()
+		fmt.Println("Got field %s", fieldName)
 		originalName := (string)(fieldName)
 		rf := reflectEQStruct.FieldByName(originalName)
 		if rf.IsValid() {
@@ -688,9 +716,10 @@ func HandleMessage(msg []byte, webstreamManager unsafe.Pointer, sessionId int, o
 
 		}
 	}
-
+	fmt.Println("Size: %d", size)
 	C.bridge_client_packet(webstreamManager, C.int(sessionId), C.ushort(opcode), reflectEQStruct.Addr().UnsafePointer(), C.int(size), onClientPacket)
 
+	// Assume client copies things like strings within same block so we can clean up here? TBD
 	// for _, fn := range cleanupFuncs {
 	// 	fn()
 	// }

@@ -39,6 +39,8 @@ public:
 	bool LoadCharacterCreateAllocations();
 	bool LoadCharacterCreateCombos();
 
+	uint32 GetOrCreateAccount(const std::string &discord_id);
+
 private:
 	void SetTitaniumDefaultStartZone(PlayerProfile_Struct* in_pp, CharCreate_Struct* in_cc);
 	void SetSoFDefaultStartZone(PlayerProfile_Struct* in_pp, CharCreate_Struct* in_cc);

@@ -104,6 +104,7 @@ private:
 	bool seen_character_select;
 
 	bool HandlePacket(const EQApplicationPacket *app);
+	bool HandleJWTLogin(const EQApplicationPacket *app);
 	bool HandleNameApprovalPacket(const EQApplicationPacket *app);
 	bool HandleSendLoginInfoPacket(const EQApplicationPacket *app);
 	bool HandleGenerateRandomNamePacket(const EQApplicationPacket *app);

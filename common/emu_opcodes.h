@@ -41,7 +41,6 @@ typedef enum { //EQEmu internal opcodes list
 	#include "emu_oplist.h"
 	#include "mail_oplist.h"
 #undef N
-
 	_maxEmuOpcode
 } EmuOpcode;
 

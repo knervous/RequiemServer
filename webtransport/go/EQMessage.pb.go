@@ -93,247 +93,249 @@ type OpCodes int32
 
 const (
 	OpCodes_OP_Unknown OpCodes = 0
+	// JWT
+	OpCodes_OP_JWTLogin    OpCodes = 629
+	OpCodes_OP_JWTResponse OpCodes = 801
 	// Login
-	OpCodes_OP_LoginWeb              OpCodes = 304
-	OpCodes_OP_LoginAccepted         OpCodes = 305
-	OpCodes_OP_PlayEverquestRequest  OpCodes = 385
-	OpCodes_OP_PlayEverquestResponse OpCodes = 386
-	OpCodes_OP_ServerListRequest     OpCodes = 458
-	OpCodes_OP_ServerListResponse    OpCodes = 459
+	OpCodes_OP_LoginAccepted         OpCodes = 331
+	OpCodes_OP_PlayEverquestRequest  OpCodes = 413
+	OpCodes_OP_PlayEverquestResponse OpCodes = 414
+	OpCodes_OP_ServerListRequest     OpCodes = 487
+	OpCodes_OP_ServerListResponse    OpCodes = 488
 	// World
 	OpCodes_OP_ApproveName           OpCodes = 40
-	OpCodes_OP_CharacterCreate       OpCodes = 77
-	OpCodes_OP_DeleteCharacter       OpCodes = 119
+	OpCodes_OP_CharacterCreate       OpCodes = 79
+	OpCodes_OP_DeleteCharacter       OpCodes = 121
 	OpCodes_OP_ApproveName_Server    OpCodes = 5040
-	OpCodes_OP_EnterWorld            OpCodes = 160
-	OpCodes_OP_ExpansionInfo         OpCodes = 162
-	OpCodes_OP_GuildsList            OpCodes = 245
-	OpCodes_OP_PostEnterWorld        OpCodes = 391
-	OpCodes_OP_SendCharInfo          OpCodes = 444
-	OpCodes_OP_SendLoginInfo         OpCodes = 448
-	OpCodes_OP_SendMaxCharacters     OpCodes = 449
-	OpCodes_OP_SendMembership        OpCodes = 450
-	OpCodes_OP_SendMembershipDetails OpCodes = 451
-	OpCodes_OP_ZoneServerInfo        OpCodes = 585
-	OpCodes_OP_WebInitiateConnection OpCodes = 591
+	OpCodes_OP_EnterWorld            OpCodes = 162
+	OpCodes_OP_ExpansionInfo         OpCodes = 165
+	OpCodes_OP_GuildsList            OpCodes = 265
+	OpCodes_OP_PostEnterWorld        OpCodes = 419
+	OpCodes_OP_SendCharInfo          OpCodes = 473
+	OpCodes_OP_SendLoginInfo         OpCodes = 477
+	OpCodes_OP_SendMaxCharacters     OpCodes = 478
+	OpCodes_OP_SendMembership        OpCodes = 479
+	OpCodes_OP_SendMembershipDetails OpCodes = 480
+	OpCodes_OP_ZoneServerInfo        OpCodes = 622
+	OpCodes_OP_WebInitiateConnection OpCodes = 628
 	// Zone
-	OpCodes_OP_ZoneEntry                 OpCodes = 581
-	OpCodes_OP_SetServerFilter           OpCodes = 468
-	OpCodes_OP_SendAATable               OpCodes = 443
-	OpCodes_OP_SendTributes              OpCodes = 454
-	OpCodes_OP_SendGuildTributes         OpCodes = 447
-	OpCodes_OP_SendAAStats               OpCodes = 442
-	OpCodes_OP_ReqClientSpawn            OpCodes = 423
-	OpCodes_OP_ReqNewZone                OpCodes = 424
-	OpCodes_OP_SendExpZonein             OpCodes = 445
-	OpCodes_OP_ClientReady               OpCodes = 92
-	OpCodes_OP_ClientError               OpCodes = 91
+	OpCodes_OP_ZoneEntry                 OpCodes = 618
+	OpCodes_OP_SetServerFilter           OpCodes = 497
+	OpCodes_OP_SendAATable               OpCodes = 472
+	OpCodes_OP_SendTributes              OpCodes = 483
+	OpCodes_OP_SendGuildTributes         OpCodes = 476
+	OpCodes_OP_SendAAStats               OpCodes = 471
+	OpCodes_OP_ReqClientSpawn            OpCodes = 451
+	OpCodes_OP_ReqNewZone                OpCodes = 452
+	OpCodes_OP_SendExpZonein             OpCodes = 474
+	OpCodes_OP_ClientReady               OpCodes = 94
+	OpCodes_OP_ClientError               OpCodes = 93
 	OpCodes_OP_ApproveZone               OpCodes = 42
-	OpCodes_OP_TGB                       OpCodes = 524
+	OpCodes_OP_TGB                       OpCodes = 559
 	OpCodes_OP_AckPacket                 OpCodes = 7
-	OpCodes_OP_ClientUpdate              OpCodes = 94
+	OpCodes_OP_ClientUpdate              OpCodes = 96
 	OpCodes_OP_AutoAttack                OpCodes = 47
 	OpCodes_OP_AutoAttack2               OpCodes = 48
-	OpCodes_OP_Consent                   OpCodes = 102
-	OpCodes_OP_ConsentDeny               OpCodes = 103
-	OpCodes_OP_TargetMouse               OpCodes = 513
-	OpCodes_OP_TargetCommand             OpCodes = 511
-	OpCodes_OP_Shielding                 OpCodes = 485
-	OpCodes_OP_Jump                      OpCodes = 274
+	OpCodes_OP_Consent                   OpCodes = 104
+	OpCodes_OP_ConsentDeny               OpCodes = 105
+	OpCodes_OP_TargetMouse               OpCodes = 548
+	OpCodes_OP_TargetCommand             OpCodes = 546
+	OpCodes_OP_Shielding                 OpCodes = 514
+	OpCodes_OP_Jump                      OpCodes = 301
 	OpCodes_OP_AdventureInfoRequest      OpCodes = 15
 	OpCodes_OP_AdventureRequest          OpCodes = 23
-	OpCodes_OP_LDoNButton                OpCodes = 278
-	OpCodes_OP_LeaveAdventure            OpCodes = 286
-	OpCodes_OP_Consume                   OpCodes = 107
+	OpCodes_OP_LDoNButton                OpCodes = 305
+	OpCodes_OP_LeaveAdventure            OpCodes = 313
+	OpCodes_OP_Consume                   OpCodes = 109
 	OpCodes_OP_AdventureMerchantRequest  OpCodes = 19
 	OpCodes_OP_AdventureMerchantPurchase OpCodes = 18
-	OpCodes_OP_ConsiderCorpse            OpCodes = 106
-	OpCodes_OP_Consider                  OpCodes = 105
+	OpCodes_OP_ConsiderCorpse            OpCodes = 108
+	OpCodes_OP_Consider                  OpCodes = 107
 	OpCodes_OP_Begging                   OpCodes = 58
-	OpCodes_OP_TestBuff                  OpCodes = 523
-	OpCodes_OP_Surname                   OpCodes = 508
-	OpCodes_OP_YellForHelp               OpCodes = 578
+	OpCodes_OP_TestBuff                  OpCodes = 558
+	OpCodes_OP_Surname                   OpCodes = 542
+	OpCodes_OP_YellForHelp               OpCodes = 615
 	OpCodes_OP_Assist                    OpCodes = 43
-	OpCodes_OP_GMTraining                OpCodes = 201
-	OpCodes_OP_GMEndTraining             OpCodes = 188
-	OpCodes_OP_GMTrainSkill              OpCodes = 202
-	OpCodes_OP_RequestDuel               OpCodes = 426
-	OpCodes_OP_DuelDecline               OpCodes = 132
-	OpCodes_OP_DuelAccept                OpCodes = 133
-	OpCodes_OP_SpawnAppearance           OpCodes = 500
+	OpCodes_OP_GMTraining                OpCodes = 204
+	OpCodes_OP_GMEndTraining             OpCodes = 191
+	OpCodes_OP_GMTrainSkill              OpCodes = 205
+	OpCodes_OP_RequestDuel               OpCodes = 454
+	OpCodes_OP_DuelDecline               OpCodes = 134
+	OpCodes_OP_DuelAccept                OpCodes = 135
+	OpCodes_OP_SpawnAppearance           OpCodes = 534
 	OpCodes_OP_BazaarInspect             OpCodes = 54
-	OpCodes_OP_Death                     OpCodes = 117
-	OpCodes_OP_MoveCoin                  OpCodes = 346
-	OpCodes_OP_ItemLinkClick             OpCodes = 264
-	OpCodes_OP_MoveItem                  OpCodes = 348
-	OpCodes_OP_Camp                      OpCodes = 69
-	OpCodes_OP_Logout                    OpCodes = 310
-	OpCodes_OP_SenseHeading              OpCodes = 456
-	OpCodes_OP_FeignDeath                OpCodes = 166
-	OpCodes_OP_Sneak                     OpCodes = 495
-	OpCodes_OP_Hide                      OpCodes = 251
-	OpCodes_OP_ChannelMessage            OpCodes = 76
-	OpCodes_OP_WearChange                OpCodes = 560
-	OpCodes_OP_DeleteSpawn               OpCodes = 123
-	OpCodes_OP_SaveOnZoneReq             OpCodes = 440
-	OpCodes_OP_Save                      OpCodes = 439
-	OpCodes_OP_WhoAllRequest             OpCodes = 563
-	OpCodes_OP_GMZoneRequest             OpCodes = 204
-	OpCodes_OP_GMZoneRequest2            OpCodes = 205
-	OpCodes_OP_EndLootRequest            OpCodes = 157
-	OpCodes_OP_LootRequest               OpCodes = 315
-	OpCodes_OP_Dye                       OpCodes = 135
-	OpCodes_OP_ConfirmDelete             OpCodes = 101
-	OpCodes_OP_LootItem                  OpCodes = 314
-	OpCodes_OP_GuildDelete               OpCodes = 228
-	OpCodes_OP_GuildPublicNote           OpCodes = 243
-	OpCodes_OP_GetGuildsList             OpCodes = 182
-	OpCodes_OP_SetGuildMOTD              OpCodes = 465
-	OpCodes_OP_SetRunMode                OpCodes = 467
-	OpCodes_OP_GuildPeace                OpCodes = 241
-	OpCodes_OP_GuildWar                  OpCodes = 249
-	OpCodes_OP_GuildLeader               OpCodes = 232
-	OpCodes_OP_GuildDemote               OpCodes = 229
-	OpCodes_OP_GuildInvite               OpCodes = 230
-	OpCodes_OP_GuildRemove               OpCodes = 244
-	OpCodes_OP_GuildInviteAccept         OpCodes = 231
-	OpCodes_OP_ManaChange                OpCodes = 316
-	OpCodes_OP_MemorizeSpell             OpCodes = 321
-	OpCodes_OP_SwapSpell                 OpCodes = 509
-	OpCodes_OP_CastSpell                 OpCodes = 74
-	OpCodes_OP_DeleteItem                OpCodes = 121
-	OpCodes_OP_CombatAbility             OpCodes = 98
-	OpCodes_OP_Taunt                     OpCodes = 522
-	OpCodes_OP_InstillDoubt              OpCodes = 262
-	OpCodes_OP_RezzAnswer                OpCodes = 433
-	OpCodes_OP_GMSummon                  OpCodes = 199
-	OpCodes_OP_TradeBusy                 OpCodes = 530
-	OpCodes_OP_TradeRequest              OpCodes = 536
-	OpCodes_OP_TradeRequestAck           OpCodes = 537
-	OpCodes_OP_CancelTrade               OpCodes = 72
-	OpCodes_OP_TradeAcceptClick          OpCodes = 529
+	OpCodes_OP_Death                     OpCodes = 119
+	OpCodes_OP_MoveCoin                  OpCodes = 372
+	OpCodes_OP_ItemLinkClick             OpCodes = 290
+	OpCodes_OP_MoveItem                  OpCodes = 374
+	OpCodes_OP_Camp                      OpCodes = 70
+	OpCodes_OP_Logout                    OpCodes = 336
+	OpCodes_OP_SenseHeading              OpCodes = 485
+	OpCodes_OP_FeignDeath                OpCodes = 169
+	OpCodes_OP_Sneak                     OpCodes = 529
+	OpCodes_OP_Hide                      OpCodes = 273
+	OpCodes_OP_ChannelMessage            OpCodes = 77
+	OpCodes_OP_WearChange                OpCodes = 597
+	OpCodes_OP_DeleteSpawn               OpCodes = 125
+	OpCodes_OP_SaveOnZoneReq             OpCodes = 469
+	OpCodes_OP_Save                      OpCodes = 468
+	OpCodes_OP_WhoAllRequest             OpCodes = 600
+	OpCodes_OP_GMZoneRequest             OpCodes = 207
+	OpCodes_OP_GMZoneRequest2            OpCodes = 208
+	OpCodes_OP_EndLootRequest            OpCodes = 159
+	OpCodes_OP_LootRequest               OpCodes = 341
+	OpCodes_OP_Dye                       OpCodes = 137
+	OpCodes_OP_ConfirmDelete             OpCodes = 103
+	OpCodes_OP_LootItem                  OpCodes = 340
+	OpCodes_OP_GuildDelete               OpCodes = 231
+	OpCodes_OP_GuildPublicNote           OpCodes = 255
+	OpCodes_OP_GetGuildsList             OpCodes = 185
+	OpCodes_OP_SetGuildMOTD              OpCodes = 494
+	OpCodes_OP_SetRunMode                OpCodes = 496
+	OpCodes_OP_GuildPeace                OpCodes = 253
+	OpCodes_OP_GuildWar                  OpCodes = 271
+	OpCodes_OP_GuildLeader               OpCodes = 236
+	OpCodes_OP_GuildDemote               OpCodes = 233
+	OpCodes_OP_GuildInvite               OpCodes = 234
+	OpCodes_OP_GuildRemove               OpCodes = 256
+	OpCodes_OP_GuildInviteAccept         OpCodes = 235
+	OpCodes_OP_ManaChange                OpCodes = 342
+	OpCodes_OP_MemorizeSpell             OpCodes = 347
+	OpCodes_OP_SwapSpell                 OpCodes = 543
+	OpCodes_OP_CastSpell                 OpCodes = 75
+	OpCodes_OP_DeleteItem                OpCodes = 123
+	OpCodes_OP_CombatAbility             OpCodes = 100
+	OpCodes_OP_Taunt                     OpCodes = 557
+	OpCodes_OP_InstillDoubt              OpCodes = 284
+	OpCodes_OP_RezzAnswer                OpCodes = 462
+	OpCodes_OP_GMSummon                  OpCodes = 202
+	OpCodes_OP_TradeBusy                 OpCodes = 565
+	OpCodes_OP_TradeRequest              OpCodes = 572
+	OpCodes_OP_TradeRequestAck           OpCodes = 573
+	OpCodes_OP_CancelTrade               OpCodes = 73
+	OpCodes_OP_TradeAcceptClick          OpCodes = 564
 	OpCodes_OP_BoardBoat                 OpCodes = 62
-	OpCodes_OP_LeaveBoat                 OpCodes = 287
-	OpCodes_OP_RandomReq                 OpCodes = 409
+	OpCodes_OP_LeaveBoat                 OpCodes = 314
+	OpCodes_OP_RandomReq                 OpCodes = 437
 	OpCodes_OP_Buff                      OpCodes = 64
-	OpCodes_OP_GMHideMe                  OpCodes = 192
-	OpCodes_OP_GMNameChange              OpCodes = 196
-	OpCodes_OP_GMKill                    OpCodes = 194
-	OpCodes_OP_GMLastName                OpCodes = 195
-	OpCodes_OP_GMToggle                  OpCodes = 200
-	OpCodes_OP_LFGCommand                OpCodes = 291
-	OpCodes_OP_GMGoto                    OpCodes = 191
-	OpCodes_OP_TraderShop                OpCodes = 539
-	OpCodes_OP_ShopRequest               OpCodes = 492
+	OpCodes_OP_GMHideMe                  OpCodes = 195
+	OpCodes_OP_GMNameChange              OpCodes = 199
+	OpCodes_OP_GMKill                    OpCodes = 197
+	OpCodes_OP_GMLastName                OpCodes = 198
+	OpCodes_OP_GMToggle                  OpCodes = 203
+	OpCodes_OP_LFGCommand                OpCodes = 318
+	OpCodes_OP_GMGoto                    OpCodes = 194
+	OpCodes_OP_TraderShop                OpCodes = 575
+	OpCodes_OP_ShopRequest               OpCodes = 526
 	OpCodes_OP_Bazaar                    OpCodes = 53
-	OpCodes_OP_ShopPlayerBuy             OpCodes = 490
-	OpCodes_OP_ShopPlayerSell            OpCodes = 491
-	OpCodes_OP_ShopEnd                   OpCodes = 487
-	OpCodes_OP_CloseContainer            OpCodes = 95
-	OpCodes_OP_ClickObjectAction         OpCodes = 90
-	OpCodes_OP_ClickObject               OpCodes = 89
-	OpCodes_OP_RecipesFavorite           OpCodes = 414
-	OpCodes_OP_RecipesSearch             OpCodes = 415
-	OpCodes_OP_RecipeDetails             OpCodes = 412
-	OpCodes_OP_RecipeAutoCombine         OpCodes = 411
-	OpCodes_OP_TradeSkillCombine         OpCodes = 540
-	OpCodes_OP_ItemName                  OpCodes = 267
+	OpCodes_OP_ShopPlayerBuy             OpCodes = 519
+	OpCodes_OP_ShopPlayerSell            OpCodes = 520
+	OpCodes_OP_ShopEnd                   OpCodes = 516
+	OpCodes_OP_CloseContainer            OpCodes = 97
+	OpCodes_OP_ClickObjectAction         OpCodes = 92
+	OpCodes_OP_ClickObject               OpCodes = 91
+	OpCodes_OP_RecipesFavorite           OpCodes = 442
+	OpCodes_OP_RecipesSearch             OpCodes = 443
+	OpCodes_OP_RecipeDetails             OpCodes = 440
+	OpCodes_OP_RecipeAutoCombine         OpCodes = 439
+	OpCodes_OP_TradeSkillCombine         OpCodes = 576
+	OpCodes_OP_ItemName                  OpCodes = 293
 	OpCodes_OP_AugmentItem               OpCodes = 46
-	OpCodes_OP_ClickDoor                 OpCodes = 88
-	OpCodes_OP_FaceChange                OpCodes = 164
-	OpCodes_OP_GroupInvite               OpCodes = 215
-	OpCodes_OP_GroupInvite2              OpCodes = 216
-	OpCodes_OP_GroupFollow               OpCodes = 213
-	OpCodes_OP_GroupFollow2              OpCodes = 214
-	OpCodes_OP_GroupAcknowledge          OpCodes = 207
-	OpCodes_OP_GroupCancelInvite         OpCodes = 208
-	OpCodes_OP_GroupDisband              OpCodes = 210
-	OpCodes_OP_GroupDelete               OpCodes = 209
-	OpCodes_OP_GMEmoteZone               OpCodes = 187
-	OpCodes_OP_InspectRequest            OpCodes = 261
-	OpCodes_OP_InspectAnswer             OpCodes = 258
-	OpCodes_OP_DeleteSpell               OpCodes = 124
-	OpCodes_OP_PetitionBug               OpCodes = 368
+	OpCodes_OP_ClickDoor                 OpCodes = 90
+	OpCodes_OP_FaceChange                OpCodes = 167
+	OpCodes_OP_GroupInvite               OpCodes = 218
+	OpCodes_OP_GroupInvite2              OpCodes = 219
+	OpCodes_OP_GroupFollow               OpCodes = 216
+	OpCodes_OP_GroupFollow2              OpCodes = 217
+	OpCodes_OP_GroupAcknowledge          OpCodes = 210
+	OpCodes_OP_GroupCancelInvite         OpCodes = 211
+	OpCodes_OP_GroupDisband              OpCodes = 213
+	OpCodes_OP_GroupDelete               OpCodes = 212
+	OpCodes_OP_GMEmoteZone               OpCodes = 190
+	OpCodes_OP_InspectRequest            OpCodes = 283
+	OpCodes_OP_InspectAnswer             OpCodes = 280
+	OpCodes_OP_DeleteSpell               OpCodes = 126
+	OpCodes_OP_PetitionBug               OpCodes = 394
 	OpCodes_OP_Bug                       OpCodes = 67
-	OpCodes_OP_Petition                  OpCodes = 367
-	OpCodes_OP_PetitionCheckIn           OpCodes = 369
-	OpCodes_OP_PetitionResolve           OpCodes = 375
-	OpCodes_OP_PetitionDelete            OpCodes = 372
-	OpCodes_OP_PetitionUnCheckout        OpCodes = 379
-	OpCodes_OP_PetitionQue               OpCodes = 373
-	OpCodes_OP_PDeletePetition           OpCodes = 362
-	OpCodes_OP_PetitionCheckout          OpCodes = 370
-	OpCodes_OP_PetitionRefresh           OpCodes = 374
-	OpCodes_OP_PetCommands               OpCodes = 364
-	OpCodes_OP_ReadBook                  OpCodes = 410
-	OpCodes_OP_Emote                     OpCodes = 156
-	OpCodes_OP_GMDelCorpse               OpCodes = 186
-	OpCodes_OP_GMKick                    OpCodes = 193
-	OpCodes_OP_GMServers                 OpCodes = 198
-	OpCodes_OP_Illusion                  OpCodes = 254
-	OpCodes_OP_GMBecomeNPC               OpCodes = 185
-	OpCodes_OP_Fishing                   OpCodes = 173
-	OpCodes_OP_Forage                    OpCodes = 176
-	OpCodes_OP_Mend                      OpCodes = 322
-	OpCodes_OP_EnvDamage                 OpCodes = 161
-	OpCodes_OP_Damage                    OpCodes = 116
+	OpCodes_OP_Petition                  OpCodes = 393
+	OpCodes_OP_PetitionCheckIn           OpCodes = 395
+	OpCodes_OP_PetitionResolve           OpCodes = 401
+	OpCodes_OP_PetitionDelete            OpCodes = 398
+	OpCodes_OP_PetitionUnCheckout        OpCodes = 405
+	OpCodes_OP_PetitionQue               OpCodes = 399
+	OpCodes_OP_PDeletePetition           OpCodes = 388
+	OpCodes_OP_PetitionCheckout          OpCodes = 396
+	OpCodes_OP_PetitionRefresh           OpCodes = 400
+	OpCodes_OP_PetCommands               OpCodes = 390
+	OpCodes_OP_ReadBook                  OpCodes = 438
+	OpCodes_OP_Emote                     OpCodes = 158
+	OpCodes_OP_GMDelCorpse               OpCodes = 189
+	OpCodes_OP_GMKick                    OpCodes = 196
+	OpCodes_OP_GMServers                 OpCodes = 201
+	OpCodes_OP_Illusion                  OpCodes = 276
+	OpCodes_OP_GMBecomeNPC               OpCodes = 188
+	OpCodes_OP_Fishing                   OpCodes = 176
+	OpCodes_OP_Forage                    OpCodes = 179
+	OpCodes_OP_Mend                      OpCodes = 348
+	OpCodes_OP_EnvDamage                 OpCodes = 163
+	OpCodes_OP_Damage                    OpCodes = 118
 	OpCodes_OP_AAAction                  OpCodes = 4
-	OpCodes_OP_TraderBuy                 OpCodes = 534
-	OpCodes_OP_Trader                    OpCodes = 533
-	OpCodes_OP_GMFind                    OpCodes = 190
-	OpCodes_OP_PickPocket                OpCodes = 381
+	OpCodes_OP_TraderBuy                 OpCodes = 570
+	OpCodes_OP_Trader                    OpCodes = 568
+	OpCodes_OP_GMFind                    OpCodes = 193
+	OpCodes_OP_PickPocket                OpCodes = 407
 	OpCodes_OP_Bind_Wound                OpCodes = 60
-	OpCodes_OP_TrackTarget               OpCodes = 527
-	OpCodes_OP_Track                     OpCodes = 526
-	OpCodes_OP_TrackUnknown              OpCodes = 528
-	OpCodes_OP_ReloadUI                  OpCodes = 417
-	OpCodes_OP_Split                     OpCodes = 505
-	OpCodes_OP_SenseTraps                OpCodes = 457
-	OpCodes_OP_DisarmTraps               OpCodes = 127
-	OpCodes_OP_OpenTributeMaster         OpCodes = 361
-	OpCodes_OP_OpenGuildTributeMaster    OpCodes = 359
-	OpCodes_OP_TributeItem               OpCodes = 543
-	OpCodes_OP_TributeMoney              OpCodes = 544
-	OpCodes_OP_SelectTribute             OpCodes = 441
-	OpCodes_OP_TributeUpdate             OpCodes = 549
-	OpCodes_OP_TributeToggle             OpCodes = 548
-	OpCodes_OP_TributeNPC                OpCodes = 545
-	OpCodes_OP_CrashDump                 OpCodes = 111
-	OpCodes_OP_ControlBoat               OpCodes = 108
-	OpCodes_OP_DumpName                  OpCodes = 134
-	OpCodes_OP_SafeFallSuccess           OpCodes = 437
-	OpCodes_OP_Heartbeat                 OpCodes = 250
-	OpCodes_OP_SafePoint                 OpCodes = 438
-	OpCodes_OP_FindPersonRequest         OpCodes = 169
-	OpCodes_OP_LeadershipExpToggle       OpCodes = 284
-	OpCodes_OP_PurchaseLeadershipAA      OpCodes = 394
+	OpCodes_OP_TrackTarget               OpCodes = 562
+	OpCodes_OP_Track                     OpCodes = 561
+	OpCodes_OP_TrackUnknown              OpCodes = 563
+	OpCodes_OP_ReloadUI                  OpCodes = 445
+	OpCodes_OP_Split                     OpCodes = 539
+	OpCodes_OP_SenseTraps                OpCodes = 486
+	OpCodes_OP_DisarmTraps               OpCodes = 129
+	OpCodes_OP_OpenTributeMaster         OpCodes = 387
+	OpCodes_OP_OpenGuildTributeMaster    OpCodes = 385
+	OpCodes_OP_TributeItem               OpCodes = 580
+	OpCodes_OP_TributeMoney              OpCodes = 581
+	OpCodes_OP_SelectTribute             OpCodes = 470
+	OpCodes_OP_TributeUpdate             OpCodes = 586
+	OpCodes_OP_TributeToggle             OpCodes = 585
+	OpCodes_OP_TributeNPC                OpCodes = 582
+	OpCodes_OP_CrashDump                 OpCodes = 113
+	OpCodes_OP_ControlBoat               OpCodes = 110
+	OpCodes_OP_DumpName                  OpCodes = 136
+	OpCodes_OP_SafeFallSuccess           OpCodes = 466
+	OpCodes_OP_Heartbeat                 OpCodes = 272
+	OpCodes_OP_SafePoint                 OpCodes = 467
+	OpCodes_OP_FindPersonRequest         OpCodes = 172
+	OpCodes_OP_LeadershipExpToggle       OpCodes = 311
+	OpCodes_OP_PurchaseLeadershipAA      OpCodes = 422
 	OpCodes_OP_BankerChange              OpCodes = 51
-	OpCodes_OP_SetTitle                  OpCodes = 470
-	OpCodes_OP_RequestTitles             OpCodes = 428
-	OpCodes_OP_ItemVerifyRequest         OpCodes = 272
-	OpCodes_OP_ClearObject               OpCodes = 86
-	OpCodes_OP_FinishTrade               OpCodes = 170
-	OpCodes_OP_GMEndTrainingResponse     OpCodes = 189
-	OpCodes_OP_LootComplete              OpCodes = 313
-	OpCodes_OP_WorldObjectsSent          OpCodes = 571
-	OpCodes_OP_FinishWindow              OpCodes = 171
-	OpCodes_OP_FinishWindow2             OpCodes = 172
-	OpCodes_OP_ItemPacket                OpCodes = 268
-	OpCodes_OP_ColoredText               OpCodes = 97
-	OpCodes_OP_ItemRecastDelay           OpCodes = 270
-	OpCodes_OP_FormattedMessage          OpCodes = 178
-	OpCodes_OP_GuildMemberList           OpCodes = 238
-	OpCodes_OP_InterruptCast             OpCodes = 263
-	OpCodes_OP_ItemLinkResponse          OpCodes = 265
-	OpCodes_OP_ZoneSpawns                OpCodes = 587
-	OpCodes_OP_CompletedTasks            OpCodes = 100
-	OpCodes_OP_CharInventory             OpCodes = 79
-	OpCodes_OP_CustomTitles              OpCodes = 115
-	OpCodes_OP_SpawnDoor                 OpCodes = 501
-	OpCodes_OP_SendZonepoints            OpCodes = 455
-	OpCodes_OP_TributeInfo               OpCodes = 542
-	OpCodes_OP_GuildTributeInfo          OpCodes = 247
-	OpCodes_OP_SendTitleList             OpCodes = 453
+	OpCodes_OP_SetTitle                  OpCodes = 499
+	OpCodes_OP_RequestTitles             OpCodes = 457
+	OpCodes_OP_ItemVerifyRequest         OpCodes = 299
+	OpCodes_OP_ClearObject               OpCodes = 88
+	OpCodes_OP_FinishTrade               OpCodes = 173
+	OpCodes_OP_GMEndTrainingResponse     OpCodes = 192
+	OpCodes_OP_LootComplete              OpCodes = 339
+	OpCodes_OP_WorldObjectsSent          OpCodes = 608
+	OpCodes_OP_FinishWindow              OpCodes = 174
+	OpCodes_OP_FinishWindow2             OpCodes = 175
+	OpCodes_OP_ItemPacket                OpCodes = 294
+	OpCodes_OP_ColoredText               OpCodes = 99
+	OpCodes_OP_ItemRecastDelay           OpCodes = 297
+	OpCodes_OP_FormattedMessage          OpCodes = 181
+	OpCodes_OP_GuildMemberList           OpCodes = 242
+	OpCodes_OP_InterruptCast             OpCodes = 285
+	OpCodes_OP_ItemLinkResponse          OpCodes = 291
+	OpCodes_OP_ZoneSpawns                OpCodes = 624
+	OpCodes_OP_CompletedTasks            OpCodes = 102
+	OpCodes_OP_CharInventory             OpCodes = 81
+	OpCodes_OP_CustomTitles              OpCodes = 117
+	OpCodes_OP_SpawnDoor                 OpCodes = 535
+	OpCodes_OP_SendZonepoints            OpCodes = 484
+	OpCodes_OP_TributeInfo               OpCodes = 579
+	OpCodes_OP_GuildTributeInfo          OpCodes = 267
+	OpCodes_OP_SendTitleList             OpCodes = 482
 	OpCodes_OP_AAExpUpdate               OpCodes = 5
 	OpCodes_OP_Action                    OpCodes = 8
 	OpCodes_OP_AdventureData             OpCodes = 11
@@ -343,62 +345,62 @@ const (
 	OpCodes_OP_AnnoyingZoneUnknown       OpCodes = 38
 	OpCodes_OP_BecomeTrader              OpCodes = 57
 	OpCodes_OP_BeginCast                 OpCodes = 59
-	OpCodes_OP_Charm                     OpCodes = 80
-	OpCodes_OP_CameraEffect              OpCodes = 68
-	OpCodes_OP_ConsentResponse           OpCodes = 104
-	OpCodes_OP_EnduranceUpdate           OpCodes = 158
-	OpCodes_OP_ExpUpdate                 OpCodes = 163
-	OpCodes_OP_GroundSpawn               OpCodes = 206
-	OpCodes_OP_GroupUpdate               OpCodes = 222
-	OpCodes_OP_GuildMOTD                 OpCodes = 240
-	OpCodes_OP_GuildManageAdd            OpCodes = 233
-	OpCodes_OP_GuildManageRemove         OpCodes = 235
-	OpCodes_OP_GuildManageStatus         OpCodes = 236
-	OpCodes_OP_GuildMemberUpdate         OpCodes = 239
-	OpCodes_OP_HPUpdate                  OpCodes = 253
-	OpCodes_OP_IncreaseStats             OpCodes = 255
-	OpCodes_OP_ItemVerifyReply           OpCodes = 271
-	OpCodes_OP_LFGAppearance             OpCodes = 290
-	OpCodes_OP_LeadershipExpUpdate       OpCodes = 285
-	OpCodes_OP_LevelAppearance           OpCodes = 288
-	OpCodes_OP_LevelUpdate               OpCodes = 289
-	OpCodes_OP_ManaUpdate                OpCodes = 317
-	OpCodes_OP_MobEnduranceUpdate        OpCodes = 338
-	OpCodes_OP_MobHealth                 OpCodes = 339
-	OpCodes_OP_MobManaUpdate             OpCodes = 340
-	OpCodes_OP_MobRename                 OpCodes = 341
-	OpCodes_OP_MoneyOnCorpse             OpCodes = 343
-	OpCodes_OP_MoneyUpdate               OpCodes = 344
-	OpCodes_OP_MoveDoor                  OpCodes = 347
-	OpCodes_OP_NewSpawn                  OpCodes = 353
-	OpCodes_OP_NewZone                   OpCodes = 355
-	OpCodes_OP_PetitionUpdate            OpCodes = 380
-	OpCodes_OP_PlayerProfile             OpCodes = 382
-	OpCodes_OP_RaidUpdate                OpCodes = 406
-	OpCodes_OP_RandomReply               OpCodes = 408
-	OpCodes_OP_RecipeReply               OpCodes = 413
-	OpCodes_OP_RequestClientZoneChange   OpCodes = 425
-	OpCodes_OP_RespondAA                 OpCodes = 430
-	OpCodes_OP_RezzRequest               OpCodes = 435
-	OpCodes_OP_SetTitleReply             OpCodes = 471
-	OpCodes_OP_ShopDelItem               OpCodes = 486
-	OpCodes_OP_SimpleMessage             OpCodes = 493
-	OpCodes_OP_SkillUpdate               OpCodes = 494
-	OpCodes_OP_SomeItemPacketMaybe       OpCodes = 498
-	OpCodes_OP_SpellEffect               OpCodes = 504
-	OpCodes_OP_Stamina                   OpCodes = 506
-	OpCodes_OP_Stun                      OpCodes = 507
-	OpCodes_OP_TargetReject              OpCodes = 514
-	OpCodes_OP_TimeOfDay                 OpCodes = 525
-	OpCodes_OP_TradeCoins                OpCodes = 531
-	OpCodes_OP_TradeMoneyUpdate          OpCodes = 532
-	OpCodes_OP_TraderDelItem             OpCodes = 535
-	OpCodes_OP_TraderItemUpdate          OpCodes = 538
-	OpCodes_OP_TributeTimer              OpCodes = 547
-	OpCodes_OP_UpdateLeadershipAA        OpCodes = 553
-	OpCodes_OP_Weather                   OpCodes = 561
-	OpCodes_OP_ZoneChange                OpCodes = 579
-	OpCodes_OP_ZoneInUnknown             OpCodes = 583
+	OpCodes_OP_Charm                     OpCodes = 82
+	OpCodes_OP_CameraEffect              OpCodes = 69
+	OpCodes_OP_ConsentResponse           OpCodes = 106
+	OpCodes_OP_EnduranceUpdate           OpCodes = 160
+	OpCodes_OP_ExpUpdate                 OpCodes = 166
+	OpCodes_OP_GroundSpawn               OpCodes = 209
+	OpCodes_OP_GroupUpdate               OpCodes = 225
+	OpCodes_OP_GuildMOTD                 OpCodes = 252
+	OpCodes_OP_GuildManageAdd            OpCodes = 237
+	OpCodes_OP_GuildManageRemove         OpCodes = 239
+	OpCodes_OP_GuildManageStatus         OpCodes = 240
+	OpCodes_OP_GuildMemberUpdate         OpCodes = 243
+	OpCodes_OP_HPUpdate                  OpCodes = 275
+	OpCodes_OP_IncreaseStats             OpCodes = 277
+	OpCodes_OP_ItemVerifyReply           OpCodes = 298
+	OpCodes_OP_LFGAppearance             OpCodes = 317
+	OpCodes_OP_LeadershipExpUpdate       OpCodes = 312
+	OpCodes_OP_LevelAppearance           OpCodes = 315
+	OpCodes_OP_LevelUpdate               OpCodes = 316
+	OpCodes_OP_ManaUpdate                OpCodes = 343
+	OpCodes_OP_MobEnduranceUpdate        OpCodes = 364
+	OpCodes_OP_MobHealth                 OpCodes = 365
+	OpCodes_OP_MobManaUpdate             OpCodes = 366
+	OpCodes_OP_MobRename                 OpCodes = 367
+	OpCodes_OP_MoneyOnCorpse             OpCodes = 369
+	OpCodes_OP_MoneyUpdate               OpCodes = 370
+	OpCodes_OP_MoveDoor                  OpCodes = 373
+	OpCodes_OP_NewSpawn                  OpCodes = 379
+	OpCodes_OP_NewZone                   OpCodes = 381
+	OpCodes_OP_PetitionUpdate            OpCodes = 406
+	OpCodes_OP_PlayerProfile             OpCodes = 410
+	OpCodes_OP_RaidUpdate                OpCodes = 434
+	OpCodes_OP_RandomReply               OpCodes = 436
+	OpCodes_OP_RecipeReply               OpCodes = 441
+	OpCodes_OP_RequestClientZoneChange   OpCodes = 453
+	OpCodes_OP_RespondAA                 OpCodes = 459
+	OpCodes_OP_RezzRequest               OpCodes = 464
+	OpCodes_OP_SetTitleReply             OpCodes = 500
+	OpCodes_OP_ShopDelItem               OpCodes = 515
+	OpCodes_OP_SimpleMessage             OpCodes = 527
+	OpCodes_OP_SkillUpdate               OpCodes = 528
+	OpCodes_OP_SomeItemPacketMaybe       OpCodes = 532
+	OpCodes_OP_SpellEffect               OpCodes = 538
+	OpCodes_OP_Stamina                   OpCodes = 540
+	OpCodes_OP_Stun                      OpCodes = 541
+	OpCodes_OP_TargetReject              OpCodes = 549
+	OpCodes_OP_TimeOfDay                 OpCodes = 560
+	OpCodes_OP_TradeCoins                OpCodes = 566
+	OpCodes_OP_TradeMoneyUpdate          OpCodes = 567
+	OpCodes_OP_TraderDelItem             OpCodes = 571
+	OpCodes_OP_TraderItemUpdate          OpCodes = 574
+	OpCodes_OP_TributeTimer              OpCodes = 584
+	OpCodes_OP_UpdateLeadershipAA        OpCodes = 590
+	OpCodes_OP_Weather                   OpCodes = 598
+	OpCodes_OP_ZoneChange                OpCodes = 616
+	OpCodes_OP_ZoneInUnknown             OpCodes = 620
 	OpCodes_OP_AcceptNewTask             OpCodes = 6
 	OpCodes_OP_AdventureInfo             OpCodes = 14
 	OpCodes_OP_ApplyPoison               OpCodes = 39
@@ -406,22 +408,22 @@ const (
 	OpCodes_OP_Bandolier                 OpCodes = 50
 	OpCodes_OP_BazaarSearch              OpCodes = 55
 	OpCodes_OP_BecomeCorpse              OpCodes = 56
-	OpCodes_OP_CancelTask                OpCodes = 71
-	OpCodes_OP_Command                   OpCodes = 99
-	OpCodes_OP_DynamicWall               OpCodes = 136
-	OpCodes_OP_LFGuild                   OpCodes = 295
-	OpCodes_OP_LoadSpellSet              OpCodes = 300
-	OpCodes_OP_LogServer                 OpCodes = 312
-	OpCodes_OP_MOTD                      OpCodes = 345
-	OpCodes_OP_OnLevelMessage            OpCodes = 356
-	OpCodes_OP_PlayMP3                   OpCodes = 387
-	OpCodes_OP_PotionBelt                OpCodes = 392
-	OpCodes_OP_PVPStats                  OpCodes = 399
-	OpCodes_OP_Report                    OpCodes = 422
-	OpCodes_OP_SpecialMesg               OpCodes = 503
-	OpCodes_OP_TaskActivity              OpCodes = 515
-	OpCodes_OP_TaskDescription           OpCodes = 517
-	OpCodes_OP_ZoneUnavail               OpCodes = 588
+	OpCodes_OP_CancelTask                OpCodes = 72
+	OpCodes_OP_Command                   OpCodes = 101
+	OpCodes_OP_DynamicWall               OpCodes = 138
+	OpCodes_OP_LFGuild                   OpCodes = 322
+	OpCodes_OP_LoadSpellSet              OpCodes = 327
+	OpCodes_OP_LogServer                 OpCodes = 338
+	OpCodes_OP_MOTD                      OpCodes = 371
+	OpCodes_OP_OnLevelMessage            OpCodes = 382
+	OpCodes_OP_PlayMP3                   OpCodes = 415
+	OpCodes_OP_PotionBelt                OpCodes = 420
+	OpCodes_OP_PVPStats                  OpCodes = 427
+	OpCodes_OP_Report                    OpCodes = 450
+	OpCodes_OP_SpecialMesg               OpCodes = 537
+	OpCodes_OP_TaskActivity              OpCodes = 550
+	OpCodes_OP_TaskDescription           OpCodes = 552
+	OpCodes_OP_ZoneUnavail               OpCodes = 625
 	// World
 	OpCodes_Nested_WorldServer          OpCodes = 1000
 	OpCodes_Nested_CharacterSelectEntry OpCodes = 1001
@@ -460,484 +462,485 @@ const (
 	OpCodes_OP_BookButton                   OpCodes = 63
 	OpCodes_OP_BuffCreate                   OpCodes = 65
 	OpCodes_OP_BuffRemoveRequest            OpCodes = 66
-	OpCodes_OP_CancelSneakHide              OpCodes = 70
-	OpCodes_OP_CashReward                   OpCodes = 73
-	OpCodes_OP_ChangeSize                   OpCodes = 75
-	OpCodes_OP_CharacterCreateRequest       OpCodes = 78
-	OpCodes_OP_ChatMessage                  OpCodes = 81
-	OpCodes_OP_ClearAA                      OpCodes = 82
-	OpCodes_OP_ClearBlockedBuffs            OpCodes = 83
-	OpCodes_OP_ClearLeadershipAbilities     OpCodes = 84
-	OpCodes_OP_ClearNPCMarks                OpCodes = 85
-	OpCodes_OP_ClearSurname                 OpCodes = 87
-	OpCodes_OP_ClientTimeStamp              OpCodes = 93
-	OpCodes_OP_CloseTributeMaster           OpCodes = 96
-	OpCodes_OP_CorpseDrag                   OpCodes = 109
-	OpCodes_OP_CorpseDrop                   OpCodes = 110
-	OpCodes_OP_CrystalCountUpdate           OpCodes = 112
-	OpCodes_OP_CrystalCreate                OpCodes = 113
-	OpCodes_OP_CrystalReclaim               OpCodes = 114
-	OpCodes_OP_DelegateAbility              OpCodes = 118
-	OpCodes_OP_DeleteCharge                 OpCodes = 120
-	OpCodes_OP_DeletePetition               OpCodes = 122
-	OpCodes_OP_DenyResponse                 OpCodes = 125
-	OpCodes_OP_Disarm                       OpCodes = 126
-	OpCodes_OP_DisciplineTimer              OpCodes = 128
-	OpCodes_OP_DisciplineUpdate             OpCodes = 129
-	OpCodes_OP_DiscordMerchantInventory     OpCodes = 130
-	OpCodes_OP_DoGroupLeadershipAbility     OpCodes = 131
-	OpCodes_OP_DzAddPlayer                  OpCodes = 137
-	OpCodes_OP_DzChooseZone                 OpCodes = 138
-	OpCodes_OP_DzChooseZoneReply            OpCodes = 139
-	OpCodes_OP_DzCompass                    OpCodes = 140
-	OpCodes_OP_DzExpeditionEndsWarning      OpCodes = 141
-	OpCodes_OP_DzExpeditionInfo             OpCodes = 142
-	OpCodes_OP_DzExpeditionInvite           OpCodes = 143
-	OpCodes_OP_DzExpeditionInviteResponse   OpCodes = 144
-	OpCodes_OP_DzExpeditionLockoutTimers    OpCodes = 145
-	OpCodes_OP_DzListTimers                 OpCodes = 146
-	OpCodes_OP_DzMakeLeader                 OpCodes = 147
-	OpCodes_OP_DzMemberList                 OpCodes = 148
-	OpCodes_OP_DzMemberListName             OpCodes = 149
-	OpCodes_OP_DzMemberListStatus           OpCodes = 150
-	OpCodes_OP_DzPlayerList                 OpCodes = 151
-	OpCodes_OP_DzQuit                       OpCodes = 152
-	OpCodes_OP_DzRemovePlayer               OpCodes = 153
-	OpCodes_OP_DzSetLeaderName              OpCodes = 154
-	OpCodes_OP_DzSwapPlayer                 OpCodes = 155
-	OpCodes_OP_EnterChat                    OpCodes = 159
-	OpCodes_OP_Feedback                     OpCodes = 165
-	OpCodes_OP_FellowshipUpdate             OpCodes = 167
-	OpCodes_OP_FindPersonReply              OpCodes = 168
-	OpCodes_OP_Fling                        OpCodes = 174
-	OpCodes_OP_FloatListThing               OpCodes = 175
-	OpCodes_OP_ForceFindPerson              OpCodes = 177
-	OpCodes_OP_FriendsWho                   OpCodes = 179
-	OpCodes_OP_GetGuildMOTD                 OpCodes = 180
-	OpCodes_OP_GetGuildMOTDReply            OpCodes = 181
-	OpCodes_OP_GiveMoney                    OpCodes = 183
-	OpCodes_OP_GMApproval                   OpCodes = 184
-	OpCodes_OP_GMTrainSkillConfirm          OpCodes = 203
-	OpCodes_OP_GroupDisbandOther            OpCodes = 211
-	OpCodes_OP_GroupDisbandYou              OpCodes = 212
-	OpCodes_OP_GroupLeaderChange            OpCodes = 217
-	OpCodes_OP_GroupLeadershipAAUpdate      OpCodes = 218
-	OpCodes_OP_GroupMakeLeader              OpCodes = 219
-	OpCodes_OP_GroupMentor                  OpCodes = 220
-	OpCodes_OP_GroupRoles                   OpCodes = 221
-	OpCodes_OP_GroupUpdateB                 OpCodes = 223
-	OpCodes_OP_GroupUpdateLeaderAA          OpCodes = 224
-	OpCodes_OP_GuildBank                    OpCodes = 225
-	OpCodes_OP_GuildBankItemList            OpCodes = 226
-	OpCodes_OP_GuildCreate                  OpCodes = 227
-	OpCodes_OP_GuildManageBanker            OpCodes = 234
-	OpCodes_OP_GuildMemberLevelUpdate       OpCodes = 237
-	OpCodes_OP_GuildPromote                 OpCodes = 242
-	OpCodes_OP_GuildStatus                  OpCodes = 246
-	OpCodes_OP_GuildUpdateURLAndChannel     OpCodes = 248
-	OpCodes_OP_HideCorpse                   OpCodes = 252
-	OpCodes_OP_InitialHPUpdate              OpCodes = 256
-	OpCodes_OP_InitialMobHealth             OpCodes = 257
-	OpCodes_OP_InspectBuffs                 OpCodes = 259
-	OpCodes_OP_InspectMessageUpdate         OpCodes = 260
-	OpCodes_OP_ItemLinkText                 OpCodes = 266
-	OpCodes_OP_ItemPreview                  OpCodes = 269
-	OpCodes_OP_ItemViewUnknown              OpCodes = 273
-	OpCodes_OP_KeyRing                      OpCodes = 275
-	OpCodes_OP_KickPlayers                  OpCodes = 276
-	OpCodes_OP_KnowledgeBase                OpCodes = 277
-	OpCodes_OP_LDoNDisarmTraps              OpCodes = 279
-	OpCodes_OP_LDoNInspect                  OpCodes = 280
-	OpCodes_OP_LDoNOpen                     OpCodes = 281
-	OpCodes_OP_LDoNPickLock                 OpCodes = 282
-	OpCodes_OP_LDoNSenseTraps               OpCodes = 283
-	OpCodes_OP_LFGGetMatchesRequest         OpCodes = 292
-	OpCodes_OP_LFGGetMatchesResponse        OpCodes = 293
-	OpCodes_OP_LFGResponse                  OpCodes = 294
-	OpCodes_OP_LFPCommand                   OpCodes = 296
-	OpCodes_OP_LFPGetMatchesRequest         OpCodes = 297
-	OpCodes_OP_LFPGetMatchesResponse        OpCodes = 298
-	OpCodes_OP_LinkedReuse                  OpCodes = 299
-	OpCodes_OP_LocInfo                      OpCodes = 301
-	OpCodes_OP_LockoutTimerInfo             OpCodes = 302
-	OpCodes_OP_Login                        OpCodes = 303
-	OpCodes_OP_LoginComplete                OpCodes = 306
-	OpCodes_OP_LoginExpansionPacketData     OpCodes = 307
-	OpCodes_OP_LoginUnknown1                OpCodes = 308
-	OpCodes_OP_LoginUnknown2                OpCodes = 309
-	OpCodes_OP_LogoutReply                  OpCodes = 311
-	OpCodes_OP_MarkNPC                      OpCodes = 318
-	OpCodes_OP_MarkRaidNPC                  OpCodes = 319
-	OpCodes_OP_Marquee                      OpCodes = 320
-	OpCodes_OP_MendHPUpdate                 OpCodes = 323
-	OpCodes_OP_MercenaryAssign              OpCodes = 324
-	OpCodes_OP_MercenaryCommand             OpCodes = 325
-	OpCodes_OP_MercenaryDataRequest         OpCodes = 326
-	OpCodes_OP_MercenaryDataResponse        OpCodes = 327
-	OpCodes_OP_MercenaryDataUpdate          OpCodes = 328
-	OpCodes_OP_MercenaryDataUpdateRequest   OpCodes = 329
-	OpCodes_OP_MercenaryDismiss             OpCodes = 330
-	OpCodes_OP_MercenaryHire                OpCodes = 331
-	OpCodes_OP_MercenarySuspendRequest      OpCodes = 332
-	OpCodes_OP_MercenarySuspendResponse     OpCodes = 333
-	OpCodes_OP_MercenaryTimer               OpCodes = 334
-	OpCodes_OP_MercenaryTimerRequest        OpCodes = 335
-	OpCodes_OP_MercenaryUnknown1            OpCodes = 336
-	OpCodes_OP_MercenaryUnsuspendResponse   OpCodes = 337
-	OpCodes_OP_MobUpdate                    OpCodes = 342
-	OpCodes_OP_MoveMultipleItems            OpCodes = 349
-	OpCodes_OP_MoveLogDisregard             OpCodes = 350
-	OpCodes_OP_MoveLogRequest               OpCodes = 351
-	OpCodes_OP_MultiLineMsg                 OpCodes = 352
-	OpCodes_OP_NewTitlesAvailable           OpCodes = 354
-	OpCodes_OP_OpenContainer                OpCodes = 357
-	OpCodes_OP_OpenDiscordMerchant          OpCodes = 358
-	OpCodes_OP_OpenInventory                OpCodes = 360
-	OpCodes_OP_PetBuffWindow                OpCodes = 363
-	OpCodes_OP_PetCommandState              OpCodes = 365
-	OpCodes_OP_PetHoTT                      OpCodes = 366
-	OpCodes_OP_PetitionCheckout2            OpCodes = 371
-	OpCodes_OP_PetitionSearch               OpCodes = 376
-	OpCodes_OP_PetitionSearchResults        OpCodes = 377
-	OpCodes_OP_PetitionSearchText           OpCodes = 378
-	OpCodes_OP_PlayerStateAdd               OpCodes = 383
-	OpCodes_OP_PlayerStateRemove            OpCodes = 384
-	OpCodes_OP_Poll                         OpCodes = 388
-	OpCodes_OP_PollResponse                 OpCodes = 389
-	OpCodes_OP_PopupResponse                OpCodes = 390
-	OpCodes_OP_PreLogoutReply               OpCodes = 393
-	OpCodes_OP_PVPLeaderBoardDetailsReply   OpCodes = 395
-	OpCodes_OP_PVPLeaderBoardDetailsRequest OpCodes = 396
-	OpCodes_OP_PVPLeaderBoardReply          OpCodes = 397
-	OpCodes_OP_PVPLeaderBoardRequest        OpCodes = 398
-	OpCodes_OP_QueryResponseThing           OpCodes = 400
-	OpCodes_OP_QueryUCSServerStatus         OpCodes = 401
-	OpCodes_OP_RaidDelegateAbility          OpCodes = 402
-	OpCodes_OP_RaidClearNPCMarks            OpCodes = 403
-	OpCodes_OP_RaidInvite                   OpCodes = 404
-	OpCodes_OP_RaidJoin                     OpCodes = 405
-	OpCodes_OP_RandomNameGenerator          OpCodes = 407
-	OpCodes_OP_ReclaimCrystals              OpCodes = 416
-	OpCodes_OP_RemoveAllDoors               OpCodes = 418
-	OpCodes_OP_RemoveBlockedBuffs           OpCodes = 419
-	OpCodes_OP_RemoveNimbusEffect           OpCodes = 420
-	OpCodes_OP_RemoveTrap                   OpCodes = 421
-	OpCodes_OP_RequestKnowledgeBase         OpCodes = 427
-	OpCodes_OP_RespawnWindow                OpCodes = 429
-	OpCodes_OP_RestState                    OpCodes = 431
-	OpCodes_OP_Rewind                       OpCodes = 432
-	OpCodes_OP_RezzComplete                 OpCodes = 434
-	OpCodes_OP_Sacrifice                    OpCodes = 436
-	OpCodes_OP_SendFindableNPCs             OpCodes = 446
-	OpCodes_OP_SendSystemStats              OpCodes = 452
-	OpCodes_OP_SessionReady                 OpCodes = 460
-	OpCodes_OP_SetChatServer                OpCodes = 461
-	OpCodes_OP_SetChatServer2               OpCodes = 462
-	OpCodes_OP_SetFace                      OpCodes = 463
-	OpCodes_OP_SetGroupTarget               OpCodes = 464
-	OpCodes_OP_SetGuildRank                 OpCodes = 466
-	OpCodes_OP_SetStartCity                 OpCodes = 469
-	OpCodes_OP_SharedTaskMemberList         OpCodes = 472
-	OpCodes_OP_SharedTaskAddPlayer          OpCodes = 473
-	OpCodes_OP_SharedTaskRemovePlayer       OpCodes = 474
-	OpCodes_OP_SharedTaskMakeLeader         OpCodes = 475
-	OpCodes_OP_SharedTaskMemberInvite       OpCodes = 476
-	OpCodes_OP_SharedTaskInvite             OpCodes = 477
-	OpCodes_OP_SharedTaskInviteResponse     OpCodes = 478
-	OpCodes_OP_SharedTaskAcceptNew          OpCodes = 479
-	OpCodes_OP_SharedTaskMemberChange       OpCodes = 480
-	OpCodes_OP_SharedTaskPlayerList         OpCodes = 481
-	OpCodes_OP_SharedTaskSelectWindow       OpCodes = 482
-	OpCodes_OP_SharedTaskQuit               OpCodes = 483
-	OpCodes_OP_TaskTimers                   OpCodes = 484
-	OpCodes_OP_ShopEndConfirm               OpCodes = 488
-	OpCodes_OP_ShopItem                     OpCodes = 489
-	OpCodes_OP_Some3ByteHPUpdate            OpCodes = 496
-	OpCodes_OP_Some6ByteHPUpdate            OpCodes = 497
-	OpCodes_OP_Sound                        OpCodes = 499
-	OpCodes_OP_SpawnPositionUpdate          OpCodes = 502
-	OpCodes_OP_TargetBuffs                  OpCodes = 510
-	OpCodes_OP_TargetHoTT                   OpCodes = 512
-	OpCodes_OP_TaskActivityComplete         OpCodes = 516
-	OpCodes_OP_TaskHistoryReply             OpCodes = 518
-	OpCodes_OP_TaskHistoryRequest           OpCodes = 519
-	OpCodes_OP_TaskRequestTimer             OpCodes = 520
-	OpCodes_OP_TaskSelectWindow             OpCodes = 521
-	OpCodes_OP_Translocate                  OpCodes = 541
-	OpCodes_OP_TributePointUpdate           OpCodes = 546
-	OpCodes_OP_Untargetable                 OpCodes = 550
-	OpCodes_OP_UpdateAA                     OpCodes = 551
-	OpCodes_OP_UpdateAura                   OpCodes = 552
-	OpCodes_OP_VetClaimReply                OpCodes = 554
-	OpCodes_OP_VetClaimRequest              OpCodes = 555
-	OpCodes_OP_VetRewardsAvaliable          OpCodes = 556
-	OpCodes_OP_VoiceMacroIn                 OpCodes = 557
-	OpCodes_OP_VoiceMacroOut                OpCodes = 558
-	OpCodes_OP_WeaponEquip1                 OpCodes = 559
-	OpCodes_OP_Weblink                      OpCodes = 562
-	OpCodes_OP_WhoAllResponse               OpCodes = 564
-	OpCodes_OP_World_Client_CRC1            OpCodes = 565
-	OpCodes_OP_World_Client_CRC2            OpCodes = 566
-	OpCodes_OP_World_Client_CRC3            OpCodes = 567
-	OpCodes_OP_WorldClientReady             OpCodes = 568
-	OpCodes_OP_WorldComplete                OpCodes = 569
-	OpCodes_OP_WorldLogout                  OpCodes = 570
-	OpCodes_OP_WorldUnknown001              OpCodes = 572
-	OpCodes_OP_XTargetAutoAddHaters         OpCodes = 573
-	OpCodes_OP_XTargetOpen                  OpCodes = 574
-	OpCodes_OP_XTargetOpenResponse          OpCodes = 575
-	OpCodes_OP_XTargetRequest               OpCodes = 576
-	OpCodes_OP_XTargetResponse              OpCodes = 577
-	OpCodes_OP_ZoneComplete                 OpCodes = 580
-	OpCodes_OP_ZoneGuildList                OpCodes = 582
-	OpCodes_OP_ZonePlayerToBind             OpCodes = 584
-	OpCodes_OP_ZoneServerReady              OpCodes = 586
-	OpCodes_OP_ResetAA                      OpCodes = 589
-	OpCodes_OP_UnderWorld                   OpCodes = 590
+	OpCodes_OP_CancelSneakHide              OpCodes = 71
+	OpCodes_OP_CashReward                   OpCodes = 74
+	OpCodes_OP_ChangeSize                   OpCodes = 76
+	OpCodes_OP_CharacterCreateRequest       OpCodes = 80
+	OpCodes_OP_ChatMessage                  OpCodes = 83
+	OpCodes_OP_ClearAA                      OpCodes = 84
+	OpCodes_OP_ClearBlockedBuffs            OpCodes = 85
+	OpCodes_OP_ClearLeadershipAbilities     OpCodes = 86
+	OpCodes_OP_ClearNPCMarks                OpCodes = 87
+	OpCodes_OP_ClearSurname                 OpCodes = 89
+	OpCodes_OP_ClientTimeStamp              OpCodes = 95
+	OpCodes_OP_CloseTributeMaster           OpCodes = 98
+	OpCodes_OP_CorpseDrag                   OpCodes = 111
+	OpCodes_OP_CorpseDrop                   OpCodes = 112
+	OpCodes_OP_CrystalCountUpdate           OpCodes = 114
+	OpCodes_OP_CrystalCreate                OpCodes = 115
+	OpCodes_OP_CrystalReclaim               OpCodes = 116
+	OpCodes_OP_DelegateAbility              OpCodes = 120
+	OpCodes_OP_DeleteCharge                 OpCodes = 122
+	OpCodes_OP_DeletePetition               OpCodes = 124
+	OpCodes_OP_DenyResponse                 OpCodes = 127
+	OpCodes_OP_Disarm                       OpCodes = 128
+	OpCodes_OP_DisciplineTimer              OpCodes = 130
+	OpCodes_OP_DisciplineUpdate             OpCodes = 131
+	OpCodes_OP_DiscordMerchantInventory     OpCodes = 132
+	OpCodes_OP_DoGroupLeadershipAbility     OpCodes = 133
+	OpCodes_OP_DzAddPlayer                  OpCodes = 139
+	OpCodes_OP_DzChooseZone                 OpCodes = 140
+	OpCodes_OP_DzChooseZoneReply            OpCodes = 141
+	OpCodes_OP_DzCompass                    OpCodes = 142
+	OpCodes_OP_DzExpeditionEndsWarning      OpCodes = 143
+	OpCodes_OP_DzExpeditionInfo             OpCodes = 144
+	OpCodes_OP_DzExpeditionInvite           OpCodes = 145
+	OpCodes_OP_DzExpeditionInviteResponse   OpCodes = 146
+	OpCodes_OP_DzExpeditionLockoutTimers    OpCodes = 147
+	OpCodes_OP_DzListTimers                 OpCodes = 148
+	OpCodes_OP_DzMakeLeader                 OpCodes = 149
+	OpCodes_OP_DzMemberList                 OpCodes = 150
+	OpCodes_OP_DzMemberListName             OpCodes = 151
+	OpCodes_OP_DzMemberListStatus           OpCodes = 152
+	OpCodes_OP_DzPlayerList                 OpCodes = 153
+	OpCodes_OP_DzQuit                       OpCodes = 154
+	OpCodes_OP_DzRemovePlayer               OpCodes = 155
+	OpCodes_OP_DzSetLeaderName              OpCodes = 156
+	OpCodes_OP_DzSwapPlayer                 OpCodes = 157
+	OpCodes_OP_EnterChat                    OpCodes = 161
+	OpCodes_OP_Feedback                     OpCodes = 168
+	OpCodes_OP_FellowshipUpdate             OpCodes = 170
+	OpCodes_OP_FindPersonReply              OpCodes = 171
+	OpCodes_OP_Fling                        OpCodes = 177
+	OpCodes_OP_FloatListThing               OpCodes = 178
+	OpCodes_OP_ForceFindPerson              OpCodes = 180
+	OpCodes_OP_FriendsWho                   OpCodes = 182
+	OpCodes_OP_GetGuildMOTD                 OpCodes = 183
+	OpCodes_OP_GetGuildMOTDReply            OpCodes = 184
+	OpCodes_OP_GiveMoney                    OpCodes = 186
+	OpCodes_OP_GMApproval                   OpCodes = 187
+	OpCodes_OP_GMTrainSkillConfirm          OpCodes = 206
+	OpCodes_OP_GroupDisbandOther            OpCodes = 214
+	OpCodes_OP_GroupDisbandYou              OpCodes = 215
+	OpCodes_OP_GroupLeaderChange            OpCodes = 220
+	OpCodes_OP_GroupLeadershipAAUpdate      OpCodes = 221
+	OpCodes_OP_GroupMakeLeader              OpCodes = 222
+	OpCodes_OP_GroupMentor                  OpCodes = 223
+	OpCodes_OP_GroupRoles                   OpCodes = 224
+	OpCodes_OP_GroupUpdateB                 OpCodes = 226
+	OpCodes_OP_GroupUpdateLeaderAA          OpCodes = 227
+	OpCodes_OP_GuildBank                    OpCodes = 228
+	OpCodes_OP_GuildBankItemList            OpCodes = 229
+	OpCodes_OP_GuildCreate                  OpCodes = 230
+	OpCodes_OP_GuildManageBanker            OpCodes = 238
+	OpCodes_OP_GuildMemberLevelUpdate       OpCodes = 241
+	OpCodes_OP_GuildPromote                 OpCodes = 254
+	OpCodes_OP_GuildStatus                  OpCodes = 266
+	OpCodes_OP_GuildUpdateURLAndChannel     OpCodes = 268
+	OpCodes_OP_HideCorpse                   OpCodes = 274
+	OpCodes_OP_InitialHPUpdate              OpCodes = 278
+	OpCodes_OP_InitialMobHealth             OpCodes = 279
+	OpCodes_OP_InspectBuffs                 OpCodes = 281
+	OpCodes_OP_InspectMessageUpdate         OpCodes = 282
+	OpCodes_OP_ItemLinkText                 OpCodes = 292
+	OpCodes_OP_ItemPreview                  OpCodes = 295
+	OpCodes_OP_ItemViewUnknown              OpCodes = 300
+	OpCodes_OP_KeyRing                      OpCodes = 302
+	OpCodes_OP_KickPlayers                  OpCodes = 303
+	OpCodes_OP_KnowledgeBase                OpCodes = 304
+	OpCodes_OP_LDoNDisarmTraps              OpCodes = 306
+	OpCodes_OP_LDoNInspect                  OpCodes = 307
+	OpCodes_OP_LDoNOpen                     OpCodes = 308
+	OpCodes_OP_LDoNPickLock                 OpCodes = 309
+	OpCodes_OP_LDoNSenseTraps               OpCodes = 310
+	OpCodes_OP_LFGGetMatchesRequest         OpCodes = 319
+	OpCodes_OP_LFGGetMatchesResponse        OpCodes = 320
+	OpCodes_OP_LFGResponse                  OpCodes = 321
+	OpCodes_OP_LFPCommand                   OpCodes = 323
+	OpCodes_OP_LFPGetMatchesRequest         OpCodes = 324
+	OpCodes_OP_LFPGetMatchesResponse        OpCodes = 325
+	OpCodes_OP_LinkedReuse                  OpCodes = 326
+	OpCodes_OP_LocInfo                      OpCodes = 328
+	OpCodes_OP_LockoutTimerInfo             OpCodes = 329
+	OpCodes_OP_Login                        OpCodes = 330
+	OpCodes_OP_LoginComplete                OpCodes = 332
+	OpCodes_OP_LoginExpansionPacketData     OpCodes = 333
+	OpCodes_OP_LoginUnknown1                OpCodes = 334
+	OpCodes_OP_LoginUnknown2                OpCodes = 335
+	OpCodes_OP_LogoutReply                  OpCodes = 337
+	OpCodes_OP_MarkNPC                      OpCodes = 344
+	OpCodes_OP_MarkRaidNPC                  OpCodes = 345
+	OpCodes_OP_Marquee                      OpCodes = 346
+	OpCodes_OP_MendHPUpdate                 OpCodes = 349
+	OpCodes_OP_MercenaryAssign              OpCodes = 350
+	OpCodes_OP_MercenaryCommand             OpCodes = 351
+	OpCodes_OP_MercenaryDataRequest         OpCodes = 352
+	OpCodes_OP_MercenaryDataResponse        OpCodes = 353
+	OpCodes_OP_MercenaryDataUpdate          OpCodes = 354
+	OpCodes_OP_MercenaryDataUpdateRequest   OpCodes = 355
+	OpCodes_OP_MercenaryDismiss             OpCodes = 356
+	OpCodes_OP_MercenaryHire                OpCodes = 357
+	OpCodes_OP_MercenarySuspendRequest      OpCodes = 358
+	OpCodes_OP_MercenarySuspendResponse     OpCodes = 359
+	OpCodes_OP_MercenaryTimer               OpCodes = 360
+	OpCodes_OP_MercenaryTimerRequest        OpCodes = 361
+	OpCodes_OP_MercenaryUnknown1            OpCodes = 362
+	OpCodes_OP_MercenaryUnsuspendResponse   OpCodes = 363
+	OpCodes_OP_MobUpdate                    OpCodes = 368
+	OpCodes_OP_MoveMultipleItems            OpCodes = 375
+	OpCodes_OP_MoveLogDisregard             OpCodes = 376
+	OpCodes_OP_MoveLogRequest               OpCodes = 377
+	OpCodes_OP_MultiLineMsg                 OpCodes = 378
+	OpCodes_OP_NewTitlesAvailable           OpCodes = 380
+	OpCodes_OP_OpenContainer                OpCodes = 383
+	OpCodes_OP_OpenDiscordMerchant          OpCodes = 384
+	OpCodes_OP_OpenInventory                OpCodes = 386
+	OpCodes_OP_PetBuffWindow                OpCodes = 389
+	OpCodes_OP_PetCommandState              OpCodes = 391
+	OpCodes_OP_PetHoTT                      OpCodes = 392
+	OpCodes_OP_PetitionCheckout2            OpCodes = 397
+	OpCodes_OP_PetitionSearch               OpCodes = 402
+	OpCodes_OP_PetitionSearchResults        OpCodes = 403
+	OpCodes_OP_PetitionSearchText           OpCodes = 404
+	OpCodes_OP_PlayerStateAdd               OpCodes = 411
+	OpCodes_OP_PlayerStateRemove            OpCodes = 412
+	OpCodes_OP_Poll                         OpCodes = 416
+	OpCodes_OP_PollResponse                 OpCodes = 417
+	OpCodes_OP_PopupResponse                OpCodes = 418
+	OpCodes_OP_PreLogoutReply               OpCodes = 421
+	OpCodes_OP_PVPLeaderBoardDetailsReply   OpCodes = 423
+	OpCodes_OP_PVPLeaderBoardDetailsRequest OpCodes = 424
+	OpCodes_OP_PVPLeaderBoardReply          OpCodes = 425
+	OpCodes_OP_PVPLeaderBoardRequest        OpCodes = 426
+	OpCodes_OP_QueryResponseThing           OpCodes = 428
+	OpCodes_OP_QueryUCSServerStatus         OpCodes = 429
+	OpCodes_OP_RaidDelegateAbility          OpCodes = 430
+	OpCodes_OP_RaidClearNPCMarks            OpCodes = 431
+	OpCodes_OP_RaidInvite                   OpCodes = 432
+	OpCodes_OP_RaidJoin                     OpCodes = 433
+	OpCodes_OP_RandomNameGenerator          OpCodes = 435
+	OpCodes_OP_ReclaimCrystals              OpCodes = 444
+	OpCodes_OP_RemoveAllDoors               OpCodes = 446
+	OpCodes_OP_RemoveBlockedBuffs           OpCodes = 447
+	OpCodes_OP_RemoveNimbusEffect           OpCodes = 448
+	OpCodes_OP_RemoveTrap                   OpCodes = 449
+	OpCodes_OP_RequestKnowledgeBase         OpCodes = 456
+	OpCodes_OP_RespawnWindow                OpCodes = 458
+	OpCodes_OP_RestState                    OpCodes = 460
+	OpCodes_OP_Rewind                       OpCodes = 461
+	OpCodes_OP_RezzComplete                 OpCodes = 463
+	OpCodes_OP_Sacrifice                    OpCodes = 465
+	OpCodes_OP_SendFindableNPCs             OpCodes = 475
+	OpCodes_OP_SendSystemStats              OpCodes = 481
+	OpCodes_OP_SessionReady                 OpCodes = 489
+	OpCodes_OP_SetChatServer                OpCodes = 490
+	OpCodes_OP_SetChatServer2               OpCodes = 491
+	OpCodes_OP_SetFace                      OpCodes = 492
+	OpCodes_OP_SetGroupTarget               OpCodes = 493
+	OpCodes_OP_SetGuildRank                 OpCodes = 495
+	OpCodes_OP_SetStartCity                 OpCodes = 498
+	OpCodes_OP_SharedTaskMemberList         OpCodes = 501
+	OpCodes_OP_SharedTaskAddPlayer          OpCodes = 502
+	OpCodes_OP_SharedTaskRemovePlayer       OpCodes = 503
+	OpCodes_OP_SharedTaskMakeLeader         OpCodes = 504
+	OpCodes_OP_SharedTaskMemberInvite       OpCodes = 505
+	OpCodes_OP_SharedTaskInvite             OpCodes = 506
+	OpCodes_OP_SharedTaskInviteResponse     OpCodes = 507
+	OpCodes_OP_SharedTaskAcceptNew          OpCodes = 508
+	OpCodes_OP_SharedTaskMemberChange       OpCodes = 509
+	OpCodes_OP_SharedTaskPlayerList         OpCodes = 510
+	OpCodes_OP_SharedTaskSelectWindow       OpCodes = 511
+	OpCodes_OP_SharedTaskQuit               OpCodes = 512
+	OpCodes_OP_TaskTimers                   OpCodes = 513
+	OpCodes_OP_ShopEndConfirm               OpCodes = 517
+	OpCodes_OP_ShopItem                     OpCodes = 518
+	OpCodes_OP_Some3ByteHPUpdate            OpCodes = 530
+	OpCodes_OP_Some6ByteHPUpdate            OpCodes = 531
+	OpCodes_OP_Sound                        OpCodes = 533
+	OpCodes_OP_SpawnPositionUpdate          OpCodes = 536
+	OpCodes_OP_TargetBuffs                  OpCodes = 545
+	OpCodes_OP_TargetHoTT                   OpCodes = 547
+	OpCodes_OP_TaskActivityComplete         OpCodes = 551
+	OpCodes_OP_TaskHistoryReply             OpCodes = 553
+	OpCodes_OP_TaskHistoryRequest           OpCodes = 554
+	OpCodes_OP_TaskRequestTimer             OpCodes = 555
+	OpCodes_OP_TaskSelectWindow             OpCodes = 556
+	OpCodes_OP_Translocate                  OpCodes = 578
+	OpCodes_OP_TributePointUpdate           OpCodes = 583
+	OpCodes_OP_Untargetable                 OpCodes = 587
+	OpCodes_OP_UpdateAA                     OpCodes = 588
+	OpCodes_OP_UpdateAura                   OpCodes = 589
+	OpCodes_OP_VetClaimReply                OpCodes = 591
+	OpCodes_OP_VetClaimRequest              OpCodes = 592
+	OpCodes_OP_VetRewardsAvaliable          OpCodes = 593
+	OpCodes_OP_VoiceMacroIn                 OpCodes = 594
+	OpCodes_OP_VoiceMacroOut                OpCodes = 595
+	OpCodes_OP_WeaponEquip1                 OpCodes = 596
+	OpCodes_OP_Weblink                      OpCodes = 599
+	OpCodes_OP_WhoAllResponse               OpCodes = 601
+	OpCodes_OP_World_Client_CRC1            OpCodes = 602
+	OpCodes_OP_World_Client_CRC2            OpCodes = 603
+	OpCodes_OP_World_Client_CRC3            OpCodes = 604
+	OpCodes_OP_WorldClientReady             OpCodes = 605
+	OpCodes_OP_WorldComplete                OpCodes = 606
+	OpCodes_OP_WorldLogout                  OpCodes = 607
+	OpCodes_OP_WorldUnknown001              OpCodes = 609
+	OpCodes_OP_XTargetAutoAddHaters         OpCodes = 610
+	OpCodes_OP_XTargetOpen                  OpCodes = 611
+	OpCodes_OP_XTargetOpenResponse          OpCodes = 612
+	OpCodes_OP_XTargetRequest               OpCodes = 613
+	OpCodes_OP_XTargetResponse              OpCodes = 614
+	OpCodes_OP_ZoneComplete                 OpCodes = 617
+	OpCodes_OP_ZoneGuildList                OpCodes = 619
+	OpCodes_OP_ZonePlayerToBind             OpCodes = 621
+	OpCodes_OP_ZoneServerReady              OpCodes = 623
+	OpCodes_OP_ResetAA                      OpCodes = 626
+	OpCodes_OP_UnderWorld                   OpCodes = 627
 )
 
 // Enum value maps for OpCodes.
 var (
 	OpCodes_name = map[int32]string{
 		0:    "OP_Unknown",
-		304:  "OP_LoginWeb",
-		305:  "OP_LoginAccepted",
-		385:  "OP_PlayEverquestRequest",
-		386:  "OP_PlayEverquestResponse",
-		458:  "OP_ServerListRequest",
-		459:  "OP_ServerListResponse",
+		629:  "OP_JWTLogin",
+		801:  "OP_JWTResponse",
+		331:  "OP_LoginAccepted",
+		413:  "OP_PlayEverquestRequest",
+		414:  "OP_PlayEverquestResponse",
+		487:  "OP_ServerListRequest",
+		488:  "OP_ServerListResponse",
 		40:   "OP_ApproveName",
-		77:   "OP_CharacterCreate",
-		119:  "OP_DeleteCharacter",
+		79:   "OP_CharacterCreate",
+		121:  "OP_DeleteCharacter",
 		5040: "OP_ApproveName_Server",
-		160:  "OP_EnterWorld",
-		162:  "OP_ExpansionInfo",
-		245:  "OP_GuildsList",
-		391:  "OP_PostEnterWorld",
-		444:  "OP_SendCharInfo",
-		448:  "OP_SendLoginInfo",
-		449:  "OP_SendMaxCharacters",
-		450:  "OP_SendMembership",
-		451:  "OP_SendMembershipDetails",
-		585:  "OP_ZoneServerInfo",
-		591:  "OP_WebInitiateConnection",
-		581:  "OP_ZoneEntry",
-		468:  "OP_SetServerFilter",
-		443:  "OP_SendAATable",
-		454:  "OP_SendTributes",
-		447:  "OP_SendGuildTributes",
-		442:  "OP_SendAAStats",
-		423:  "OP_ReqClientSpawn",
-		424:  "OP_ReqNewZone",
-		445:  "OP_SendExpZonein",
-		92:   "OP_ClientReady",
-		91:   "OP_ClientError",
+		162:  "OP_EnterWorld",
+		165:  "OP_ExpansionInfo",
+		265:  "OP_GuildsList",
+		419:  "OP_PostEnterWorld",
+		473:  "OP_SendCharInfo",
+		477:  "OP_SendLoginInfo",
+		478:  "OP_SendMaxCharacters",
+		479:  "OP_SendMembership",
+		480:  "OP_SendMembershipDetails",
+		622:  "OP_ZoneServerInfo",
+		628:  "OP_WebInitiateConnection",
+		618:  "OP_ZoneEntry",
+		497:  "OP_SetServerFilter",
+		472:  "OP_SendAATable",
+		483:  "OP_SendTributes",
+		476:  "OP_SendGuildTributes",
+		471:  "OP_SendAAStats",
+		451:  "OP_ReqClientSpawn",
+		452:  "OP_ReqNewZone",
+		474:  "OP_SendExpZonein",
+		94:   "OP_ClientReady",
+		93:   "OP_ClientError",
 		42:   "OP_ApproveZone",
-		524:  "OP_TGB",
+		559:  "OP_TGB",
 		7:    "OP_AckPacket",
-		94:   "OP_ClientUpdate",
+		96:   "OP_ClientUpdate",
 		47:   "OP_AutoAttack",
 		48:   "OP_AutoAttack2",
-		102:  "OP_Consent",
-		103:  "OP_ConsentDeny",
-		513:  "OP_TargetMouse",
-		511:  "OP_TargetCommand",
-		485:  "OP_Shielding",
-		274:  "OP_Jump",
+		104:  "OP_Consent",
+		105:  "OP_ConsentDeny",
+		548:  "OP_TargetMouse",
+		546:  "OP_TargetCommand",
+		514:  "OP_Shielding",
+		301:  "OP_Jump",
 		15:   "OP_AdventureInfoRequest",
 		23:   "OP_AdventureRequest",
-		278:  "OP_LDoNButton",
-		286:  "OP_LeaveAdventure",
-		107:  "OP_Consume",
+		305:  "OP_LDoNButton",
+		313:  "OP_LeaveAdventure",
+		109:  "OP_Consume",
 		19:   "OP_AdventureMerchantRequest",
 		18:   "OP_AdventureMerchantPurchase",
-		106:  "OP_ConsiderCorpse",
-		105:  "OP_Consider",
+		108:  "OP_ConsiderCorpse",
+		107:  "OP_Consider",
 		58:   "OP_Begging",
-		523:  "OP_TestBuff",
-		508:  "OP_Surname",
-		578:  "OP_YellForHelp",
+		558:  "OP_TestBuff",
+		542:  "OP_Surname",
+		615:  "OP_YellForHelp",
 		43:   "OP_Assist",
-		201:  "OP_GMTraining",
-		188:  "OP_GMEndTraining",
-		202:  "OP_GMTrainSkill",
-		426:  "OP_RequestDuel",
-		132:  "OP_DuelDecline",
-		133:  "OP_DuelAccept",
-		500:  "OP_SpawnAppearance",
+		204:  "OP_GMTraining",
+		191:  "OP_GMEndTraining",
+		205:  "OP_GMTrainSkill",
+		454:  "OP_RequestDuel",
+		134:  "OP_DuelDecline",
+		135:  "OP_DuelAccept",
+		534:  "OP_SpawnAppearance",
 		54:   "OP_BazaarInspect",
-		117:  "OP_Death",
-		346:  "OP_MoveCoin",
-		264:  "OP_ItemLinkClick",
-		348:  "OP_MoveItem",
-		69:   "OP_Camp",
-		310:  "OP_Logout",
-		456:  "OP_SenseHeading",
-		166:  "OP_FeignDeath",
-		495:  "OP_Sneak",
-		251:  "OP_Hide",
-		76:   "OP_ChannelMessage",
-		560:  "OP_WearChange",
-		123:  "OP_DeleteSpawn",
-		440:  "OP_SaveOnZoneReq",
-		439:  "OP_Save",
-		563:  "OP_WhoAllRequest",
-		204:  "OP_GMZoneRequest",
-		205:  "OP_GMZoneRequest2",
-		157:  "OP_EndLootRequest",
-		315:  "OP_LootRequest",
-		135:  "OP_Dye",
-		101:  "OP_ConfirmDelete",
-		314:  "OP_LootItem",
-		228:  "OP_GuildDelete",
-		243:  "OP_GuildPublicNote",
-		182:  "OP_GetGuildsList",
-		465:  "OP_SetGuildMOTD",
-		467:  "OP_SetRunMode",
-		241:  "OP_GuildPeace",
-		249:  "OP_GuildWar",
-		232:  "OP_GuildLeader",
-		229:  "OP_GuildDemote",
-		230:  "OP_GuildInvite",
-		244:  "OP_GuildRemove",
-		231:  "OP_GuildInviteAccept",
-		316:  "OP_ManaChange",
-		321:  "OP_MemorizeSpell",
-		509:  "OP_SwapSpell",
-		74:   "OP_CastSpell",
-		121:  "OP_DeleteItem",
-		98:   "OP_CombatAbility",
-		522:  "OP_Taunt",
-		262:  "OP_InstillDoubt",
-		433:  "OP_RezzAnswer",
-		199:  "OP_GMSummon",
-		530:  "OP_TradeBusy",
-		536:  "OP_TradeRequest",
-		537:  "OP_TradeRequestAck",
-		72:   "OP_CancelTrade",
-		529:  "OP_TradeAcceptClick",
+		119:  "OP_Death",
+		372:  "OP_MoveCoin",
+		290:  "OP_ItemLinkClick",
+		374:  "OP_MoveItem",
+		70:   "OP_Camp",
+		336:  "OP_Logout",
+		485:  "OP_SenseHeading",
+		169:  "OP_FeignDeath",
+		529:  "OP_Sneak",
+		273:  "OP_Hide",
+		77:   "OP_ChannelMessage",
+		597:  "OP_WearChange",
+		125:  "OP_DeleteSpawn",
+		469:  "OP_SaveOnZoneReq",
+		468:  "OP_Save",
+		600:  "OP_WhoAllRequest",
+		207:  "OP_GMZoneRequest",
+		208:  "OP_GMZoneRequest2",
+		159:  "OP_EndLootRequest",
+		341:  "OP_LootRequest",
+		137:  "OP_Dye",
+		103:  "OP_ConfirmDelete",
+		340:  "OP_LootItem",
+		231:  "OP_GuildDelete",
+		255:  "OP_GuildPublicNote",
+		185:  "OP_GetGuildsList",
+		494:  "OP_SetGuildMOTD",
+		496:  "OP_SetRunMode",
+		253:  "OP_GuildPeace",
+		271:  "OP_GuildWar",
+		236:  "OP_GuildLeader",
+		233:  "OP_GuildDemote",
+		234:  "OP_GuildInvite",
+		256:  "OP_GuildRemove",
+		235:  "OP_GuildInviteAccept",
+		342:  "OP_ManaChange",
+		347:  "OP_MemorizeSpell",
+		543:  "OP_SwapSpell",
+		75:   "OP_CastSpell",
+		123:  "OP_DeleteItem",
+		100:  "OP_CombatAbility",
+		557:  "OP_Taunt",
+		284:  "OP_InstillDoubt",
+		462:  "OP_RezzAnswer",
+		202:  "OP_GMSummon",
+		565:  "OP_TradeBusy",
+		572:  "OP_TradeRequest",
+		573:  "OP_TradeRequestAck",
+		73:   "OP_CancelTrade",
+		564:  "OP_TradeAcceptClick",
 		62:   "OP_BoardBoat",
-		287:  "OP_LeaveBoat",
-		409:  "OP_RandomReq",
+		314:  "OP_LeaveBoat",
+		437:  "OP_RandomReq",
 		64:   "OP_Buff",
-		192:  "OP_GMHideMe",
-		196:  "OP_GMNameChange",
-		194:  "OP_GMKill",
-		195:  "OP_GMLastName",
-		200:  "OP_GMToggle",
-		291:  "OP_LFGCommand",
-		191:  "OP_GMGoto",
-		539:  "OP_TraderShop",
-		492:  "OP_ShopRequest",
+		195:  "OP_GMHideMe",
+		199:  "OP_GMNameChange",
+		197:  "OP_GMKill",
+		198:  "OP_GMLastName",
+		203:  "OP_GMToggle",
+		318:  "OP_LFGCommand",
+		194:  "OP_GMGoto",
+		575:  "OP_TraderShop",
+		526:  "OP_ShopRequest",
 		53:   "OP_Bazaar",
-		490:  "OP_ShopPlayerBuy",
-		491:  "OP_ShopPlayerSell",
-		487:  "OP_ShopEnd",
-		95:   "OP_CloseContainer",
-		90:   "OP_ClickObjectAction",
-		89:   "OP_ClickObject",
-		414:  "OP_RecipesFavorite",
-		415:  "OP_RecipesSearch",
-		412:  "OP_RecipeDetails",
-		411:  "OP_RecipeAutoCombine",
-		540:  "OP_TradeSkillCombine",
-		267:  "OP_ItemName",
+		519:  "OP_ShopPlayerBuy",
+		520:  "OP_ShopPlayerSell",
+		516:  "OP_ShopEnd",
+		97:   "OP_CloseContainer",
+		92:   "OP_ClickObjectAction",
+		91:   "OP_ClickObject",
+		442:  "OP_RecipesFavorite",
+		443:  "OP_RecipesSearch",
+		440:  "OP_RecipeDetails",
+		439:  "OP_RecipeAutoCombine",
+		576:  "OP_TradeSkillCombine",
+		293:  "OP_ItemName",
 		46:   "OP_AugmentItem",
-		88:   "OP_ClickDoor",
-		164:  "OP_FaceChange",
-		215:  "OP_GroupInvite",
-		216:  "OP_GroupInvite2",
-		213:  "OP_GroupFollow",
-		214:  "OP_GroupFollow2",
-		207:  "OP_GroupAcknowledge",
-		208:  "OP_GroupCancelInvite",
-		210:  "OP_GroupDisband",
-		209:  "OP_GroupDelete",
-		187:  "OP_GMEmoteZone",
-		261:  "OP_InspectRequest",
-		258:  "OP_InspectAnswer",
-		124:  "OP_DeleteSpell",
-		368:  "OP_PetitionBug",
+		90:   "OP_ClickDoor",
+		167:  "OP_FaceChange",
+		218:  "OP_GroupInvite",
+		219:  "OP_GroupInvite2",
+		216:  "OP_GroupFollow",
+		217:  "OP_GroupFollow2",
+		210:  "OP_GroupAcknowledge",
+		211:  "OP_GroupCancelInvite",
+		213:  "OP_GroupDisband",
+		212:  "OP_GroupDelete",
+		190:  "OP_GMEmoteZone",
+		283:  "OP_InspectRequest",
+		280:  "OP_InspectAnswer",
+		126:  "OP_DeleteSpell",
+		394:  "OP_PetitionBug",
 		67:   "OP_Bug",
-		367:  "OP_Petition",
-		369:  "OP_PetitionCheckIn",
-		375:  "OP_PetitionResolve",
-		372:  "OP_PetitionDelete",
-		379:  "OP_PetitionUnCheckout",
-		373:  "OP_PetitionQue",
-		362:  "OP_PDeletePetition",
-		370:  "OP_PetitionCheckout",
-		374:  "OP_PetitionRefresh",
-		364:  "OP_PetCommands",
-		410:  "OP_ReadBook",
-		156:  "OP_Emote",
-		186:  "OP_GMDelCorpse",
-		193:  "OP_GMKick",
-		198:  "OP_GMServers",
-		254:  "OP_Illusion",
-		185:  "OP_GMBecomeNPC",
-		173:  "OP_Fishing",
-		176:  "OP_Forage",
-		322:  "OP_Mend",
-		161:  "OP_EnvDamage",
-		116:  "OP_Damage",
+		393:  "OP_Petition",
+		395:  "OP_PetitionCheckIn",
+		401:  "OP_PetitionResolve",
+		398:  "OP_PetitionDelete",
+		405:  "OP_PetitionUnCheckout",
+		399:  "OP_PetitionQue",
+		388:  "OP_PDeletePetition",
+		396:  "OP_PetitionCheckout",
+		400:  "OP_PetitionRefresh",
+		390:  "OP_PetCommands",
+		438:  "OP_ReadBook",
+		158:  "OP_Emote",
+		189:  "OP_GMDelCorpse",
+		196:  "OP_GMKick",
+		201:  "OP_GMServers",
+		276:  "OP_Illusion",
+		188:  "OP_GMBecomeNPC",
+		176:  "OP_Fishing",
+		179:  "OP_Forage",
+		348:  "OP_Mend",
+		163:  "OP_EnvDamage",
+		118:  "OP_Damage",
 		4:    "OP_AAAction",
-		534:  "OP_TraderBuy",
-		533:  "OP_Trader",
-		190:  "OP_GMFind",
-		381:  "OP_PickPocket",
+		570:  "OP_TraderBuy",
+		568:  "OP_Trader",
+		193:  "OP_GMFind",
+		407:  "OP_PickPocket",
 		60:   "OP_Bind_Wound",
-		527:  "OP_TrackTarget",
-		526:  "OP_Track",
-		528:  "OP_TrackUnknown",
-		417:  "OP_ReloadUI",
-		505:  "OP_Split",
-		457:  "OP_SenseTraps",
-		127:  "OP_DisarmTraps",
-		361:  "OP_OpenTributeMaster",
-		359:  "OP_OpenGuildTributeMaster",
-		543:  "OP_TributeItem",
-		544:  "OP_TributeMoney",
-		441:  "OP_SelectTribute",
-		549:  "OP_TributeUpdate",
-		548:  "OP_TributeToggle",
-		545:  "OP_TributeNPC",
-		111:  "OP_CrashDump",
-		108:  "OP_ControlBoat",
-		134:  "OP_DumpName",
-		437:  "OP_SafeFallSuccess",
-		250:  "OP_Heartbeat",
-		438:  "OP_SafePoint",
-		169:  "OP_FindPersonRequest",
-		284:  "OP_LeadershipExpToggle",
-		394:  "OP_PurchaseLeadershipAA",
+		562:  "OP_TrackTarget",
+		561:  "OP_Track",
+		563:  "OP_TrackUnknown",
+		445:  "OP_ReloadUI",
+		539:  "OP_Split",
+		486:  "OP_SenseTraps",
+		129:  "OP_DisarmTraps",
+		387:  "OP_OpenTributeMaster",
+		385:  "OP_OpenGuildTributeMaster",
+		580:  "OP_TributeItem",
+		581:  "OP_TributeMoney",
+		470:  "OP_SelectTribute",
+		586:  "OP_TributeUpdate",
+		585:  "OP_TributeToggle",
+		582:  "OP_TributeNPC",
+		113:  "OP_CrashDump",
+		110:  "OP_ControlBoat",
+		136:  "OP_DumpName",
+		466:  "OP_SafeFallSuccess",
+		272:  "OP_Heartbeat",
+		467:  "OP_SafePoint",
+		172:  "OP_FindPersonRequest",
+		311:  "OP_LeadershipExpToggle",
+		422:  "OP_PurchaseLeadershipAA",
 		51:   "OP_BankerChange",
-		470:  "OP_SetTitle",
-		428:  "OP_RequestTitles",
-		272:  "OP_ItemVerifyRequest",
-		86:   "OP_ClearObject",
-		170:  "OP_FinishTrade",
-		189:  "OP_GMEndTrainingResponse",
-		313:  "OP_LootComplete",
-		571:  "OP_WorldObjectsSent",
-		171:  "OP_FinishWindow",
-		172:  "OP_FinishWindow2",
-		268:  "OP_ItemPacket",
-		97:   "OP_ColoredText",
-		270:  "OP_ItemRecastDelay",
-		178:  "OP_FormattedMessage",
-		238:  "OP_GuildMemberList",
-		263:  "OP_InterruptCast",
-		265:  "OP_ItemLinkResponse",
-		587:  "OP_ZoneSpawns",
-		100:  "OP_CompletedTasks",
-		79:   "OP_CharInventory",
-		115:  "OP_CustomTitles",
-		501:  "OP_SpawnDoor",
-		455:  "OP_SendZonepoints",
-		542:  "OP_TributeInfo",
-		247:  "OP_GuildTributeInfo",
-		453:  "OP_SendTitleList",
+		499:  "OP_SetTitle",
+		457:  "OP_RequestTitles",
+		299:  "OP_ItemVerifyRequest",
+		88:   "OP_ClearObject",
+		173:  "OP_FinishTrade",
+		192:  "OP_GMEndTrainingResponse",
+		339:  "OP_LootComplete",
+		608:  "OP_WorldObjectsSent",
+		174:  "OP_FinishWindow",
+		175:  "OP_FinishWindow2",
+		294:  "OP_ItemPacket",
+		99:   "OP_ColoredText",
+		297:  "OP_ItemRecastDelay",
+		181:  "OP_FormattedMessage",
+		242:  "OP_GuildMemberList",
+		285:  "OP_InterruptCast",
+		291:  "OP_ItemLinkResponse",
+		624:  "OP_ZoneSpawns",
+		102:  "OP_CompletedTasks",
+		81:   "OP_CharInventory",
+		117:  "OP_CustomTitles",
+		535:  "OP_SpawnDoor",
+		484:  "OP_SendZonepoints",
+		579:  "OP_TributeInfo",
+		267:  "OP_GuildTributeInfo",
+		482:  "OP_SendTitleList",
 		5:    "OP_AAExpUpdate",
 		8:    "OP_Action",
 		11:   "OP_AdventureData",
@@ -947,62 +950,62 @@ var (
 		38:   "OP_AnnoyingZoneUnknown",
 		57:   "OP_BecomeTrader",
 		59:   "OP_BeginCast",
-		80:   "OP_Charm",
-		68:   "OP_CameraEffect",
-		104:  "OP_ConsentResponse",
-		158:  "OP_EnduranceUpdate",
-		163:  "OP_ExpUpdate",
-		206:  "OP_GroundSpawn",
-		222:  "OP_GroupUpdate",
-		240:  "OP_GuildMOTD",
-		233:  "OP_GuildManageAdd",
-		235:  "OP_GuildManageRemove",
-		236:  "OP_GuildManageStatus",
-		239:  "OP_GuildMemberUpdate",
-		253:  "OP_HPUpdate",
-		255:  "OP_IncreaseStats",
-		271:  "OP_ItemVerifyReply",
-		290:  "OP_LFGAppearance",
-		285:  "OP_LeadershipExpUpdate",
-		288:  "OP_LevelAppearance",
-		289:  "OP_LevelUpdate",
-		317:  "OP_ManaUpdate",
-		338:  "OP_MobEnduranceUpdate",
-		339:  "OP_MobHealth",
-		340:  "OP_MobManaUpdate",
-		341:  "OP_MobRename",
-		343:  "OP_MoneyOnCorpse",
-		344:  "OP_MoneyUpdate",
-		347:  "OP_MoveDoor",
-		353:  "OP_NewSpawn",
-		355:  "OP_NewZone",
-		380:  "OP_PetitionUpdate",
-		382:  "OP_PlayerProfile",
-		406:  "OP_RaidUpdate",
-		408:  "OP_RandomReply",
-		413:  "OP_RecipeReply",
-		425:  "OP_RequestClientZoneChange",
-		430:  "OP_RespondAA",
-		435:  "OP_RezzRequest",
-		471:  "OP_SetTitleReply",
-		486:  "OP_ShopDelItem",
-		493:  "OP_SimpleMessage",
-		494:  "OP_SkillUpdate",
-		498:  "OP_SomeItemPacketMaybe",
-		504:  "OP_SpellEffect",
-		506:  "OP_Stamina",
-		507:  "OP_Stun",
-		514:  "OP_TargetReject",
-		525:  "OP_TimeOfDay",
-		531:  "OP_TradeCoins",
-		532:  "OP_TradeMoneyUpdate",
-		535:  "OP_TraderDelItem",
-		538:  "OP_TraderItemUpdate",
-		547:  "OP_TributeTimer",
-		553:  "OP_UpdateLeadershipAA",
-		561:  "OP_Weather",
-		579:  "OP_ZoneChange",
-		583:  "OP_ZoneInUnknown",
+		82:   "OP_Charm",
+		69:   "OP_CameraEffect",
+		106:  "OP_ConsentResponse",
+		160:  "OP_EnduranceUpdate",
+		166:  "OP_ExpUpdate",
+		209:  "OP_GroundSpawn",
+		225:  "OP_GroupUpdate",
+		252:  "OP_GuildMOTD",
+		237:  "OP_GuildManageAdd",
+		239:  "OP_GuildManageRemove",
+		240:  "OP_GuildManageStatus",
+		243:  "OP_GuildMemberUpdate",
+		275:  "OP_HPUpdate",
+		277:  "OP_IncreaseStats",
+		298:  "OP_ItemVerifyReply",
+		317:  "OP_LFGAppearance",
+		312:  "OP_LeadershipExpUpdate",
+		315:  "OP_LevelAppearance",
+		316:  "OP_LevelUpdate",
+		343:  "OP_ManaUpdate",
+		364:  "OP_MobEnduranceUpdate",
+		365:  "OP_MobHealth",
+		366:  "OP_MobManaUpdate",
+		367:  "OP_MobRename",
+		369:  "OP_MoneyOnCorpse",
+		370:  "OP_MoneyUpdate",
+		373:  "OP_MoveDoor",
+		379:  "OP_NewSpawn",
+		381:  "OP_NewZone",
+		406:  "OP_PetitionUpdate",
+		410:  "OP_PlayerProfile",
+		434:  "OP_RaidUpdate",
+		436:  "OP_RandomReply",
+		441:  "OP_RecipeReply",
+		453:  "OP_RequestClientZoneChange",
+		459:  "OP_RespondAA",
+		464:  "OP_RezzRequest",
+		500:  "OP_SetTitleReply",
+		515:  "OP_ShopDelItem",
+		527:  "OP_SimpleMessage",
+		528:  "OP_SkillUpdate",
+		532:  "OP_SomeItemPacketMaybe",
+		538:  "OP_SpellEffect",
+		540:  "OP_Stamina",
+		541:  "OP_Stun",
+		549:  "OP_TargetReject",
+		560:  "OP_TimeOfDay",
+		566:  "OP_TradeCoins",
+		567:  "OP_TradeMoneyUpdate",
+		571:  "OP_TraderDelItem",
+		574:  "OP_TraderItemUpdate",
+		584:  "OP_TributeTimer",
+		590:  "OP_UpdateLeadershipAA",
+		598:  "OP_Weather",
+		616:  "OP_ZoneChange",
+		620:  "OP_ZoneInUnknown",
 		6:    "OP_AcceptNewTask",
 		14:   "OP_AdventureInfo",
 		39:   "OP_ApplyPoison",
@@ -1010,22 +1013,22 @@ var (
 		50:   "OP_Bandolier",
 		55:   "OP_BazaarSearch",
 		56:   "OP_BecomeCorpse",
-		71:   "OP_CancelTask",
-		99:   "OP_Command",
-		136:  "OP_DynamicWall",
-		295:  "OP_LFGuild",
-		300:  "OP_LoadSpellSet",
-		312:  "OP_LogServer",
-		345:  "OP_MOTD",
-		356:  "OP_OnLevelMessage",
-		387:  "OP_PlayMP3",
-		392:  "OP_PotionBelt",
-		399:  "OP_PVPStats",
-		422:  "OP_Report",
-		503:  "OP_SpecialMesg",
-		515:  "OP_TaskActivity",
-		517:  "OP_TaskDescription",
-		588:  "OP_ZoneUnavail",
+		72:   "OP_CancelTask",
+		101:  "OP_Command",
+		138:  "OP_DynamicWall",
+		322:  "OP_LFGuild",
+		327:  "OP_LoadSpellSet",
+		338:  "OP_LogServer",
+		371:  "OP_MOTD",
+		382:  "OP_OnLevelMessage",
+		415:  "OP_PlayMP3",
+		420:  "OP_PotionBelt",
+		427:  "OP_PVPStats",
+		450:  "OP_Report",
+		537:  "OP_SpecialMesg",
+		550:  "OP_TaskActivity",
+		552:  "OP_TaskDescription",
+		625:  "OP_ZoneUnavail",
 		1000: "Nested_WorldServer",
 		1001: "Nested_CharacterSelectEntry",
 		1002: "Nested_CharSelectEquip",
@@ -1062,481 +1065,482 @@ var (
 		63:   "OP_BookButton",
 		65:   "OP_BuffCreate",
 		66:   "OP_BuffRemoveRequest",
-		70:   "OP_CancelSneakHide",
-		73:   "OP_CashReward",
-		75:   "OP_ChangeSize",
-		78:   "OP_CharacterCreateRequest",
-		81:   "OP_ChatMessage",
-		82:   "OP_ClearAA",
-		83:   "OP_ClearBlockedBuffs",
-		84:   "OP_ClearLeadershipAbilities",
-		85:   "OP_ClearNPCMarks",
-		87:   "OP_ClearSurname",
-		93:   "OP_ClientTimeStamp",
-		96:   "OP_CloseTributeMaster",
-		109:  "OP_CorpseDrag",
-		110:  "OP_CorpseDrop",
-		112:  "OP_CrystalCountUpdate",
-		113:  "OP_CrystalCreate",
-		114:  "OP_CrystalReclaim",
-		118:  "OP_DelegateAbility",
-		120:  "OP_DeleteCharge",
-		122:  "OP_DeletePetition",
-		125:  "OP_DenyResponse",
-		126:  "OP_Disarm",
-		128:  "OP_DisciplineTimer",
-		129:  "OP_DisciplineUpdate",
-		130:  "OP_DiscordMerchantInventory",
-		131:  "OP_DoGroupLeadershipAbility",
-		137:  "OP_DzAddPlayer",
-		138:  "OP_DzChooseZone",
-		139:  "OP_DzChooseZoneReply",
-		140:  "OP_DzCompass",
-		141:  "OP_DzExpeditionEndsWarning",
-		142:  "OP_DzExpeditionInfo",
-		143:  "OP_DzExpeditionInvite",
-		144:  "OP_DzExpeditionInviteResponse",
-		145:  "OP_DzExpeditionLockoutTimers",
-		146:  "OP_DzListTimers",
-		147:  "OP_DzMakeLeader",
-		148:  "OP_DzMemberList",
-		149:  "OP_DzMemberListName",
-		150:  "OP_DzMemberListStatus",
-		151:  "OP_DzPlayerList",
-		152:  "OP_DzQuit",
-		153:  "OP_DzRemovePlayer",
-		154:  "OP_DzSetLeaderName",
-		155:  "OP_DzSwapPlayer",
-		159:  "OP_EnterChat",
-		165:  "OP_Feedback",
-		167:  "OP_FellowshipUpdate",
-		168:  "OP_FindPersonReply",
-		174:  "OP_Fling",
-		175:  "OP_FloatListThing",
-		177:  "OP_ForceFindPerson",
-		179:  "OP_FriendsWho",
-		180:  "OP_GetGuildMOTD",
-		181:  "OP_GetGuildMOTDReply",
-		183:  "OP_GiveMoney",
-		184:  "OP_GMApproval",
-		203:  "OP_GMTrainSkillConfirm",
-		211:  "OP_GroupDisbandOther",
-		212:  "OP_GroupDisbandYou",
-		217:  "OP_GroupLeaderChange",
-		218:  "OP_GroupLeadershipAAUpdate",
-		219:  "OP_GroupMakeLeader",
-		220:  "OP_GroupMentor",
-		221:  "OP_GroupRoles",
-		223:  "OP_GroupUpdateB",
-		224:  "OP_GroupUpdateLeaderAA",
-		225:  "OP_GuildBank",
-		226:  "OP_GuildBankItemList",
-		227:  "OP_GuildCreate",
-		234:  "OP_GuildManageBanker",
-		237:  "OP_GuildMemberLevelUpdate",
-		242:  "OP_GuildPromote",
-		246:  "OP_GuildStatus",
-		248:  "OP_GuildUpdateURLAndChannel",
-		252:  "OP_HideCorpse",
-		256:  "OP_InitialHPUpdate",
-		257:  "OP_InitialMobHealth",
-		259:  "OP_InspectBuffs",
-		260:  "OP_InspectMessageUpdate",
-		266:  "OP_ItemLinkText",
-		269:  "OP_ItemPreview",
-		273:  "OP_ItemViewUnknown",
-		275:  "OP_KeyRing",
-		276:  "OP_KickPlayers",
-		277:  "OP_KnowledgeBase",
-		279:  "OP_LDoNDisarmTraps",
-		280:  "OP_LDoNInspect",
-		281:  "OP_LDoNOpen",
-		282:  "OP_LDoNPickLock",
-		283:  "OP_LDoNSenseTraps",
-		292:  "OP_LFGGetMatchesRequest",
-		293:  "OP_LFGGetMatchesResponse",
-		294:  "OP_LFGResponse",
-		296:  "OP_LFPCommand",
-		297:  "OP_LFPGetMatchesRequest",
-		298:  "OP_LFPGetMatchesResponse",
-		299:  "OP_LinkedReuse",
-		301:  "OP_LocInfo",
-		302:  "OP_LockoutTimerInfo",
-		303:  "OP_Login",
-		306:  "OP_LoginComplete",
-		307:  "OP_LoginExpansionPacketData",
-		308:  "OP_LoginUnknown1",
-		309:  "OP_LoginUnknown2",
-		311:  "OP_LogoutReply",
-		318:  "OP_MarkNPC",
-		319:  "OP_MarkRaidNPC",
-		320:  "OP_Marquee",
-		323:  "OP_MendHPUpdate",
-		324:  "OP_MercenaryAssign",
-		325:  "OP_MercenaryCommand",
-		326:  "OP_MercenaryDataRequest",
-		327:  "OP_MercenaryDataResponse",
-		328:  "OP_MercenaryDataUpdate",
-		329:  "OP_MercenaryDataUpdateRequest",
-		330:  "OP_MercenaryDismiss",
-		331:  "OP_MercenaryHire",
-		332:  "OP_MercenarySuspendRequest",
-		333:  "OP_MercenarySuspendResponse",
-		334:  "OP_MercenaryTimer",
-		335:  "OP_MercenaryTimerRequest",
-		336:  "OP_MercenaryUnknown1",
-		337:  "OP_MercenaryUnsuspendResponse",
-		342:  "OP_MobUpdate",
-		349:  "OP_MoveMultipleItems",
-		350:  "OP_MoveLogDisregard",
-		351:  "OP_MoveLogRequest",
-		352:  "OP_MultiLineMsg",
-		354:  "OP_NewTitlesAvailable",
-		357:  "OP_OpenContainer",
-		358:  "OP_OpenDiscordMerchant",
-		360:  "OP_OpenInventory",
-		363:  "OP_PetBuffWindow",
-		365:  "OP_PetCommandState",
-		366:  "OP_PetHoTT",
-		371:  "OP_PetitionCheckout2",
-		376:  "OP_PetitionSearch",
-		377:  "OP_PetitionSearchResults",
-		378:  "OP_PetitionSearchText",
-		383:  "OP_PlayerStateAdd",
-		384:  "OP_PlayerStateRemove",
-		388:  "OP_Poll",
-		389:  "OP_PollResponse",
-		390:  "OP_PopupResponse",
-		393:  "OP_PreLogoutReply",
-		395:  "OP_PVPLeaderBoardDetailsReply",
-		396:  "OP_PVPLeaderBoardDetailsRequest",
-		397:  "OP_PVPLeaderBoardReply",
-		398:  "OP_PVPLeaderBoardRequest",
-		400:  "OP_QueryResponseThing",
-		401:  "OP_QueryUCSServerStatus",
-		402:  "OP_RaidDelegateAbility",
-		403:  "OP_RaidClearNPCMarks",
-		404:  "OP_RaidInvite",
-		405:  "OP_RaidJoin",
-		407:  "OP_RandomNameGenerator",
-		416:  "OP_ReclaimCrystals",
-		418:  "OP_RemoveAllDoors",
-		419:  "OP_RemoveBlockedBuffs",
-		420:  "OP_RemoveNimbusEffect",
-		421:  "OP_RemoveTrap",
-		427:  "OP_RequestKnowledgeBase",
-		429:  "OP_RespawnWindow",
-		431:  "OP_RestState",
-		432:  "OP_Rewind",
-		434:  "OP_RezzComplete",
-		436:  "OP_Sacrifice",
-		446:  "OP_SendFindableNPCs",
-		452:  "OP_SendSystemStats",
-		460:  "OP_SessionReady",
-		461:  "OP_SetChatServer",
-		462:  "OP_SetChatServer2",
-		463:  "OP_SetFace",
-		464:  "OP_SetGroupTarget",
-		466:  "OP_SetGuildRank",
-		469:  "OP_SetStartCity",
-		472:  "OP_SharedTaskMemberList",
-		473:  "OP_SharedTaskAddPlayer",
-		474:  "OP_SharedTaskRemovePlayer",
-		475:  "OP_SharedTaskMakeLeader",
-		476:  "OP_SharedTaskMemberInvite",
-		477:  "OP_SharedTaskInvite",
-		478:  "OP_SharedTaskInviteResponse",
-		479:  "OP_SharedTaskAcceptNew",
-		480:  "OP_SharedTaskMemberChange",
-		481:  "OP_SharedTaskPlayerList",
-		482:  "OP_SharedTaskSelectWindow",
-		483:  "OP_SharedTaskQuit",
-		484:  "OP_TaskTimers",
-		488:  "OP_ShopEndConfirm",
-		489:  "OP_ShopItem",
-		496:  "OP_Some3ByteHPUpdate",
-		497:  "OP_Some6ByteHPUpdate",
-		499:  "OP_Sound",
-		502:  "OP_SpawnPositionUpdate",
-		510:  "OP_TargetBuffs",
-		512:  "OP_TargetHoTT",
-		516:  "OP_TaskActivityComplete",
-		518:  "OP_TaskHistoryReply",
-		519:  "OP_TaskHistoryRequest",
-		520:  "OP_TaskRequestTimer",
-		521:  "OP_TaskSelectWindow",
-		541:  "OP_Translocate",
-		546:  "OP_TributePointUpdate",
-		550:  "OP_Untargetable",
-		551:  "OP_UpdateAA",
-		552:  "OP_UpdateAura",
-		554:  "OP_VetClaimReply",
-		555:  "OP_VetClaimRequest",
-		556:  "OP_VetRewardsAvaliable",
-		557:  "OP_VoiceMacroIn",
-		558:  "OP_VoiceMacroOut",
-		559:  "OP_WeaponEquip1",
-		562:  "OP_Weblink",
-		564:  "OP_WhoAllResponse",
-		565:  "OP_World_Client_CRC1",
-		566:  "OP_World_Client_CRC2",
-		567:  "OP_World_Client_CRC3",
-		568:  "OP_WorldClientReady",
-		569:  "OP_WorldComplete",
-		570:  "OP_WorldLogout",
-		572:  "OP_WorldUnknown001",
-		573:  "OP_XTargetAutoAddHaters",
-		574:  "OP_XTargetOpen",
-		575:  "OP_XTargetOpenResponse",
-		576:  "OP_XTargetRequest",
-		577:  "OP_XTargetResponse",
-		580:  "OP_ZoneComplete",
-		582:  "OP_ZoneGuildList",
-		584:  "OP_ZonePlayerToBind",
-		586:  "OP_ZoneServerReady",
-		589:  "OP_ResetAA",
-		590:  "OP_UnderWorld",
+		71:   "OP_CancelSneakHide",
+		74:   "OP_CashReward",
+		76:   "OP_ChangeSize",
+		80:   "OP_CharacterCreateRequest",
+		83:   "OP_ChatMessage",
+		84:   "OP_ClearAA",
+		85:   "OP_ClearBlockedBuffs",
+		86:   "OP_ClearLeadershipAbilities",
+		87:   "OP_ClearNPCMarks",
+		89:   "OP_ClearSurname",
+		95:   "OP_ClientTimeStamp",
+		98:   "OP_CloseTributeMaster",
+		111:  "OP_CorpseDrag",
+		112:  "OP_CorpseDrop",
+		114:  "OP_CrystalCountUpdate",
+		115:  "OP_CrystalCreate",
+		116:  "OP_CrystalReclaim",
+		120:  "OP_DelegateAbility",
+		122:  "OP_DeleteCharge",
+		124:  "OP_DeletePetition",
+		127:  "OP_DenyResponse",
+		128:  "OP_Disarm",
+		130:  "OP_DisciplineTimer",
+		131:  "OP_DisciplineUpdate",
+		132:  "OP_DiscordMerchantInventory",
+		133:  "OP_DoGroupLeadershipAbility",
+		139:  "OP_DzAddPlayer",
+		140:  "OP_DzChooseZone",
+		141:  "OP_DzChooseZoneReply",
+		142:  "OP_DzCompass",
+		143:  "OP_DzExpeditionEndsWarning",
+		144:  "OP_DzExpeditionInfo",
+		145:  "OP_DzExpeditionInvite",
+		146:  "OP_DzExpeditionInviteResponse",
+		147:  "OP_DzExpeditionLockoutTimers",
+		148:  "OP_DzListTimers",
+		149:  "OP_DzMakeLeader",
+		150:  "OP_DzMemberList",
+		151:  "OP_DzMemberListName",
+		152:  "OP_DzMemberListStatus",
+		153:  "OP_DzPlayerList",
+		154:  "OP_DzQuit",
+		155:  "OP_DzRemovePlayer",
+		156:  "OP_DzSetLeaderName",
+		157:  "OP_DzSwapPlayer",
+		161:  "OP_EnterChat",
+		168:  "OP_Feedback",
+		170:  "OP_FellowshipUpdate",
+		171:  "OP_FindPersonReply",
+		177:  "OP_Fling",
+		178:  "OP_FloatListThing",
+		180:  "OP_ForceFindPerson",
+		182:  "OP_FriendsWho",
+		183:  "OP_GetGuildMOTD",
+		184:  "OP_GetGuildMOTDReply",
+		186:  "OP_GiveMoney",
+		187:  "OP_GMApproval",
+		206:  "OP_GMTrainSkillConfirm",
+		214:  "OP_GroupDisbandOther",
+		215:  "OP_GroupDisbandYou",
+		220:  "OP_GroupLeaderChange",
+		221:  "OP_GroupLeadershipAAUpdate",
+		222:  "OP_GroupMakeLeader",
+		223:  "OP_GroupMentor",
+		224:  "OP_GroupRoles",
+		226:  "OP_GroupUpdateB",
+		227:  "OP_GroupUpdateLeaderAA",
+		228:  "OP_GuildBank",
+		229:  "OP_GuildBankItemList",
+		230:  "OP_GuildCreate",
+		238:  "OP_GuildManageBanker",
+		241:  "OP_GuildMemberLevelUpdate",
+		254:  "OP_GuildPromote",
+		266:  "OP_GuildStatus",
+		268:  "OP_GuildUpdateURLAndChannel",
+		274:  "OP_HideCorpse",
+		278:  "OP_InitialHPUpdate",
+		279:  "OP_InitialMobHealth",
+		281:  "OP_InspectBuffs",
+		282:  "OP_InspectMessageUpdate",
+		292:  "OP_ItemLinkText",
+		295:  "OP_ItemPreview",
+		300:  "OP_ItemViewUnknown",
+		302:  "OP_KeyRing",
+		303:  "OP_KickPlayers",
+		304:  "OP_KnowledgeBase",
+		306:  "OP_LDoNDisarmTraps",
+		307:  "OP_LDoNInspect",
+		308:  "OP_LDoNOpen",
+		309:  "OP_LDoNPickLock",
+		310:  "OP_LDoNSenseTraps",
+		319:  "OP_LFGGetMatchesRequest",
+		320:  "OP_LFGGetMatchesResponse",
+		321:  "OP_LFGResponse",
+		323:  "OP_LFPCommand",
+		324:  "OP_LFPGetMatchesRequest",
+		325:  "OP_LFPGetMatchesResponse",
+		326:  "OP_LinkedReuse",
+		328:  "OP_LocInfo",
+		329:  "OP_LockoutTimerInfo",
+		330:  "OP_Login",
+		332:  "OP_LoginComplete",
+		333:  "OP_LoginExpansionPacketData",
+		334:  "OP_LoginUnknown1",
+		335:  "OP_LoginUnknown2",
+		337:  "OP_LogoutReply",
+		344:  "OP_MarkNPC",
+		345:  "OP_MarkRaidNPC",
+		346:  "OP_Marquee",
+		349:  "OP_MendHPUpdate",
+		350:  "OP_MercenaryAssign",
+		351:  "OP_MercenaryCommand",
+		352:  "OP_MercenaryDataRequest",
+		353:  "OP_MercenaryDataResponse",
+		354:  "OP_MercenaryDataUpdate",
+		355:  "OP_MercenaryDataUpdateRequest",
+		356:  "OP_MercenaryDismiss",
+		357:  "OP_MercenaryHire",
+		358:  "OP_MercenarySuspendRequest",
+		359:  "OP_MercenarySuspendResponse",
+		360:  "OP_MercenaryTimer",
+		361:  "OP_MercenaryTimerRequest",
+		362:  "OP_MercenaryUnknown1",
+		363:  "OP_MercenaryUnsuspendResponse",
+		368:  "OP_MobUpdate",
+		375:  "OP_MoveMultipleItems",
+		376:  "OP_MoveLogDisregard",
+		377:  "OP_MoveLogRequest",
+		378:  "OP_MultiLineMsg",
+		380:  "OP_NewTitlesAvailable",
+		383:  "OP_OpenContainer",
+		384:  "OP_OpenDiscordMerchant",
+		386:  "OP_OpenInventory",
+		389:  "OP_PetBuffWindow",
+		391:  "OP_PetCommandState",
+		392:  "OP_PetHoTT",
+		397:  "OP_PetitionCheckout2",
+		402:  "OP_PetitionSearch",
+		403:  "OP_PetitionSearchResults",
+		404:  "OP_PetitionSearchText",
+		411:  "OP_PlayerStateAdd",
+		412:  "OP_PlayerStateRemove",
+		416:  "OP_Poll",
+		417:  "OP_PollResponse",
+		418:  "OP_PopupResponse",
+		421:  "OP_PreLogoutReply",
+		423:  "OP_PVPLeaderBoardDetailsReply",
+		424:  "OP_PVPLeaderBoardDetailsRequest",
+		425:  "OP_PVPLeaderBoardReply",
+		426:  "OP_PVPLeaderBoardRequest",
+		428:  "OP_QueryResponseThing",
+		429:  "OP_QueryUCSServerStatus",
+		430:  "OP_RaidDelegateAbility",
+		431:  "OP_RaidClearNPCMarks",
+		432:  "OP_RaidInvite",
+		433:  "OP_RaidJoin",
+		435:  "OP_RandomNameGenerator",
+		444:  "OP_ReclaimCrystals",
+		446:  "OP_RemoveAllDoors",
+		447:  "OP_RemoveBlockedBuffs",
+		448:  "OP_RemoveNimbusEffect",
+		449:  "OP_RemoveTrap",
+		456:  "OP_RequestKnowledgeBase",
+		458:  "OP_RespawnWindow",
+		460:  "OP_RestState",
+		461:  "OP_Rewind",
+		463:  "OP_RezzComplete",
+		465:  "OP_Sacrifice",
+		475:  "OP_SendFindableNPCs",
+		481:  "OP_SendSystemStats",
+		489:  "OP_SessionReady",
+		490:  "OP_SetChatServer",
+		491:  "OP_SetChatServer2",
+		492:  "OP_SetFace",
+		493:  "OP_SetGroupTarget",
+		495:  "OP_SetGuildRank",
+		498:  "OP_SetStartCity",
+		501:  "OP_SharedTaskMemberList",
+		502:  "OP_SharedTaskAddPlayer",
+		503:  "OP_SharedTaskRemovePlayer",
+		504:  "OP_SharedTaskMakeLeader",
+		505:  "OP_SharedTaskMemberInvite",
+		506:  "OP_SharedTaskInvite",
+		507:  "OP_SharedTaskInviteResponse",
+		508:  "OP_SharedTaskAcceptNew",
+		509:  "OP_SharedTaskMemberChange",
+		510:  "OP_SharedTaskPlayerList",
+		511:  "OP_SharedTaskSelectWindow",
+		512:  "OP_SharedTaskQuit",
+		513:  "OP_TaskTimers",
+		517:  "OP_ShopEndConfirm",
+		518:  "OP_ShopItem",
+		530:  "OP_Some3ByteHPUpdate",
+		531:  "OP_Some6ByteHPUpdate",
+		533:  "OP_Sound",
+		536:  "OP_SpawnPositionUpdate",
+		545:  "OP_TargetBuffs",
+		547:  "OP_TargetHoTT",
+		551:  "OP_TaskActivityComplete",
+		553:  "OP_TaskHistoryReply",
+		554:  "OP_TaskHistoryRequest",
+		555:  "OP_TaskRequestTimer",
+		556:  "OP_TaskSelectWindow",
+		578:  "OP_Translocate",
+		583:  "OP_TributePointUpdate",
+		587:  "OP_Untargetable",
+		588:  "OP_UpdateAA",
+		589:  "OP_UpdateAura",
+		591:  "OP_VetClaimReply",
+		592:  "OP_VetClaimRequest",
+		593:  "OP_VetRewardsAvaliable",
+		594:  "OP_VoiceMacroIn",
+		595:  "OP_VoiceMacroOut",
+		596:  "OP_WeaponEquip1",
+		599:  "OP_Weblink",
+		601:  "OP_WhoAllResponse",
+		602:  "OP_World_Client_CRC1",
+		603:  "OP_World_Client_CRC2",
+		604:  "OP_World_Client_CRC3",
+		605:  "OP_WorldClientReady",
+		606:  "OP_WorldComplete",
+		607:  "OP_WorldLogout",
+		609:  "OP_WorldUnknown001",
+		610:  "OP_XTargetAutoAddHaters",
+		611:  "OP_XTargetOpen",
+		612:  "OP_XTargetOpenResponse",
+		613:  "OP_XTargetRequest",
+		614:  "OP_XTargetResponse",
+		617:  "OP_ZoneComplete",
+		619:  "OP_ZoneGuildList",
+		621:  "OP_ZonePlayerToBind",
+		623:  "OP_ZoneServerReady",
+		626:  "OP_ResetAA",
+		627:  "OP_UnderWorld",
 	}
 	OpCodes_value = map[string]int32{
 		"OP_Unknown":                      0,
-		"OP_LoginWeb":                     304,
-		"OP_LoginAccepted":                305,
-		"OP_PlayEverquestRequest":         385,
-		"OP_PlayEverquestResponse":        386,
-		"OP_ServerListRequest":            458,
-		"OP_ServerListResponse":           459,
+		"OP_JWTLogin":                     629,
+		"OP_JWTResponse":                  801,
+		"OP_LoginAccepted":                331,
+		"OP_PlayEverquestRequest":         413,
+		"OP_PlayEverquestResponse":        414,
+		"OP_ServerListRequest":            487,
+		"OP_ServerListResponse":           488,
 		"OP_ApproveName":                  40,
-		"OP_CharacterCreate":              77,
-		"OP_DeleteCharacter":              119,
+		"OP_CharacterCreate":              79,
+		"OP_DeleteCharacter":              121,
 		"OP_ApproveName_Server":           5040,
-		"OP_EnterWorld":                   160,
-		"OP_ExpansionInfo":                162,
-		"OP_GuildsList":                   245,
-		"OP_PostEnterWorld":               391,
-		"OP_SendCharInfo":                 444,
-		"OP_SendLoginInfo":                448,
-		"OP_SendMaxCharacters":            449,
-		"OP_SendMembership":               450,
-		"OP_SendMembershipDetails":        451,
-		"OP_ZoneServerInfo":               585,
-		"OP_WebInitiateConnection":        591,
-		"OP_ZoneEntry":                    581,
-		"OP_SetServerFilter":              468,
-		"OP_SendAATable":                  443,
-		"OP_SendTributes":                 454,
-		"OP_SendGuildTributes":            447,
-		"OP_SendAAStats":                  442,
-		"OP_ReqClientSpawn":               423,
-		"OP_ReqNewZone":                   424,
-		"OP_SendExpZonein":                445,
-		"OP_ClientReady":                  92,
-		"OP_ClientError":                  91,
+		"OP_EnterWorld":                   162,
+		"OP_ExpansionInfo":                165,
+		"OP_GuildsList":                   265,
+		"OP_PostEnterWorld":               419,
+		"OP_SendCharInfo":                 473,
+		"OP_SendLoginInfo":                477,
+		"OP_SendMaxCharacters":            478,
+		"OP_SendMembership":               479,
+		"OP_SendMembershipDetails":        480,
+		"OP_ZoneServerInfo":               622,
+		"OP_WebInitiateConnection":        628,
+		"OP_ZoneEntry":                    618,
+		"OP_SetServerFilter":              497,
+		"OP_SendAATable":                  472,
+		"OP_SendTributes":                 483,
+		"OP_SendGuildTributes":            476,
+		"OP_SendAAStats":                  471,
+		"OP_ReqClientSpawn":               451,
+		"OP_ReqNewZone":                   452,
+		"OP_SendExpZonein":                474,
+		"OP_ClientReady":                  94,
+		"OP_ClientError":                  93,
 		"OP_ApproveZone":                  42,
-		"OP_TGB":                          524,
+		"OP_TGB":                          559,
 		"OP_AckPacket":                    7,
-		"OP_ClientUpdate":                 94,
+		"OP_ClientUpdate":                 96,
 		"OP_AutoAttack":                   47,
 		"OP_AutoAttack2":                  48,
-		"OP_Consent":                      102,
-		"OP_ConsentDeny":                  103,
-		"OP_TargetMouse":                  513,
-		"OP_TargetCommand":                511,
-		"OP_Shielding":                    485,
-		"OP_Jump":                         274,
+		"OP_Consent":                      104,
+		"OP_ConsentDeny":                  105,
+		"OP_TargetMouse":                  548,
+		"OP_TargetCommand":                546,
+		"OP_Shielding":                    514,
+		"OP_Jump":                         301,
 		"OP_AdventureInfoRequest":         15,
 		"OP_AdventureRequest":             23,
-		"OP_LDoNButton":                   278,
-		"OP_LeaveAdventure":               286,
-		"OP_Consume":                      107,
+		"OP_LDoNButton":                   305,
+		"OP_LeaveAdventure":               313,
+		"OP_Consume":                      109,
 		"OP_AdventureMerchantRequest":     19,
 		"OP_AdventureMerchantPurchase":    18,
-		"OP_ConsiderCorpse":               106,
-		"OP_Consider":                     105,
+		"OP_ConsiderCorpse":               108,
+		"OP_Consider":                     107,
 		"OP_Begging":                      58,
-		"OP_TestBuff":                     523,
-		"OP_Surname":                      508,
-		"OP_YellForHelp":                  578,
+		"OP_TestBuff":                     558,
+		"OP_Surname":                      542,
+		"OP_YellForHelp":                  615,
 		"OP_Assist":                       43,
-		"OP_GMTraining":                   201,
-		"OP_GMEndTraining":                188,
-		"OP_GMTrainSkill":                 202,
-		"OP_RequestDuel":                  426,
-		"OP_DuelDecline":                  132,
-		"OP_DuelAccept":                   133,
-		"OP_SpawnAppearance":              500,
+		"OP_GMTraining":                   204,
+		"OP_GMEndTraining":                191,
+		"OP_GMTrainSkill":                 205,
+		"OP_RequestDuel":                  454,
+		"OP_DuelDecline":                  134,
+		"OP_DuelAccept":                   135,
+		"OP_SpawnAppearance":              534,
 		"OP_BazaarInspect":                54,
-		"OP_Death":                        117,
-		"OP_MoveCoin":                     346,
-		"OP_ItemLinkClick":                264,
-		"OP_MoveItem":                     348,
-		"OP_Camp":                         69,
-		"OP_Logout":                       310,
-		"OP_SenseHeading":                 456,
-		"OP_FeignDeath":                   166,
-		"OP_Sneak":                        495,
-		"OP_Hide":                         251,
-		"OP_ChannelMessage":               76,
-		"OP_WearChange":                   560,
-		"OP_DeleteSpawn":                  123,
-		"OP_SaveOnZoneReq":                440,
-		"OP_Save":                         439,
-		"OP_WhoAllRequest":                563,
-		"OP_GMZoneRequest":                204,
-		"OP_GMZoneRequest2":               205,
-		"OP_EndLootRequest":               157,
-		"OP_LootRequest":                  315,
-		"OP_Dye":                          135,
-		"OP_ConfirmDelete":                101,
-		"OP_LootItem":                     314,
-		"OP_GuildDelete":                  228,
-		"OP_GuildPublicNote":              243,
-		"OP_GetGuildsList":                182,
-		"OP_SetGuildMOTD":                 465,
-		"OP_SetRunMode":                   467,
-		"OP_GuildPeace":                   241,
-		"OP_GuildWar":                     249,
-		"OP_GuildLeader":                  232,
-		"OP_GuildDemote":                  229,
-		"OP_GuildInvite":                  230,
-		"OP_GuildRemove":                  244,
-		"OP_GuildInviteAccept":            231,
-		"OP_ManaChange":                   316,
-		"OP_MemorizeSpell":                321,
-		"OP_SwapSpell":                    509,
-		"OP_CastSpell":                    74,
-		"OP_DeleteItem":                   121,
-		"OP_CombatAbility":                98,
-		"OP_Taunt":                        522,
-		"OP_InstillDoubt":                 262,
-		"OP_RezzAnswer":                   433,
-		"OP_GMSummon":                     199,
-		"OP_TradeBusy":                    530,
-		"OP_TradeRequest":                 536,
-		"OP_TradeRequestAck":              537,
-		"OP_CancelTrade":                  72,
-		"OP_TradeAcceptClick":             529,
+		"OP_Death":                        119,
+		"OP_MoveCoin":                     372,
+		"OP_ItemLinkClick":                290,
+		"OP_MoveItem":                     374,
+		"OP_Camp":                         70,
+		"OP_Logout":                       336,
+		"OP_SenseHeading":                 485,
+		"OP_FeignDeath":                   169,
+		"OP_Sneak":                        529,
+		"OP_Hide":                         273,
+		"OP_ChannelMessage":               77,
+		"OP_WearChange":                   597,
+		"OP_DeleteSpawn":                  125,
+		"OP_SaveOnZoneReq":                469,
+		"OP_Save":                         468,
+		"OP_WhoAllRequest":                600,
+		"OP_GMZoneRequest":                207,
+		"OP_GMZoneRequest2":               208,
+		"OP_EndLootRequest":               159,
+		"OP_LootRequest":                  341,
+		"OP_Dye":                          137,
+		"OP_ConfirmDelete":                103,
+		"OP_LootItem":                     340,
+		"OP_GuildDelete":                  231,
+		"OP_GuildPublicNote":              255,
+		"OP_GetGuildsList":                185,
+		"OP_SetGuildMOTD":                 494,
+		"OP_SetRunMode":                   496,
+		"OP_GuildPeace":                   253,
+		"OP_GuildWar":                     271,
+		"OP_GuildLeader":                  236,
+		"OP_GuildDemote":                  233,
+		"OP_GuildInvite":                  234,
+		"OP_GuildRemove":                  256,
+		"OP_GuildInviteAccept":            235,
+		"OP_ManaChange":                   342,
+		"OP_MemorizeSpell":                347,
+		"OP_SwapSpell":                    543,
+		"OP_CastSpell":                    75,
+		"OP_DeleteItem":                   123,
+		"OP_CombatAbility":                100,
+		"OP_Taunt":                        557,
+		"OP_InstillDoubt":                 284,
+		"OP_RezzAnswer":                   462,
+		"OP_GMSummon":                     202,
+		"OP_TradeBusy":                    565,
+		"OP_TradeRequest":                 572,
+		"OP_TradeRequestAck":              573,
+		"OP_CancelTrade":                  73,
+		"OP_TradeAcceptClick":             564,
 		"OP_BoardBoat":                    62,
-		"OP_LeaveBoat":                    287,
-		"OP_RandomReq":                    409,
+		"OP_LeaveBoat":                    314,
+		"OP_RandomReq":                    437,
 		"OP_Buff":                         64,
-		"OP_GMHideMe":                     192,
-		"OP_GMNameChange":                 196,
-		"OP_GMKill":                       194,
-		"OP_GMLastName":                   195,
-		"OP_GMToggle":                     200,
-		"OP_LFGCommand":                   291,
-		"OP_GMGoto":                       191,
-		"OP_TraderShop":                   539,
-		"OP_ShopRequest":                  492,
+		"OP_GMHideMe":                     195,
+		"OP_GMNameChange":                 199,
+		"OP_GMKill":                       197,
+		"OP_GMLastName":                   198,
+		"OP_GMToggle":                     203,
+		"OP_LFGCommand":                   318,
+		"OP_GMGoto":                       194,
+		"OP_TraderShop":                   575,
+		"OP_ShopRequest":                  526,
 		"OP_Bazaar":                       53,
-		"OP_ShopPlayerBuy":                490,
-		"OP_ShopPlayerSell":               491,
-		"OP_ShopEnd":                      487,
-		"OP_CloseContainer":               95,
-		"OP_ClickObjectAction":            90,
-		"OP_ClickObject":                  89,
-		"OP_RecipesFavorite":              414,
-		"OP_RecipesSearch":                415,
-		"OP_RecipeDetails":                412,
-		"OP_RecipeAutoCombine":            411,
-		"OP_TradeSkillCombine":            540,
-		"OP_ItemName":                     267,
+		"OP_ShopPlayerBuy":                519,
+		"OP_ShopPlayerSell":               520,
+		"OP_ShopEnd":                      516,
+		"OP_CloseContainer":               97,
+		"OP_ClickObjectAction":            92,
+		"OP_ClickObject":                  91,
+		"OP_RecipesFavorite":              442,
+		"OP_RecipesSearch":                443,
+		"OP_RecipeDetails":                440,
+		"OP_RecipeAutoCombine":            439,
+		"OP_TradeSkillCombine":            576,
+		"OP_ItemName":                     293,
 		"OP_AugmentItem":                  46,
-		"OP_ClickDoor":                    88,
-		"OP_FaceChange":                   164,
-		"OP_GroupInvite":                  215,
-		"OP_GroupInvite2":                 216,
-		"OP_GroupFollow":                  213,
-		"OP_GroupFollow2":                 214,
-		"OP_GroupAcknowledge":             207,
-		"OP_GroupCancelInvite":            208,
-		"OP_GroupDisband":                 210,
-		"OP_GroupDelete":                  209,
-		"OP_GMEmoteZone":                  187,
-		"OP_InspectRequest":               261,
-		"OP_InspectAnswer":                258,
-		"OP_DeleteSpell":                  124,
-		"OP_PetitionBug":                  368,
+		"OP_ClickDoor":                    90,
+		"OP_FaceChange":                   167,
+		"OP_GroupInvite":                  218,
+		"OP_GroupInvite2":                 219,
+		"OP_GroupFollow":                  216,
+		"OP_GroupFollow2":                 217,
+		"OP_GroupAcknowledge":             210,
+		"OP_GroupCancelInvite":            211,
+		"OP_GroupDisband":                 213,
+		"OP_GroupDelete":                  212,
+		"OP_GMEmoteZone":                  190,
+		"OP_InspectRequest":               283,
+		"OP_InspectAnswer":                280,
+		"OP_DeleteSpell":                  126,
+		"OP_PetitionBug":                  394,
 		"OP_Bug":                          67,
-		"OP_Petition":                     367,
-		"OP_PetitionCheckIn":              369,
-		"OP_PetitionResolve":              375,
-		"OP_PetitionDelete":               372,
-		"OP_PetitionUnCheckout":           379,
-		"OP_PetitionQue":                  373,
-		"OP_PDeletePetition":              362,
-		"OP_PetitionCheckout":             370,
-		"OP_PetitionRefresh":              374,
-		"OP_PetCommands":                  364,
-		"OP_ReadBook":                     410,
-		"OP_Emote":                        156,
-		"OP_GMDelCorpse":                  186,
-		"OP_GMKick":                       193,
-		"OP_GMServers":                    198,
-		"OP_Illusion":                     254,
-		"OP_GMBecomeNPC":                  185,
-		"OP_Fishing":                      173,
-		"OP_Forage":                       176,
-		"OP_Mend":                         322,
-		"OP_EnvDamage":                    161,
-		"OP_Damage":                       116,
+		"OP_Petition":                     393,
+		"OP_PetitionCheckIn":              395,
+		"OP_PetitionResolve":              401,
+		"OP_PetitionDelete":               398,
+		"OP_PetitionUnCheckout":           405,
+		"OP_PetitionQue":                  399,
+		"OP_PDeletePetition":              388,
+		"OP_PetitionCheckout":             396,
+		"OP_PetitionRefresh":              400,
+		"OP_PetCommands":                  390,
+		"OP_ReadBook":                     438,
+		"OP_Emote":                        158,
+		"OP_GMDelCorpse":                  189,
+		"OP_GMKick":                       196,
+		"OP_GMServers":                    201,
+		"OP_Illusion":                     276,
+		"OP_GMBecomeNPC":                  188,
+		"OP_Fishing":                      176,
+		"OP_Forage":                       179,
+		"OP_Mend":                         348,
+		"OP_EnvDamage":                    163,
+		"OP_Damage":                       118,
 		"OP_AAAction":                     4,
-		"OP_TraderBuy":                    534,
-		"OP_Trader":                       533,
-		"OP_GMFind":                       190,
-		"OP_PickPocket":                   381,
+		"OP_TraderBuy":                    570,
+		"OP_Trader":                       568,
+		"OP_GMFind":                       193,
+		"OP_PickPocket":                   407,
 		"OP_Bind_Wound":                   60,
-		"OP_TrackTarget":                  527,
-		"OP_Track":                        526,
-		"OP_TrackUnknown":                 528,
-		"OP_ReloadUI":                     417,
-		"OP_Split":                        505,
-		"OP_SenseTraps":                   457,
-		"OP_DisarmTraps":                  127,
-		"OP_OpenTributeMaster":            361,
-		"OP_OpenGuildTributeMaster":       359,
-		"OP_TributeItem":                  543,
-		"OP_TributeMoney":                 544,
-		"OP_SelectTribute":                441,
-		"OP_TributeUpdate":                549,
-		"OP_TributeToggle":                548,
-		"OP_TributeNPC":                   545,
-		"OP_CrashDump":                    111,
-		"OP_ControlBoat":                  108,
-		"OP_DumpName":                     134,
-		"OP_SafeFallSuccess":              437,
-		"OP_Heartbeat":                    250,
-		"OP_SafePoint":                    438,
-		"OP_FindPersonRequest":            169,
-		"OP_LeadershipExpToggle":          284,
-		"OP_PurchaseLeadershipAA":         394,
+		"OP_TrackTarget":                  562,
+		"OP_Track":                        561,
+		"OP_TrackUnknown":                 563,
+		"OP_ReloadUI":                     445,
+		"OP_Split":                        539,
+		"OP_SenseTraps":                   486,
+		"OP_DisarmTraps":                  129,
+		"OP_OpenTributeMaster":            387,
+		"OP_OpenGuildTributeMaster":       385,
+		"OP_TributeItem":                  580,
+		"OP_TributeMoney":                 581,
+		"OP_SelectTribute":                470,
+		"OP_TributeUpdate":                586,
+		"OP_TributeToggle":                585,
+		"OP_TributeNPC":                   582,
+		"OP_CrashDump":                    113,
+		"OP_ControlBoat":                  110,
+		"OP_DumpName":                     136,
+		"OP_SafeFallSuccess":              466,
+		"OP_Heartbeat":                    272,
+		"OP_SafePoint":                    467,
+		"OP_FindPersonRequest":            172,
+		"OP_LeadershipExpToggle":          311,
+		"OP_PurchaseLeadershipAA":         422,
 		"OP_BankerChange":                 51,
-		"OP_SetTitle":                     470,
-		"OP_RequestTitles":                428,
-		"OP_ItemVerifyRequest":            272,
-		"OP_ClearObject":                  86,
-		"OP_FinishTrade":                  170,
-		"OP_GMEndTrainingResponse":        189,
-		"OP_LootComplete":                 313,
-		"OP_WorldObjectsSent":             571,
-		"OP_FinishWindow":                 171,
-		"OP_FinishWindow2":                172,
-		"OP_ItemPacket":                   268,
-		"OP_ColoredText":                  97,
-		"OP_ItemRecastDelay":              270,
-		"OP_FormattedMessage":             178,
-		"OP_GuildMemberList":              238,
-		"OP_InterruptCast":                263,
-		"OP_ItemLinkResponse":             265,
-		"OP_ZoneSpawns":                   587,
-		"OP_CompletedTasks":               100,
-		"OP_CharInventory":                79,
-		"OP_CustomTitles":                 115,
-		"OP_SpawnDoor":                    501,
-		"OP_SendZonepoints":               455,
-		"OP_TributeInfo":                  542,
-		"OP_GuildTributeInfo":             247,
-		"OP_SendTitleList":                453,
+		"OP_SetTitle":                     499,
+		"OP_RequestTitles":                457,
+		"OP_ItemVerifyRequest":            299,
+		"OP_ClearObject":                  88,
+		"OP_FinishTrade":                  173,
+		"OP_GMEndTrainingResponse":        192,
+		"OP_LootComplete":                 339,
+		"OP_WorldObjectsSent":             608,
+		"OP_FinishWindow":                 174,
+		"OP_FinishWindow2":                175,
+		"OP_ItemPacket":                   294,
+		"OP_ColoredText":                  99,
+		"OP_ItemRecastDelay":              297,
+		"OP_FormattedMessage":             181,
+		"OP_GuildMemberList":              242,
+		"OP_InterruptCast":                285,
+		"OP_ItemLinkResponse":             291,
+		"OP_ZoneSpawns":                   624,
+		"OP_CompletedTasks":               102,
+		"OP_CharInventory":                81,
+		"OP_CustomTitles":                 117,
+		"OP_SpawnDoor":                    535,
+		"OP_SendZonepoints":               484,
+		"OP_TributeInfo":                  579,
+		"OP_GuildTributeInfo":             267,
+		"OP_SendTitleList":                482,
 		"OP_AAExpUpdate":                  5,
 		"OP_Action":                       8,
 		"OP_AdventureData":                11,
@@ -1546,62 +1550,62 @@ var (
 		"OP_AnnoyingZoneUnknown":          38,
 		"OP_BecomeTrader":                 57,
 		"OP_BeginCast":                    59,
-		"OP_Charm":                        80,
-		"OP_CameraEffect":                 68,
-		"OP_ConsentResponse":              104,
-		"OP_EnduranceUpdate":              158,
-		"OP_ExpUpdate":                    163,
-		"OP_GroundSpawn":                  206,
-		"OP_GroupUpdate":                  222,
-		"OP_GuildMOTD":                    240,
-		"OP_GuildManageAdd":               233,
-		"OP_GuildManageRemove":            235,
-		"OP_GuildManageStatus":            236,
-		"OP_GuildMemberUpdate":            239,
-		"OP_HPUpdate":                     253,
-		"OP_IncreaseStats":                255,
-		"OP_ItemVerifyReply":              271,
-		"OP_LFGAppearance":                290,
-		"OP_LeadershipExpUpdate":          285,
-		"OP_LevelAppearance":              288,
-		"OP_LevelUpdate":                  289,
-		"OP_ManaUpdate":                   317,
-		"OP_MobEnduranceUpdate":           338,
-		"OP_MobHealth":                    339,
-		"OP_MobManaUpdate":                340,
-		"OP_MobRename":                    341,
-		"OP_MoneyOnCorpse":                343,
-		"OP_MoneyUpdate":                  344,
-		"OP_MoveDoor":                     347,
-		"OP_NewSpawn":                     353,
-		"OP_NewZone":                      355,
-		"OP_PetitionUpdate":               380,
-		"OP_PlayerProfile":                382,
-		"OP_RaidUpdate":                   406,
-		"OP_RandomReply":                  408,
-		"OP_RecipeReply":                  413,
-		"OP_RequestClientZoneChange":      425,
-		"OP_RespondAA":                    430,
-		"OP_RezzRequest":                  435,
-		"OP_SetTitleReply":                471,
-		"OP_ShopDelItem":                  486,
-		"OP_SimpleMessage":                493,
-		"OP_SkillUpdate":                  494,
-		"OP_SomeItemPacketMaybe":          498,
-		"OP_SpellEffect":                  504,
-		"OP_Stamina":                      506,
-		"OP_Stun":                         507,
-		"OP_TargetReject":                 514,
-		"OP_TimeOfDay":                    525,
-		"OP_TradeCoins":                   531,
-		"OP_TradeMoneyUpdate":             532,
-		"OP_TraderDelItem":                535,
-		"OP_TraderItemUpdate":             538,
-		"OP_TributeTimer":                 547,
-		"OP_UpdateLeadershipAA":           553,
-		"OP_Weather":                      561,
-		"OP_ZoneChange":                   579,
-		"OP_ZoneInUnknown":                583,
+		"OP_Charm":                        82,
+		"OP_CameraEffect":                 69,
+		"OP_ConsentResponse":              106,
+		"OP_EnduranceUpdate":              160,
+		"OP_ExpUpdate":                    166,
+		"OP_GroundSpawn":                  209,
+		"OP_GroupUpdate":                  225,
+		"OP_GuildMOTD":                    252,
+		"OP_GuildManageAdd":               237,
+		"OP_GuildManageRemove":            239,
+		"OP_GuildManageStatus":            240,
+		"OP_GuildMemberUpdate":            243,
+		"OP_HPUpdate":                     275,
+		"OP_IncreaseStats":                277,
+		"OP_ItemVerifyReply":              298,
+		"OP_LFGAppearance":                317,
+		"OP_LeadershipExpUpdate":          312,
+		"OP_LevelAppearance":              315,
+		"OP_LevelUpdate":                  316,
+		"OP_ManaUpdate":                   343,
+		"OP_MobEnduranceUpdate":           364,
+		"OP_MobHealth":                    365,
+		"OP_MobManaUpdate":                366,
+		"OP_MobRename":                    367,
+		"OP_MoneyOnCorpse":                369,
+		"OP_MoneyUpdate":                  370,
+		"OP_MoveDoor":                     373,
+		"OP_NewSpawn":                     379,
+		"OP_NewZone":                      381,
+		"OP_PetitionUpdate":               406,
+		"OP_PlayerProfile":                410,
+		"OP_RaidUpdate":                   434,
+		"OP_RandomReply":                  436,
+		"OP_RecipeReply":                  441,
+		"OP_RequestClientZoneChange":      453,
+		"OP_RespondAA":                    459,
+		"OP_RezzRequest":                  464,
+		"OP_SetTitleReply":                500,
+		"OP_ShopDelItem":                  515,
+		"OP_SimpleMessage":                527,
+		"OP_SkillUpdate":                  528,
+		"OP_SomeItemPacketMaybe":          532,
+		"OP_SpellEffect":                  538,
+		"OP_Stamina":                      540,
+		"OP_Stun":                         541,
+		"OP_TargetReject":                 549,
+		"OP_TimeOfDay":                    560,
+		"OP_TradeCoins":                   566,
+		"OP_TradeMoneyUpdate":             567,
+		"OP_TraderDelItem":                571,
+		"OP_TraderItemUpdate":             574,
+		"OP_TributeTimer":                 584,
+		"OP_UpdateLeadershipAA":           590,
+		"OP_Weather":                      598,
+		"OP_ZoneChange":                   616,
+		"OP_ZoneInUnknown":                620,
 		"OP_AcceptNewTask":                6,
 		"OP_AdventureInfo":                14,
 		"OP_ApplyPoison":                  39,
@@ -1609,22 +1613,22 @@ var (
 		"OP_Bandolier":                    50,
 		"OP_BazaarSearch":                 55,
 		"OP_BecomeCorpse":                 56,
-		"OP_CancelTask":                   71,
-		"OP_Command":                      99,
-		"OP_DynamicWall":                  136,
-		"OP_LFGuild":                      295,
-		"OP_LoadSpellSet":                 300,
-		"OP_LogServer":                    312,
-		"OP_MOTD":                         345,
-		"OP_OnLevelMessage":               356,
-		"OP_PlayMP3":                      387,
-		"OP_PotionBelt":                   392,
-		"OP_PVPStats":                     399,
-		"OP_Report":                       422,
-		"OP_SpecialMesg":                  503,
-		"OP_TaskActivity":                 515,
-		"OP_TaskDescription":              517,
-		"OP_ZoneUnavail":                  588,
+		"OP_CancelTask":                   72,
+		"OP_Command":                      101,
+		"OP_DynamicWall":                  138,
+		"OP_LFGuild":                      322,
+		"OP_LoadSpellSet":                 327,
+		"OP_LogServer":                    338,
+		"OP_MOTD":                         371,
+		"OP_OnLevelMessage":               382,
+		"OP_PlayMP3":                      415,
+		"OP_PotionBelt":                   420,
+		"OP_PVPStats":                     427,
+		"OP_Report":                       450,
+		"OP_SpecialMesg":                  537,
+		"OP_TaskActivity":                 550,
+		"OP_TaskDescription":              552,
+		"OP_ZoneUnavail":                  625,
 		"Nested_WorldServer":              1000,
 		"Nested_CharacterSelectEntry":     1001,
 		"Nested_CharSelectEquip":          1002,
@@ -1661,240 +1665,240 @@ var (
 		"OP_BookButton":                   63,
 		"OP_BuffCreate":                   65,
 		"OP_BuffRemoveRequest":            66,
-		"OP_CancelSneakHide":              70,
-		"OP_CashReward":                   73,
-		"OP_ChangeSize":                   75,
-		"OP_CharacterCreateRequest":       78,
-		"OP_ChatMessage":                  81,
-		"OP_ClearAA":                      82,
-		"OP_ClearBlockedBuffs":            83,
-		"OP_ClearLeadershipAbilities":     84,
-		"OP_ClearNPCMarks":                85,
-		"OP_ClearSurname":                 87,
-		"OP_ClientTimeStamp":              93,
-		"OP_CloseTributeMaster":           96,
-		"OP_CorpseDrag":                   109,
-		"OP_CorpseDrop":                   110,
-		"OP_CrystalCountUpdate":           112,
-		"OP_CrystalCreate":                113,
-		"OP_CrystalReclaim":               114,
-		"OP_DelegateAbility":              118,
-		"OP_DeleteCharge":                 120,
-		"OP_DeletePetition":               122,
-		"OP_DenyResponse":                 125,
-		"OP_Disarm":                       126,
-		"OP_DisciplineTimer":              128,
-		"OP_DisciplineUpdate":             129,
-		"OP_DiscordMerchantInventory":     130,
-		"OP_DoGroupLeadershipAbility":     131,
-		"OP_DzAddPlayer":                  137,
-		"OP_DzChooseZone":                 138,
-		"OP_DzChooseZoneReply":            139,
-		"OP_DzCompass":                    140,
-		"OP_DzExpeditionEndsWarning":      141,
-		"OP_DzExpeditionInfo":             142,
-		"OP_DzExpeditionInvite":           143,
-		"OP_DzExpeditionInviteResponse":   144,
-		"OP_DzExpeditionLockoutTimers":    145,
-		"OP_DzListTimers":                 146,
-		"OP_DzMakeLeader":                 147,
-		"OP_DzMemberList":                 148,
-		"OP_DzMemberListName":             149,
-		"OP_DzMemberListStatus":           150,
-		"OP_DzPlayerList":                 151,
-		"OP_DzQuit":                       152,
-		"OP_DzRemovePlayer":               153,
-		"OP_DzSetLeaderName":              154,
-		"OP_DzSwapPlayer":                 155,
-		"OP_EnterChat":                    159,
-		"OP_Feedback":                     165,
-		"OP_FellowshipUpdate":             167,
-		"OP_FindPersonReply":              168,
-		"OP_Fling":                        174,
-		"OP_FloatListThing":               175,
-		"OP_ForceFindPerson":              177,
-		"OP_FriendsWho":                   179,
-		"OP_GetGuildMOTD":                 180,
-		"OP_GetGuildMOTDReply":            181,
-		"OP_GiveMoney":                    183,
-		"OP_GMApproval":                   184,
-		"OP_GMTrainSkillConfirm":          203,
-		"OP_GroupDisbandOther":            211,
-		"OP_GroupDisbandYou":              212,
-		"OP_GroupLeaderChange":            217,
-		"OP_GroupLeadershipAAUpdate":      218,
-		"OP_GroupMakeLeader":              219,
-		"OP_GroupMentor":                  220,
-		"OP_GroupRoles":                   221,
-		"OP_GroupUpdateB":                 223,
-		"OP_GroupUpdateLeaderAA":          224,
-		"OP_GuildBank":                    225,
-		"OP_GuildBankItemList":            226,
-		"OP_GuildCreate":                  227,
-		"OP_GuildManageBanker":            234,
-		"OP_GuildMemberLevelUpdate":       237,
-		"OP_GuildPromote":                 242,
-		"OP_GuildStatus":                  246,
-		"OP_GuildUpdateURLAndChannel":     248,
-		"OP_HideCorpse":                   252,
-		"OP_InitialHPUpdate":              256,
-		"OP_InitialMobHealth":             257,
-		"OP_InspectBuffs":                 259,
-		"OP_InspectMessageUpdate":         260,
-		"OP_ItemLinkText":                 266,
-		"OP_ItemPreview":                  269,
-		"OP_ItemViewUnknown":              273,
-		"OP_KeyRing":                      275,
-		"OP_KickPlayers":                  276,
-		"OP_KnowledgeBase":                277,
-		"OP_LDoNDisarmTraps":              279,
-		"OP_LDoNInspect":                  280,
-		"OP_LDoNOpen":                     281,
-		"OP_LDoNPickLock":                 282,
-		"OP_LDoNSenseTraps":               283,
-		"OP_LFGGetMatchesRequest":         292,
-		"OP_LFGGetMatchesResponse":        293,
-		"OP_LFGResponse":                  294,
-		"OP_LFPCommand":                   296,
-		"OP_LFPGetMatchesRequest":         297,
-		"OP_LFPGetMatchesResponse":        298,
-		"OP_LinkedReuse":                  299,
-		"OP_LocInfo":                      301,
-		"OP_LockoutTimerInfo":             302,
-		"OP_Login":                        303,
-		"OP_LoginComplete":                306,
-		"OP_LoginExpansionPacketData":     307,
-		"OP_LoginUnknown1":                308,
-		"OP_LoginUnknown2":                309,
-		"OP_LogoutReply":                  311,
-		"OP_MarkNPC":                      318,
-		"OP_MarkRaidNPC":                  319,
-		"OP_Marquee":                      320,
-		"OP_MendHPUpdate":                 323,
-		"OP_MercenaryAssign":              324,
-		"OP_MercenaryCommand":             325,
-		"OP_MercenaryDataRequest":         326,
-		"OP_MercenaryDataResponse":        327,
-		"OP_MercenaryDataUpdate":          328,
-		"OP_MercenaryDataUpdateRequest":   329,
-		"OP_MercenaryDismiss":             330,
-		"OP_MercenaryHire":                331,
-		"OP_MercenarySuspendRequest":      332,
-		"OP_MercenarySuspendResponse":     333,
-		"OP_MercenaryTimer":               334,
-		"OP_MercenaryTimerRequest":        335,
-		"OP_MercenaryUnknown1":            336,
-		"OP_MercenaryUnsuspendResponse":   337,
-		"OP_MobUpdate":                    342,
-		"OP_MoveMultipleItems":            349,
-		"OP_MoveLogDisregard":             350,
-		"OP_MoveLogRequest":               351,
-		"OP_MultiLineMsg":                 352,
-		"OP_NewTitlesAvailable":           354,
-		"OP_OpenContainer":                357,
-		"OP_OpenDiscordMerchant":          358,
-		"OP_OpenInventory":                360,
-		"OP_PetBuffWindow":                363,
-		"OP_PetCommandState":              365,
-		"OP_PetHoTT":                      366,
-		"OP_PetitionCheckout2":            371,
-		"OP_PetitionSearch":               376,
-		"OP_PetitionSearchResults":        377,
-		"OP_PetitionSearchText":           378,
-		"OP_PlayerStateAdd":               383,
-		"OP_PlayerStateRemove":            384,
-		"OP_Poll":                         388,
-		"OP_PollResponse":                 389,
-		"OP_PopupResponse":                390,
-		"OP_PreLogoutReply":               393,
-		"OP_PVPLeaderBoardDetailsReply":   395,
-		"OP_PVPLeaderBoardDetailsRequest": 396,
-		"OP_PVPLeaderBoardReply":          397,
-		"OP_PVPLeaderBoardRequest":        398,
-		"OP_QueryResponseThing":           400,
-		"OP_QueryUCSServerStatus":         401,
-		"OP_RaidDelegateAbility":          402,
-		"OP_RaidClearNPCMarks":            403,
-		"OP_RaidInvite":                   404,
-		"OP_RaidJoin":                     405,
-		"OP_RandomNameGenerator":          407,
-		"OP_ReclaimCrystals":              416,
-		"OP_RemoveAllDoors":               418,
-		"OP_RemoveBlockedBuffs":           419,
-		"OP_RemoveNimbusEffect":           420,
-		"OP_RemoveTrap":                   421,
-		"OP_RequestKnowledgeBase":         427,
-		"OP_RespawnWindow":                429,
-		"OP_RestState":                    431,
-		"OP_Rewind":                       432,
-		"OP_RezzComplete":                 434,
-		"OP_Sacrifice":                    436,
-		"OP_SendFindableNPCs":             446,
-		"OP_SendSystemStats":              452,
-		"OP_SessionReady":                 460,
-		"OP_SetChatServer":                461,
-		"OP_SetChatServer2":               462,
-		"OP_SetFace":                      463,
-		"OP_SetGroupTarget":               464,
-		"OP_SetGuildRank":                 466,
-		"OP_SetStartCity":                 469,
-		"OP_SharedTaskMemberList":         472,
-		"OP_SharedTaskAddPlayer":          473,
-		"OP_SharedTaskRemovePlayer":       474,
-		"OP_SharedTaskMakeLeader":         475,
-		"OP_SharedTaskMemberInvite":       476,
-		"OP_SharedTaskInvite":             477,
-		"OP_SharedTaskInviteResponse":     478,
-		"OP_SharedTaskAcceptNew":          479,
-		"OP_SharedTaskMemberChange":       480,
-		"OP_SharedTaskPlayerList":         481,
-		"OP_SharedTaskSelectWindow":       482,
-		"OP_SharedTaskQuit":               483,
-		"OP_TaskTimers":                   484,
-		"OP_ShopEndConfirm":               488,
-		"OP_ShopItem":                     489,
-		"OP_Some3ByteHPUpdate":            496,
-		"OP_Some6ByteHPUpdate":            497,
-		"OP_Sound":                        499,
-		"OP_SpawnPositionUpdate":          502,
-		"OP_TargetBuffs":                  510,
-		"OP_TargetHoTT":                   512,
-		"OP_TaskActivityComplete":         516,
-		"OP_TaskHistoryReply":             518,
-		"OP_TaskHistoryRequest":           519,
-		"OP_TaskRequestTimer":             520,
-		"OP_TaskSelectWindow":             521,
-		"OP_Translocate":                  541,
-		"OP_TributePointUpdate":           546,
-		"OP_Untargetable":                 550,
-		"OP_UpdateAA":                     551,
-		"OP_UpdateAura":                   552,
-		"OP_VetClaimReply":                554,
-		"OP_VetClaimRequest":              555,
-		"OP_VetRewardsAvaliable":          556,
-		"OP_VoiceMacroIn":                 557,
-		"OP_VoiceMacroOut":                558,
-		"OP_WeaponEquip1":                 559,
-		"OP_Weblink":                      562,
-		"OP_WhoAllResponse":               564,
-		"OP_World_Client_CRC1":            565,
-		"OP_World_Client_CRC2":            566,
-		"OP_World_Client_CRC3":            567,
-		"OP_WorldClientReady":             568,
-		"OP_WorldComplete":                569,
-		"OP_WorldLogout":                  570,
-		"OP_WorldUnknown001":              572,
-		"OP_XTargetAutoAddHaters":         573,
-		"OP_XTargetOpen":                  574,
-		"OP_XTargetOpenResponse":          575,
-		"OP_XTargetRequest":               576,
-		"OP_XTargetResponse":              577,
-		"OP_ZoneComplete":                 580,
-		"OP_ZoneGuildList":                582,
-		"OP_ZonePlayerToBind":             584,
-		"OP_ZoneServerReady":              586,
-		"OP_ResetAA":                      589,
-		"OP_UnderWorld":                   590,
+		"OP_CancelSneakHide":              71,
+		"OP_CashReward":                   74,
+		"OP_ChangeSize":                   76,
+		"OP_CharacterCreateRequest":       80,
+		"OP_ChatMessage":                  83,
+		"OP_ClearAA":                      84,
+		"OP_ClearBlockedBuffs":            85,
+		"OP_ClearLeadershipAbilities":     86,
+		"OP_ClearNPCMarks":                87,
+		"OP_ClearSurname":                 89,
+		"OP_ClientTimeStamp":              95,
+		"OP_CloseTributeMaster":           98,
+		"OP_CorpseDrag":                   111,
+		"OP_CorpseDrop":                   112,
+		"OP_CrystalCountUpdate":           114,
+		"OP_CrystalCreate":                115,
+		"OP_CrystalReclaim":               116,
+		"OP_DelegateAbility":              120,
+		"OP_DeleteCharge":                 122,
+		"OP_DeletePetition":               124,
+		"OP_DenyResponse":                 127,
+		"OP_Disarm":                       128,
+		"OP_DisciplineTimer":              130,
+		"OP_DisciplineUpdate":             131,
+		"OP_DiscordMerchantInventory":     132,
+		"OP_DoGroupLeadershipAbility":     133,
+		"OP_DzAddPlayer":                  139,
+		"OP_DzChooseZone":                 140,
+		"OP_DzChooseZoneReply":            141,
+		"OP_DzCompass":                    142,
+		"OP_DzExpeditionEndsWarning":      143,
+		"OP_DzExpeditionInfo":             144,
+		"OP_DzExpeditionInvite":           145,
+		"OP_DzExpeditionInviteResponse":   146,
+		"OP_DzExpeditionLockoutTimers":    147,
+		"OP_DzListTimers":                 148,
+		"OP_DzMakeLeader":                 149,
+		"OP_DzMemberList":                 150,
+		"OP_DzMemberListName":             151,
+		"OP_DzMemberListStatus":           152,
+		"OP_DzPlayerList":                 153,
+		"OP_DzQuit":                       154,
+		"OP_DzRemovePlayer":               155,
+		"OP_DzSetLeaderName":              156,
+		"OP_DzSwapPlayer":                 157,
+		"OP_EnterChat":                    161,
+		"OP_Feedback":                     168,
+		"OP_FellowshipUpdate":             170,
+		"OP_FindPersonReply":              171,
+		"OP_Fling":                        177,
+		"OP_FloatListThing":               178,
+		"OP_ForceFindPerson":              180,
+		"OP_FriendsWho":                   182,
+		"OP_GetGuildMOTD":                 183,
+		"OP_GetGuildMOTDReply":            184,
+		"OP_GiveMoney":                    186,
+		"OP_GMApproval":                   187,
+		"OP_GMTrainSkillConfirm":          206,
+		"OP_GroupDisbandOther":            214,
+		"OP_GroupDisbandYou":              215,
+		"OP_GroupLeaderChange":            220,
+		"OP_GroupLeadershipAAUpdate":      221,
+		"OP_GroupMakeLeader":              222,
+		"OP_GroupMentor":                  223,
+		"OP_GroupRoles":                   224,
+		"OP_GroupUpdateB":                 226,
+		"OP_GroupUpdateLeaderAA":          227,
+		"OP_GuildBank":                    228,
+		"OP_GuildBankItemList":            229,
+		"OP_GuildCreate":                  230,
+		"OP_GuildManageBanker":            238,
+		"OP_GuildMemberLevelUpdate":       241,
+		"OP_GuildPromote":                 254,
+		"OP_GuildStatus":                  266,
+		"OP_GuildUpdateURLAndChannel":     268,
+		"OP_HideCorpse":                   274,
+		"OP_InitialHPUpdate":              278,
+		"OP_InitialMobHealth":             279,
+		"OP_InspectBuffs":                 281,
+		"OP_InspectMessageUpdate":         282,
+		"OP_ItemLinkText":                 292,
+		"OP_ItemPreview":                  295,
+		"OP_ItemViewUnknown":              300,
+		"OP_KeyRing":                      302,
+		"OP_KickPlayers":                  303,
+		"OP_KnowledgeBase":                304,
+		"OP_LDoNDisarmTraps":              306,
+		"OP_LDoNInspect":                  307,
+		"OP_LDoNOpen":                     308,
+		"OP_LDoNPickLock":                 309,
+		"OP_LDoNSenseTraps":               310,
+		"OP_LFGGetMatchesRequest":         319,
+		"OP_LFGGetMatchesResponse":        320,
+		"OP_LFGResponse":                  321,
+		"OP_LFPCommand":                   323,
+		"OP_LFPGetMatchesRequest":         324,
+		"OP_LFPGetMatchesResponse":        325,
+		"OP_LinkedReuse":                  326,
+		"OP_LocInfo":                      328,
+		"OP_LockoutTimerInfo":             329,
+		"OP_Login":                        330,
+		"OP_LoginComplete":                332,
+		"OP_LoginExpansionPacketData":     333,
+		"OP_LoginUnknown1":                334,
+		"OP_LoginUnknown2":                335,
+		"OP_LogoutReply":                  337,
+		"OP_MarkNPC":                      344,
+		"OP_MarkRaidNPC":                  345,
+		"OP_Marquee":                      346,
+		"OP_MendHPUpdate":                 349,
+		"OP_MercenaryAssign":              350,
+		"OP_MercenaryCommand":             351,
+		"OP_MercenaryDataRequest":         352,
+		"OP_MercenaryDataResponse":        353,
+		"OP_MercenaryDataUpdate":          354,
+		"OP_MercenaryDataUpdateRequest":   355,
+		"OP_MercenaryDismiss":             356,
+		"OP_MercenaryHire":                357,
+		"OP_MercenarySuspendRequest":      358,
+		"OP_MercenarySuspendResponse":     359,
+		"OP_MercenaryTimer":               360,
+		"OP_MercenaryTimerRequest":        361,
+		"OP_MercenaryUnknown1":            362,
+		"OP_MercenaryUnsuspendResponse":   363,
+		"OP_MobUpdate":                    368,
+		"OP_MoveMultipleItems":            375,
+		"OP_MoveLogDisregard":             376,
+		"OP_MoveLogRequest":               377,
+		"OP_MultiLineMsg":                 378,
+		"OP_NewTitlesAvailable":           380,
+		"OP_OpenContainer":                383,
+		"OP_OpenDiscordMerchant":          384,
+		"OP_OpenInventory":                386,
+		"OP_PetBuffWindow":                389,
+		"OP_PetCommandState":              391,
+		"OP_PetHoTT":                      392,
+		"OP_PetitionCheckout2":            397,
+		"OP_PetitionSearch":               402,
+		"OP_PetitionSearchResults":        403,
+		"OP_PetitionSearchText":           404,
+		"OP_PlayerStateAdd":               411,
+		"OP_PlayerStateRemove":            412,
+		"OP_Poll":                         416,
+		"OP_PollResponse":                 417,
+		"OP_PopupResponse":                418,
+		"OP_PreLogoutReply":               421,
+		"OP_PVPLeaderBoardDetailsReply":   423,
+		"OP_PVPLeaderBoardDetailsRequest": 424,
+		"OP_PVPLeaderBoardReply":          425,
+		"OP_PVPLeaderBoardRequest":        426,
+		"OP_QueryResponseThing":           428,
+		"OP_QueryUCSServerStatus":         429,
+		"OP_RaidDelegateAbility":          430,
+		"OP_RaidClearNPCMarks":            431,
+		"OP_RaidInvite":                   432,
+		"OP_RaidJoin":                     433,
+		"OP_RandomNameGenerator":          435,
+		"OP_ReclaimCrystals":              444,
+		"OP_RemoveAllDoors":               446,
+		"OP_RemoveBlockedBuffs":           447,
+		"OP_RemoveNimbusEffect":           448,
+		"OP_RemoveTrap":                   449,
+		"OP_RequestKnowledgeBase":         456,
+		"OP_RespawnWindow":                458,
+		"OP_RestState":                    460,
+		"OP_Rewind":                       461,
+		"OP_RezzComplete":                 463,
+		"OP_Sacrifice":                    465,
+		"OP_SendFindableNPCs":             475,
+		"OP_SendSystemStats":              481,
+		"OP_SessionReady":                 489,
+		"OP_SetChatServer":                490,
+		"OP_SetChatServer2":               491,
+		"OP_SetFace":                      492,
+		"OP_SetGroupTarget":               493,
+		"OP_SetGuildRank":                 495,
+		"OP_SetStartCity":                 498,
+		"OP_SharedTaskMemberList":         501,
+		"OP_SharedTaskAddPlayer":          502,
+		"OP_SharedTaskRemovePlayer":       503,
+		"OP_SharedTaskMakeLeader":         504,
+		"OP_SharedTaskMemberInvite":       505,
+		"OP_SharedTaskInvite":             506,
+		"OP_SharedTaskInviteResponse":     507,
+		"OP_SharedTaskAcceptNew":          508,
+		"OP_SharedTaskMemberChange":       509,
+		"OP_SharedTaskPlayerList":         510,
+		"OP_SharedTaskSelectWindow":       511,
+		"OP_SharedTaskQuit":               512,
+		"OP_TaskTimers":                   513,
+		"OP_ShopEndConfirm":               517,
+		"OP_ShopItem":                     518,
+		"OP_Some3ByteHPUpdate":            530,
+		"OP_Some6ByteHPUpdate":            531,
+		"OP_Sound":                        533,
+		"OP_SpawnPositionUpdate":          536,
+		"OP_TargetBuffs":                  545,
+		"OP_TargetHoTT":                   547,
+		"OP_TaskActivityComplete":         551,
+		"OP_TaskHistoryReply":             553,
+		"OP_TaskHistoryRequest":           554,
+		"OP_TaskRequestTimer":             555,
+		"OP_TaskSelectWindow":             556,
+		"OP_Translocate":                  578,
+		"OP_TributePointUpdate":           583,
+		"OP_Untargetable":                 587,
+		"OP_UpdateAA":                     588,
+		"OP_UpdateAura":                   589,
+		"OP_VetClaimReply":                591,
+		"OP_VetClaimRequest":              592,
+		"OP_VetRewardsAvaliable":          593,
+		"OP_VoiceMacroIn":                 594,
+		"OP_VoiceMacroOut":                595,
+		"OP_WeaponEquip1":                 596,
+		"OP_Weblink":                      599,
+		"OP_WhoAllResponse":               601,
+		"OP_World_Client_CRC1":            602,
+		"OP_World_Client_CRC2":            603,
+		"OP_World_Client_CRC3":            604,
+		"OP_WorldClientReady":             605,
+		"OP_WorldComplete":                606,
+		"OP_WorldLogout":                  607,
+		"OP_WorldUnknown001":              609,
+		"OP_XTargetAutoAddHaters":         610,
+		"OP_XTargetOpen":                  611,
+		"OP_XTargetOpenResponse":          612,
+		"OP_XTargetRequest":               613,
+		"OP_XTargetResponse":              614,
+		"OP_ZoneComplete":                 617,
+		"OP_ZoneGuildList":                619,
+		"OP_ZonePlayerToBind":             621,
+		"OP_ZoneServerReady":              623,
+		"OP_ResetAA":                      626,
+		"OP_UnderWorld":                   627,
 	}
 )
 
@@ -1925,29 +1929,27 @@ func (OpCodes) EnumDescriptor() ([]byte, []int) {
 	return file_EQMessage_proto_rawDescGZIP(), []int{1}
 }
 
-// Login
-type LoginMessage struct {
+type JWTLogin struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LoginMessage) Reset() {
-	*x = LoginMessage{}
+func (x *JWTLogin) Reset() {
+	*x = JWTLogin{}
 	mi := &file_EQMessage_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LoginMessage) String() string {
+func (x *JWTLogin) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LoginMessage) ProtoMessage() {}
+func (*JWTLogin) ProtoMessage() {}
 
-func (x *LoginMessage) ProtoReflect() protoreflect.Message {
+func (x *JWTLogin) ProtoReflect() protoreflect.Message {
 	mi := &file_EQMessage_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1959,23 +1961,60 @@ func (x *LoginMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LoginMessage.ProtoReflect.Descriptor instead.
-func (*LoginMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use JWTLogin.ProtoReflect.Descriptor instead.
+func (*JWTLogin) Descriptor() ([]byte, []int) {
 	return file_EQMessage_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *LoginMessage) GetUsername() string {
+func (x *JWTLogin) GetToken() string {
 	if x != nil {
-		return x.Username
+		return x.Token
 	}
 	return ""
 }
 
-func (x *LoginMessage) GetPassword() string {
+type JWTResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        int32                  `protobuf:"varint,1,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JWTResponse) Reset() {
+	*x = JWTResponse{}
+	mi := &file_EQMessage_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JWTResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JWTResponse) ProtoMessage() {}
+
+func (x *JWTResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_EQMessage_proto_msgTypes[1]
 	if x != nil {
-		return x.Password
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
 	}
-	return ""
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JWTResponse.ProtoReflect.Descriptor instead.
+func (*JWTResponse) Descriptor() ([]byte, []int) {
+	return file_EQMessage_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *JWTResponse) GetStatus() int32 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
 }
 
 type LoginReply struct {
@@ -1992,7 +2031,7 @@ type LoginReply struct {
 
 func (x *LoginReply) Reset() {
 	*x = LoginReply{}
-	mi := &file_EQMessage_proto_msgTypes[1]
+	mi := &file_EQMessage_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2004,7 +2043,7 @@ func (x *LoginReply) String() string {
 func (*LoginReply) ProtoMessage() {}
 
 func (x *LoginReply) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[1]
+	mi := &file_EQMessage_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2017,7 +2056,7 @@ func (x *LoginReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginReply.ProtoReflect.Descriptor instead.
 func (*LoginReply) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{1}
+	return file_EQMessage_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *LoginReply) GetKey() string {
@@ -2071,7 +2110,7 @@ type LoginRequest struct {
 
 func (x *LoginRequest) Reset() {
 	*x = LoginRequest{}
-	mi := &file_EQMessage_proto_msgTypes[2]
+	mi := &file_EQMessage_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2083,7 +2122,7 @@ func (x *LoginRequest) String() string {
 func (*LoginRequest) ProtoMessage() {}
 
 func (x *LoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[2]
+	mi := &file_EQMessage_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2096,7 +2135,7 @@ func (x *LoginRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
 func (*LoginRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{2}
+	return file_EQMessage_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *LoginRequest) GetSequence() int32 {
@@ -2122,7 +2161,7 @@ type WorldServer struct {
 
 func (x *WorldServer) Reset() {
 	*x = WorldServer{}
-	mi := &file_EQMessage_proto_msgTypes[3]
+	mi := &file_EQMessage_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2134,7 +2173,7 @@ func (x *WorldServer) String() string {
 func (*WorldServer) ProtoMessage() {}
 
 func (x *WorldServer) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[3]
+	mi := &file_EQMessage_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2147,7 +2186,7 @@ func (x *WorldServer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WorldServer.ProtoReflect.Descriptor instead.
 func (*WorldServer) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{3}
+	return file_EQMessage_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *WorldServer) GetIp() string {
@@ -2216,7 +2255,7 @@ type LoginServerResponse struct {
 
 func (x *LoginServerResponse) Reset() {
 	*x = LoginServerResponse{}
-	mi := &file_EQMessage_proto_msgTypes[4]
+	mi := &file_EQMessage_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2228,7 +2267,7 @@ func (x *LoginServerResponse) String() string {
 func (*LoginServerResponse) ProtoMessage() {}
 
 func (x *LoginServerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[4]
+	mi := &file_EQMessage_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2241,7 +2280,7 @@ func (x *LoginServerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginServerResponse.ProtoReflect.Descriptor instead.
 func (*LoginServerResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{4}
+	return file_EQMessage_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *LoginServerResponse) GetServerCount() int32 {
@@ -2267,7 +2306,7 @@ type PlayEverquest struct {
 
 func (x *PlayEverquest) Reset() {
 	*x = PlayEverquest{}
-	mi := &file_EQMessage_proto_msgTypes[5]
+	mi := &file_EQMessage_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2279,7 +2318,7 @@ func (x *PlayEverquest) String() string {
 func (*PlayEverquest) ProtoMessage() {}
 
 func (x *PlayEverquest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[5]
+	mi := &file_EQMessage_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2292,7 +2331,7 @@ func (x *PlayEverquest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayEverquest.ProtoReflect.Descriptor instead.
 func (*PlayEverquest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{5}
+	return file_EQMessage_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *PlayEverquest) GetServerId() int32 {
@@ -2313,7 +2352,7 @@ type PlayEverquestResponse struct {
 
 func (x *PlayEverquestResponse) Reset() {
 	*x = PlayEverquestResponse{}
-	mi := &file_EQMessage_proto_msgTypes[6]
+	mi := &file_EQMessage_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2325,7 +2364,7 @@ func (x *PlayEverquestResponse) String() string {
 func (*PlayEverquestResponse) ProtoMessage() {}
 
 func (x *PlayEverquestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[6]
+	mi := &file_EQMessage_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2338,7 +2377,7 @@ func (x *PlayEverquestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayEverquestResponse.ProtoReflect.Descriptor instead.
 func (*PlayEverquestResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{6}
+	return file_EQMessage_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *PlayEverquestResponse) GetServerId() int32 {
@@ -2372,7 +2411,7 @@ type WebInitiateConnection struct {
 
 func (x *WebInitiateConnection) Reset() {
 	*x = WebInitiateConnection{}
-	mi := &file_EQMessage_proto_msgTypes[7]
+	mi := &file_EQMessage_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2384,7 +2423,7 @@ func (x *WebInitiateConnection) String() string {
 func (*WebInitiateConnection) ProtoMessage() {}
 
 func (x *WebInitiateConnection) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[7]
+	mi := &file_EQMessage_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2397,7 +2436,7 @@ func (x *WebInitiateConnection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebInitiateConnection.ProtoReflect.Descriptor instead.
 func (*WebInitiateConnection) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{7}
+	return file_EQMessage_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *WebInitiateConnection) GetLogin() bool {
@@ -2418,7 +2457,7 @@ type LoginInfo struct {
 
 func (x *LoginInfo) Reset() {
 	*x = LoginInfo{}
-	mi := &file_EQMessage_proto_msgTypes[8]
+	mi := &file_EQMessage_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2430,7 +2469,7 @@ func (x *LoginInfo) String() string {
 func (*LoginInfo) ProtoMessage() {}
 
 func (x *LoginInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[8]
+	mi := &file_EQMessage_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2443,7 +2482,7 @@ func (x *LoginInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginInfo.ProtoReflect.Descriptor instead.
 func (*LoginInfo) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{8}
+	return file_EQMessage_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *LoginInfo) GetName() string {
@@ -2479,7 +2518,7 @@ type Tint struct {
 
 func (x *Tint) Reset() {
 	*x = Tint{}
-	mi := &file_EQMessage_proto_msgTypes[9]
+	mi := &file_EQMessage_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2491,7 +2530,7 @@ func (x *Tint) String() string {
 func (*Tint) ProtoMessage() {}
 
 func (x *Tint) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[9]
+	mi := &file_EQMessage_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2504,7 +2543,7 @@ func (x *Tint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Tint.ProtoReflect.Descriptor instead.
 func (*Tint) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{9}
+	return file_EQMessage_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Tint) GetBlue() int32 {
@@ -2545,7 +2584,7 @@ type CharSelectEquip struct {
 
 func (x *CharSelectEquip) Reset() {
 	*x = CharSelectEquip{}
-	mi := &file_EQMessage_proto_msgTypes[10]
+	mi := &file_EQMessage_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2557,7 +2596,7 @@ func (x *CharSelectEquip) String() string {
 func (*CharSelectEquip) ProtoMessage() {}
 
 func (x *CharSelectEquip) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[10]
+	mi := &file_EQMessage_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2570,7 +2609,7 @@ func (x *CharSelectEquip) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharSelectEquip.ProtoReflect.Descriptor instead.
 func (*CharSelectEquip) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{10}
+	return file_EQMessage_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CharSelectEquip) GetMaterial() int32 {
@@ -2610,7 +2649,7 @@ type CharacterSelectEntry struct {
 
 func (x *CharacterSelectEntry) Reset() {
 	*x = CharacterSelectEntry{}
-	mi := &file_EQMessage_proto_msgTypes[11]
+	mi := &file_EQMessage_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2622,7 +2661,7 @@ func (x *CharacterSelectEntry) String() string {
 func (*CharacterSelectEntry) ProtoMessage() {}
 
 func (x *CharacterSelectEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[11]
+	mi := &file_EQMessage_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2635,7 +2674,7 @@ func (x *CharacterSelectEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharacterSelectEntry.ProtoReflect.Descriptor instead.
 func (*CharacterSelectEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{11}
+	return file_EQMessage_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CharacterSelectEntry) GetName() string {
@@ -2753,7 +2792,7 @@ type CharacterSelect struct {
 
 func (x *CharacterSelect) Reset() {
 	*x = CharacterSelect{}
-	mi := &file_EQMessage_proto_msgTypes[12]
+	mi := &file_EQMessage_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2765,7 +2804,7 @@ func (x *CharacterSelect) String() string {
 func (*CharacterSelect) ProtoMessage() {}
 
 func (x *CharacterSelect) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[12]
+	mi := &file_EQMessage_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2778,7 +2817,7 @@ func (x *CharacterSelect) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharacterSelect.ProtoReflect.Descriptor instead.
 func (*CharacterSelect) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{12}
+	return file_EQMessage_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CharacterSelect) GetCharacterCount() int32 {
@@ -2806,7 +2845,7 @@ type EnterWorld struct {
 
 func (x *EnterWorld) Reset() {
 	*x = EnterWorld{}
-	mi := &file_EQMessage_proto_msgTypes[13]
+	mi := &file_EQMessage_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2818,7 +2857,7 @@ func (x *EnterWorld) String() string {
 func (*EnterWorld) ProtoMessage() {}
 
 func (x *EnterWorld) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[13]
+	mi := &file_EQMessage_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2831,7 +2870,7 @@ func (x *EnterWorld) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnterWorld.ProtoReflect.Descriptor instead.
 func (*EnterWorld) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{13}
+	return file_EQMessage_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *EnterWorld) GetName() string {
@@ -2866,7 +2905,7 @@ type InventorySlot struct {
 
 func (x *InventorySlot) Reset() {
 	*x = InventorySlot{}
-	mi := &file_EQMessage_proto_msgTypes[14]
+	mi := &file_EQMessage_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2878,7 +2917,7 @@ func (x *InventorySlot) String() string {
 func (*InventorySlot) ProtoMessage() {}
 
 func (x *InventorySlot) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[14]
+	mi := &file_EQMessage_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2891,7 +2930,7 @@ func (x *InventorySlot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InventorySlot.ProtoReflect.Descriptor instead.
 func (*InventorySlot) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{14}
+	return file_EQMessage_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *InventorySlot) GetType() int32 {
@@ -2925,7 +2964,7 @@ type TypelessInventorySlot struct {
 
 func (x *TypelessInventorySlot) Reset() {
 	*x = TypelessInventorySlot{}
-	mi := &file_EQMessage_proto_msgTypes[15]
+	mi := &file_EQMessage_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2937,7 +2976,7 @@ func (x *TypelessInventorySlot) String() string {
 func (*TypelessInventorySlot) ProtoMessage() {}
 
 func (x *TypelessInventorySlot) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[15]
+	mi := &file_EQMessage_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2950,7 +2989,7 @@ func (x *TypelessInventorySlot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypelessInventorySlot.ProtoReflect.Descriptor instead.
 func (*TypelessInventorySlot) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{15}
+	return file_EQMessage_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *TypelessInventorySlot) GetSlot() int32 {
@@ -2979,7 +3018,7 @@ type NameApproval struct {
 
 func (x *NameApproval) Reset() {
 	*x = NameApproval{}
-	mi := &file_EQMessage_proto_msgTypes[16]
+	mi := &file_EQMessage_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2991,7 +3030,7 @@ func (x *NameApproval) String() string {
 func (*NameApproval) ProtoMessage() {}
 
 func (x *NameApproval) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[16]
+	mi := &file_EQMessage_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3004,7 +3043,7 @@ func (x *NameApproval) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NameApproval.ProtoReflect.Descriptor instead.
 func (*NameApproval) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{16}
+	return file_EQMessage_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *NameApproval) GetName() string {
@@ -3044,7 +3083,7 @@ type EntityId struct {
 
 func (x *EntityId) Reset() {
 	*x = EntityId{}
-	mi := &file_EQMessage_proto_msgTypes[17]
+	mi := &file_EQMessage_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3056,7 +3095,7 @@ func (x *EntityId) String() string {
 func (*EntityId) ProtoMessage() {}
 
 func (x *EntityId) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[17]
+	mi := &file_EQMessage_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3069,7 +3108,7 @@ func (x *EntityId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EntityId.ProtoReflect.Descriptor instead.
 func (*EntityId) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{17}
+	return file_EQMessage_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *EntityId) GetEntityId() int32 {
@@ -3089,7 +3128,7 @@ type Duel struct {
 
 func (x *Duel) Reset() {
 	*x = Duel{}
-	mi := &file_EQMessage_proto_msgTypes[18]
+	mi := &file_EQMessage_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3101,7 +3140,7 @@ func (x *Duel) String() string {
 func (*Duel) ProtoMessage() {}
 
 func (x *Duel) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[18]
+	mi := &file_EQMessage_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3114,7 +3153,7 @@ func (x *Duel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Duel.ProtoReflect.Descriptor instead.
 func (*Duel) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{18}
+	return file_EQMessage_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *Duel) GetDuelInitiator() int32 {
@@ -3141,7 +3180,7 @@ type DuelResponse struct {
 
 func (x *DuelResponse) Reset() {
 	*x = DuelResponse{}
-	mi := &file_EQMessage_proto_msgTypes[19]
+	mi := &file_EQMessage_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3153,7 +3192,7 @@ func (x *DuelResponse) String() string {
 func (*DuelResponse) ProtoMessage() {}
 
 func (x *DuelResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[19]
+	mi := &file_EQMessage_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3166,7 +3205,7 @@ func (x *DuelResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DuelResponse.ProtoReflect.Descriptor instead.
 func (*DuelResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{19}
+	return file_EQMessage_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *DuelResponse) GetTargetId() int32 {
@@ -3206,7 +3245,7 @@ type AdventureInfo struct {
 
 func (x *AdventureInfo) Reset() {
 	*x = AdventureInfo{}
-	mi := &file_EQMessage_proto_msgTypes[20]
+	mi := &file_EQMessage_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3218,7 +3257,7 @@ func (x *AdventureInfo) String() string {
 func (*AdventureInfo) ProtoMessage() {}
 
 func (x *AdventureInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[20]
+	mi := &file_EQMessage_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3231,7 +3270,7 @@ func (x *AdventureInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureInfo.ProtoReflect.Descriptor instead.
 func (*AdventureInfo) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{20}
+	return file_EQMessage_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *AdventureInfo) GetQuestId() int32 {
@@ -3356,7 +3395,7 @@ type TextureProfile struct {
 
 func (x *TextureProfile) Reset() {
 	*x = TextureProfile{}
-	mi := &file_EQMessage_proto_msgTypes[21]
+	mi := &file_EQMessage_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3368,7 +3407,7 @@ func (x *TextureProfile) String() string {
 func (*TextureProfile) ProtoMessage() {}
 
 func (x *TextureProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[21]
+	mi := &file_EQMessage_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3381,7 +3420,7 @@ func (x *TextureProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextureProfile.ProtoReflect.Descriptor instead.
 func (*TextureProfile) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{21}
+	return file_EQMessage_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *TextureProfile) GetHead() int32 {
@@ -3464,7 +3503,7 @@ type TintProfile struct {
 
 func (x *TintProfile) Reset() {
 	*x = TintProfile{}
-	mi := &file_EQMessage_proto_msgTypes[22]
+	mi := &file_EQMessage_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3476,7 +3515,7 @@ func (x *TintProfile) String() string {
 func (*TintProfile) ProtoMessage() {}
 
 func (x *TintProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[22]
+	mi := &file_EQMessage_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3489,7 +3528,7 @@ func (x *TintProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TintProfile.ProtoReflect.Descriptor instead.
 func (*TintProfile) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{22}
+	return file_EQMessage_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *TintProfile) GetHead() int32 {
@@ -3565,7 +3604,7 @@ type Spawns struct {
 
 func (x *Spawns) Reset() {
 	*x = Spawns{}
-	mi := &file_EQMessage_proto_msgTypes[23]
+	mi := &file_EQMessage_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3577,7 +3616,7 @@ func (x *Spawns) String() string {
 func (*Spawns) ProtoMessage() {}
 
 func (x *Spawns) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[23]
+	mi := &file_EQMessage_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3590,7 +3629,7 @@ func (x *Spawns) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Spawns.ProtoReflect.Descriptor instead.
 func (*Spawns) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{23}
+	return file_EQMessage_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *Spawns) GetSpawnCount() int32 {
@@ -3670,7 +3709,7 @@ type Spawn struct {
 
 func (x *Spawn) Reset() {
 	*x = Spawn{}
-	mi := &file_EQMessage_proto_msgTypes[24]
+	mi := &file_EQMessage_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3682,7 +3721,7 @@ func (x *Spawn) String() string {
 func (*Spawn) ProtoMessage() {}
 
 func (x *Spawn) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[24]
+	mi := &file_EQMessage_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3695,7 +3734,7 @@ func (x *Spawn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Spawn.ProtoReflect.Descriptor instead.
 func (*Spawn) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{24}
+	return file_EQMessage_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *Spawn) GetGm() int32 {
@@ -4092,7 +4131,7 @@ type NewSpawn struct {
 
 func (x *NewSpawn) Reset() {
 	*x = NewSpawn{}
-	mi := &file_EQMessage_proto_msgTypes[25]
+	mi := &file_EQMessage_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4104,7 +4143,7 @@ func (x *NewSpawn) String() string {
 func (*NewSpawn) ProtoMessage() {}
 
 func (x *NewSpawn) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[25]
+	mi := &file_EQMessage_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4117,7 +4156,7 @@ func (x *NewSpawn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NewSpawn.ProtoReflect.Descriptor instead.
 func (*NewSpawn) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{25}
+	return file_EQMessage_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *NewSpawn) GetSpawn() *Spawn {
@@ -4136,7 +4175,7 @@ type ClientZoneEntry struct {
 
 func (x *ClientZoneEntry) Reset() {
 	*x = ClientZoneEntry{}
-	mi := &file_EQMessage_proto_msgTypes[26]
+	mi := &file_EQMessage_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4148,7 +4187,7 @@ func (x *ClientZoneEntry) String() string {
 func (*ClientZoneEntry) ProtoMessage() {}
 
 func (x *ClientZoneEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[26]
+	mi := &file_EQMessage_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4161,7 +4200,7 @@ func (x *ClientZoneEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientZoneEntry.ProtoReflect.Descriptor instead.
 func (*ClientZoneEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{26}
+	return file_EQMessage_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ClientZoneEntry) GetCharName() string {
@@ -4180,7 +4219,7 @@ type ServerZoneEntry struct {
 
 func (x *ServerZoneEntry) Reset() {
 	*x = ServerZoneEntry{}
-	mi := &file_EQMessage_proto_msgTypes[27]
+	mi := &file_EQMessage_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4192,7 +4231,7 @@ func (x *ServerZoneEntry) String() string {
 func (*ServerZoneEntry) ProtoMessage() {}
 
 func (x *ServerZoneEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[27]
+	mi := &file_EQMessage_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4205,7 +4244,7 @@ func (x *ServerZoneEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServerZoneEntry.ProtoReflect.Descriptor instead.
 func (*ServerZoneEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{27}
+	return file_EQMessage_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ServerZoneEntry) GetPlayer() *NewSpawn {
@@ -4250,7 +4289,7 @@ type NewZone struct {
 
 func (x *NewZone) Reset() {
 	*x = NewZone{}
-	mi := &file_EQMessage_proto_msgTypes[28]
+	mi := &file_EQMessage_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4262,7 +4301,7 @@ func (x *NewZone) String() string {
 func (*NewZone) ProtoMessage() {}
 
 func (x *NewZone) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[28]
+	mi := &file_EQMessage_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4275,7 +4314,7 @@ func (x *NewZone) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NewZone.ProtoReflect.Descriptor instead.
 func (*NewZone) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{28}
+	return file_EQMessage_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *NewZone) GetCharName() string {
@@ -4479,7 +4518,7 @@ type MemorizeSpell struct {
 
 func (x *MemorizeSpell) Reset() {
 	*x = MemorizeSpell{}
-	mi := &file_EQMessage_proto_msgTypes[29]
+	mi := &file_EQMessage_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4491,7 +4530,7 @@ func (x *MemorizeSpell) String() string {
 func (*MemorizeSpell) ProtoMessage() {}
 
 func (x *MemorizeSpell) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[29]
+	mi := &file_EQMessage_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4504,7 +4543,7 @@ func (x *MemorizeSpell) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MemorizeSpell.ProtoReflect.Descriptor instead.
 func (*MemorizeSpell) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{29}
+	return file_EQMessage_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *MemorizeSpell) GetSlot() int32 {
@@ -4546,7 +4585,7 @@ type Charm struct {
 
 func (x *Charm) Reset() {
 	*x = Charm{}
-	mi := &file_EQMessage_proto_msgTypes[30]
+	mi := &file_EQMessage_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4558,7 +4597,7 @@ func (x *Charm) String() string {
 func (*Charm) ProtoMessage() {}
 
 func (x *Charm) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[30]
+	mi := &file_EQMessage_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4571,7 +4610,7 @@ func (x *Charm) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Charm.ProtoReflect.Descriptor instead.
 func (*Charm) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{30}
+	return file_EQMessage_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *Charm) GetOwnerId() int32 {
@@ -4606,7 +4645,7 @@ type InterruptCast struct {
 
 func (x *InterruptCast) Reset() {
 	*x = InterruptCast{}
-	mi := &file_EQMessage_proto_msgTypes[31]
+	mi := &file_EQMessage_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4618,7 +4657,7 @@ func (x *InterruptCast) String() string {
 func (*InterruptCast) ProtoMessage() {}
 
 func (x *InterruptCast) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[31]
+	mi := &file_EQMessage_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4631,7 +4670,7 @@ func (x *InterruptCast) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InterruptCast.ProtoReflect.Descriptor instead.
 func (*InterruptCast) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{31}
+	return file_EQMessage_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *InterruptCast) GetSpawnid() int32 {
@@ -4665,7 +4704,7 @@ type DeleteSpell struct {
 
 func (x *DeleteSpell) Reset() {
 	*x = DeleteSpell{}
-	mi := &file_EQMessage_proto_msgTypes[32]
+	mi := &file_EQMessage_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4677,7 +4716,7 @@ func (x *DeleteSpell) String() string {
 func (*DeleteSpell) ProtoMessage() {}
 
 func (x *DeleteSpell) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[32]
+	mi := &file_EQMessage_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4690,7 +4729,7 @@ func (x *DeleteSpell) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSpell.ProtoReflect.Descriptor instead.
 func (*DeleteSpell) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{32}
+	return file_EQMessage_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *DeleteSpell) GetSpellSlot() int32 {
@@ -4720,7 +4759,7 @@ type ManaChange struct {
 
 func (x *ManaChange) Reset() {
 	*x = ManaChange{}
-	mi := &file_EQMessage_proto_msgTypes[33]
+	mi := &file_EQMessage_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4732,7 +4771,7 @@ func (x *ManaChange) String() string {
 func (*ManaChange) ProtoMessage() {}
 
 func (x *ManaChange) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[33]
+	mi := &file_EQMessage_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4745,7 +4784,7 @@ func (x *ManaChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManaChange.ProtoReflect.Descriptor instead.
 func (*ManaChange) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{33}
+	return file_EQMessage_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *ManaChange) GetNewMana() int32 {
@@ -4793,7 +4832,7 @@ type SwapSpell struct {
 
 func (x *SwapSpell) Reset() {
 	*x = SwapSpell{}
-	mi := &file_EQMessage_proto_msgTypes[34]
+	mi := &file_EQMessage_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4805,7 +4844,7 @@ func (x *SwapSpell) String() string {
 func (*SwapSpell) ProtoMessage() {}
 
 func (x *SwapSpell) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[34]
+	mi := &file_EQMessage_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4818,7 +4857,7 @@ func (x *SwapSpell) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SwapSpell.ProtoReflect.Descriptor instead.
 func (*SwapSpell) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{34}
+	return file_EQMessage_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *SwapSpell) GetFromSlot() int32 {
@@ -4846,7 +4885,7 @@ type BeginCast struct {
 
 func (x *BeginCast) Reset() {
 	*x = BeginCast{}
-	mi := &file_EQMessage_proto_msgTypes[35]
+	mi := &file_EQMessage_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4858,7 +4897,7 @@ func (x *BeginCast) String() string {
 func (*BeginCast) ProtoMessage() {}
 
 func (x *BeginCast) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[35]
+	mi := &file_EQMessage_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4871,7 +4910,7 @@ func (x *BeginCast) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BeginCast.ProtoReflect.Descriptor instead.
 func (*BeginCast) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{35}
+	return file_EQMessage_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *BeginCast) GetCasterId() int32 {
@@ -4907,7 +4946,7 @@ type CastSpell struct {
 
 func (x *CastSpell) Reset() {
 	*x = CastSpell{}
-	mi := &file_EQMessage_proto_msgTypes[36]
+	mi := &file_EQMessage_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4919,7 +4958,7 @@ func (x *CastSpell) String() string {
 func (*CastSpell) ProtoMessage() {}
 
 func (x *CastSpell) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[36]
+	mi := &file_EQMessage_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4932,7 +4971,7 @@ func (x *CastSpell) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CastSpell.ProtoReflect.Descriptor instead.
 func (*CastSpell) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{36}
+	return file_EQMessage_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *CastSpell) GetSlot() int32 {
@@ -4974,7 +5013,7 @@ type SpawnAppearance struct {
 
 func (x *SpawnAppearance) Reset() {
 	*x = SpawnAppearance{}
-	mi := &file_EQMessage_proto_msgTypes[37]
+	mi := &file_EQMessage_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4986,7 +5025,7 @@ func (x *SpawnAppearance) String() string {
 func (*SpawnAppearance) ProtoMessage() {}
 
 func (x *SpawnAppearance) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[37]
+	mi := &file_EQMessage_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4999,7 +5038,7 @@ func (x *SpawnAppearance) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpawnAppearance.ProtoReflect.Descriptor instead.
 func (*SpawnAppearance) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{37}
+	return file_EQMessage_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *SpawnAppearance) GetSpawnId() int32 {
@@ -5038,7 +5077,7 @@ type SpellBuff struct {
 
 func (x *SpellBuff) Reset() {
 	*x = SpellBuff{}
-	mi := &file_EQMessage_proto_msgTypes[38]
+	mi := &file_EQMessage_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5050,7 +5089,7 @@ func (x *SpellBuff) String() string {
 func (*SpellBuff) ProtoMessage() {}
 
 func (x *SpellBuff) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[38]
+	mi := &file_EQMessage_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5063,7 +5102,7 @@ func (x *SpellBuff) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpellBuff.ProtoReflect.Descriptor instead.
 func (*SpellBuff) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{38}
+	return file_EQMessage_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *SpellBuff) GetEffectType() int32 {
@@ -5127,7 +5166,7 @@ type SpellBuffPacket struct {
 
 func (x *SpellBuffPacket) Reset() {
 	*x = SpellBuffPacket{}
-	mi := &file_EQMessage_proto_msgTypes[39]
+	mi := &file_EQMessage_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5139,7 +5178,7 @@ func (x *SpellBuffPacket) String() string {
 func (*SpellBuffPacket) ProtoMessage() {}
 
 func (x *SpellBuffPacket) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[39]
+	mi := &file_EQMessage_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5152,7 +5191,7 @@ func (x *SpellBuffPacket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpellBuffPacket.ProtoReflect.Descriptor instead.
 func (*SpellBuffPacket) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{39}
+	return file_EQMessage_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *SpellBuffPacket) GetEntityid() int32 {
@@ -5194,7 +5233,7 @@ type ItemNamePacket struct {
 
 func (x *ItemNamePacket) Reset() {
 	*x = ItemNamePacket{}
-	mi := &file_EQMessage_proto_msgTypes[40]
+	mi := &file_EQMessage_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5206,7 +5245,7 @@ func (x *ItemNamePacket) String() string {
 func (*ItemNamePacket) ProtoMessage() {}
 
 func (x *ItemNamePacket) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[40]
+	mi := &file_EQMessage_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5219,7 +5258,7 @@ func (x *ItemNamePacket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemNamePacket.ProtoReflect.Descriptor instead.
 func (*ItemNamePacket) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{40}
+	return file_EQMessage_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ItemNamePacket) GetItemId() int32 {
@@ -5252,7 +5291,7 @@ type ItemProperties struct {
 
 func (x *ItemProperties) Reset() {
 	*x = ItemProperties{}
-	mi := &file_EQMessage_proto_msgTypes[41]
+	mi := &file_EQMessage_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5264,7 +5303,7 @@ func (x *ItemProperties) String() string {
 func (*ItemProperties) ProtoMessage() {}
 
 func (x *ItemProperties) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[41]
+	mi := &file_EQMessage_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5277,7 +5316,7 @@ func (x *ItemProperties) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemProperties.ProtoReflect.Descriptor instead.
 func (*ItemProperties) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{41}
+	return file_EQMessage_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *ItemProperties) GetCharges() int32 {
@@ -5298,7 +5337,7 @@ type GMTrainee struct {
 
 func (x *GMTrainee) Reset() {
 	*x = GMTrainee{}
-	mi := &file_EQMessage_proto_msgTypes[42]
+	mi := &file_EQMessage_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5310,7 +5349,7 @@ func (x *GMTrainee) String() string {
 func (*GMTrainee) ProtoMessage() {}
 
 func (x *GMTrainee) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[42]
+	mi := &file_EQMessage_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5323,7 +5362,7 @@ func (x *GMTrainee) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMTrainee.ProtoReflect.Descriptor instead.
 func (*GMTrainee) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{42}
+	return file_EQMessage_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *GMTrainee) GetNpcid() int32 {
@@ -5357,7 +5396,7 @@ type GMTrainEnd struct {
 
 func (x *GMTrainEnd) Reset() {
 	*x = GMTrainEnd{}
-	mi := &file_EQMessage_proto_msgTypes[43]
+	mi := &file_EQMessage_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5369,7 +5408,7 @@ func (x *GMTrainEnd) String() string {
 func (*GMTrainEnd) ProtoMessage() {}
 
 func (x *GMTrainEnd) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[43]
+	mi := &file_EQMessage_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5382,7 +5421,7 @@ func (x *GMTrainEnd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMTrainEnd.ProtoReflect.Descriptor instead.
 func (*GMTrainEnd) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{43}
+	return file_EQMessage_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *GMTrainEnd) GetNpcid() int32 {
@@ -5410,7 +5449,7 @@ type GMSkillChange struct {
 
 func (x *GMSkillChange) Reset() {
 	*x = GMSkillChange{}
-	mi := &file_EQMessage_proto_msgTypes[44]
+	mi := &file_EQMessage_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5422,7 +5461,7 @@ func (x *GMSkillChange) String() string {
 func (*GMSkillChange) ProtoMessage() {}
 
 func (x *GMSkillChange) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[44]
+	mi := &file_EQMessage_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5435,7 +5474,7 @@ func (x *GMSkillChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMSkillChange.ProtoReflect.Descriptor instead.
 func (*GMSkillChange) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{44}
+	return file_EQMessage_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *GMSkillChange) GetNpcid() int32 {
@@ -5471,7 +5510,7 @@ type ConsentResponse struct {
 
 func (x *ConsentResponse) Reset() {
 	*x = ConsentResponse{}
-	mi := &file_EQMessage_proto_msgTypes[45]
+	mi := &file_EQMessage_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5483,7 +5522,7 @@ func (x *ConsentResponse) String() string {
 func (*ConsentResponse) ProtoMessage() {}
 
 func (x *ConsentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[45]
+	mi := &file_EQMessage_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5496,7 +5535,7 @@ func (x *ConsentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsentResponse.ProtoReflect.Descriptor instead.
 func (*ConsentResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{45}
+	return file_EQMessage_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *ConsentResponse) GetGrantname() string {
@@ -5538,7 +5577,7 @@ type NameGeneration struct {
 
 func (x *NameGeneration) Reset() {
 	*x = NameGeneration{}
-	mi := &file_EQMessage_proto_msgTypes[46]
+	mi := &file_EQMessage_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5550,7 +5589,7 @@ func (x *NameGeneration) String() string {
 func (*NameGeneration) ProtoMessage() {}
 
 func (x *NameGeneration) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[46]
+	mi := &file_EQMessage_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5563,7 +5602,7 @@ func (x *NameGeneration) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NameGeneration.ProtoReflect.Descriptor instead.
 func (*NameGeneration) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{46}
+	return file_EQMessage_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *NameGeneration) GetRace() int32 {
@@ -5598,7 +5637,7 @@ type NameApprove struct {
 
 func (x *NameApprove) Reset() {
 	*x = NameApprove{}
-	mi := &file_EQMessage_proto_msgTypes[47]
+	mi := &file_EQMessage_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5610,7 +5649,7 @@ func (x *NameApprove) String() string {
 func (*NameApprove) ProtoMessage() {}
 
 func (x *NameApprove) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[47]
+	mi := &file_EQMessage_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5623,7 +5662,7 @@ func (x *NameApprove) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NameApprove.ProtoReflect.Descriptor instead.
 func (*NameApprove) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{47}
+	return file_EQMessage_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *NameApprove) GetName() string {
@@ -5675,7 +5714,7 @@ type CharCreate struct {
 
 func (x *CharCreate) Reset() {
 	*x = CharCreate{}
-	mi := &file_EQMessage_proto_msgTypes[48]
+	mi := &file_EQMessage_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5687,7 +5726,7 @@ func (x *CharCreate) String() string {
 func (*CharCreate) ProtoMessage() {}
 
 func (x *CharCreate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[48]
+	mi := &file_EQMessage_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5700,7 +5739,7 @@ func (x *CharCreate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharCreate.ProtoReflect.Descriptor instead.
 func (*CharCreate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{48}
+	return file_EQMessage_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *CharCreate) GetCharClass() int32 {
@@ -5853,7 +5892,7 @@ type AA_Array struct {
 
 func (x *AA_Array) Reset() {
 	*x = AA_Array{}
-	mi := &file_EQMessage_proto_msgTypes[49]
+	mi := &file_EQMessage_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5865,7 +5904,7 @@ func (x *AA_Array) String() string {
 func (*AA_Array) ProtoMessage() {}
 
 func (x *AA_Array) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[49]
+	mi := &file_EQMessage_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5878,7 +5917,7 @@ func (x *AA_Array) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AA_Array.ProtoReflect.Descriptor instead.
 func (*AA_Array) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{49}
+	return file_EQMessage_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *AA_Array) GetAa() int32 {
@@ -5904,7 +5943,7 @@ type Disciplines struct {
 
 func (x *Disciplines) Reset() {
 	*x = Disciplines{}
-	mi := &file_EQMessage_proto_msgTypes[50]
+	mi := &file_EQMessage_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5916,7 +5955,7 @@ func (x *Disciplines) String() string {
 func (*Disciplines) ProtoMessage() {}
 
 func (x *Disciplines) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[50]
+	mi := &file_EQMessage_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5929,7 +5968,7 @@ func (x *Disciplines) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Disciplines.ProtoReflect.Descriptor instead.
 func (*Disciplines) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{50}
+	return file_EQMessage_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *Disciplines) GetValues() []int32 {
@@ -5949,7 +5988,7 @@ type Tribute struct {
 
 func (x *Tribute) Reset() {
 	*x = Tribute{}
-	mi := &file_EQMessage_proto_msgTypes[51]
+	mi := &file_EQMessage_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5961,7 +6000,7 @@ func (x *Tribute) String() string {
 func (*Tribute) ProtoMessage() {}
 
 func (x *Tribute) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[51]
+	mi := &file_EQMessage_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5974,7 +6013,7 @@ func (x *Tribute) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Tribute.ProtoReflect.Descriptor instead.
 func (*Tribute) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{51}
+	return file_EQMessage_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *Tribute) GetTribute() int32 {
@@ -6002,7 +6041,7 @@ type BandolierItem struct {
 
 func (x *BandolierItem) Reset() {
 	*x = BandolierItem{}
-	mi := &file_EQMessage_proto_msgTypes[52]
+	mi := &file_EQMessage_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6014,7 +6053,7 @@ func (x *BandolierItem) String() string {
 func (*BandolierItem) ProtoMessage() {}
 
 func (x *BandolierItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[52]
+	mi := &file_EQMessage_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6027,7 +6066,7 @@ func (x *BandolierItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BandolierItem.ProtoReflect.Descriptor instead.
 func (*BandolierItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{52}
+	return file_EQMessage_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *BandolierItem) GetId() int32 {
@@ -6061,7 +6100,7 @@ type Bandolier struct {
 
 func (x *Bandolier) Reset() {
 	*x = Bandolier{}
-	mi := &file_EQMessage_proto_msgTypes[53]
+	mi := &file_EQMessage_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6073,7 +6112,7 @@ func (x *Bandolier) String() string {
 func (*Bandolier) ProtoMessage() {}
 
 func (x *Bandolier) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[53]
+	mi := &file_EQMessage_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6086,7 +6125,7 @@ func (x *Bandolier) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Bandolier.ProtoReflect.Descriptor instead.
 func (*Bandolier) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{53}
+	return file_EQMessage_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *Bandolier) GetName() string {
@@ -6114,7 +6153,7 @@ type PotionBeltItem struct {
 
 func (x *PotionBeltItem) Reset() {
 	*x = PotionBeltItem{}
-	mi := &file_EQMessage_proto_msgTypes[54]
+	mi := &file_EQMessage_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6126,7 +6165,7 @@ func (x *PotionBeltItem) String() string {
 func (*PotionBeltItem) ProtoMessage() {}
 
 func (x *PotionBeltItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[54]
+	mi := &file_EQMessage_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6139,7 +6178,7 @@ func (x *PotionBeltItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PotionBeltItem.ProtoReflect.Descriptor instead.
 func (*PotionBeltItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{54}
+	return file_EQMessage_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *PotionBeltItem) GetId() int32 {
@@ -6172,7 +6211,7 @@ type PotionBelt struct {
 
 func (x *PotionBelt) Reset() {
 	*x = PotionBelt{}
-	mi := &file_EQMessage_proto_msgTypes[55]
+	mi := &file_EQMessage_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6184,7 +6223,7 @@ func (x *PotionBelt) String() string {
 func (*PotionBelt) ProtoMessage() {}
 
 func (x *PotionBelt) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[55]
+	mi := &file_EQMessage_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6197,7 +6236,7 @@ func (x *PotionBelt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PotionBelt.ProtoReflect.Descriptor instead.
 func (*PotionBelt) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{55}
+	return file_EQMessage_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *PotionBelt) GetItems() []*PotionBeltItem {
@@ -6216,7 +6255,7 @@ type StringList struct {
 
 func (x *StringList) Reset() {
 	*x = StringList{}
-	mi := &file_EQMessage_proto_msgTypes[56]
+	mi := &file_EQMessage_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6228,7 +6267,7 @@ func (x *StringList) String() string {
 func (*StringList) ProtoMessage() {}
 
 func (x *StringList) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[56]
+	mi := &file_EQMessage_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6241,7 +6280,7 @@ func (x *StringList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StringList.ProtoReflect.Descriptor instead.
 func (*StringList) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{56}
+	return file_EQMessage_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *StringList) GetStr() string {
@@ -6275,7 +6314,7 @@ type GroupLeadershipAA struct {
 
 func (x *GroupLeadershipAA) Reset() {
 	*x = GroupLeadershipAA{}
-	mi := &file_EQMessage_proto_msgTypes[57]
+	mi := &file_EQMessage_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6287,7 +6326,7 @@ func (x *GroupLeadershipAA) String() string {
 func (*GroupLeadershipAA) ProtoMessage() {}
 
 func (x *GroupLeadershipAA) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[57]
+	mi := &file_EQMessage_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6300,7 +6339,7 @@ func (x *GroupLeadershipAA) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GroupLeadershipAA.ProtoReflect.Descriptor instead.
 func (*GroupLeadershipAA) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{57}
+	return file_EQMessage_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *GroupLeadershipAA) GetGroupAaMarkNpc() int32 {
@@ -6439,7 +6478,7 @@ type RaidLeadershipAA struct {
 
 func (x *RaidLeadershipAA) Reset() {
 	*x = RaidLeadershipAA{}
-	mi := &file_EQMessage_proto_msgTypes[58]
+	mi := &file_EQMessage_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6451,7 +6490,7 @@ func (x *RaidLeadershipAA) String() string {
 func (*RaidLeadershipAA) ProtoMessage() {}
 
 func (x *RaidLeadershipAA) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[58]
+	mi := &file_EQMessage_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6464,7 +6503,7 @@ func (x *RaidLeadershipAA) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidLeadershipAA.ProtoReflect.Descriptor instead.
 func (*RaidLeadershipAA) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{58}
+	return file_EQMessage_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *RaidLeadershipAA) GetRaidAaMarkNpc() int32 {
@@ -6589,7 +6628,7 @@ type LeadershipAA struct {
 
 func (x *LeadershipAA) Reset() {
 	*x = LeadershipAA{}
-	mi := &file_EQMessage_proto_msgTypes[59]
+	mi := &file_EQMessage_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6601,7 +6640,7 @@ func (x *LeadershipAA) String() string {
 func (*LeadershipAA) ProtoMessage() {}
 
 func (x *LeadershipAA) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[59]
+	mi := &file_EQMessage_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6614,7 +6653,7 @@ func (x *LeadershipAA) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LeadershipAA.ProtoReflect.Descriptor instead.
 func (*LeadershipAA) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{59}
+	return file_EQMessage_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *LeadershipAA) GetGroup() *GroupLeadershipAA {
@@ -6644,7 +6683,7 @@ type Bind struct {
 
 func (x *Bind) Reset() {
 	*x = Bind{}
-	mi := &file_EQMessage_proto_msgTypes[60]
+	mi := &file_EQMessage_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6656,7 +6695,7 @@ func (x *Bind) String() string {
 func (*Bind) ProtoMessage() {}
 
 func (x *Bind) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[60]
+	mi := &file_EQMessage_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6669,7 +6708,7 @@ func (x *Bind) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Bind.ProtoReflect.Descriptor instead.
 func (*Bind) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{60}
+	return file_EQMessage_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *Bind) GetZoneId() int32 {
@@ -6722,7 +6761,7 @@ type PVPStatsEntry struct {
 
 func (x *PVPStatsEntry) Reset() {
 	*x = PVPStatsEntry{}
-	mi := &file_EQMessage_proto_msgTypes[61]
+	mi := &file_EQMessage_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6734,7 +6773,7 @@ func (x *PVPStatsEntry) String() string {
 func (*PVPStatsEntry) ProtoMessage() {}
 
 func (x *PVPStatsEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[61]
+	mi := &file_EQMessage_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6747,7 +6786,7 @@ func (x *PVPStatsEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PVPStatsEntry.ProtoReflect.Descriptor instead.
 func (*PVPStatsEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{61}
+	return file_EQMessage_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *PVPStatsEntry) GetName() string {
@@ -6931,7 +6970,7 @@ type PlayerProfile struct {
 
 func (x *PlayerProfile) Reset() {
 	*x = PlayerProfile{}
-	mi := &file_EQMessage_proto_msgTypes[62]
+	mi := &file_EQMessage_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6943,7 +6982,7 @@ func (x *PlayerProfile) String() string {
 func (*PlayerProfile) ProtoMessage() {}
 
 func (x *PlayerProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[62]
+	mi := &file_EQMessage_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6956,7 +6995,7 @@ func (x *PlayerProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayerProfile.ProtoReflect.Descriptor instead.
 func (*PlayerProfile) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{62}
+	return file_EQMessage_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *PlayerProfile) GetChecksum() int32 {
@@ -7836,7 +7875,7 @@ type ClientTarget struct {
 
 func (x *ClientTarget) Reset() {
 	*x = ClientTarget{}
-	mi := &file_EQMessage_proto_msgTypes[63]
+	mi := &file_EQMessage_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7848,7 +7887,7 @@ func (x *ClientTarget) String() string {
 func (*ClientTarget) ProtoMessage() {}
 
 func (x *ClientTarget) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[63]
+	mi := &file_EQMessage_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7861,7 +7900,7 @@ func (x *ClientTarget) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientTarget.ProtoReflect.Descriptor instead.
 func (*ClientTarget) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{63}
+	return file_EQMessage_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *ClientTarget) GetNewTarget() int32 {
@@ -7879,7 +7918,7 @@ type TargetReject struct {
 
 func (x *TargetReject) Reset() {
 	*x = TargetReject{}
-	mi := &file_EQMessage_proto_msgTypes[64]
+	mi := &file_EQMessage_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7891,7 +7930,7 @@ func (x *TargetReject) String() string {
 func (*TargetReject) ProtoMessage() {}
 
 func (x *TargetReject) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[64]
+	mi := &file_EQMessage_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7904,7 +7943,7 @@ func (x *TargetReject) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TargetReject.ProtoReflect.Descriptor instead.
 func (*TargetReject) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{64}
+	return file_EQMessage_proto_rawDescGZIP(), []int{65}
 }
 
 type PetCommand struct {
@@ -7917,7 +7956,7 @@ type PetCommand struct {
 
 func (x *PetCommand) Reset() {
 	*x = PetCommand{}
-	mi := &file_EQMessage_proto_msgTypes[65]
+	mi := &file_EQMessage_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7929,7 +7968,7 @@ func (x *PetCommand) String() string {
 func (*PetCommand) ProtoMessage() {}
 
 func (x *PetCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[65]
+	mi := &file_EQMessage_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7942,7 +7981,7 @@ func (x *PetCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PetCommand.ProtoReflect.Descriptor instead.
 func (*PetCommand) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{65}
+	return file_EQMessage_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *PetCommand) GetCommand() int32 {
@@ -7968,7 +8007,7 @@ type DeleteSpawn struct {
 
 func (x *DeleteSpawn) Reset() {
 	*x = DeleteSpawn{}
-	mi := &file_EQMessage_proto_msgTypes[66]
+	mi := &file_EQMessage_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7980,7 +8019,7 @@ func (x *DeleteSpawn) String() string {
 func (*DeleteSpawn) ProtoMessage() {}
 
 func (x *DeleteSpawn) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[66]
+	mi := &file_EQMessage_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7993,7 +8032,7 @@ func (x *DeleteSpawn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteSpawn.ProtoReflect.Descriptor instead.
 func (*DeleteSpawn) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{66}
+	return file_EQMessage_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *DeleteSpawn) GetSpawnId() int32 {
@@ -8017,7 +8056,7 @@ type ChannelMessage struct {
 
 func (x *ChannelMessage) Reset() {
 	*x = ChannelMessage{}
-	mi := &file_EQMessage_proto_msgTypes[67]
+	mi := &file_EQMessage_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8029,7 +8068,7 @@ func (x *ChannelMessage) String() string {
 func (*ChannelMessage) ProtoMessage() {}
 
 func (x *ChannelMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[67]
+	mi := &file_EQMessage_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8042,7 +8081,7 @@ func (x *ChannelMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChannelMessage.ProtoReflect.Descriptor instead.
 func (*ChannelMessage) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{67}
+	return file_EQMessage_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *ChannelMessage) GetTargetname() string {
@@ -8100,7 +8139,7 @@ type SpecialMesg struct {
 
 func (x *SpecialMesg) Reset() {
 	*x = SpecialMesg{}
-	mi := &file_EQMessage_proto_msgTypes[68]
+	mi := &file_EQMessage_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8112,7 +8151,7 @@ func (x *SpecialMesg) String() string {
 func (*SpecialMesg) ProtoMessage() {}
 
 func (x *SpecialMesg) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[68]
+	mi := &file_EQMessage_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8125,7 +8164,7 @@ func (x *SpecialMesg) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpecialMesg.ProtoReflect.Descriptor instead.
 func (*SpecialMesg) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{68}
+	return file_EQMessage_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *SpecialMesg) GetHeader() string {
@@ -8175,7 +8214,7 @@ type WearChange struct {
 
 func (x *WearChange) Reset() {
 	*x = WearChange{}
-	mi := &file_EQMessage_proto_msgTypes[69]
+	mi := &file_EQMessage_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8187,7 +8226,7 @@ func (x *WearChange) String() string {
 func (*WearChange) ProtoMessage() {}
 
 func (x *WearChange) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[69]
+	mi := &file_EQMessage_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8200,7 +8239,7 @@ func (x *WearChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WearChange.ProtoReflect.Descriptor instead.
 func (*WearChange) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{69}
+	return file_EQMessage_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *WearChange) GetSpawnId() int32 {
@@ -8241,7 +8280,7 @@ type BindWound struct {
 
 func (x *BindWound) Reset() {
 	*x = BindWound{}
-	mi := &file_EQMessage_proto_msgTypes[70]
+	mi := &file_EQMessage_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8253,7 +8292,7 @@ func (x *BindWound) String() string {
 func (*BindWound) ProtoMessage() {}
 
 func (x *BindWound) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[70]
+	mi := &file_EQMessage_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8266,7 +8305,7 @@ func (x *BindWound) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BindWound.ProtoReflect.Descriptor instead.
 func (*BindWound) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{70}
+	return file_EQMessage_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *BindWound) GetTo() int32 {
@@ -8299,7 +8338,7 @@ type ZoneChange struct {
 
 func (x *ZoneChange) Reset() {
 	*x = ZoneChange{}
-	mi := &file_EQMessage_proto_msgTypes[71]
+	mi := &file_EQMessage_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8311,7 +8350,7 @@ func (x *ZoneChange) String() string {
 func (*ZoneChange) ProtoMessage() {}
 
 func (x *ZoneChange) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[71]
+	mi := &file_EQMessage_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8324,7 +8363,7 @@ func (x *ZoneChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZoneChange.ProtoReflect.Descriptor instead.
 func (*ZoneChange) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{71}
+	return file_EQMessage_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *ZoneChange) GetCharName() string {
@@ -8398,7 +8437,7 @@ type RequestClientZoneChange struct {
 
 func (x *RequestClientZoneChange) Reset() {
 	*x = RequestClientZoneChange{}
-	mi := &file_EQMessage_proto_msgTypes[72]
+	mi := &file_EQMessage_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8410,7 +8449,7 @@ func (x *RequestClientZoneChange) String() string {
 func (*RequestClientZoneChange) ProtoMessage() {}
 
 func (x *RequestClientZoneChange) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[72]
+	mi := &file_EQMessage_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8423,7 +8462,7 @@ func (x *RequestClientZoneChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RequestClientZoneChange.ProtoReflect.Descriptor instead.
 func (*RequestClientZoneChange) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{72}
+	return file_EQMessage_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *RequestClientZoneChange) GetZoneId() int32 {
@@ -8486,7 +8525,7 @@ type Animation struct {
 
 func (x *Animation) Reset() {
 	*x = Animation{}
-	mi := &file_EQMessage_proto_msgTypes[73]
+	mi := &file_EQMessage_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8498,7 +8537,7 @@ func (x *Animation) String() string {
 func (*Animation) ProtoMessage() {}
 
 func (x *Animation) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[73]
+	mi := &file_EQMessage_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8511,7 +8550,7 @@ func (x *Animation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Animation.ProtoReflect.Descriptor instead.
 func (*Animation) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{73}
+	return file_EQMessage_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *Animation) GetSpawnid() int32 {
@@ -8554,7 +8593,7 @@ type Action struct {
 
 func (x *Action) Reset() {
 	*x = Action{}
-	mi := &file_EQMessage_proto_msgTypes[74]
+	mi := &file_EQMessage_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8566,7 +8605,7 @@ func (x *Action) String() string {
 func (*Action) ProtoMessage() {}
 
 func (x *Action) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[74]
+	mi := &file_EQMessage_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8579,7 +8618,7 @@ func (x *Action) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Action.ProtoReflect.Descriptor instead.
 func (*Action) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{74}
+	return file_EQMessage_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *Action) GetTarget() int32 {
@@ -8675,7 +8714,7 @@ type CombatDamage struct {
 
 func (x *CombatDamage) Reset() {
 	*x = CombatDamage{}
-	mi := &file_EQMessage_proto_msgTypes[75]
+	mi := &file_EQMessage_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8687,7 +8726,7 @@ func (x *CombatDamage) String() string {
 func (*CombatDamage) ProtoMessage() {}
 
 func (x *CombatDamage) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[75]
+	mi := &file_EQMessage_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8700,7 +8739,7 @@ func (x *CombatDamage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CombatDamage.ProtoReflect.Descriptor instead.
 func (*CombatDamage) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{75}
+	return file_EQMessage_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *CombatDamage) GetTarget() int32 {
@@ -8774,7 +8813,7 @@ type Consider struct {
 
 func (x *Consider) Reset() {
 	*x = Consider{}
-	mi := &file_EQMessage_proto_msgTypes[76]
+	mi := &file_EQMessage_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8786,7 +8825,7 @@ func (x *Consider) String() string {
 func (*Consider) ProtoMessage() {}
 
 func (x *Consider) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[76]
+	mi := &file_EQMessage_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8799,7 +8838,7 @@ func (x *Consider) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Consider.ProtoReflect.Descriptor instead.
 func (*Consider) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{76}
+	return file_EQMessage_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *Consider) GetPlayerid() int32 {
@@ -8866,7 +8905,7 @@ type Death struct {
 
 func (x *Death) Reset() {
 	*x = Death{}
-	mi := &file_EQMessage_proto_msgTypes[77]
+	mi := &file_EQMessage_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8878,7 +8917,7 @@ func (x *Death) String() string {
 func (*Death) ProtoMessage() {}
 
 func (x *Death) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[77]
+	mi := &file_EQMessage_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8891,7 +8930,7 @@ func (x *Death) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Death.ProtoReflect.Descriptor instead.
 func (*Death) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{77}
+	return file_EQMessage_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *Death) GetSpawnId() int32 {
@@ -8955,7 +8994,7 @@ type BecomeCorpse struct {
 
 func (x *BecomeCorpse) Reset() {
 	*x = BecomeCorpse{}
-	mi := &file_EQMessage_proto_msgTypes[78]
+	mi := &file_EQMessage_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8967,7 +9006,7 @@ func (x *BecomeCorpse) String() string {
 func (*BecomeCorpse) ProtoMessage() {}
 
 func (x *BecomeCorpse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[78]
+	mi := &file_EQMessage_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8980,7 +9019,7 @@ func (x *BecomeCorpse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BecomeCorpse.ProtoReflect.Descriptor instead.
 func (*BecomeCorpse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{78}
+	return file_EQMessage_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *BecomeCorpse) GetSpawnId() int32 {
@@ -9029,7 +9068,7 @@ type PlayerPositionUpdateServer struct {
 
 func (x *PlayerPositionUpdateServer) Reset() {
 	*x = PlayerPositionUpdateServer{}
-	mi := &file_EQMessage_proto_msgTypes[79]
+	mi := &file_EQMessage_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9041,7 +9080,7 @@ func (x *PlayerPositionUpdateServer) String() string {
 func (*PlayerPositionUpdateServer) ProtoMessage() {}
 
 func (x *PlayerPositionUpdateServer) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[79]
+	mi := &file_EQMessage_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9054,7 +9093,7 @@ func (x *PlayerPositionUpdateServer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayerPositionUpdateServer.ProtoReflect.Descriptor instead.
 func (*PlayerPositionUpdateServer) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{79}
+	return file_EQMessage_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *PlayerPositionUpdateServer) GetSpawnId() int32 {
@@ -9146,7 +9185,7 @@ type PlayerPositionUpdateClient struct {
 
 func (x *PlayerPositionUpdateClient) Reset() {
 	*x = PlayerPositionUpdateClient{}
-	mi := &file_EQMessage_proto_msgTypes[80]
+	mi := &file_EQMessage_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9158,7 +9197,7 @@ func (x *PlayerPositionUpdateClient) String() string {
 func (*PlayerPositionUpdateClient) ProtoMessage() {}
 
 func (x *PlayerPositionUpdateClient) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[80]
+	mi := &file_EQMessage_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9171,7 +9210,7 @@ func (x *PlayerPositionUpdateClient) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayerPositionUpdateClient.ProtoReflect.Descriptor instead.
 func (*PlayerPositionUpdateClient) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{80}
+	return file_EQMessage_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *PlayerPositionUpdateClient) GetSpawnId() int32 {
@@ -9262,7 +9301,7 @@ type SpawnHPUpdate struct {
 
 func (x *SpawnHPUpdate) Reset() {
 	*x = SpawnHPUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[81]
+	mi := &file_EQMessage_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9274,7 +9313,7 @@ func (x *SpawnHPUpdate) String() string {
 func (*SpawnHPUpdate) ProtoMessage() {}
 
 func (x *SpawnHPUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[81]
+	mi := &file_EQMessage_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9287,7 +9326,7 @@ func (x *SpawnHPUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpawnHPUpdate.ProtoReflect.Descriptor instead.
 func (*SpawnHPUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{81}
+	return file_EQMessage_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *SpawnHPUpdate) GetCurHp() int32 {
@@ -9321,7 +9360,7 @@ type SpawnHPUpdate2 struct {
 
 func (x *SpawnHPUpdate2) Reset() {
 	*x = SpawnHPUpdate2{}
-	mi := &file_EQMessage_proto_msgTypes[82]
+	mi := &file_EQMessage_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9333,7 +9372,7 @@ func (x *SpawnHPUpdate2) String() string {
 func (*SpawnHPUpdate2) ProtoMessage() {}
 
 func (x *SpawnHPUpdate2) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[82]
+	mi := &file_EQMessage_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9346,7 +9385,7 @@ func (x *SpawnHPUpdate2) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SpawnHPUpdate2.ProtoReflect.Descriptor instead.
 func (*SpawnHPUpdate2) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{82}
+	return file_EQMessage_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *SpawnHPUpdate2) GetSpawnId() int32 {
@@ -9373,7 +9412,7 @@ type Stamina struct {
 
 func (x *Stamina) Reset() {
 	*x = Stamina{}
-	mi := &file_EQMessage_proto_msgTypes[83]
+	mi := &file_EQMessage_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9385,7 +9424,7 @@ func (x *Stamina) String() string {
 func (*Stamina) ProtoMessage() {}
 
 func (x *Stamina) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[83]
+	mi := &file_EQMessage_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9398,7 +9437,7 @@ func (x *Stamina) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Stamina.ProtoReflect.Descriptor instead.
 func (*Stamina) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{83}
+	return file_EQMessage_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *Stamina) GetFood() int32 {
@@ -9426,7 +9465,7 @@ type LevelUpdate struct {
 
 func (x *LevelUpdate) Reset() {
 	*x = LevelUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[84]
+	mi := &file_EQMessage_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9438,7 +9477,7 @@ func (x *LevelUpdate) String() string {
 func (*LevelUpdate) ProtoMessage() {}
 
 func (x *LevelUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[84]
+	mi := &file_EQMessage_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9451,7 +9490,7 @@ func (x *LevelUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LevelUpdate.ProtoReflect.Descriptor instead.
 func (*LevelUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{84}
+	return file_EQMessage_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *LevelUpdate) GetLevel() int32 {
@@ -9485,7 +9524,7 @@ type ExpUpdate struct {
 
 func (x *ExpUpdate) Reset() {
 	*x = ExpUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[85]
+	mi := &file_EQMessage_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9497,7 +9536,7 @@ func (x *ExpUpdate) String() string {
 func (*ExpUpdate) ProtoMessage() {}
 
 func (x *ExpUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[85]
+	mi := &file_EQMessage_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9510,7 +9549,7 @@ func (x *ExpUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpUpdate.ProtoReflect.Descriptor instead.
 func (*ExpUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{85}
+	return file_EQMessage_proto_rawDescGZIP(), []int{86}
 }
 
 func (x *ExpUpdate) GetExp() int32 {
@@ -9537,7 +9576,7 @@ type ItemPacket struct {
 
 func (x *ItemPacket) Reset() {
 	*x = ItemPacket{}
-	mi := &file_EQMessage_proto_msgTypes[86]
+	mi := &file_EQMessage_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9549,7 +9588,7 @@ func (x *ItemPacket) String() string {
 func (*ItemPacket) ProtoMessage() {}
 
 func (x *ItemPacket) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[86]
+	mi := &file_EQMessage_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9562,7 +9601,7 @@ func (x *ItemPacket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemPacket.ProtoReflect.Descriptor instead.
 func (*ItemPacket) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{86}
+	return file_EQMessage_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *ItemPacket) GetPacketType() ItemPacketType {
@@ -9588,7 +9627,7 @@ type BulkItemPacket struct {
 
 func (x *BulkItemPacket) Reset() {
 	*x = BulkItemPacket{}
-	mi := &file_EQMessage_proto_msgTypes[87]
+	mi := &file_EQMessage_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9600,7 +9639,7 @@ func (x *BulkItemPacket) String() string {
 func (*BulkItemPacket) ProtoMessage() {}
 
 func (x *BulkItemPacket) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[87]
+	mi := &file_EQMessage_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9613,7 +9652,7 @@ func (x *BulkItemPacket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BulkItemPacket.ProtoReflect.Descriptor instead.
 func (*BulkItemPacket) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{87}
+	return file_EQMessage_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *BulkItemPacket) GetSerializedItem() string {
@@ -9634,7 +9673,7 @@ type Consume struct {
 
 func (x *Consume) Reset() {
 	*x = Consume{}
-	mi := &file_EQMessage_proto_msgTypes[88]
+	mi := &file_EQMessage_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9646,7 +9685,7 @@ func (x *Consume) String() string {
 func (*Consume) ProtoMessage() {}
 
 func (x *Consume) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[88]
+	mi := &file_EQMessage_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9659,7 +9698,7 @@ func (x *Consume) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Consume.ProtoReflect.Descriptor instead.
 func (*Consume) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{88}
+	return file_EQMessage_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *Consume) GetSlot() int32 {
@@ -9694,7 +9733,7 @@ type DeleteItem struct {
 
 func (x *DeleteItem) Reset() {
 	*x = DeleteItem{}
-	mi := &file_EQMessage_proto_msgTypes[89]
+	mi := &file_EQMessage_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9706,7 +9745,7 @@ func (x *DeleteItem) String() string {
 func (*DeleteItem) ProtoMessage() {}
 
 func (x *DeleteItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[89]
+	mi := &file_EQMessage_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9719,7 +9758,7 @@ func (x *DeleteItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteItem.ProtoReflect.Descriptor instead.
 func (*DeleteItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{89}
+	return file_EQMessage_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *DeleteItem) GetFromSlot() int32 {
@@ -9754,7 +9793,7 @@ type MoveItem struct {
 
 func (x *MoveItem) Reset() {
 	*x = MoveItem{}
-	mi := &file_EQMessage_proto_msgTypes[90]
+	mi := &file_EQMessage_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9766,7 +9805,7 @@ func (x *MoveItem) String() string {
 func (*MoveItem) ProtoMessage() {}
 
 func (x *MoveItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[90]
+	mi := &file_EQMessage_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9779,7 +9818,7 @@ func (x *MoveItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveItem.ProtoReflect.Descriptor instead.
 func (*MoveItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{90}
+	return file_EQMessage_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *MoveItem) GetFromSlot() int32 {
@@ -9814,7 +9853,7 @@ type MultiMoveItemSub struct {
 
 func (x *MultiMoveItemSub) Reset() {
 	*x = MultiMoveItemSub{}
-	mi := &file_EQMessage_proto_msgTypes[91]
+	mi := &file_EQMessage_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9826,7 +9865,7 @@ func (x *MultiMoveItemSub) String() string {
 func (*MultiMoveItemSub) ProtoMessage() {}
 
 func (x *MultiMoveItemSub) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[91]
+	mi := &file_EQMessage_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9839,7 +9878,7 @@ func (x *MultiMoveItemSub) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MultiMoveItemSub.ProtoReflect.Descriptor instead.
 func (*MultiMoveItemSub) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{91}
+	return file_EQMessage_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *MultiMoveItemSub) GetFromSlot() *InventorySlot {
@@ -9873,7 +9912,7 @@ type MultiMoveItem struct {
 
 func (x *MultiMoveItem) Reset() {
 	*x = MultiMoveItem{}
-	mi := &file_EQMessage_proto_msgTypes[92]
+	mi := &file_EQMessage_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9885,7 +9924,7 @@ func (x *MultiMoveItem) String() string {
 func (*MultiMoveItem) ProtoMessage() {}
 
 func (x *MultiMoveItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[92]
+	mi := &file_EQMessage_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9898,7 +9937,7 @@ func (x *MultiMoveItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MultiMoveItem.ProtoReflect.Descriptor instead.
 func (*MultiMoveItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{92}
+	return file_EQMessage_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *MultiMoveItem) GetCount() int32 {
@@ -9928,7 +9967,7 @@ type MoveCoin struct {
 
 func (x *MoveCoin) Reset() {
 	*x = MoveCoin{}
-	mi := &file_EQMessage_proto_msgTypes[93]
+	mi := &file_EQMessage_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9940,7 +9979,7 @@ func (x *MoveCoin) String() string {
 func (*MoveCoin) ProtoMessage() {}
 
 func (x *MoveCoin) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[93]
+	mi := &file_EQMessage_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9953,7 +9992,7 @@ func (x *MoveCoin) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveCoin.ProtoReflect.Descriptor instead.
 func (*MoveCoin) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{93}
+	return file_EQMessage_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *MoveCoin) GetFromSlot() int32 {
@@ -10001,7 +10040,7 @@ type TradeBusy struct {
 
 func (x *TradeBusy) Reset() {
 	*x = TradeBusy{}
-	mi := &file_EQMessage_proto_msgTypes[94]
+	mi := &file_EQMessage_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10013,7 +10052,7 @@ func (x *TradeBusy) String() string {
 func (*TradeBusy) ProtoMessage() {}
 
 func (x *TradeBusy) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[94]
+	mi := &file_EQMessage_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10026,7 +10065,7 @@ func (x *TradeBusy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TradeBusy.ProtoReflect.Descriptor instead.
 func (*TradeBusy) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{94}
+	return file_EQMessage_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *TradeBusy) GetToMobId() int32 {
@@ -10054,7 +10093,7 @@ type TradeCoin struct {
 
 func (x *TradeCoin) Reset() {
 	*x = TradeCoin{}
-	mi := &file_EQMessage_proto_msgTypes[95]
+	mi := &file_EQMessage_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10066,7 +10105,7 @@ func (x *TradeCoin) String() string {
 func (*TradeCoin) ProtoMessage() {}
 
 func (x *TradeCoin) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[95]
+	mi := &file_EQMessage_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10079,7 +10118,7 @@ func (x *TradeCoin) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TradeCoin.ProtoReflect.Descriptor instead.
 func (*TradeCoin) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{95}
+	return file_EQMessage_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *TradeCoin) GetTrader() int32 {
@@ -10114,7 +10153,7 @@ type TradeMoneyUpdate struct {
 
 func (x *TradeMoneyUpdate) Reset() {
 	*x = TradeMoneyUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[96]
+	mi := &file_EQMessage_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10126,7 +10165,7 @@ func (x *TradeMoneyUpdate) String() string {
 func (*TradeMoneyUpdate) ProtoMessage() {}
 
 func (x *TradeMoneyUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[96]
+	mi := &file_EQMessage_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10139,7 +10178,7 @@ func (x *TradeMoneyUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TradeMoneyUpdate.ProtoReflect.Descriptor instead.
 func (*TradeMoneyUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{96}
+	return file_EQMessage_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *TradeMoneyUpdate) GetTrader() int32 {
@@ -10173,7 +10212,7 @@ type Surname struct {
 
 func (x *Surname) Reset() {
 	*x = Surname{}
-	mi := &file_EQMessage_proto_msgTypes[97]
+	mi := &file_EQMessage_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10185,7 +10224,7 @@ func (x *Surname) String() string {
 func (*Surname) ProtoMessage() {}
 
 func (x *Surname) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[97]
+	mi := &file_EQMessage_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10198,7 +10237,7 @@ func (x *Surname) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Surname.ProtoReflect.Descriptor instead.
 func (*Surname) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{97}
+	return file_EQMessage_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *Surname) GetName() string {
@@ -10224,7 +10263,7 @@ type GuildsList struct {
 
 func (x *GuildsList) Reset() {
 	*x = GuildsList{}
-	mi := &file_EQMessage_proto_msgTypes[98]
+	mi := &file_EQMessage_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10236,7 +10275,7 @@ func (x *GuildsList) String() string {
 func (*GuildsList) ProtoMessage() {}
 
 func (x *GuildsList) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[98]
+	mi := &file_EQMessage_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10249,7 +10288,7 @@ func (x *GuildsList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildsList.ProtoReflect.Descriptor instead.
 func (*GuildsList) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{98}
+	return file_EQMessage_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *GuildsList) GetGuilds() []*StringList {
@@ -10272,7 +10311,7 @@ type MoneyOnCorpse struct {
 
 func (x *MoneyOnCorpse) Reset() {
 	*x = MoneyOnCorpse{}
-	mi := &file_EQMessage_proto_msgTypes[99]
+	mi := &file_EQMessage_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10284,7 +10323,7 @@ func (x *MoneyOnCorpse) String() string {
 func (*MoneyOnCorpse) ProtoMessage() {}
 
 func (x *MoneyOnCorpse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[99]
+	mi := &file_EQMessage_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10297,7 +10336,7 @@ func (x *MoneyOnCorpse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoneyOnCorpse.ProtoReflect.Descriptor instead.
 func (*MoneyOnCorpse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{99}
+	return file_EQMessage_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *MoneyOnCorpse) GetResponse() int32 {
@@ -10347,7 +10386,7 @@ type LootingItem struct {
 
 func (x *LootingItem) Reset() {
 	*x = LootingItem{}
-	mi := &file_EQMessage_proto_msgTypes[100]
+	mi := &file_EQMessage_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10359,7 +10398,7 @@ func (x *LootingItem) String() string {
 func (*LootingItem) ProtoMessage() {}
 
 func (x *LootingItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[100]
+	mi := &file_EQMessage_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10372,7 +10411,7 @@ func (x *LootingItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LootingItem.ProtoReflect.Descriptor instead.
 func (*LootingItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{100}
+	return file_EQMessage_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *LootingItem) GetLootee() int32 {
@@ -10415,7 +10454,7 @@ type GuildManageStatus struct {
 
 func (x *GuildManageStatus) Reset() {
 	*x = GuildManageStatus{}
-	mi := &file_EQMessage_proto_msgTypes[101]
+	mi := &file_EQMessage_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10427,7 +10466,7 @@ func (x *GuildManageStatus) String() string {
 func (*GuildManageStatus) ProtoMessage() {}
 
 func (x *GuildManageStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[101]
+	mi := &file_EQMessage_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10440,7 +10479,7 @@ func (x *GuildManageStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildManageStatus.ProtoReflect.Descriptor instead.
 func (*GuildManageStatus) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{101}
+	return file_EQMessage_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *GuildManageStatus) GetGuildid() int32 {
@@ -10485,7 +10524,7 @@ type GuildJoin struct {
 
 func (x *GuildJoin) Reset() {
 	*x = GuildJoin{}
-	mi := &file_EQMessage_proto_msgTypes[102]
+	mi := &file_EQMessage_proto_msgTypes[103]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10497,7 +10536,7 @@ func (x *GuildJoin) String() string {
 func (*GuildJoin) ProtoMessage() {}
 
 func (x *GuildJoin) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[102]
+	mi := &file_EQMessage_proto_msgTypes[103]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10510,7 +10549,7 @@ func (x *GuildJoin) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildJoin.ProtoReflect.Descriptor instead.
 func (*GuildJoin) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{102}
+	return file_EQMessage_proto_rawDescGZIP(), []int{103}
 }
 
 func (x *GuildJoin) GetGuildid() int32 {
@@ -10567,7 +10606,7 @@ type GuildInviteAccept struct {
 
 func (x *GuildInviteAccept) Reset() {
 	*x = GuildInviteAccept{}
-	mi := &file_EQMessage_proto_msgTypes[103]
+	mi := &file_EQMessage_proto_msgTypes[104]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10579,7 +10618,7 @@ func (x *GuildInviteAccept) String() string {
 func (*GuildInviteAccept) ProtoMessage() {}
 
 func (x *GuildInviteAccept) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[103]
+	mi := &file_EQMessage_proto_msgTypes[104]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10592,7 +10631,7 @@ func (x *GuildInviteAccept) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildInviteAccept.ProtoReflect.Descriptor instead.
 func (*GuildInviteAccept) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{103}
+	return file_EQMessage_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *GuildInviteAccept) GetInviter() string {
@@ -10633,7 +10672,7 @@ type GuildManageRemove struct {
 
 func (x *GuildManageRemove) Reset() {
 	*x = GuildManageRemove{}
-	mi := &file_EQMessage_proto_msgTypes[104]
+	mi := &file_EQMessage_proto_msgTypes[105]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10645,7 +10684,7 @@ func (x *GuildManageRemove) String() string {
 func (*GuildManageRemove) ProtoMessage() {}
 
 func (x *GuildManageRemove) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[104]
+	mi := &file_EQMessage_proto_msgTypes[105]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10658,7 +10697,7 @@ func (x *GuildManageRemove) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildManageRemove.ProtoReflect.Descriptor instead.
 func (*GuildManageRemove) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{104}
+	return file_EQMessage_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *GuildManageRemove) GetGuildeqid() int32 {
@@ -10687,7 +10726,7 @@ type Guildcommand struct {
 
 func (x *Guildcommand) Reset() {
 	*x = Guildcommand{}
-	mi := &file_EQMessage_proto_msgTypes[105]
+	mi := &file_EQMessage_proto_msgTypes[106]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10699,7 +10738,7 @@ func (x *Guildcommand) String() string {
 func (*Guildcommand) ProtoMessage() {}
 
 func (x *Guildcommand) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[105]
+	mi := &file_EQMessage_proto_msgTypes[106]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10712,7 +10751,7 @@ func (x *Guildcommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Guildcommand.ProtoReflect.Descriptor instead.
 func (*Guildcommand) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{105}
+	return file_EQMessage_proto_rawDescGZIP(), []int{106}
 }
 
 func (x *Guildcommand) GetOthername() string {
@@ -10756,7 +10795,7 @@ type OnLevelMessage struct {
 
 func (x *OnLevelMessage) Reset() {
 	*x = OnLevelMessage{}
-	mi := &file_EQMessage_proto_msgTypes[106]
+	mi := &file_EQMessage_proto_msgTypes[107]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10768,7 +10807,7 @@ func (x *OnLevelMessage) String() string {
 func (*OnLevelMessage) ProtoMessage() {}
 
 func (x *OnLevelMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[106]
+	mi := &file_EQMessage_proto_msgTypes[107]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10781,7 +10820,7 @@ func (x *OnLevelMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnLevelMessage.ProtoReflect.Descriptor instead.
 func (*OnLevelMessage) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{106}
+	return file_EQMessage_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *OnLevelMessage) GetTitle() string {
@@ -10834,7 +10873,7 @@ type GMZoneRequest struct {
 
 func (x *GMZoneRequest) Reset() {
 	*x = GMZoneRequest{}
-	mi := &file_EQMessage_proto_msgTypes[107]
+	mi := &file_EQMessage_proto_msgTypes[108]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10846,7 +10885,7 @@ func (x *GMZoneRequest) String() string {
 func (*GMZoneRequest) ProtoMessage() {}
 
 func (x *GMZoneRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[107]
+	mi := &file_EQMessage_proto_msgTypes[108]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10859,7 +10898,7 @@ func (x *GMZoneRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMZoneRequest.ProtoReflect.Descriptor instead.
 func (*GMZoneRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{107}
+	return file_EQMessage_proto_rawDescGZIP(), []int{108}
 }
 
 func (x *GMZoneRequest) GetCharname() string {
@@ -10926,7 +10965,7 @@ type GMSummon struct {
 
 func (x *GMSummon) Reset() {
 	*x = GMSummon{}
-	mi := &file_EQMessage_proto_msgTypes[108]
+	mi := &file_EQMessage_proto_msgTypes[109]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10938,7 +10977,7 @@ func (x *GMSummon) String() string {
 func (*GMSummon) ProtoMessage() {}
 
 func (x *GMSummon) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[108]
+	mi := &file_EQMessage_proto_msgTypes[109]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10951,7 +10990,7 @@ func (x *GMSummon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMSummon.ProtoReflect.Descriptor instead.
 func (*GMSummon) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{108}
+	return file_EQMessage_proto_rawDescGZIP(), []int{109}
 }
 
 func (x *GMSummon) GetCharname() string {
@@ -11018,7 +11057,7 @@ type GMGoto struct {
 
 func (x *GMGoto) Reset() {
 	*x = GMGoto{}
-	mi := &file_EQMessage_proto_msgTypes[109]
+	mi := &file_EQMessage_proto_msgTypes[110]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11030,7 +11069,7 @@ func (x *GMGoto) String() string {
 func (*GMGoto) ProtoMessage() {}
 
 func (x *GMGoto) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[109]
+	mi := &file_EQMessage_proto_msgTypes[110]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11043,7 +11082,7 @@ func (x *GMGoto) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMGoto.ProtoReflect.Descriptor instead.
 func (*GMGoto) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{109}
+	return file_EQMessage_proto_rawDescGZIP(), []int{110}
 }
 
 func (x *GMGoto) GetCharname() string {
@@ -11106,7 +11145,7 @@ type GMLastName struct {
 
 func (x *GMLastName) Reset() {
 	*x = GMLastName{}
-	mi := &file_EQMessage_proto_msgTypes[110]
+	mi := &file_EQMessage_proto_msgTypes[111]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11118,7 +11157,7 @@ func (x *GMLastName) String() string {
 func (*GMLastName) ProtoMessage() {}
 
 func (x *GMLastName) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[110]
+	mi := &file_EQMessage_proto_msgTypes[111]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11131,7 +11170,7 @@ func (x *GMLastName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMLastName.ProtoReflect.Descriptor instead.
 func (*GMLastName) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{110}
+	return file_EQMessage_proto_rawDescGZIP(), []int{111}
 }
 
 func (x *GMLastName) GetName() string {
@@ -11166,7 +11205,7 @@ type CombatAbility struct {
 
 func (x *CombatAbility) Reset() {
 	*x = CombatAbility{}
-	mi := &file_EQMessage_proto_msgTypes[111]
+	mi := &file_EQMessage_proto_msgTypes[112]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11178,7 +11217,7 @@ func (x *CombatAbility) String() string {
 func (*CombatAbility) ProtoMessage() {}
 
 func (x *CombatAbility) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[111]
+	mi := &file_EQMessage_proto_msgTypes[112]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11191,7 +11230,7 @@ func (x *CombatAbility) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CombatAbility.ProtoReflect.Descriptor instead.
 func (*CombatAbility) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{111}
+	return file_EQMessage_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *CombatAbility) GetMTarget() int32 {
@@ -11226,7 +11265,7 @@ type Instill_Doubt struct {
 
 func (x *Instill_Doubt) Reset() {
 	*x = Instill_Doubt{}
-	mi := &file_EQMessage_proto_msgTypes[112]
+	mi := &file_EQMessage_proto_msgTypes[113]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11238,7 +11277,7 @@ func (x *Instill_Doubt) String() string {
 func (*Instill_Doubt) ProtoMessage() {}
 
 func (x *Instill_Doubt) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[112]
+	mi := &file_EQMessage_proto_msgTypes[113]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11251,7 +11290,7 @@ func (x *Instill_Doubt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Instill_Doubt.ProtoReflect.Descriptor instead.
 func (*Instill_Doubt) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{112}
+	return file_EQMessage_proto_rawDescGZIP(), []int{113}
 }
 
 func (x *Instill_Doubt) GetIId() int32 {
@@ -11287,7 +11326,7 @@ type GiveItem struct {
 
 func (x *GiveItem) Reset() {
 	*x = GiveItem{}
-	mi := &file_EQMessage_proto_msgTypes[113]
+	mi := &file_EQMessage_proto_msgTypes[114]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11299,7 +11338,7 @@ func (x *GiveItem) String() string {
 func (*GiveItem) ProtoMessage() {}
 
 func (x *GiveItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[113]
+	mi := &file_EQMessage_proto_msgTypes[114]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11312,7 +11351,7 @@ func (x *GiveItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GiveItem.ProtoReflect.Descriptor instead.
 func (*GiveItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{113}
+	return file_EQMessage_proto_rawDescGZIP(), []int{114}
 }
 
 func (x *GiveItem) GetToEntity() int32 {
@@ -11353,7 +11392,7 @@ type RandomReq struct {
 
 func (x *RandomReq) Reset() {
 	*x = RandomReq{}
-	mi := &file_EQMessage_proto_msgTypes[114]
+	mi := &file_EQMessage_proto_msgTypes[115]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11365,7 +11404,7 @@ func (x *RandomReq) String() string {
 func (*RandomReq) ProtoMessage() {}
 
 func (x *RandomReq) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[114]
+	mi := &file_EQMessage_proto_msgTypes[115]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11378,7 +11417,7 @@ func (x *RandomReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RandomReq.ProtoReflect.Descriptor instead.
 func (*RandomReq) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{114}
+	return file_EQMessage_proto_rawDescGZIP(), []int{115}
 }
 
 func (x *RandomReq) GetLow() int32 {
@@ -11407,7 +11446,7 @@ type RandomReply struct {
 
 func (x *RandomReply) Reset() {
 	*x = RandomReply{}
-	mi := &file_EQMessage_proto_msgTypes[115]
+	mi := &file_EQMessage_proto_msgTypes[116]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11419,7 +11458,7 @@ func (x *RandomReply) String() string {
 func (*RandomReply) ProtoMessage() {}
 
 func (x *RandomReply) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[115]
+	mi := &file_EQMessage_proto_msgTypes[116]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11432,7 +11471,7 @@ func (x *RandomReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RandomReply.ProtoReflect.Descriptor instead.
 func (*RandomReply) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{115}
+	return file_EQMessage_proto_rawDescGZIP(), []int{116}
 }
 
 func (x *RandomReply) GetLow() int32 {
@@ -11473,7 +11512,7 @@ type LFG struct {
 
 func (x *LFG) Reset() {
 	*x = LFG{}
-	mi := &file_EQMessage_proto_msgTypes[116]
+	mi := &file_EQMessage_proto_msgTypes[117]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11485,7 +11524,7 @@ func (x *LFG) String() string {
 func (*LFG) ProtoMessage() {}
 
 func (x *LFG) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[116]
+	mi := &file_EQMessage_proto_msgTypes[117]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11498,7 +11537,7 @@ func (x *LFG) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LFG.ProtoReflect.Descriptor instead.
 func (*LFG) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{116}
+	return file_EQMessage_proto_rawDescGZIP(), []int{117}
 }
 
 func (x *LFG) GetValue() int32 {
@@ -11525,7 +11564,7 @@ type LFG_Appearance struct {
 
 func (x *LFG_Appearance) Reset() {
 	*x = LFG_Appearance{}
-	mi := &file_EQMessage_proto_msgTypes[117]
+	mi := &file_EQMessage_proto_msgTypes[118]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11537,7 +11576,7 @@ func (x *LFG_Appearance) String() string {
 func (*LFG_Appearance) ProtoMessage() {}
 
 func (x *LFG_Appearance) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[117]
+	mi := &file_EQMessage_proto_msgTypes[118]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11550,7 +11589,7 @@ func (x *LFG_Appearance) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LFG_Appearance.ProtoReflect.Descriptor instead.
 func (*LFG_Appearance) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{117}
+	return file_EQMessage_proto_rawDescGZIP(), []int{118}
 }
 
 func (x *LFG_Appearance) GetSpawnId() int32 {
@@ -11580,7 +11619,7 @@ type TimeOfDay struct {
 
 func (x *TimeOfDay) Reset() {
 	*x = TimeOfDay{}
-	mi := &file_EQMessage_proto_msgTypes[118]
+	mi := &file_EQMessage_proto_msgTypes[119]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11592,7 +11631,7 @@ func (x *TimeOfDay) String() string {
 func (*TimeOfDay) ProtoMessage() {}
 
 func (x *TimeOfDay) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[118]
+	mi := &file_EQMessage_proto_msgTypes[119]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11605,7 +11644,7 @@ func (x *TimeOfDay) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimeOfDay.ProtoReflect.Descriptor instead.
 func (*TimeOfDay) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{118}
+	return file_EQMessage_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *TimeOfDay) GetHour() int32 {
@@ -11655,7 +11694,7 @@ type Merchant_Click struct {
 
 func (x *Merchant_Click) Reset() {
 	*x = Merchant_Click{}
-	mi := &file_EQMessage_proto_msgTypes[119]
+	mi := &file_EQMessage_proto_msgTypes[120]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11667,7 +11706,7 @@ func (x *Merchant_Click) String() string {
 func (*Merchant_Click) ProtoMessage() {}
 
 func (x *Merchant_Click) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[119]
+	mi := &file_EQMessage_proto_msgTypes[120]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11680,7 +11719,7 @@ func (x *Merchant_Click) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Merchant_Click.ProtoReflect.Descriptor instead.
 func (*Merchant_Click) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{119}
+	return file_EQMessage_proto_rawDescGZIP(), []int{120}
 }
 
 func (x *Merchant_Click) GetNpcid() int32 {
@@ -11724,7 +11763,7 @@ type Merchant_Sell struct {
 
 func (x *Merchant_Sell) Reset() {
 	*x = Merchant_Sell{}
-	mi := &file_EQMessage_proto_msgTypes[120]
+	mi := &file_EQMessage_proto_msgTypes[121]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11736,7 +11775,7 @@ func (x *Merchant_Sell) String() string {
 func (*Merchant_Sell) ProtoMessage() {}
 
 func (x *Merchant_Sell) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[120]
+	mi := &file_EQMessage_proto_msgTypes[121]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11749,7 +11788,7 @@ func (x *Merchant_Sell) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Merchant_Sell.ProtoReflect.Descriptor instead.
 func (*Merchant_Sell) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{120}
+	return file_EQMessage_proto_rawDescGZIP(), []int{121}
 }
 
 func (x *Merchant_Sell) GetNpcid() int32 {
@@ -11799,7 +11838,7 @@ type Merchant_Purchase struct {
 
 func (x *Merchant_Purchase) Reset() {
 	*x = Merchant_Purchase{}
-	mi := &file_EQMessage_proto_msgTypes[121]
+	mi := &file_EQMessage_proto_msgTypes[122]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11811,7 +11850,7 @@ func (x *Merchant_Purchase) String() string {
 func (*Merchant_Purchase) ProtoMessage() {}
 
 func (x *Merchant_Purchase) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[121]
+	mi := &file_EQMessage_proto_msgTypes[122]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11824,7 +11863,7 @@ func (x *Merchant_Purchase) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Merchant_Purchase.ProtoReflect.Descriptor instead.
 func (*Merchant_Purchase) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{121}
+	return file_EQMessage_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *Merchant_Purchase) GetNpcid() int32 {
@@ -11866,7 +11905,7 @@ type Merchant_DelItem struct {
 
 func (x *Merchant_DelItem) Reset() {
 	*x = Merchant_DelItem{}
-	mi := &file_EQMessage_proto_msgTypes[122]
+	mi := &file_EQMessage_proto_msgTypes[123]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11878,7 +11917,7 @@ func (x *Merchant_DelItem) String() string {
 func (*Merchant_DelItem) ProtoMessage() {}
 
 func (x *Merchant_DelItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[122]
+	mi := &file_EQMessage_proto_msgTypes[123]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11891,7 +11930,7 @@ func (x *Merchant_DelItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Merchant_DelItem.ProtoReflect.Descriptor instead.
 func (*Merchant_DelItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{122}
+	return file_EQMessage_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *Merchant_DelItem) GetNpcid() int32 {
@@ -11927,7 +11966,7 @@ type Adventure_Purchase struct {
 
 func (x *Adventure_Purchase) Reset() {
 	*x = Adventure_Purchase{}
-	mi := &file_EQMessage_proto_msgTypes[123]
+	mi := &file_EQMessage_proto_msgTypes[124]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11939,7 +11978,7 @@ func (x *Adventure_Purchase) String() string {
 func (*Adventure_Purchase) ProtoMessage() {}
 
 func (x *Adventure_Purchase) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[123]
+	mi := &file_EQMessage_proto_msgTypes[124]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11952,7 +11991,7 @@ func (x *Adventure_Purchase) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Adventure_Purchase.ProtoReflect.Descriptor instead.
 func (*Adventure_Purchase) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{123}
+	return file_EQMessage_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *Adventure_Purchase) GetSomeFlag() int32 {
@@ -11995,7 +12034,7 @@ type Adventure_Sell struct {
 
 func (x *Adventure_Sell) Reset() {
 	*x = Adventure_Sell{}
-	mi := &file_EQMessage_proto_msgTypes[124]
+	mi := &file_EQMessage_proto_msgTypes[125]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12007,7 +12046,7 @@ func (x *Adventure_Sell) String() string {
 func (*Adventure_Sell) ProtoMessage() {}
 
 func (x *Adventure_Sell) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[124]
+	mi := &file_EQMessage_proto_msgTypes[125]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12020,7 +12059,7 @@ func (x *Adventure_Sell) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Adventure_Sell.ProtoReflect.Descriptor instead.
 func (*Adventure_Sell) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{124}
+	return file_EQMessage_proto_rawDescGZIP(), []int{125}
 }
 
 func (x *Adventure_Sell) GetNpcid() int32 {
@@ -12066,7 +12105,7 @@ type AdventurePoints_Update struct {
 
 func (x *AdventurePoints_Update) Reset() {
 	*x = AdventurePoints_Update{}
-	mi := &file_EQMessage_proto_msgTypes[125]
+	mi := &file_EQMessage_proto_msgTypes[126]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12078,7 +12117,7 @@ func (x *AdventurePoints_Update) String() string {
 func (*AdventurePoints_Update) ProtoMessage() {}
 
 func (x *AdventurePoints_Update) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[125]
+	mi := &file_EQMessage_proto_msgTypes[126]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12091,7 +12130,7 @@ func (x *AdventurePoints_Update) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventurePoints_Update.ProtoReflect.Descriptor instead.
 func (*AdventurePoints_Update) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{125}
+	return file_EQMessage_proto_rawDescGZIP(), []int{126}
 }
 
 func (x *AdventurePoints_Update) GetLdonAvailablePoints() int32 {
@@ -12153,7 +12192,7 @@ type AdventureFinish struct {
 
 func (x *AdventureFinish) Reset() {
 	*x = AdventureFinish{}
-	mi := &file_EQMessage_proto_msgTypes[126]
+	mi := &file_EQMessage_proto_msgTypes[127]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12165,7 +12204,7 @@ func (x *AdventureFinish) String() string {
 func (*AdventureFinish) ProtoMessage() {}
 
 func (x *AdventureFinish) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[126]
+	mi := &file_EQMessage_proto_msgTypes[127]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12178,7 +12217,7 @@ func (x *AdventureFinish) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureFinish.ProtoReflect.Descriptor instead.
 func (*AdventureFinish) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{126}
+	return file_EQMessage_proto_rawDescGZIP(), []int{127}
 }
 
 func (x *AdventureFinish) GetWinLose() int32 {
@@ -12205,7 +12244,7 @@ type AdventureRequest struct {
 
 func (x *AdventureRequest) Reset() {
 	*x = AdventureRequest{}
-	mi := &file_EQMessage_proto_msgTypes[127]
+	mi := &file_EQMessage_proto_msgTypes[128]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12217,7 +12256,7 @@ func (x *AdventureRequest) String() string {
 func (*AdventureRequest) ProtoMessage() {}
 
 func (x *AdventureRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[127]
+	mi := &file_EQMessage_proto_msgTypes[128]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12230,7 +12269,7 @@ func (x *AdventureRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureRequest.ProtoReflect.Descriptor instead.
 func (*AdventureRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{127}
+	return file_EQMessage_proto_rawDescGZIP(), []int{128}
 }
 
 func (x *AdventureRequest) GetRisk() int32 {
@@ -12263,7 +12302,7 @@ type AdventureRequestResponse struct {
 
 func (x *AdventureRequestResponse) Reset() {
 	*x = AdventureRequestResponse{}
-	mi := &file_EQMessage_proto_msgTypes[128]
+	mi := &file_EQMessage_proto_msgTypes[129]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12275,7 +12314,7 @@ func (x *AdventureRequestResponse) String() string {
 func (*AdventureRequestResponse) ProtoMessage() {}
 
 func (x *AdventureRequestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[128]
+	mi := &file_EQMessage_proto_msgTypes[129]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12288,7 +12327,7 @@ func (x *AdventureRequestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureRequestResponse.ProtoReflect.Descriptor instead.
 func (*AdventureRequestResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{128}
+	return file_EQMessage_proto_rawDescGZIP(), []int{129}
 }
 
 func (x *AdventureRequestResponse) GetText() string {
@@ -12367,7 +12406,7 @@ type Illusion struct {
 
 func (x *Illusion) Reset() {
 	*x = Illusion{}
-	mi := &file_EQMessage_proto_msgTypes[129]
+	mi := &file_EQMessage_proto_msgTypes[130]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12379,7 +12418,7 @@ func (x *Illusion) String() string {
 func (*Illusion) ProtoMessage() {}
 
 func (x *Illusion) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[129]
+	mi := &file_EQMessage_proto_msgTypes[130]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12392,7 +12431,7 @@ func (x *Illusion) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Illusion.ProtoReflect.Descriptor instead.
 func (*Illusion) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{129}
+	return file_EQMessage_proto_rawDescGZIP(), []int{130}
 }
 
 func (x *Illusion) GetSpawnid() int32 {
@@ -12494,7 +12533,7 @@ type ZonePoint_Entry struct {
 
 func (x *ZonePoint_Entry) Reset() {
 	*x = ZonePoint_Entry{}
-	mi := &file_EQMessage_proto_msgTypes[130]
+	mi := &file_EQMessage_proto_msgTypes[131]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12506,7 +12545,7 @@ func (x *ZonePoint_Entry) String() string {
 func (*ZonePoint_Entry) ProtoMessage() {}
 
 func (x *ZonePoint_Entry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[130]
+	mi := &file_EQMessage_proto_msgTypes[131]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12519,7 +12558,7 @@ func (x *ZonePoint_Entry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZonePoint_Entry.ProtoReflect.Descriptor instead.
 func (*ZonePoint_Entry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{130}
+	return file_EQMessage_proto_rawDescGZIP(), []int{131}
 }
 
 func (x *ZonePoint_Entry) GetIterator() int32 {
@@ -12581,7 +12620,7 @@ type ZonePoints struct {
 
 func (x *ZonePoints) Reset() {
 	*x = ZonePoints{}
-	mi := &file_EQMessage_proto_msgTypes[131]
+	mi := &file_EQMessage_proto_msgTypes[132]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12593,7 +12632,7 @@ func (x *ZonePoints) String() string {
 func (*ZonePoints) ProtoMessage() {}
 
 func (x *ZonePoints) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[131]
+	mi := &file_EQMessage_proto_msgTypes[132]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12606,7 +12645,7 @@ func (x *ZonePoints) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZonePoints.ProtoReflect.Descriptor instead.
 func (*ZonePoints) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{131}
+	return file_EQMessage_proto_rawDescGZIP(), []int{132}
 }
 
 func (x *ZonePoints) GetCount() int32 {
@@ -12633,7 +12672,7 @@ type SkillUpdate struct {
 
 func (x *SkillUpdate) Reset() {
 	*x = SkillUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[132]
+	mi := &file_EQMessage_proto_msgTypes[133]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12645,7 +12684,7 @@ func (x *SkillUpdate) String() string {
 func (*SkillUpdate) ProtoMessage() {}
 
 func (x *SkillUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[132]
+	mi := &file_EQMessage_proto_msgTypes[133]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12658,7 +12697,7 @@ func (x *SkillUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SkillUpdate.ProtoReflect.Descriptor instead.
 func (*SkillUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{132}
+	return file_EQMessage_proto_rawDescGZIP(), []int{133}
 }
 
 func (x *SkillUpdate) GetSkillId() int32 {
@@ -12684,7 +12723,7 @@ type ZoneUnavail struct {
 
 func (x *ZoneUnavail) Reset() {
 	*x = ZoneUnavail{}
-	mi := &file_EQMessage_proto_msgTypes[133]
+	mi := &file_EQMessage_proto_msgTypes[134]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12696,7 +12735,7 @@ func (x *ZoneUnavail) String() string {
 func (*ZoneUnavail) ProtoMessage() {}
 
 func (x *ZoneUnavail) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[133]
+	mi := &file_EQMessage_proto_msgTypes[134]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12709,7 +12748,7 @@ func (x *ZoneUnavail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZoneUnavail.ProtoReflect.Descriptor instead.
 func (*ZoneUnavail) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{133}
+	return file_EQMessage_proto_rawDescGZIP(), []int{134}
 }
 
 func (x *ZoneUnavail) GetZonename() string {
@@ -12729,7 +12768,7 @@ type GroupGeneric struct {
 
 func (x *GroupGeneric) Reset() {
 	*x = GroupGeneric{}
-	mi := &file_EQMessage_proto_msgTypes[134]
+	mi := &file_EQMessage_proto_msgTypes[135]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12741,7 +12780,7 @@ func (x *GroupGeneric) String() string {
 func (*GroupGeneric) ProtoMessage() {}
 
 func (x *GroupGeneric) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[134]
+	mi := &file_EQMessage_proto_msgTypes[135]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12754,7 +12793,7 @@ func (x *GroupGeneric) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GroupGeneric.ProtoReflect.Descriptor instead.
 func (*GroupGeneric) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{134}
+	return file_EQMessage_proto_rawDescGZIP(), []int{135}
 }
 
 func (x *GroupGeneric) GetName1() string {
@@ -12782,7 +12821,7 @@ type GroupCancel struct {
 
 func (x *GroupCancel) Reset() {
 	*x = GroupCancel{}
-	mi := &file_EQMessage_proto_msgTypes[135]
+	mi := &file_EQMessage_proto_msgTypes[136]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12794,7 +12833,7 @@ func (x *GroupCancel) String() string {
 func (*GroupCancel) ProtoMessage() {}
 
 func (x *GroupCancel) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[135]
+	mi := &file_EQMessage_proto_msgTypes[136]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12807,7 +12846,7 @@ func (x *GroupCancel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GroupCancel.ProtoReflect.Descriptor instead.
 func (*GroupCancel) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{135}
+	return file_EQMessage_proto_rawDescGZIP(), []int{136}
 }
 
 func (x *GroupCancel) GetName1() string {
@@ -12843,7 +12882,7 @@ type GroupUpdate struct {
 
 func (x *GroupUpdate) Reset() {
 	*x = GroupUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[136]
+	mi := &file_EQMessage_proto_msgTypes[137]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12855,7 +12894,7 @@ func (x *GroupUpdate) String() string {
 func (*GroupUpdate) ProtoMessage() {}
 
 func (x *GroupUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[136]
+	mi := &file_EQMessage_proto_msgTypes[137]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12868,7 +12907,7 @@ func (x *GroupUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GroupUpdate.ProtoReflect.Descriptor instead.
 func (*GroupUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{136}
+	return file_EQMessage_proto_rawDescGZIP(), []int{137}
 }
 
 func (x *GroupUpdate) GetAction() int32 {
@@ -12912,7 +12951,7 @@ type GroupUpdate2 struct {
 
 func (x *GroupUpdate2) Reset() {
 	*x = GroupUpdate2{}
-	mi := &file_EQMessage_proto_msgTypes[137]
+	mi := &file_EQMessage_proto_msgTypes[138]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12924,7 +12963,7 @@ func (x *GroupUpdate2) String() string {
 func (*GroupUpdate2) ProtoMessage() {}
 
 func (x *GroupUpdate2) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[137]
+	mi := &file_EQMessage_proto_msgTypes[138]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12937,7 +12976,7 @@ func (x *GroupUpdate2) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GroupUpdate2.ProtoReflect.Descriptor instead.
 func (*GroupUpdate2) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{137}
+	return file_EQMessage_proto_rawDescGZIP(), []int{138}
 }
 
 func (x *GroupUpdate2) GetAction() int32 {
@@ -12986,7 +13025,7 @@ type GroupJoin struct {
 
 func (x *GroupJoin) Reset() {
 	*x = GroupJoin{}
-	mi := &file_EQMessage_proto_msgTypes[138]
+	mi := &file_EQMessage_proto_msgTypes[139]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12998,7 +13037,7 @@ func (x *GroupJoin) String() string {
 func (*GroupJoin) ProtoMessage() {}
 
 func (x *GroupJoin) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[138]
+	mi := &file_EQMessage_proto_msgTypes[139]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13011,7 +13050,7 @@ func (x *GroupJoin) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GroupJoin.ProtoReflect.Descriptor instead.
 func (*GroupJoin) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{138}
+	return file_EQMessage_proto_rawDescGZIP(), []int{139}
 }
 
 func (x *GroupJoin) GetAction() int32 {
@@ -13050,7 +13089,7 @@ type FaceChange struct {
 
 func (x *FaceChange) Reset() {
 	*x = FaceChange{}
-	mi := &file_EQMessage_proto_msgTypes[139]
+	mi := &file_EQMessage_proto_msgTypes[140]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13062,7 +13101,7 @@ func (x *FaceChange) String() string {
 func (*FaceChange) ProtoMessage() {}
 
 func (x *FaceChange) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[139]
+	mi := &file_EQMessage_proto_msgTypes[140]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13075,7 +13114,7 @@ func (x *FaceChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FaceChange.ProtoReflect.Descriptor instead.
 func (*FaceChange) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{139}
+	return file_EQMessage_proto_rawDescGZIP(), []int{140}
 }
 
 func (x *FaceChange) GetHaircolor() int32 {
@@ -13137,7 +13176,7 @@ type TradeRequest struct {
 
 func (x *TradeRequest) Reset() {
 	*x = TradeRequest{}
-	mi := &file_EQMessage_proto_msgTypes[140]
+	mi := &file_EQMessage_proto_msgTypes[141]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13149,7 +13188,7 @@ func (x *TradeRequest) String() string {
 func (*TradeRequest) ProtoMessage() {}
 
 func (x *TradeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[140]
+	mi := &file_EQMessage_proto_msgTypes[141]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13162,7 +13201,7 @@ func (x *TradeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TradeRequest.ProtoReflect.Descriptor instead.
 func (*TradeRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{140}
+	return file_EQMessage_proto_rawDescGZIP(), []int{141}
 }
 
 func (x *TradeRequest) GetToMobId() int32 {
@@ -13188,7 +13227,7 @@ type TradeAccept struct {
 
 func (x *TradeAccept) Reset() {
 	*x = TradeAccept{}
-	mi := &file_EQMessage_proto_msgTypes[141]
+	mi := &file_EQMessage_proto_msgTypes[142]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13200,7 +13239,7 @@ func (x *TradeAccept) String() string {
 func (*TradeAccept) ProtoMessage() {}
 
 func (x *TradeAccept) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[141]
+	mi := &file_EQMessage_proto_msgTypes[142]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13213,7 +13252,7 @@ func (x *TradeAccept) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TradeAccept.ProtoReflect.Descriptor instead.
 func (*TradeAccept) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{141}
+	return file_EQMessage_proto_rawDescGZIP(), []int{142}
 }
 
 func (x *TradeAccept) GetFromMobId() int32 {
@@ -13233,7 +13272,7 @@ type CancelTrade struct {
 
 func (x *CancelTrade) Reset() {
 	*x = CancelTrade{}
-	mi := &file_EQMessage_proto_msgTypes[142]
+	mi := &file_EQMessage_proto_msgTypes[143]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13245,7 +13284,7 @@ func (x *CancelTrade) String() string {
 func (*CancelTrade) ProtoMessage() {}
 
 func (x *CancelTrade) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[142]
+	mi := &file_EQMessage_proto_msgTypes[143]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13258,7 +13297,7 @@ func (x *CancelTrade) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTrade.ProtoReflect.Descriptor instead.
 func (*CancelTrade) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{142}
+	return file_EQMessage_proto_rawDescGZIP(), []int{143}
 }
 
 func (x *CancelTrade) GetFromid() int32 {
@@ -13291,7 +13330,7 @@ type PetitionUpdate struct {
 
 func (x *PetitionUpdate) Reset() {
 	*x = PetitionUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[143]
+	mi := &file_EQMessage_proto_msgTypes[144]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13303,7 +13342,7 @@ func (x *PetitionUpdate) String() string {
 func (*PetitionUpdate) ProtoMessage() {}
 
 func (x *PetitionUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[143]
+	mi := &file_EQMessage_proto_msgTypes[144]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13316,7 +13355,7 @@ func (x *PetitionUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PetitionUpdate.ProtoReflect.Descriptor instead.
 func (*PetitionUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{143}
+	return file_EQMessage_proto_rawDescGZIP(), []int{144}
 }
 
 func (x *PetitionUpdate) GetPetnumber() int32 {
@@ -13397,7 +13436,7 @@ type Petition struct {
 
 func (x *Petition) Reset() {
 	*x = Petition{}
-	mi := &file_EQMessage_proto_msgTypes[144]
+	mi := &file_EQMessage_proto_msgTypes[145]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13409,7 +13448,7 @@ func (x *Petition) String() string {
 func (*Petition) ProtoMessage() {}
 
 func (x *Petition) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[144]
+	mi := &file_EQMessage_proto_msgTypes[145]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13422,7 +13461,7 @@ func (x *Petition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Petition.ProtoReflect.Descriptor instead.
 func (*Petition) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{144}
+	return file_EQMessage_proto_rawDescGZIP(), []int{145}
 }
 
 func (x *Petition) GetPetnumber() int32 {
@@ -13537,7 +13576,7 @@ type Who_All struct {
 
 func (x *Who_All) Reset() {
 	*x = Who_All{}
-	mi := &file_EQMessage_proto_msgTypes[145]
+	mi := &file_EQMessage_proto_msgTypes[146]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13549,7 +13588,7 @@ func (x *Who_All) String() string {
 func (*Who_All) ProtoMessage() {}
 
 func (x *Who_All) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[145]
+	mi := &file_EQMessage_proto_msgTypes[146]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13562,7 +13601,7 @@ func (x *Who_All) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Who_All.ProtoReflect.Descriptor instead.
 func (*Who_All) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{145}
+	return file_EQMessage_proto_rawDescGZIP(), []int{146}
 }
 
 func (x *Who_All) GetWhom() string {
@@ -13616,7 +13655,7 @@ type Stun struct {
 
 func (x *Stun) Reset() {
 	*x = Stun{}
-	mi := &file_EQMessage_proto_msgTypes[146]
+	mi := &file_EQMessage_proto_msgTypes[147]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13628,7 +13667,7 @@ func (x *Stun) String() string {
 func (*Stun) ProtoMessage() {}
 
 func (x *Stun) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[146]
+	mi := &file_EQMessage_proto_msgTypes[147]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13641,7 +13680,7 @@ func (x *Stun) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Stun.ProtoReflect.Descriptor instead.
 func (*Stun) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{146}
+	return file_EQMessage_proto_rawDescGZIP(), []int{147}
 }
 
 func (x *Stun) GetDuration() int32 {
@@ -13661,7 +13700,7 @@ type AugmentItem struct {
 
 func (x *AugmentItem) Reset() {
 	*x = AugmentItem{}
-	mi := &file_EQMessage_proto_msgTypes[147]
+	mi := &file_EQMessage_proto_msgTypes[148]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13673,7 +13712,7 @@ func (x *AugmentItem) String() string {
 func (*AugmentItem) ProtoMessage() {}
 
 func (x *AugmentItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[147]
+	mi := &file_EQMessage_proto_msgTypes[148]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13686,7 +13725,7 @@ func (x *AugmentItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AugmentItem.ProtoReflect.Descriptor instead.
 func (*AugmentItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{147}
+	return file_EQMessage_proto_rawDescGZIP(), []int{148}
 }
 
 func (x *AugmentItem) GetContainerSlot() int32 {
@@ -13712,7 +13751,7 @@ type Emote struct {
 
 func (x *Emote) Reset() {
 	*x = Emote{}
-	mi := &file_EQMessage_proto_msgTypes[148]
+	mi := &file_EQMessage_proto_msgTypes[149]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13724,7 +13763,7 @@ func (x *Emote) String() string {
 func (*Emote) ProtoMessage() {}
 
 func (x *Emote) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[148]
+	mi := &file_EQMessage_proto_msgTypes[149]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13737,7 +13776,7 @@ func (x *Emote) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Emote.ProtoReflect.Descriptor instead.
 func (*Emote) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{148}
+	return file_EQMessage_proto_rawDescGZIP(), []int{149}
 }
 
 func (x *Emote) GetMessage() string {
@@ -13757,7 +13796,7 @@ type Inspect struct {
 
 func (x *Inspect) Reset() {
 	*x = Inspect{}
-	mi := &file_EQMessage_proto_msgTypes[149]
+	mi := &file_EQMessage_proto_msgTypes[150]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13769,7 +13808,7 @@ func (x *Inspect) String() string {
 func (*Inspect) ProtoMessage() {}
 
 func (x *Inspect) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[149]
+	mi := &file_EQMessage_proto_msgTypes[150]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13782,7 +13821,7 @@ func (x *Inspect) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Inspect.ProtoReflect.Descriptor instead.
 func (*Inspect) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{149}
+	return file_EQMessage_proto_rawDescGZIP(), []int{150}
 }
 
 func (x *Inspect) GetTargetId() int32 {
@@ -13812,7 +13851,7 @@ type InspectResponse struct {
 
 func (x *InspectResponse) Reset() {
 	*x = InspectResponse{}
-	mi := &file_EQMessage_proto_msgTypes[150]
+	mi := &file_EQMessage_proto_msgTypes[151]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13824,7 +13863,7 @@ func (x *InspectResponse) String() string {
 func (*InspectResponse) ProtoMessage() {}
 
 func (x *InspectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[150]
+	mi := &file_EQMessage_proto_msgTypes[151]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13837,7 +13876,7 @@ func (x *InspectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InspectResponse.ProtoReflect.Descriptor instead.
 func (*InspectResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{150}
+	return file_EQMessage_proto_rawDescGZIP(), []int{151}
 }
 
 func (x *InspectResponse) GetTargetId() int32 {
@@ -13884,7 +13923,7 @@ type SetDataRate struct {
 
 func (x *SetDataRate) Reset() {
 	*x = SetDataRate{}
-	mi := &file_EQMessage_proto_msgTypes[151]
+	mi := &file_EQMessage_proto_msgTypes[152]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13896,7 +13935,7 @@ func (x *SetDataRate) String() string {
 func (*SetDataRate) ProtoMessage() {}
 
 func (x *SetDataRate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[151]
+	mi := &file_EQMessage_proto_msgTypes[152]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13909,7 +13948,7 @@ func (x *SetDataRate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetDataRate.ProtoReflect.Descriptor instead.
 func (*SetDataRate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{151}
+	return file_EQMessage_proto_rawDescGZIP(), []int{152}
 }
 
 func (x *SetDataRate) GetNewdatarate() float32 {
@@ -13928,7 +13967,7 @@ type SetServerFilter struct {
 
 func (x *SetServerFilter) Reset() {
 	*x = SetServerFilter{}
-	mi := &file_EQMessage_proto_msgTypes[152]
+	mi := &file_EQMessage_proto_msgTypes[153]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13940,7 +13979,7 @@ func (x *SetServerFilter) String() string {
 func (*SetServerFilter) ProtoMessage() {}
 
 func (x *SetServerFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[152]
+	mi := &file_EQMessage_proto_msgTypes[153]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13953,7 +13992,7 @@ func (x *SetServerFilter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetServerFilter.ProtoReflect.Descriptor instead.
 func (*SetServerFilter) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{152}
+	return file_EQMessage_proto_rawDescGZIP(), []int{153}
 }
 
 func (x *SetServerFilter) GetFilters() []int32 {
@@ -13972,7 +14011,7 @@ type SetServerFilterAck struct {
 
 func (x *SetServerFilterAck) Reset() {
 	*x = SetServerFilterAck{}
-	mi := &file_EQMessage_proto_msgTypes[153]
+	mi := &file_EQMessage_proto_msgTypes[154]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13984,7 +14023,7 @@ func (x *SetServerFilterAck) String() string {
 func (*SetServerFilterAck) ProtoMessage() {}
 
 func (x *SetServerFilterAck) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[153]
+	mi := &file_EQMessage_proto_msgTypes[154]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13997,7 +14036,7 @@ func (x *SetServerFilterAck) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetServerFilterAck.ProtoReflect.Descriptor instead.
 func (*SetServerFilterAck) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{153}
+	return file_EQMessage_proto_rawDescGZIP(), []int{154}
 }
 
 func (x *SetServerFilterAck) GetBlank() []int32 {
@@ -14039,7 +14078,7 @@ type IncreaseStat struct {
 
 func (x *IncreaseStat) Reset() {
 	*x = IncreaseStat{}
-	mi := &file_EQMessage_proto_msgTypes[154]
+	mi := &file_EQMessage_proto_msgTypes[155]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14051,7 +14090,7 @@ func (x *IncreaseStat) String() string {
 func (*IncreaseStat) ProtoMessage() {}
 
 func (x *IncreaseStat) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[154]
+	mi := &file_EQMessage_proto_msgTypes[155]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14064,7 +14103,7 @@ func (x *IncreaseStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IncreaseStat.ProtoReflect.Descriptor instead.
 func (*IncreaseStat) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{154}
+	return file_EQMessage_proto_rawDescGZIP(), []int{155}
 }
 
 func (x *IncreaseStat) GetStr() int32 {
@@ -14247,7 +14286,7 @@ type GMName struct {
 
 func (x *GMName) Reset() {
 	*x = GMName{}
-	mi := &file_EQMessage_proto_msgTypes[155]
+	mi := &file_EQMessage_proto_msgTypes[156]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14259,7 +14298,7 @@ func (x *GMName) String() string {
 func (*GMName) ProtoMessage() {}
 
 func (x *GMName) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[155]
+	mi := &file_EQMessage_proto_msgTypes[156]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14272,7 +14311,7 @@ func (x *GMName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMName.ProtoReflect.Descriptor instead.
 func (*GMName) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{155}
+	return file_EQMessage_proto_rawDescGZIP(), []int{156}
 }
 
 func (x *GMName) GetOldname() string {
@@ -14313,7 +14352,7 @@ type GMDelCorpse struct {
 
 func (x *GMDelCorpse) Reset() {
 	*x = GMDelCorpse{}
-	mi := &file_EQMessage_proto_msgTypes[156]
+	mi := &file_EQMessage_proto_msgTypes[157]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14325,7 +14364,7 @@ func (x *GMDelCorpse) String() string {
 func (*GMDelCorpse) ProtoMessage() {}
 
 func (x *GMDelCorpse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[156]
+	mi := &file_EQMessage_proto_msgTypes[157]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14338,7 +14377,7 @@ func (x *GMDelCorpse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMDelCorpse.ProtoReflect.Descriptor instead.
 func (*GMDelCorpse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{156}
+	return file_EQMessage_proto_rawDescGZIP(), []int{157}
 }
 
 func (x *GMDelCorpse) GetCorpsename() string {
@@ -14365,7 +14404,7 @@ type GMKick struct {
 
 func (x *GMKick) Reset() {
 	*x = GMKick{}
-	mi := &file_EQMessage_proto_msgTypes[157]
+	mi := &file_EQMessage_proto_msgTypes[158]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14377,7 +14416,7 @@ func (x *GMKick) String() string {
 func (*GMKick) ProtoMessage() {}
 
 func (x *GMKick) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[157]
+	mi := &file_EQMessage_proto_msgTypes[158]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14390,7 +14429,7 @@ func (x *GMKick) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMKick.ProtoReflect.Descriptor instead.
 func (*GMKick) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{157}
+	return file_EQMessage_proto_rawDescGZIP(), []int{158}
 }
 
 func (x *GMKick) GetName() string {
@@ -14417,7 +14456,7 @@ type GMKill struct {
 
 func (x *GMKill) Reset() {
 	*x = GMKill{}
-	mi := &file_EQMessage_proto_msgTypes[158]
+	mi := &file_EQMessage_proto_msgTypes[159]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14429,7 +14468,7 @@ func (x *GMKill) String() string {
 func (*GMKill) ProtoMessage() {}
 
 func (x *GMKill) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[158]
+	mi := &file_EQMessage_proto_msgTypes[159]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14442,7 +14481,7 @@ func (x *GMKill) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMKill.ProtoReflect.Descriptor instead.
 func (*GMKill) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{158}
+	return file_EQMessage_proto_rawDescGZIP(), []int{159}
 }
 
 func (x *GMKill) GetName() string {
@@ -14468,7 +14507,7 @@ type GMEmoteZone struct {
 
 func (x *GMEmoteZone) Reset() {
 	*x = GMEmoteZone{}
-	mi := &file_EQMessage_proto_msgTypes[159]
+	mi := &file_EQMessage_proto_msgTypes[160]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14480,7 +14519,7 @@ func (x *GMEmoteZone) String() string {
 func (*GMEmoteZone) ProtoMessage() {}
 
 func (x *GMEmoteZone) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[159]
+	mi := &file_EQMessage_proto_msgTypes[160]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14493,7 +14532,7 @@ func (x *GMEmoteZone) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMEmoteZone.ProtoReflect.Descriptor instead.
 func (*GMEmoteZone) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{159}
+	return file_EQMessage_proto_rawDescGZIP(), []int{160}
 }
 
 func (x *GMEmoteZone) GetText() string {
@@ -14514,7 +14553,7 @@ type BookText struct {
 
 func (x *BookText) Reset() {
 	*x = BookText{}
-	mi := &file_EQMessage_proto_msgTypes[160]
+	mi := &file_EQMessage_proto_msgTypes[161]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14526,7 +14565,7 @@ func (x *BookText) String() string {
 func (*BookText) ProtoMessage() {}
 
 func (x *BookText) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[160]
+	mi := &file_EQMessage_proto_msgTypes[161]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14539,7 +14578,7 @@ func (x *BookText) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BookText.ProtoReflect.Descriptor instead.
 func (*BookText) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{160}
+	return file_EQMessage_proto_rawDescGZIP(), []int{161}
 }
 
 func (x *BookText) GetWindow() int32 {
@@ -14574,7 +14613,7 @@ type BookRequest struct {
 
 func (x *BookRequest) Reset() {
 	*x = BookRequest{}
-	mi := &file_EQMessage_proto_msgTypes[161]
+	mi := &file_EQMessage_proto_msgTypes[162]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14586,7 +14625,7 @@ func (x *BookRequest) String() string {
 func (*BookRequest) ProtoMessage() {}
 
 func (x *BookRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[161]
+	mi := &file_EQMessage_proto_msgTypes[162]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14599,7 +14638,7 @@ func (x *BookRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BookRequest.ProtoReflect.Descriptor instead.
 func (*BookRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{161}
+	return file_EQMessage_proto_rawDescGZIP(), []int{162}
 }
 
 func (x *BookRequest) GetWindow() int32 {
@@ -14642,7 +14681,7 @@ type Object struct {
 
 func (x *Object) Reset() {
 	*x = Object{}
-	mi := &file_EQMessage_proto_msgTypes[162]
+	mi := &file_EQMessage_proto_msgTypes[163]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14654,7 +14693,7 @@ func (x *Object) String() string {
 func (*Object) ProtoMessage() {}
 
 func (x *Object) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[162]
+	mi := &file_EQMessage_proto_msgTypes[163]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14667,7 +14706,7 @@ func (x *Object) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Object.ProtoReflect.Descriptor instead.
 func (*Object) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{162}
+	return file_EQMessage_proto_rawDescGZIP(), []int{163}
 }
 
 func (x *Object) GetLinkedListAddr() []int32 {
@@ -14757,7 +14796,7 @@ type ClickObject struct {
 
 func (x *ClickObject) Reset() {
 	*x = ClickObject{}
-	mi := &file_EQMessage_proto_msgTypes[163]
+	mi := &file_EQMessage_proto_msgTypes[164]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14769,7 +14808,7 @@ func (x *ClickObject) String() string {
 func (*ClickObject) ProtoMessage() {}
 
 func (x *ClickObject) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[163]
+	mi := &file_EQMessage_proto_msgTypes[164]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14782,7 +14821,7 @@ func (x *ClickObject) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClickObject.ProtoReflect.Descriptor instead.
 func (*ClickObject) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{163}
+	return file_EQMessage_proto_rawDescGZIP(), []int{164}
 }
 
 func (x *ClickObject) GetDropId() int32 {
@@ -14813,7 +14852,7 @@ type ClickObjectAction struct {
 
 func (x *ClickObjectAction) Reset() {
 	*x = ClickObjectAction{}
-	mi := &file_EQMessage_proto_msgTypes[164]
+	mi := &file_EQMessage_proto_msgTypes[165]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14825,7 +14864,7 @@ func (x *ClickObjectAction) String() string {
 func (*ClickObjectAction) ProtoMessage() {}
 
 func (x *ClickObjectAction) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[164]
+	mi := &file_EQMessage_proto_msgTypes[165]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14838,7 +14877,7 @@ func (x *ClickObjectAction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClickObjectAction.ProtoReflect.Descriptor instead.
 func (*ClickObjectAction) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{164}
+	return file_EQMessage_proto_rawDescGZIP(), []int{165}
 }
 
 func (x *ClickObjectAction) GetPlayerId() int32 {
@@ -14892,7 +14931,7 @@ type Shielding struct {
 
 func (x *Shielding) Reset() {
 	*x = Shielding{}
-	mi := &file_EQMessage_proto_msgTypes[165]
+	mi := &file_EQMessage_proto_msgTypes[166]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14904,7 +14943,7 @@ func (x *Shielding) String() string {
 func (*Shielding) ProtoMessage() {}
 
 func (x *Shielding) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[165]
+	mi := &file_EQMessage_proto_msgTypes[166]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14917,7 +14956,7 @@ func (x *Shielding) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Shielding.ProtoReflect.Descriptor instead.
 func (*Shielding) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{165}
+	return file_EQMessage_proto_rawDescGZIP(), []int{166}
 }
 
 func (x *Shielding) GetTargetId() int32 {
@@ -14941,7 +14980,7 @@ type ClickObjectAck struct {
 
 func (x *ClickObjectAck) Reset() {
 	*x = ClickObjectAck{}
-	mi := &file_EQMessage_proto_msgTypes[166]
+	mi := &file_EQMessage_proto_msgTypes[167]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -14953,7 +14992,7 @@ func (x *ClickObjectAck) String() string {
 func (*ClickObjectAck) ProtoMessage() {}
 
 func (x *ClickObjectAck) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[166]
+	mi := &file_EQMessage_proto_msgTypes[167]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -14966,7 +15005,7 @@ func (x *ClickObjectAck) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClickObjectAck.ProtoReflect.Descriptor instead.
 func (*ClickObjectAck) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{166}
+	return file_EQMessage_proto_rawDescGZIP(), []int{167}
 }
 
 func (x *ClickObjectAck) GetPlayerId() int32 {
@@ -15022,7 +15061,7 @@ type CloseContainer struct {
 
 func (x *CloseContainer) Reset() {
 	*x = CloseContainer{}
-	mi := &file_EQMessage_proto_msgTypes[167]
+	mi := &file_EQMessage_proto_msgTypes[168]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15034,7 +15073,7 @@ func (x *CloseContainer) String() string {
 func (*CloseContainer) ProtoMessage() {}
 
 func (x *CloseContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[167]
+	mi := &file_EQMessage_proto_msgTypes[168]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15047,7 +15086,7 @@ func (x *CloseContainer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloseContainer.ProtoReflect.Descriptor instead.
 func (*CloseContainer) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{167}
+	return file_EQMessage_proto_rawDescGZIP(), []int{168}
 }
 
 func (x *CloseContainer) GetPlayerId() int32 {
@@ -15091,7 +15130,7 @@ type Door struct {
 
 func (x *Door) Reset() {
 	*x = Door{}
-	mi := &file_EQMessage_proto_msgTypes[168]
+	mi := &file_EQMessage_proto_msgTypes[169]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15103,7 +15142,7 @@ func (x *Door) String() string {
 func (*Door) ProtoMessage() {}
 
 func (x *Door) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[168]
+	mi := &file_EQMessage_proto_msgTypes[169]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15116,7 +15155,7 @@ func (x *Door) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Door.ProtoReflect.Descriptor instead.
 func (*Door) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{168}
+	return file_EQMessage_proto_rawDescGZIP(), []int{169}
 }
 
 func (x *Door) GetName() string {
@@ -15213,7 +15252,7 @@ type DoorSpawns struct {
 
 func (x *DoorSpawns) Reset() {
 	*x = DoorSpawns{}
-	mi := &file_EQMessage_proto_msgTypes[169]
+	mi := &file_EQMessage_proto_msgTypes[170]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15225,7 +15264,7 @@ func (x *DoorSpawns) String() string {
 func (*DoorSpawns) ProtoMessage() {}
 
 func (x *DoorSpawns) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[169]
+	mi := &file_EQMessage_proto_msgTypes[170]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15238,7 +15277,7 @@ func (x *DoorSpawns) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DoorSpawns.ProtoReflect.Descriptor instead.
 func (*DoorSpawns) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{169}
+	return file_EQMessage_proto_rawDescGZIP(), []int{170}
 }
 
 func (x *DoorSpawns) GetCount() int32 {
@@ -15267,7 +15306,7 @@ type ClickDoor struct {
 
 func (x *ClickDoor) Reset() {
 	*x = ClickDoor{}
-	mi := &file_EQMessage_proto_msgTypes[170]
+	mi := &file_EQMessage_proto_msgTypes[171]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15279,7 +15318,7 @@ func (x *ClickDoor) String() string {
 func (*ClickDoor) ProtoMessage() {}
 
 func (x *ClickDoor) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[170]
+	mi := &file_EQMessage_proto_msgTypes[171]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15292,7 +15331,7 @@ func (x *ClickDoor) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClickDoor.ProtoReflect.Descriptor instead.
 func (*ClickDoor) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{170}
+	return file_EQMessage_proto_rawDescGZIP(), []int{171}
 }
 
 func (x *ClickDoor) GetDoorid() int32 {
@@ -15333,7 +15372,7 @@ type MoveDoor struct {
 
 func (x *MoveDoor) Reset() {
 	*x = MoveDoor{}
-	mi := &file_EQMessage_proto_msgTypes[171]
+	mi := &file_EQMessage_proto_msgTypes[172]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15345,7 +15384,7 @@ func (x *MoveDoor) String() string {
 func (*MoveDoor) ProtoMessage() {}
 
 func (x *MoveDoor) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[171]
+	mi := &file_EQMessage_proto_msgTypes[172]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15358,7 +15397,7 @@ func (x *MoveDoor) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveDoor.ProtoReflect.Descriptor instead.
 func (*MoveDoor) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{171}
+	return file_EQMessage_proto_rawDescGZIP(), []int{172}
 }
 
 func (x *MoveDoor) GetDoorid() int32 {
@@ -15385,7 +15424,7 @@ type ControlBoat struct {
 
 func (x *ControlBoat) Reset() {
 	*x = ControlBoat{}
-	mi := &file_EQMessage_proto_msgTypes[172]
+	mi := &file_EQMessage_proto_msgTypes[173]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15397,7 +15436,7 @@ func (x *ControlBoat) String() string {
 func (*ControlBoat) ProtoMessage() {}
 
 func (x *ControlBoat) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[172]
+	mi := &file_EQMessage_proto_msgTypes[173]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15410,7 +15449,7 @@ func (x *ControlBoat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlBoat.ProtoReflect.Descriptor instead.
 func (*ControlBoat) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{172}
+	return file_EQMessage_proto_rawDescGZIP(), []int{173}
 }
 
 func (x *ControlBoat) GetBoatId() int32 {
@@ -15437,7 +15476,7 @@ type BecomeNPC struct {
 
 func (x *BecomeNPC) Reset() {
 	*x = BecomeNPC{}
-	mi := &file_EQMessage_proto_msgTypes[173]
+	mi := &file_EQMessage_proto_msgTypes[174]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15449,7 +15488,7 @@ func (x *BecomeNPC) String() string {
 func (*BecomeNPC) ProtoMessage() {}
 
 func (x *BecomeNPC) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[173]
+	mi := &file_EQMessage_proto_msgTypes[174]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15462,7 +15501,7 @@ func (x *BecomeNPC) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BecomeNPC.ProtoReflect.Descriptor instead.
 func (*BecomeNPC) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{173}
+	return file_EQMessage_proto_rawDescGZIP(), []int{174}
 }
 
 func (x *BecomeNPC) GetId() int32 {
@@ -15491,7 +15530,7 @@ type Underworld struct {
 
 func (x *Underworld) Reset() {
 	*x = Underworld{}
-	mi := &file_EQMessage_proto_msgTypes[174]
+	mi := &file_EQMessage_proto_msgTypes[175]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15503,7 +15542,7 @@ func (x *Underworld) String() string {
 func (*Underworld) ProtoMessage() {}
 
 func (x *Underworld) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[174]
+	mi := &file_EQMessage_proto_msgTypes[175]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15516,7 +15555,7 @@ func (x *Underworld) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Underworld.ProtoReflect.Descriptor instead.
 func (*Underworld) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{174}
+	return file_EQMessage_proto_rawDescGZIP(), []int{175}
 }
 
 func (x *Underworld) GetSpeed() float32 {
@@ -15565,7 +15604,7 @@ type Resurrect struct {
 
 func (x *Resurrect) Reset() {
 	*x = Resurrect{}
-	mi := &file_EQMessage_proto_msgTypes[175]
+	mi := &file_EQMessage_proto_msgTypes[176]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15577,7 +15616,7 @@ func (x *Resurrect) String() string {
 func (*Resurrect) ProtoMessage() {}
 
 func (x *Resurrect) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[175]
+	mi := &file_EQMessage_proto_msgTypes[176]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15590,7 +15629,7 @@ func (x *Resurrect) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Resurrect.ProtoReflect.Descriptor instead.
 func (*Resurrect) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{175}
+	return file_EQMessage_proto_rawDescGZIP(), []int{176}
 }
 
 func (x *Resurrect) GetZoneId() int32 {
@@ -15672,7 +15711,7 @@ type SetRunMode struct {
 
 func (x *SetRunMode) Reset() {
 	*x = SetRunMode{}
-	mi := &file_EQMessage_proto_msgTypes[176]
+	mi := &file_EQMessage_proto_msgTypes[177]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15684,7 +15723,7 @@ func (x *SetRunMode) String() string {
 func (*SetRunMode) ProtoMessage() {}
 
 func (x *SetRunMode) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[176]
+	mi := &file_EQMessage_proto_msgTypes[177]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15697,7 +15736,7 @@ func (x *SetRunMode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetRunMode.ProtoReflect.Descriptor instead.
 func (*SetRunMode) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{176}
+	return file_EQMessage_proto_rawDescGZIP(), []int{177}
 }
 
 func (x *SetRunMode) GetMode() int32 {
@@ -15719,7 +15758,7 @@ type EnvDamage2 struct {
 
 func (x *EnvDamage2) Reset() {
 	*x = EnvDamage2{}
-	mi := &file_EQMessage_proto_msgTypes[177]
+	mi := &file_EQMessage_proto_msgTypes[178]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15731,7 +15770,7 @@ func (x *EnvDamage2) String() string {
 func (*EnvDamage2) ProtoMessage() {}
 
 func (x *EnvDamage2) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[177]
+	mi := &file_EQMessage_proto_msgTypes[178]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15744,7 +15783,7 @@ func (x *EnvDamage2) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnvDamage2.ProtoReflect.Descriptor instead.
 func (*EnvDamage2) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{177}
+	return file_EQMessage_proto_rawDescGZIP(), []int{178}
 }
 
 func (x *EnvDamage2) GetId() int32 {
@@ -15784,7 +15823,7 @@ type BazaarWindowStart struct {
 
 func (x *BazaarWindowStart) Reset() {
 	*x = BazaarWindowStart{}
-	mi := &file_EQMessage_proto_msgTypes[178]
+	mi := &file_EQMessage_proto_msgTypes[179]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15796,7 +15835,7 @@ func (x *BazaarWindowStart) String() string {
 func (*BazaarWindowStart) ProtoMessage() {}
 
 func (x *BazaarWindowStart) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[178]
+	mi := &file_EQMessage_proto_msgTypes[179]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15809,7 +15848,7 @@ func (x *BazaarWindowStart) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BazaarWindowStart.ProtoReflect.Descriptor instead.
 func (*BazaarWindowStart) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{178}
+	return file_EQMessage_proto_rawDescGZIP(), []int{179}
 }
 
 func (x *BazaarWindowStart) GetAction() int32 {
@@ -15830,7 +15869,7 @@ type BazaarWelcome struct {
 
 func (x *BazaarWelcome) Reset() {
 	*x = BazaarWelcome{}
-	mi := &file_EQMessage_proto_msgTypes[179]
+	mi := &file_EQMessage_proto_msgTypes[180]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15842,7 +15881,7 @@ func (x *BazaarWelcome) String() string {
 func (*BazaarWelcome) ProtoMessage() {}
 
 func (x *BazaarWelcome) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[179]
+	mi := &file_EQMessage_proto_msgTypes[180]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15855,7 +15894,7 @@ func (x *BazaarWelcome) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BazaarWelcome.ProtoReflect.Descriptor instead.
 func (*BazaarWelcome) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{179}
+	return file_EQMessage_proto_rawDescGZIP(), []int{180}
 }
 
 func (x *BazaarWelcome) GetBeginning() *BazaarWindowStart {
@@ -15899,7 +15938,7 @@ type BazaarSearch struct {
 
 func (x *BazaarSearch) Reset() {
 	*x = BazaarSearch{}
-	mi := &file_EQMessage_proto_msgTypes[180]
+	mi := &file_EQMessage_proto_msgTypes[181]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -15911,7 +15950,7 @@ func (x *BazaarSearch) String() string {
 func (*BazaarSearch) ProtoMessage() {}
 
 func (x *BazaarSearch) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[180]
+	mi := &file_EQMessage_proto_msgTypes[181]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -15924,7 +15963,7 @@ func (x *BazaarSearch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BazaarSearch.ProtoReflect.Descriptor instead.
 func (*BazaarSearch) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{180}
+	return file_EQMessage_proto_rawDescGZIP(), []int{181}
 }
 
 func (x *BazaarSearch) GetBeginning() *BazaarWindowStart {
@@ -16021,7 +16060,7 @@ type BazaarInspect struct {
 
 func (x *BazaarInspect) Reset() {
 	*x = BazaarInspect{}
-	mi := &file_EQMessage_proto_msgTypes[181]
+	mi := &file_EQMessage_proto_msgTypes[182]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16033,7 +16072,7 @@ func (x *BazaarInspect) String() string {
 func (*BazaarInspect) ProtoMessage() {}
 
 func (x *BazaarInspect) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[181]
+	mi := &file_EQMessage_proto_msgTypes[182]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16046,7 +16085,7 @@ func (x *BazaarInspect) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BazaarInspect.ProtoReflect.Descriptor instead.
 func (*BazaarInspect) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{181}
+	return file_EQMessage_proto_rawDescGZIP(), []int{182}
 }
 
 func (x *BazaarInspect) GetItemId() int32 {
@@ -16073,7 +16112,7 @@ type BazaarReturnDone struct {
 
 func (x *BazaarReturnDone) Reset() {
 	*x = BazaarReturnDone{}
-	mi := &file_EQMessage_proto_msgTypes[182]
+	mi := &file_EQMessage_proto_msgTypes[183]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16085,7 +16124,7 @@ func (x *BazaarReturnDone) String() string {
 func (*BazaarReturnDone) ProtoMessage() {}
 
 func (x *BazaarReturnDone) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[182]
+	mi := &file_EQMessage_proto_msgTypes[183]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16098,7 +16137,7 @@ func (x *BazaarReturnDone) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BazaarReturnDone.ProtoReflect.Descriptor instead.
 func (*BazaarReturnDone) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{182}
+	return file_EQMessage_proto_rawDescGZIP(), []int{183}
 }
 
 func (x *BazaarReturnDone) GetType() int32 {
@@ -16130,7 +16169,7 @@ type BazaarSearchResults struct {
 
 func (x *BazaarSearchResults) Reset() {
 	*x = BazaarSearchResults{}
-	mi := &file_EQMessage_proto_msgTypes[183]
+	mi := &file_EQMessage_proto_msgTypes[184]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16142,7 +16181,7 @@ func (x *BazaarSearchResults) String() string {
 func (*BazaarSearchResults) ProtoMessage() {}
 
 func (x *BazaarSearchResults) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[183]
+	mi := &file_EQMessage_proto_msgTypes[184]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16155,7 +16194,7 @@ func (x *BazaarSearchResults) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BazaarSearchResults.ProtoReflect.Descriptor instead.
 func (*BazaarSearchResults) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{183}
+	return file_EQMessage_proto_rawDescGZIP(), []int{184}
 }
 
 func (x *BazaarSearchResults) GetBeginning() *BazaarWindowStart {
@@ -16219,7 +16258,7 @@ type ServerSideFilters struct {
 
 func (x *ServerSideFilters) Reset() {
 	*x = ServerSideFilters{}
-	mi := &file_EQMessage_proto_msgTypes[184]
+	mi := &file_EQMessage_proto_msgTypes[185]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16231,7 +16270,7 @@ func (x *ServerSideFilters) String() string {
 func (*ServerSideFilters) ProtoMessage() {}
 
 func (x *ServerSideFilters) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[184]
+	mi := &file_EQMessage_proto_msgTypes[185]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16244,7 +16283,7 @@ func (x *ServerSideFilters) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServerSideFilters.ProtoReflect.Descriptor instead.
 func (*ServerSideFilters) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{184}
+	return file_EQMessage_proto_rawDescGZIP(), []int{185}
 }
 
 func (x *ServerSideFilters) GetClientattackfilters() int32 {
@@ -16286,7 +16325,7 @@ type ItemViewRequest struct {
 
 func (x *ItemViewRequest) Reset() {
 	*x = ItemViewRequest{}
-	mi := &file_EQMessage_proto_msgTypes[185]
+	mi := &file_EQMessage_proto_msgTypes[186]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16298,7 +16337,7 @@ func (x *ItemViewRequest) String() string {
 func (*ItemViewRequest) ProtoMessage() {}
 
 func (x *ItemViewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[185]
+	mi := &file_EQMessage_proto_msgTypes[186]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16311,7 +16350,7 @@ func (x *ItemViewRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemViewRequest.ProtoReflect.Descriptor instead.
 func (*ItemViewRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{185}
+	return file_EQMessage_proto_rawDescGZIP(), []int{186}
 }
 
 func (x *ItemViewRequest) GetItemId() int32 {
@@ -16345,7 +16384,7 @@ type ItemVerifyRequest struct {
 
 func (x *ItemVerifyRequest) Reset() {
 	*x = ItemVerifyRequest{}
-	mi := &file_EQMessage_proto_msgTypes[186]
+	mi := &file_EQMessage_proto_msgTypes[187]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16357,7 +16396,7 @@ func (x *ItemVerifyRequest) String() string {
 func (*ItemVerifyRequest) ProtoMessage() {}
 
 func (x *ItemVerifyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[186]
+	mi := &file_EQMessage_proto_msgTypes[187]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16370,7 +16409,7 @@ func (x *ItemVerifyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemVerifyRequest.ProtoReflect.Descriptor instead.
 func (*ItemVerifyRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{186}
+	return file_EQMessage_proto_rawDescGZIP(), []int{187}
 }
 
 func (x *ItemVerifyRequest) GetSlot() int32 {
@@ -16401,7 +16440,7 @@ type PickPocket struct {
 
 func (x *PickPocket) Reset() {
 	*x = PickPocket{}
-	mi := &file_EQMessage_proto_msgTypes[187]
+	mi := &file_EQMessage_proto_msgTypes[188]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16413,7 +16452,7 @@ func (x *PickPocket) String() string {
 func (*PickPocket) ProtoMessage() {}
 
 func (x *PickPocket) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[187]
+	mi := &file_EQMessage_proto_msgTypes[188]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16426,7 +16465,7 @@ func (x *PickPocket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PickPocket.ProtoReflect.Descriptor instead.
 func (*PickPocket) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{187}
+	return file_EQMessage_proto_rawDescGZIP(), []int{188}
 }
 
 func (x *PickPocket) GetTo() int32 {
@@ -16485,7 +16524,7 @@ type SPickPocket struct {
 
 func (x *SPickPocket) Reset() {
 	*x = SPickPocket{}
-	mi := &file_EQMessage_proto_msgTypes[188]
+	mi := &file_EQMessage_proto_msgTypes[189]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16497,7 +16536,7 @@ func (x *SPickPocket) String() string {
 func (*SPickPocket) ProtoMessage() {}
 
 func (x *SPickPocket) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[188]
+	mi := &file_EQMessage_proto_msgTypes[189]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16510,7 +16549,7 @@ func (x *SPickPocket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SPickPocket.ProtoReflect.Descriptor instead.
 func (*SPickPocket) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{188}
+	return file_EQMessage_proto_rawDescGZIP(), []int{189}
 }
 
 func (x *SPickPocket) GetTo() int32 {
@@ -16564,7 +16603,7 @@ type LogServer struct {
 
 func (x *LogServer) Reset() {
 	*x = LogServer{}
-	mi := &file_EQMessage_proto_msgTypes[189]
+	mi := &file_EQMessage_proto_msgTypes[190]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16576,7 +16615,7 @@ func (x *LogServer) String() string {
 func (*LogServer) ProtoMessage() {}
 
 func (x *LogServer) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[189]
+	mi := &file_EQMessage_proto_msgTypes[190]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16589,7 +16628,7 @@ func (x *LogServer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogServer.ProtoReflect.Descriptor instead.
 func (*LogServer) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{189}
+	return file_EQMessage_proto_rawDescGZIP(), []int{190}
 }
 
 func (x *LogServer) GetWorldshortname() string {
@@ -16607,7 +16646,7 @@ type ApproveWorld struct {
 
 func (x *ApproveWorld) Reset() {
 	*x = ApproveWorld{}
-	mi := &file_EQMessage_proto_msgTypes[190]
+	mi := &file_EQMessage_proto_msgTypes[191]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16619,7 +16658,7 @@ func (x *ApproveWorld) String() string {
 func (*ApproveWorld) ProtoMessage() {}
 
 func (x *ApproveWorld) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[190]
+	mi := &file_EQMessage_proto_msgTypes[191]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16632,7 +16671,7 @@ func (x *ApproveWorld) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveWorld.ProtoReflect.Descriptor instead.
 func (*ApproveWorld) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{190}
+	return file_EQMessage_proto_rawDescGZIP(), []int{191}
 }
 
 type ClientError struct {
@@ -16646,7 +16685,7 @@ type ClientError struct {
 
 func (x *ClientError) Reset() {
 	*x = ClientError{}
-	mi := &file_EQMessage_proto_msgTypes[191]
+	mi := &file_EQMessage_proto_msgTypes[192]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16658,7 +16697,7 @@ func (x *ClientError) String() string {
 func (*ClientError) ProtoMessage() {}
 
 func (x *ClientError) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[191]
+	mi := &file_EQMessage_proto_msgTypes[192]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16671,7 +16710,7 @@ func (x *ClientError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClientError.ProtoReflect.Descriptor instead.
 func (*ClientError) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{191}
+	return file_EQMessage_proto_rawDescGZIP(), []int{192}
 }
 
 func (x *ClientError) GetType() string {
@@ -16705,7 +16744,7 @@ type MobHealth struct {
 
 func (x *MobHealth) Reset() {
 	*x = MobHealth{}
-	mi := &file_EQMessage_proto_msgTypes[192]
+	mi := &file_EQMessage_proto_msgTypes[193]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16717,7 +16756,7 @@ func (x *MobHealth) String() string {
 func (*MobHealth) ProtoMessage() {}
 
 func (x *MobHealth) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[192]
+	mi := &file_EQMessage_proto_msgTypes[193]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16730,7 +16769,7 @@ func (x *MobHealth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MobHealth.ProtoReflect.Descriptor instead.
 func (*MobHealth) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{192}
+	return file_EQMessage_proto_rawDescGZIP(), []int{193}
 }
 
 func (x *MobHealth) GetHp() int32 {
@@ -16757,7 +16796,7 @@ type Track struct {
 
 func (x *Track) Reset() {
 	*x = Track{}
-	mi := &file_EQMessage_proto_msgTypes[193]
+	mi := &file_EQMessage_proto_msgTypes[194]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16769,7 +16808,7 @@ func (x *Track) String() string {
 func (*Track) ProtoMessage() {}
 
 func (x *Track) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[193]
+	mi := &file_EQMessage_proto_msgTypes[194]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16782,7 +16821,7 @@ func (x *Track) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Track.ProtoReflect.Descriptor instead.
 func (*Track) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{193}
+	return file_EQMessage_proto_rawDescGZIP(), []int{194}
 }
 
 func (x *Track) GetEntityid() int32 {
@@ -16808,7 +16847,7 @@ type TrackTarget struct {
 
 func (x *TrackTarget) Reset() {
 	*x = TrackTarget{}
-	mi := &file_EQMessage_proto_msgTypes[194]
+	mi := &file_EQMessage_proto_msgTypes[195]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16820,7 +16859,7 @@ func (x *TrackTarget) String() string {
 func (*TrackTarget) ProtoMessage() {}
 
 func (x *TrackTarget) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[194]
+	mi := &file_EQMessage_proto_msgTypes[195]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16833,7 +16872,7 @@ func (x *TrackTarget) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrackTarget.ProtoReflect.Descriptor instead.
 func (*TrackTarget) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{194}
+	return file_EQMessage_proto_rawDescGZIP(), []int{195}
 }
 
 func (x *TrackTarget) GetEntityid() int32 {
@@ -16853,7 +16892,7 @@ type Tracking struct {
 
 func (x *Tracking) Reset() {
 	*x = Tracking{}
-	mi := &file_EQMessage_proto_msgTypes[195]
+	mi := &file_EQMessage_proto_msgTypes[196]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16865,7 +16904,7 @@ func (x *Tracking) String() string {
 func (*Tracking) ProtoMessage() {}
 
 func (x *Tracking) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[195]
+	mi := &file_EQMessage_proto_msgTypes[196]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16878,7 +16917,7 @@ func (x *Tracking) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Tracking.ProtoReflect.Descriptor instead.
 func (*Tracking) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{195}
+	return file_EQMessage_proto_rawDescGZIP(), []int{196}
 }
 
 func (x *Tracking) GetCount() int32 {
@@ -16905,7 +16944,7 @@ type ZoneServerInfo struct {
 
 func (x *ZoneServerInfo) Reset() {
 	*x = ZoneServerInfo{}
-	mi := &file_EQMessage_proto_msgTypes[196]
+	mi := &file_EQMessage_proto_msgTypes[197]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16917,7 +16956,7 @@ func (x *ZoneServerInfo) String() string {
 func (*ZoneServerInfo) ProtoMessage() {}
 
 func (x *ZoneServerInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[196]
+	mi := &file_EQMessage_proto_msgTypes[197]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16930,7 +16969,7 @@ func (x *ZoneServerInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZoneServerInfo.ProtoReflect.Descriptor instead.
 func (*ZoneServerInfo) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{196}
+	return file_EQMessage_proto_rawDescGZIP(), []int{197}
 }
 
 func (x *ZoneServerInfo) GetIp() string {
@@ -16966,7 +17005,7 @@ type WhoAllPlayer struct {
 
 func (x *WhoAllPlayer) Reset() {
 	*x = WhoAllPlayer{}
-	mi := &file_EQMessage_proto_msgTypes[197]
+	mi := &file_EQMessage_proto_msgTypes[198]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -16978,7 +17017,7 @@ func (x *WhoAllPlayer) String() string {
 func (*WhoAllPlayer) ProtoMessage() {}
 
 func (x *WhoAllPlayer) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[197]
+	mi := &file_EQMessage_proto_msgTypes[198]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -16991,7 +17030,7 @@ func (x *WhoAllPlayer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAllPlayer.ProtoReflect.Descriptor instead.
 func (*WhoAllPlayer) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{197}
+	return file_EQMessage_proto_rawDescGZIP(), []int{198}
 }
 
 func (x *WhoAllPlayer) GetFormatstring() int32 {
@@ -17085,7 +17124,7 @@ type WhoAllReturn struct {
 
 func (x *WhoAllReturn) Reset() {
 	*x = WhoAllReturn{}
-	mi := &file_EQMessage_proto_msgTypes[198]
+	mi := &file_EQMessage_proto_msgTypes[199]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17097,7 +17136,7 @@ func (x *WhoAllReturn) String() string {
 func (*WhoAllReturn) ProtoMessage() {}
 
 func (x *WhoAllReturn) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[198]
+	mi := &file_EQMessage_proto_msgTypes[199]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17110,7 +17149,7 @@ func (x *WhoAllReturn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAllReturn.ProtoReflect.Descriptor instead.
 func (*WhoAllReturn) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{198}
+	return file_EQMessage_proto_rawDescGZIP(), []int{199}
 }
 
 func (x *WhoAllReturn) GetId() int32 {
@@ -17166,7 +17205,7 @@ type Trader struct {
 
 func (x *Trader) Reset() {
 	*x = Trader{}
-	mi := &file_EQMessage_proto_msgTypes[199]
+	mi := &file_EQMessage_proto_msgTypes[200]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17178,7 +17217,7 @@ func (x *Trader) String() string {
 func (*Trader) ProtoMessage() {}
 
 func (x *Trader) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[199]
+	mi := &file_EQMessage_proto_msgTypes[200]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17191,7 +17230,7 @@ func (x *Trader) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Trader.ProtoReflect.Descriptor instead.
 func (*Trader) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{199}
+	return file_EQMessage_proto_rawDescGZIP(), []int{200}
 }
 
 func (x *Trader) GetCode() int32 {
@@ -17225,7 +17264,7 @@ type ClickTrader struct {
 
 func (x *ClickTrader) Reset() {
 	*x = ClickTrader{}
-	mi := &file_EQMessage_proto_msgTypes[200]
+	mi := &file_EQMessage_proto_msgTypes[201]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17237,7 +17276,7 @@ func (x *ClickTrader) String() string {
 func (*ClickTrader) ProtoMessage() {}
 
 func (x *ClickTrader) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[200]
+	mi := &file_EQMessage_proto_msgTypes[201]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17250,7 +17289,7 @@ func (x *ClickTrader) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClickTrader.ProtoReflect.Descriptor instead.
 func (*ClickTrader) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{200}
+	return file_EQMessage_proto_rawDescGZIP(), []int{201}
 }
 
 func (x *ClickTrader) GetCode() int32 {
@@ -17276,7 +17315,7 @@ type GetItems struct {
 
 func (x *GetItems) Reset() {
 	*x = GetItems{}
-	mi := &file_EQMessage_proto_msgTypes[201]
+	mi := &file_EQMessage_proto_msgTypes[202]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17288,7 +17327,7 @@ func (x *GetItems) String() string {
 func (*GetItems) ProtoMessage() {}
 
 func (x *GetItems) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[201]
+	mi := &file_EQMessage_proto_msgTypes[202]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17301,7 +17340,7 @@ func (x *GetItems) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetItems.ProtoReflect.Descriptor instead.
 func (*GetItems) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{201}
+	return file_EQMessage_proto_rawDescGZIP(), []int{202}
 }
 
 func (x *GetItems) GetItems() []int32 {
@@ -17321,7 +17360,7 @@ type BecomeTrader struct {
 
 func (x *BecomeTrader) Reset() {
 	*x = BecomeTrader{}
-	mi := &file_EQMessage_proto_msgTypes[202]
+	mi := &file_EQMessage_proto_msgTypes[203]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17333,7 +17372,7 @@ func (x *BecomeTrader) String() string {
 func (*BecomeTrader) ProtoMessage() {}
 
 func (x *BecomeTrader) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[202]
+	mi := &file_EQMessage_proto_msgTypes[203]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17346,7 +17385,7 @@ func (x *BecomeTrader) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BecomeTrader.ProtoReflect.Descriptor instead.
 func (*BecomeTrader) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{202}
+	return file_EQMessage_proto_rawDescGZIP(), []int{203}
 }
 
 func (x *BecomeTrader) GetId() int32 {
@@ -17373,7 +17412,7 @@ type Trader_ShowItems struct {
 
 func (x *Trader_ShowItems) Reset() {
 	*x = Trader_ShowItems{}
-	mi := &file_EQMessage_proto_msgTypes[203]
+	mi := &file_EQMessage_proto_msgTypes[204]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17385,7 +17424,7 @@ func (x *Trader_ShowItems) String() string {
 func (*Trader_ShowItems) ProtoMessage() {}
 
 func (x *Trader_ShowItems) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[203]
+	mi := &file_EQMessage_proto_msgTypes[204]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17398,7 +17437,7 @@ func (x *Trader_ShowItems) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Trader_ShowItems.ProtoReflect.Descriptor instead.
 func (*Trader_ShowItems) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{203}
+	return file_EQMessage_proto_rawDescGZIP(), []int{204}
 }
 
 func (x *Trader_ShowItems) GetCode() int32 {
@@ -17430,7 +17469,7 @@ type TraderBuy struct {
 
 func (x *TraderBuy) Reset() {
 	*x = TraderBuy{}
-	mi := &file_EQMessage_proto_msgTypes[204]
+	mi := &file_EQMessage_proto_msgTypes[205]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17442,7 +17481,7 @@ func (x *TraderBuy) String() string {
 func (*TraderBuy) ProtoMessage() {}
 
 func (x *TraderBuy) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[204]
+	mi := &file_EQMessage_proto_msgTypes[205]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17455,7 +17494,7 @@ func (x *TraderBuy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TraderBuy.ProtoReflect.Descriptor instead.
 func (*TraderBuy) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{204}
+	return file_EQMessage_proto_rawDescGZIP(), []int{205}
 }
 
 func (x *TraderBuy) GetAction() int32 {
@@ -17519,7 +17558,7 @@ type TraderItemUpdate struct {
 
 func (x *TraderItemUpdate) Reset() {
 	*x = TraderItemUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[205]
+	mi := &file_EQMessage_proto_msgTypes[206]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17531,7 +17570,7 @@ func (x *TraderItemUpdate) String() string {
 func (*TraderItemUpdate) ProtoMessage() {}
 
 func (x *TraderItemUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[205]
+	mi := &file_EQMessage_proto_msgTypes[206]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17544,7 +17583,7 @@ func (x *TraderItemUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TraderItemUpdate.ProtoReflect.Descriptor instead.
 func (*TraderItemUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{205}
+	return file_EQMessage_proto_rawDescGZIP(), []int{206}
 }
 
 func (x *TraderItemUpdate) GetTraderid() int32 {
@@ -17587,7 +17626,7 @@ type MoneyUpdate struct {
 
 func (x *MoneyUpdate) Reset() {
 	*x = MoneyUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[206]
+	mi := &file_EQMessage_proto_msgTypes[207]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17599,7 +17638,7 @@ func (x *MoneyUpdate) String() string {
 func (*MoneyUpdate) ProtoMessage() {}
 
 func (x *MoneyUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[206]
+	mi := &file_EQMessage_proto_msgTypes[207]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17612,7 +17651,7 @@ func (x *MoneyUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoneyUpdate.ProtoReflect.Descriptor instead.
 func (*MoneyUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{206}
+	return file_EQMessage_proto_rawDescGZIP(), []int{207}
 }
 
 func (x *MoneyUpdate) GetPlatinum() int32 {
@@ -17653,7 +17692,7 @@ type TraderDelItem struct {
 
 func (x *TraderDelItem) Reset() {
 	*x = TraderDelItem{}
-	mi := &file_EQMessage_proto_msgTypes[207]
+	mi := &file_EQMessage_proto_msgTypes[208]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17665,7 +17704,7 @@ func (x *TraderDelItem) String() string {
 func (*TraderDelItem) ProtoMessage() {}
 
 func (x *TraderDelItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[207]
+	mi := &file_EQMessage_proto_msgTypes[208]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17678,7 +17717,7 @@ func (x *TraderDelItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TraderDelItem.ProtoReflect.Descriptor instead.
 func (*TraderDelItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{207}
+	return file_EQMessage_proto_rawDescGZIP(), []int{208}
 }
 
 func (x *TraderDelItem) GetSlotid() int32 {
@@ -17705,7 +17744,7 @@ type TraderClick struct {
 
 func (x *TraderClick) Reset() {
 	*x = TraderClick{}
-	mi := &file_EQMessage_proto_msgTypes[208]
+	mi := &file_EQMessage_proto_msgTypes[209]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17717,7 +17756,7 @@ func (x *TraderClick) String() string {
 func (*TraderClick) ProtoMessage() {}
 
 func (x *TraderClick) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[208]
+	mi := &file_EQMessage_proto_msgTypes[209]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17730,7 +17769,7 @@ func (x *TraderClick) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TraderClick.ProtoReflect.Descriptor instead.
 func (*TraderClick) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{208}
+	return file_EQMessage_proto_rawDescGZIP(), []int{209}
 }
 
 func (x *TraderClick) GetTraderid() int32 {
@@ -17758,7 +17797,7 @@ type FormattedMessage struct {
 
 func (x *FormattedMessage) Reset() {
 	*x = FormattedMessage{}
-	mi := &file_EQMessage_proto_msgTypes[209]
+	mi := &file_EQMessage_proto_msgTypes[210]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17770,7 +17809,7 @@ func (x *FormattedMessage) String() string {
 func (*FormattedMessage) ProtoMessage() {}
 
 func (x *FormattedMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[209]
+	mi := &file_EQMessage_proto_msgTypes[210]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17783,7 +17822,7 @@ func (x *FormattedMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FormattedMessage.ProtoReflect.Descriptor instead.
 func (*FormattedMessage) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{209}
+	return file_EQMessage_proto_rawDescGZIP(), []int{210}
 }
 
 func (x *FormattedMessage) GetStringId() int32 {
@@ -17817,7 +17856,7 @@ type SimpleMessage struct {
 
 func (x *SimpleMessage) Reset() {
 	*x = SimpleMessage{}
-	mi := &file_EQMessage_proto_msgTypes[210]
+	mi := &file_EQMessage_proto_msgTypes[211]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17829,7 +17868,7 @@ func (x *SimpleMessage) String() string {
 func (*SimpleMessage) ProtoMessage() {}
 
 func (x *SimpleMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[210]
+	mi := &file_EQMessage_proto_msgTypes[211]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17842,7 +17881,7 @@ func (x *SimpleMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SimpleMessage.ProtoReflect.Descriptor instead.
 func (*SimpleMessage) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{210}
+	return file_EQMessage_proto_rawDescGZIP(), []int{211}
 }
 
 func (x *SimpleMessage) GetStringId() int32 {
@@ -17879,7 +17918,7 @@ type GuildMemberEntry struct {
 
 func (x *GuildMemberEntry) Reset() {
 	*x = GuildMemberEntry{}
-	mi := &file_EQMessage_proto_msgTypes[211]
+	mi := &file_EQMessage_proto_msgTypes[212]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -17891,7 +17930,7 @@ func (x *GuildMemberEntry) String() string {
 func (*GuildMemberEntry) ProtoMessage() {}
 
 func (x *GuildMemberEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[211]
+	mi := &file_EQMessage_proto_msgTypes[212]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -17904,7 +17943,7 @@ func (x *GuildMemberEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildMemberEntry.ProtoReflect.Descriptor instead.
 func (*GuildMemberEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{211}
+	return file_EQMessage_proto_rawDescGZIP(), []int{212}
 }
 
 func (x *GuildMemberEntry) GetName() string {
@@ -18002,7 +18041,7 @@ type GuildMembers struct {
 
 func (x *GuildMembers) Reset() {
 	*x = GuildMembers{}
-	mi := &file_EQMessage_proto_msgTypes[212]
+	mi := &file_EQMessage_proto_msgTypes[213]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18014,7 +18053,7 @@ func (x *GuildMembers) String() string {
 func (*GuildMembers) ProtoMessage() {}
 
 func (x *GuildMembers) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[212]
+	mi := &file_EQMessage_proto_msgTypes[213]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18027,7 +18066,7 @@ func (x *GuildMembers) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildMembers.ProtoReflect.Descriptor instead.
 func (*GuildMembers) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{212}
+	return file_EQMessage_proto_rawDescGZIP(), []int{213}
 }
 
 func (x *GuildMembers) GetPlayerName() string {
@@ -18062,7 +18101,7 @@ type GuildMOTD struct {
 
 func (x *GuildMOTD) Reset() {
 	*x = GuildMOTD{}
-	mi := &file_EQMessage_proto_msgTypes[213]
+	mi := &file_EQMessage_proto_msgTypes[214]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18074,7 +18113,7 @@ func (x *GuildMOTD) String() string {
 func (*GuildMOTD) ProtoMessage() {}
 
 func (x *GuildMOTD) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[213]
+	mi := &file_EQMessage_proto_msgTypes[214]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18087,7 +18126,7 @@ func (x *GuildMOTD) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildMOTD.ProtoReflect.Descriptor instead.
 func (*GuildMOTD) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{213}
+	return file_EQMessage_proto_rawDescGZIP(), []int{214}
 }
 
 func (x *GuildMOTD) GetName() string {
@@ -18122,7 +18161,7 @@ type GuildUpdate_PublicNote struct {
 
 func (x *GuildUpdate_PublicNote) Reset() {
 	*x = GuildUpdate_PublicNote{}
-	mi := &file_EQMessage_proto_msgTypes[214]
+	mi := &file_EQMessage_proto_msgTypes[215]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18134,7 +18173,7 @@ func (x *GuildUpdate_PublicNote) String() string {
 func (*GuildUpdate_PublicNote) ProtoMessage() {}
 
 func (x *GuildUpdate_PublicNote) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[214]
+	mi := &file_EQMessage_proto_msgTypes[215]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18147,7 +18186,7 @@ func (x *GuildUpdate_PublicNote) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildUpdate_PublicNote.ProtoReflect.Descriptor instead.
 func (*GuildUpdate_PublicNote) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{214}
+	return file_EQMessage_proto_rawDescGZIP(), []int{215}
 }
 
 func (x *GuildUpdate_PublicNote) GetName() string {
@@ -18181,7 +18220,7 @@ type GuildDemote struct {
 
 func (x *GuildDemote) Reset() {
 	*x = GuildDemote{}
-	mi := &file_EQMessage_proto_msgTypes[215]
+	mi := &file_EQMessage_proto_msgTypes[216]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18193,7 +18232,7 @@ func (x *GuildDemote) String() string {
 func (*GuildDemote) ProtoMessage() {}
 
 func (x *GuildDemote) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[215]
+	mi := &file_EQMessage_proto_msgTypes[216]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18206,7 +18245,7 @@ func (x *GuildDemote) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildDemote.ProtoReflect.Descriptor instead.
 func (*GuildDemote) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{215}
+	return file_EQMessage_proto_rawDescGZIP(), []int{216}
 }
 
 func (x *GuildDemote) GetName() string {
@@ -18234,7 +18273,7 @@ type GuildRemove struct {
 
 func (x *GuildRemove) Reset() {
 	*x = GuildRemove{}
-	mi := &file_EQMessage_proto_msgTypes[216]
+	mi := &file_EQMessage_proto_msgTypes[217]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18246,7 +18285,7 @@ func (x *GuildRemove) String() string {
 func (*GuildRemove) ProtoMessage() {}
 
 func (x *GuildRemove) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[216]
+	mi := &file_EQMessage_proto_msgTypes[217]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18259,7 +18298,7 @@ func (x *GuildRemove) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildRemove.ProtoReflect.Descriptor instead.
 func (*GuildRemove) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{216}
+	return file_EQMessage_proto_rawDescGZIP(), []int{217}
 }
 
 func (x *GuildRemove) GetTarget() string {
@@ -18293,7 +18332,7 @@ type GuildMakeLeader struct {
 
 func (x *GuildMakeLeader) Reset() {
 	*x = GuildMakeLeader{}
-	mi := &file_EQMessage_proto_msgTypes[217]
+	mi := &file_EQMessage_proto_msgTypes[218]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18305,7 +18344,7 @@ func (x *GuildMakeLeader) String() string {
 func (*GuildMakeLeader) ProtoMessage() {}
 
 func (x *GuildMakeLeader) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[217]
+	mi := &file_EQMessage_proto_msgTypes[218]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18318,7 +18357,7 @@ func (x *GuildMakeLeader) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildMakeLeader.ProtoReflect.Descriptor instead.
 func (*GuildMakeLeader) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{217}
+	return file_EQMessage_proto_rawDescGZIP(), []int{218}
 }
 
 func (x *GuildMakeLeader) GetName() string {
@@ -18352,7 +18391,7 @@ type Make_Pet struct {
 
 func (x *Make_Pet) Reset() {
 	*x = Make_Pet{}
-	mi := &file_EQMessage_proto_msgTypes[218]
+	mi := &file_EQMessage_proto_msgTypes[219]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18364,7 +18403,7 @@ func (x *Make_Pet) String() string {
 func (*Make_Pet) ProtoMessage() {}
 
 func (x *Make_Pet) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[218]
+	mi := &file_EQMessage_proto_msgTypes[219]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18377,7 +18416,7 @@ func (x *Make_Pet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Make_Pet.ProtoReflect.Descriptor instead.
 func (*Make_Pet) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{218}
+	return file_EQMessage_proto_rawDescGZIP(), []int{219}
 }
 
 func (x *Make_Pet) GetLevel() int32 {
@@ -18461,7 +18500,7 @@ type Ground_Spawn struct {
 
 func (x *Ground_Spawn) Reset() {
 	*x = Ground_Spawn{}
-	mi := &file_EQMessage_proto_msgTypes[219]
+	mi := &file_EQMessage_proto_msgTypes[220]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18473,7 +18512,7 @@ func (x *Ground_Spawn) String() string {
 func (*Ground_Spawn) ProtoMessage() {}
 
 func (x *Ground_Spawn) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[219]
+	mi := &file_EQMessage_proto_msgTypes[220]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18486,7 +18525,7 @@ func (x *Ground_Spawn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ground_Spawn.ProtoReflect.Descriptor instead.
 func (*Ground_Spawn) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{219}
+	return file_EQMessage_proto_rawDescGZIP(), []int{220}
 }
 
 func (x *Ground_Spawn) GetMaxX() float32 {
@@ -18568,7 +18607,7 @@ type Ground_Spawns struct {
 
 func (x *Ground_Spawns) Reset() {
 	*x = Ground_Spawns{}
-	mi := &file_EQMessage_proto_msgTypes[220]
+	mi := &file_EQMessage_proto_msgTypes[221]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18580,7 +18619,7 @@ func (x *Ground_Spawns) String() string {
 func (*Ground_Spawns) ProtoMessage() {}
 
 func (x *Ground_Spawns) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[220]
+	mi := &file_EQMessage_proto_msgTypes[221]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18593,7 +18632,7 @@ func (x *Ground_Spawns) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ground_Spawns.ProtoReflect.Descriptor instead.
 func (*Ground_Spawns) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{220}
+	return file_EQMessage_proto_rawDescGZIP(), []int{221}
 }
 
 func (x *Ground_Spawns) GetSpawn() []*Ground_Spawn {
@@ -18614,7 +18653,7 @@ type ApproveZone struct {
 
 func (x *ApproveZone) Reset() {
 	*x = ApproveZone{}
-	mi := &file_EQMessage_proto_msgTypes[221]
+	mi := &file_EQMessage_proto_msgTypes[222]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18626,7 +18665,7 @@ func (x *ApproveZone) String() string {
 func (*ApproveZone) ProtoMessage() {}
 
 func (x *ApproveZone) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[221]
+	mi := &file_EQMessage_proto_msgTypes[222]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18639,7 +18678,7 @@ func (x *ApproveZone) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveZone.ProtoReflect.Descriptor instead.
 func (*ApproveZone) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{221}
+	return file_EQMessage_proto_rawDescGZIP(), []int{222}
 }
 
 func (x *ApproveZone) GetName() string {
@@ -18673,7 +18712,7 @@ type ZoneInSendName struct {
 
 func (x *ZoneInSendName) Reset() {
 	*x = ZoneInSendName{}
-	mi := &file_EQMessage_proto_msgTypes[222]
+	mi := &file_EQMessage_proto_msgTypes[223]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18685,7 +18724,7 @@ func (x *ZoneInSendName) String() string {
 func (*ZoneInSendName) ProtoMessage() {}
 
 func (x *ZoneInSendName) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[222]
+	mi := &file_EQMessage_proto_msgTypes[223]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18698,7 +18737,7 @@ func (x *ZoneInSendName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZoneInSendName.ProtoReflect.Descriptor instead.
 func (*ZoneInSendName) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{222}
+	return file_EQMessage_proto_rawDescGZIP(), []int{223}
 }
 
 func (x *ZoneInSendName) GetName() string {
@@ -18724,7 +18763,7 @@ type ZoneInSendName2 struct {
 
 func (x *ZoneInSendName2) Reset() {
 	*x = ZoneInSendName2{}
-	mi := &file_EQMessage_proto_msgTypes[223]
+	mi := &file_EQMessage_proto_msgTypes[224]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18736,7 +18775,7 @@ func (x *ZoneInSendName2) String() string {
 func (*ZoneInSendName2) ProtoMessage() {}
 
 func (x *ZoneInSendName2) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[223]
+	mi := &file_EQMessage_proto_msgTypes[224]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18749,7 +18788,7 @@ func (x *ZoneInSendName2) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZoneInSendName2.ProtoReflect.Descriptor instead.
 func (*ZoneInSendName2) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{223}
+	return file_EQMessage_proto_rawDescGZIP(), []int{224}
 }
 
 func (x *ZoneInSendName2) GetName() string {
@@ -18770,7 +18809,7 @@ type StartTribute struct {
 
 func (x *StartTribute) Reset() {
 	*x = StartTribute{}
-	mi := &file_EQMessage_proto_msgTypes[224]
+	mi := &file_EQMessage_proto_msgTypes[225]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18782,7 +18821,7 @@ func (x *StartTribute) String() string {
 func (*StartTribute) ProtoMessage() {}
 
 func (x *StartTribute) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[224]
+	mi := &file_EQMessage_proto_msgTypes[225]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18795,7 +18834,7 @@ func (x *StartTribute) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartTribute.ProtoReflect.Descriptor instead.
 func (*StartTribute) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{224}
+	return file_EQMessage_proto_rawDescGZIP(), []int{225}
 }
 
 func (x *StartTribute) GetClientId() int32 {
@@ -18830,7 +18869,7 @@ type TributeLevel struct {
 
 func (x *TributeLevel) Reset() {
 	*x = TributeLevel{}
-	mi := &file_EQMessage_proto_msgTypes[225]
+	mi := &file_EQMessage_proto_msgTypes[226]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18842,7 +18881,7 @@ func (x *TributeLevel) String() string {
 func (*TributeLevel) ProtoMessage() {}
 
 func (x *TributeLevel) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[225]
+	mi := &file_EQMessage_proto_msgTypes[226]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18855,7 +18894,7 @@ func (x *TributeLevel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TributeLevel.ProtoReflect.Descriptor instead.
 func (*TributeLevel) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{225}
+	return file_EQMessage_proto_rawDescGZIP(), []int{226}
 }
 
 func (x *TributeLevel) GetLevel() int32 {
@@ -18891,7 +18930,7 @@ type TributeAbility struct {
 
 func (x *TributeAbility) Reset() {
 	*x = TributeAbility{}
-	mi := &file_EQMessage_proto_msgTypes[226]
+	mi := &file_EQMessage_proto_msgTypes[227]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18903,7 +18942,7 @@ func (x *TributeAbility) String() string {
 func (*TributeAbility) ProtoMessage() {}
 
 func (x *TributeAbility) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[226]
+	mi := &file_EQMessage_proto_msgTypes[227]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18916,7 +18955,7 @@ func (x *TributeAbility) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TributeAbility.ProtoReflect.Descriptor instead.
 func (*TributeAbility) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{226}
+	return file_EQMessage_proto_rawDescGZIP(), []int{227}
 }
 
 func (x *TributeAbility) GetTributeId() int32 {
@@ -18957,7 +18996,7 @@ type GuildTributeAbility struct {
 
 func (x *GuildTributeAbility) Reset() {
 	*x = GuildTributeAbility{}
-	mi := &file_EQMessage_proto_msgTypes[227]
+	mi := &file_EQMessage_proto_msgTypes[228]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -18969,7 +19008,7 @@ func (x *GuildTributeAbility) String() string {
 func (*GuildTributeAbility) ProtoMessage() {}
 
 func (x *GuildTributeAbility) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[227]
+	mi := &file_EQMessage_proto_msgTypes[228]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -18982,7 +19021,7 @@ func (x *GuildTributeAbility) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildTributeAbility.ProtoReflect.Descriptor instead.
 func (*GuildTributeAbility) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{227}
+	return file_EQMessage_proto_rawDescGZIP(), []int{228}
 }
 
 func (x *GuildTributeAbility) GetGuildId() int32 {
@@ -19009,7 +19048,7 @@ type SelectTributeReq struct {
 
 func (x *SelectTributeReq) Reset() {
 	*x = SelectTributeReq{}
-	mi := &file_EQMessage_proto_msgTypes[228]
+	mi := &file_EQMessage_proto_msgTypes[229]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19021,7 +19060,7 @@ func (x *SelectTributeReq) String() string {
 func (*SelectTributeReq) ProtoMessage() {}
 
 func (x *SelectTributeReq) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[228]
+	mi := &file_EQMessage_proto_msgTypes[229]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19034,7 +19073,7 @@ func (x *SelectTributeReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SelectTributeReq.ProtoReflect.Descriptor instead.
 func (*SelectTributeReq) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{228}
+	return file_EQMessage_proto_rawDescGZIP(), []int{229}
 }
 
 func (x *SelectTributeReq) GetClientId() int32 {
@@ -19062,7 +19101,7 @@ type SelectTributeReply struct {
 
 func (x *SelectTributeReply) Reset() {
 	*x = SelectTributeReply{}
-	mi := &file_EQMessage_proto_msgTypes[229]
+	mi := &file_EQMessage_proto_msgTypes[230]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19074,7 +19113,7 @@ func (x *SelectTributeReply) String() string {
 func (*SelectTributeReply) ProtoMessage() {}
 
 func (x *SelectTributeReply) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[229]
+	mi := &file_EQMessage_proto_msgTypes[230]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19087,7 +19126,7 @@ func (x *SelectTributeReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SelectTributeReply.ProtoReflect.Descriptor instead.
 func (*SelectTributeReply) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{229}
+	return file_EQMessage_proto_rawDescGZIP(), []int{230}
 }
 
 func (x *SelectTributeReply) GetClientId() int32 {
@@ -19123,7 +19162,7 @@ type TributeInfo struct {
 
 func (x *TributeInfo) Reset() {
 	*x = TributeInfo{}
-	mi := &file_EQMessage_proto_msgTypes[230]
+	mi := &file_EQMessage_proto_msgTypes[231]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19135,7 +19174,7 @@ func (x *TributeInfo) String() string {
 func (*TributeInfo) ProtoMessage() {}
 
 func (x *TributeInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[230]
+	mi := &file_EQMessage_proto_msgTypes[231]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19148,7 +19187,7 @@ func (x *TributeInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TributeInfo.ProtoReflect.Descriptor instead.
 func (*TributeInfo) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{230}
+	return file_EQMessage_proto_rawDescGZIP(), []int{231}
 }
 
 func (x *TributeInfo) GetActive() int32 {
@@ -19191,7 +19230,7 @@ type TributeItem struct {
 
 func (x *TributeItem) Reset() {
 	*x = TributeItem{}
-	mi := &file_EQMessage_proto_msgTypes[231]
+	mi := &file_EQMessage_proto_msgTypes[232]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19203,7 +19242,7 @@ func (x *TributeItem) String() string {
 func (*TributeItem) ProtoMessage() {}
 
 func (x *TributeItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[231]
+	mi := &file_EQMessage_proto_msgTypes[232]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19216,7 +19255,7 @@ func (x *TributeItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TributeItem.ProtoReflect.Descriptor instead.
 func (*TributeItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{231}
+	return file_EQMessage_proto_rawDescGZIP(), []int{232}
 }
 
 func (x *TributeItem) GetSlot() int32 {
@@ -19257,7 +19296,7 @@ type TributePoint struct {
 
 func (x *TributePoint) Reset() {
 	*x = TributePoint{}
-	mi := &file_EQMessage_proto_msgTypes[232]
+	mi := &file_EQMessage_proto_msgTypes[233]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19269,7 +19308,7 @@ func (x *TributePoint) String() string {
 func (*TributePoint) ProtoMessage() {}
 
 func (x *TributePoint) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[232]
+	mi := &file_EQMessage_proto_msgTypes[233]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19282,7 +19321,7 @@ func (x *TributePoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TributePoint.ProtoReflect.Descriptor instead.
 func (*TributePoint) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{232}
+	return file_EQMessage_proto_rawDescGZIP(), []int{233}
 }
 
 func (x *TributePoint) GetTributePoints() int32 {
@@ -19310,7 +19349,7 @@ type TributeMoney struct {
 
 func (x *TributeMoney) Reset() {
 	*x = TributeMoney{}
-	mi := &file_EQMessage_proto_msgTypes[233]
+	mi := &file_EQMessage_proto_msgTypes[234]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19322,7 +19361,7 @@ func (x *TributeMoney) String() string {
 func (*TributeMoney) ProtoMessage() {}
 
 func (x *TributeMoney) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[233]
+	mi := &file_EQMessage_proto_msgTypes[234]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19335,7 +19374,7 @@ func (x *TributeMoney) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TributeMoney.ProtoReflect.Descriptor instead.
 func (*TributeMoney) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{233}
+	return file_EQMessage_proto_rawDescGZIP(), []int{234}
 }
 
 func (x *TributeMoney) GetPlatinum() int32 {
@@ -19371,7 +19410,7 @@ type Split struct {
 
 func (x *Split) Reset() {
 	*x = Split{}
-	mi := &file_EQMessage_proto_msgTypes[234]
+	mi := &file_EQMessage_proto_msgTypes[235]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19383,7 +19422,7 @@ func (x *Split) String() string {
 func (*Split) ProtoMessage() {}
 
 func (x *Split) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[234]
+	mi := &file_EQMessage_proto_msgTypes[235]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19396,7 +19435,7 @@ func (x *Split) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Split.ProtoReflect.Descriptor instead.
 func (*Split) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{234}
+	return file_EQMessage_proto_rawDescGZIP(), []int{235}
 }
 
 func (x *Split) GetPlatinum() int32 {
@@ -19437,7 +19476,7 @@ type NewCombine struct {
 
 func (x *NewCombine) Reset() {
 	*x = NewCombine{}
-	mi := &file_EQMessage_proto_msgTypes[235]
+	mi := &file_EQMessage_proto_msgTypes[236]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19449,7 +19488,7 @@ func (x *NewCombine) String() string {
 func (*NewCombine) ProtoMessage() {}
 
 func (x *NewCombine) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[235]
+	mi := &file_EQMessage_proto_msgTypes[236]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19462,7 +19501,7 @@ func (x *NewCombine) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NewCombine.ProtoReflect.Descriptor instead.
 func (*NewCombine) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{235}
+	return file_EQMessage_proto_rawDescGZIP(), []int{236}
 }
 
 func (x *NewCombine) GetContainerSlot() int32 {
@@ -19490,7 +19529,7 @@ type TradeskillFavorites struct {
 
 func (x *TradeskillFavorites) Reset() {
 	*x = TradeskillFavorites{}
-	mi := &file_EQMessage_proto_msgTypes[236]
+	mi := &file_EQMessage_proto_msgTypes[237]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19502,7 +19541,7 @@ func (x *TradeskillFavorites) String() string {
 func (*TradeskillFavorites) ProtoMessage() {}
 
 func (x *TradeskillFavorites) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[236]
+	mi := &file_EQMessage_proto_msgTypes[237]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19515,7 +19554,7 @@ func (x *TradeskillFavorites) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TradeskillFavorites.ProtoReflect.Descriptor instead.
 func (*TradeskillFavorites) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{236}
+	return file_EQMessage_proto_rawDescGZIP(), []int{237}
 }
 
 func (x *TradeskillFavorites) GetObjectType() int32 {
@@ -19552,7 +19591,7 @@ type RecipesSearch struct {
 
 func (x *RecipesSearch) Reset() {
 	*x = RecipesSearch{}
-	mi := &file_EQMessage_proto_msgTypes[237]
+	mi := &file_EQMessage_proto_msgTypes[238]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19564,7 +19603,7 @@ func (x *RecipesSearch) String() string {
 func (*RecipesSearch) ProtoMessage() {}
 
 func (x *RecipesSearch) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[237]
+	mi := &file_EQMessage_proto_msgTypes[238]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19577,7 +19616,7 @@ func (x *RecipesSearch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecipesSearch.ProtoReflect.Descriptor instead.
 func (*RecipesSearch) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{237}
+	return file_EQMessage_proto_rawDescGZIP(), []int{238}
 }
 
 func (x *RecipesSearch) GetObjectType() int32 {
@@ -19629,7 +19668,7 @@ type RecipeReply struct {
 
 func (x *RecipeReply) Reset() {
 	*x = RecipeReply{}
-	mi := &file_EQMessage_proto_msgTypes[238]
+	mi := &file_EQMessage_proto_msgTypes[239]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19641,7 +19680,7 @@ func (x *RecipeReply) String() string {
 func (*RecipeReply) ProtoMessage() {}
 
 func (x *RecipeReply) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[238]
+	mi := &file_EQMessage_proto_msgTypes[239]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19654,7 +19693,7 @@ func (x *RecipeReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecipeReply.ProtoReflect.Descriptor instead.
 func (*RecipeReply) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{238}
+	return file_EQMessage_proto_rawDescGZIP(), []int{239}
 }
 
 func (x *RecipeReply) GetObjectType() int32 {
@@ -19711,7 +19750,7 @@ type RecipeAutoCombine struct {
 
 func (x *RecipeAutoCombine) Reset() {
 	*x = RecipeAutoCombine{}
-	mi := &file_EQMessage_proto_msgTypes[239]
+	mi := &file_EQMessage_proto_msgTypes[240]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19723,7 +19762,7 @@ func (x *RecipeAutoCombine) String() string {
 func (*RecipeAutoCombine) ProtoMessage() {}
 
 func (x *RecipeAutoCombine) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[239]
+	mi := &file_EQMessage_proto_msgTypes[240]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19736,7 +19775,7 @@ func (x *RecipeAutoCombine) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecipeAutoCombine.ProtoReflect.Descriptor instead.
 func (*RecipeAutoCombine) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{239}
+	return file_EQMessage_proto_rawDescGZIP(), []int{240}
 }
 
 func (x *RecipeAutoCombine) GetObjectType() int32 {
@@ -19791,7 +19830,7 @@ type LevelAppearance struct {
 
 func (x *LevelAppearance) Reset() {
 	*x = LevelAppearance{}
-	mi := &file_EQMessage_proto_msgTypes[240]
+	mi := &file_EQMessage_proto_msgTypes[241]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19803,7 +19842,7 @@ func (x *LevelAppearance) String() string {
 func (*LevelAppearance) ProtoMessage() {}
 
 func (x *LevelAppearance) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[240]
+	mi := &file_EQMessage_proto_msgTypes[241]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19816,7 +19855,7 @@ func (x *LevelAppearance) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LevelAppearance.ProtoReflect.Descriptor instead.
 func (*LevelAppearance) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{240}
+	return file_EQMessage_proto_rawDescGZIP(), []int{241}
 }
 
 func (x *LevelAppearance) GetSpawnId() int32 {
@@ -19942,7 +19981,7 @@ type MerchantList struct {
 
 func (x *MerchantList) Reset() {
 	*x = MerchantList{}
-	mi := &file_EQMessage_proto_msgTypes[241]
+	mi := &file_EQMessage_proto_msgTypes[242]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -19954,7 +19993,7 @@ func (x *MerchantList) String() string {
 func (*MerchantList) ProtoMessage() {}
 
 func (x *MerchantList) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[241]
+	mi := &file_EQMessage_proto_msgTypes[242]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -19967,7 +20006,7 @@ func (x *MerchantList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MerchantList.ProtoReflect.Descriptor instead.
 func (*MerchantList) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{241}
+	return file_EQMessage_proto_rawDescGZIP(), []int{242}
 }
 
 func (x *MerchantList) GetId() int32 {
@@ -20004,7 +20043,7 @@ type TempMerchantList struct {
 
 func (x *TempMerchantList) Reset() {
 	*x = TempMerchantList{}
-	mi := &file_EQMessage_proto_msgTypes[242]
+	mi := &file_EQMessage_proto_msgTypes[243]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20016,7 +20055,7 @@ func (x *TempMerchantList) String() string {
 func (*TempMerchantList) ProtoMessage() {}
 
 func (x *TempMerchantList) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[242]
+	mi := &file_EQMessage_proto_msgTypes[243]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20029,7 +20068,7 @@ func (x *TempMerchantList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TempMerchantList.ProtoReflect.Descriptor instead.
 func (*TempMerchantList) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{242}
+	return file_EQMessage_proto_rawDescGZIP(), []int{243}
 }
 
 func (x *TempMerchantList) GetNpcid() int32 {
@@ -20078,7 +20117,7 @@ type FindPerson_Point struct {
 
 func (x *FindPerson_Point) Reset() {
 	*x = FindPerson_Point{}
-	mi := &file_EQMessage_proto_msgTypes[243]
+	mi := &file_EQMessage_proto_msgTypes[244]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20090,7 +20129,7 @@ func (x *FindPerson_Point) String() string {
 func (*FindPerson_Point) ProtoMessage() {}
 
 func (x *FindPerson_Point) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[243]
+	mi := &file_EQMessage_proto_msgTypes[244]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20103,7 +20142,7 @@ func (x *FindPerson_Point) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindPerson_Point.ProtoReflect.Descriptor instead.
 func (*FindPerson_Point) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{243}
+	return file_EQMessage_proto_rawDescGZIP(), []int{244}
 }
 
 func (x *FindPerson_Point) GetY() float32 {
@@ -20137,7 +20176,7 @@ type FindPersonRequest struct {
 
 func (x *FindPersonRequest) Reset() {
 	*x = FindPersonRequest{}
-	mi := &file_EQMessage_proto_msgTypes[244]
+	mi := &file_EQMessage_proto_msgTypes[245]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20149,7 +20188,7 @@ func (x *FindPersonRequest) String() string {
 func (*FindPersonRequest) ProtoMessage() {}
 
 func (x *FindPersonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[244]
+	mi := &file_EQMessage_proto_msgTypes[245]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20162,7 +20201,7 @@ func (x *FindPersonRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindPersonRequest.ProtoReflect.Descriptor instead.
 func (*FindPersonRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{244}
+	return file_EQMessage_proto_rawDescGZIP(), []int{245}
 }
 
 func (x *FindPersonRequest) GetNpcId() int32 {
@@ -20189,7 +20228,7 @@ type FindPersonResult struct {
 
 func (x *FindPersonResult) Reset() {
 	*x = FindPersonResult{}
-	mi := &file_EQMessage_proto_msgTypes[245]
+	mi := &file_EQMessage_proto_msgTypes[246]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20201,7 +20240,7 @@ func (x *FindPersonResult) String() string {
 func (*FindPersonResult) ProtoMessage() {}
 
 func (x *FindPersonResult) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[245]
+	mi := &file_EQMessage_proto_msgTypes[246]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20214,7 +20253,7 @@ func (x *FindPersonResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FindPersonResult.ProtoReflect.Descriptor instead.
 func (*FindPersonResult) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{245}
+	return file_EQMessage_proto_rawDescGZIP(), []int{246}
 }
 
 func (x *FindPersonResult) GetDest() int32 {
@@ -20242,7 +20281,7 @@ type MobRename struct {
 
 func (x *MobRename) Reset() {
 	*x = MobRename{}
-	mi := &file_EQMessage_proto_msgTypes[246]
+	mi := &file_EQMessage_proto_msgTypes[247]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20254,7 +20293,7 @@ func (x *MobRename) String() string {
 func (*MobRename) ProtoMessage() {}
 
 func (x *MobRename) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[246]
+	mi := &file_EQMessage_proto_msgTypes[247]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20267,7 +20306,7 @@ func (x *MobRename) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MobRename.ProtoReflect.Descriptor instead.
 func (*MobRename) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{246}
+	return file_EQMessage_proto_rawDescGZIP(), []int{247}
 }
 
 func (x *MobRename) GetOldName() string {
@@ -20300,7 +20339,7 @@ type PlayMP3 struct {
 
 func (x *PlayMP3) Reset() {
 	*x = PlayMP3{}
-	mi := &file_EQMessage_proto_msgTypes[247]
+	mi := &file_EQMessage_proto_msgTypes[248]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20312,7 +20351,7 @@ func (x *PlayMP3) String() string {
 func (*PlayMP3) ProtoMessage() {}
 
 func (x *PlayMP3) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[247]
+	mi := &file_EQMessage_proto_msgTypes[248]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20325,7 +20364,7 @@ func (x *PlayMP3) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayMP3.ProtoReflect.Descriptor instead.
 func (*PlayMP3) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{247}
+	return file_EQMessage_proto_rawDescGZIP(), []int{248}
 }
 
 func (x *PlayMP3) GetFilename() string {
@@ -20346,7 +20385,7 @@ type TitleEntry struct {
 
 func (x *TitleEntry) Reset() {
 	*x = TitleEntry{}
-	mi := &file_EQMessage_proto_msgTypes[248]
+	mi := &file_EQMessage_proto_msgTypes[249]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20358,7 +20397,7 @@ func (x *TitleEntry) String() string {
 func (*TitleEntry) ProtoMessage() {}
 
 func (x *TitleEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[248]
+	mi := &file_EQMessage_proto_msgTypes[249]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20371,7 +20410,7 @@ func (x *TitleEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TitleEntry.ProtoReflect.Descriptor instead.
 func (*TitleEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{248}
+	return file_EQMessage_proto_rawDescGZIP(), []int{249}
 }
 
 func (x *TitleEntry) GetSkillId() int32 {
@@ -20405,7 +20444,7 @@ type Titles struct {
 
 func (x *Titles) Reset() {
 	*x = Titles{}
-	mi := &file_EQMessage_proto_msgTypes[249]
+	mi := &file_EQMessage_proto_msgTypes[250]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20417,7 +20456,7 @@ func (x *Titles) String() string {
 func (*Titles) ProtoMessage() {}
 
 func (x *Titles) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[249]
+	mi := &file_EQMessage_proto_msgTypes[250]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20430,7 +20469,7 @@ func (x *Titles) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Titles.ProtoReflect.Descriptor instead.
 func (*Titles) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{249}
+	return file_EQMessage_proto_rawDescGZIP(), []int{250}
 }
 
 func (x *Titles) GetCount() int32 {
@@ -20457,7 +20496,7 @@ type TitleListEntry struct {
 
 func (x *TitleListEntry) Reset() {
 	*x = TitleListEntry{}
-	mi := &file_EQMessage_proto_msgTypes[250]
+	mi := &file_EQMessage_proto_msgTypes[251]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20469,7 +20508,7 @@ func (x *TitleListEntry) String() string {
 func (*TitleListEntry) ProtoMessage() {}
 
 func (x *TitleListEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[250]
+	mi := &file_EQMessage_proto_msgTypes[251]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20482,7 +20521,7 @@ func (x *TitleListEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TitleListEntry.ProtoReflect.Descriptor instead.
 func (*TitleListEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{250}
+	return file_EQMessage_proto_rawDescGZIP(), []int{251}
 }
 
 func (x *TitleListEntry) GetPrefix() string {
@@ -20509,7 +20548,7 @@ type TitleList struct {
 
 func (x *TitleList) Reset() {
 	*x = TitleList{}
-	mi := &file_EQMessage_proto_msgTypes[251]
+	mi := &file_EQMessage_proto_msgTypes[252]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20521,7 +20560,7 @@ func (x *TitleList) String() string {
 func (*TitleList) ProtoMessage() {}
 
 func (x *TitleList) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[251]
+	mi := &file_EQMessage_proto_msgTypes[252]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20534,7 +20573,7 @@ func (x *TitleList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TitleList.ProtoReflect.Descriptor instead.
 func (*TitleList) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{251}
+	return file_EQMessage_proto_rawDescGZIP(), []int{252}
 }
 
 func (x *TitleList) GetCount() int32 {
@@ -20561,7 +20600,7 @@ type SetTitle struct {
 
 func (x *SetTitle) Reset() {
 	*x = SetTitle{}
-	mi := &file_EQMessage_proto_msgTypes[252]
+	mi := &file_EQMessage_proto_msgTypes[253]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20573,7 +20612,7 @@ func (x *SetTitle) String() string {
 func (*SetTitle) ProtoMessage() {}
 
 func (x *SetTitle) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[252]
+	mi := &file_EQMessage_proto_msgTypes[253]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20586,7 +20625,7 @@ func (x *SetTitle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetTitle.ProtoReflect.Descriptor instead.
 func (*SetTitle) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{252}
+	return file_EQMessage_proto_rawDescGZIP(), []int{253}
 }
 
 func (x *SetTitle) GetIsSuffix() int32 {
@@ -20614,7 +20653,7 @@ type SetTitleReply struct {
 
 func (x *SetTitleReply) Reset() {
 	*x = SetTitleReply{}
-	mi := &file_EQMessage_proto_msgTypes[253]
+	mi := &file_EQMessage_proto_msgTypes[254]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20626,7 +20665,7 @@ func (x *SetTitleReply) String() string {
 func (*SetTitleReply) ProtoMessage() {}
 
 func (x *SetTitleReply) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[253]
+	mi := &file_EQMessage_proto_msgTypes[254]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20639,7 +20678,7 @@ func (x *SetTitleReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetTitleReply.ProtoReflect.Descriptor instead.
 func (*SetTitleReply) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{253}
+	return file_EQMessage_proto_rawDescGZIP(), []int{254}
 }
 
 func (x *SetTitleReply) GetIsSuffix() int32 {
@@ -20679,7 +20718,7 @@ type TaskDescription struct {
 
 func (x *TaskDescription) Reset() {
 	*x = TaskDescription{}
-	mi := &file_EQMessage_proto_msgTypes[254]
+	mi := &file_EQMessage_proto_msgTypes[255]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20691,7 +20730,7 @@ func (x *TaskDescription) String() string {
 func (*TaskDescription) ProtoMessage() {}
 
 func (x *TaskDescription) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[254]
+	mi := &file_EQMessage_proto_msgTypes[255]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20704,7 +20743,7 @@ func (x *TaskDescription) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskDescription.ProtoReflect.Descriptor instead.
 func (*TaskDescription) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{254}
+	return file_EQMessage_proto_rawDescGZIP(), []int{255}
 }
 
 func (x *TaskDescription) GetActivityCount() int32 {
@@ -20774,7 +20813,7 @@ type TaskMemberList struct {
 
 func (x *TaskMemberList) Reset() {
 	*x = TaskMemberList{}
-	mi := &file_EQMessage_proto_msgTypes[255]
+	mi := &file_EQMessage_proto_msgTypes[256]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20786,7 +20825,7 @@ func (x *TaskMemberList) String() string {
 func (*TaskMemberList) ProtoMessage() {}
 
 func (x *TaskMemberList) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[255]
+	mi := &file_EQMessage_proto_msgTypes[256]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20799,7 +20838,7 @@ func (x *TaskMemberList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskMemberList.ProtoReflect.Descriptor instead.
 func (*TaskMemberList) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{255}
+	return file_EQMessage_proto_rawDescGZIP(), []int{256}
 }
 
 func (x *TaskMemberList) GetGopherId() int32 {
@@ -20841,7 +20880,7 @@ type TaskActivity struct {
 
 func (x *TaskActivity) Reset() {
 	*x = TaskActivity{}
-	mi := &file_EQMessage_proto_msgTypes[256]
+	mi := &file_EQMessage_proto_msgTypes[257]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20853,7 +20892,7 @@ func (x *TaskActivity) String() string {
 func (*TaskActivity) ProtoMessage() {}
 
 func (x *TaskActivity) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[256]
+	mi := &file_EQMessage_proto_msgTypes[257]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20866,7 +20905,7 @@ func (x *TaskActivity) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskActivity.ProtoReflect.Descriptor instead.
 func (*TaskActivity) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{256}
+	return file_EQMessage_proto_rawDescGZIP(), []int{257}
 }
 
 func (x *TaskActivity) GetActivityCount() int32 {
@@ -20950,7 +20989,7 @@ type TaskHistoryEntry struct {
 
 func (x *TaskHistoryEntry) Reset() {
 	*x = TaskHistoryEntry{}
-	mi := &file_EQMessage_proto_msgTypes[257]
+	mi := &file_EQMessage_proto_msgTypes[258]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -20962,7 +21001,7 @@ func (x *TaskHistoryEntry) String() string {
 func (*TaskHistoryEntry) ProtoMessage() {}
 
 func (x *TaskHistoryEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[257]
+	mi := &file_EQMessage_proto_msgTypes[258]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -20975,7 +21014,7 @@ func (x *TaskHistoryEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskHistoryEntry.ProtoReflect.Descriptor instead.
 func (*TaskHistoryEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{257}
+	return file_EQMessage_proto_rawDescGZIP(), []int{258}
 }
 
 func (x *TaskHistoryEntry) GetTaskId() int32 {
@@ -21009,7 +21048,7 @@ type TaskHistory struct {
 
 func (x *TaskHistory) Reset() {
 	*x = TaskHistory{}
-	mi := &file_EQMessage_proto_msgTypes[258]
+	mi := &file_EQMessage_proto_msgTypes[259]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21021,7 +21060,7 @@ func (x *TaskHistory) String() string {
 func (*TaskHistory) ProtoMessage() {}
 
 func (x *TaskHistory) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[258]
+	mi := &file_EQMessage_proto_msgTypes[259]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21034,7 +21073,7 @@ func (x *TaskHistory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskHistory.ProtoReflect.Descriptor instead.
 func (*TaskHistory) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{258}
+	return file_EQMessage_proto_rawDescGZIP(), []int{259}
 }
 
 func (x *TaskHistory) GetCount() int32 {
@@ -21061,7 +21100,7 @@ type AcceptNewTask struct {
 
 func (x *AcceptNewTask) Reset() {
 	*x = AcceptNewTask{}
-	mi := &file_EQMessage_proto_msgTypes[259]
+	mi := &file_EQMessage_proto_msgTypes[260]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21073,7 +21112,7 @@ func (x *AcceptNewTask) String() string {
 func (*AcceptNewTask) ProtoMessage() {}
 
 func (x *AcceptNewTask) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[259]
+	mi := &file_EQMessage_proto_msgTypes[260]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21086,7 +21125,7 @@ func (x *AcceptNewTask) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AcceptNewTask.ProtoReflect.Descriptor instead.
 func (*AcceptNewTask) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{259}
+	return file_EQMessage_proto_rawDescGZIP(), []int{260}
 }
 
 func (x *AcceptNewTask) GetTaskId() int32 {
@@ -21111,7 +21150,7 @@ type CancelTask struct {
 
 func (x *CancelTask) Reset() {
 	*x = CancelTask{}
-	mi := &file_EQMessage_proto_msgTypes[260]
+	mi := &file_EQMessage_proto_msgTypes[261]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21123,7 +21162,7 @@ func (x *CancelTask) String() string {
 func (*CancelTask) ProtoMessage() {}
 
 func (x *CancelTask) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[260]
+	mi := &file_EQMessage_proto_msgTypes[261]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21136,7 +21175,7 @@ func (x *CancelTask) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTask.ProtoReflect.Descriptor instead.
 func (*CancelTask) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{260}
+	return file_EQMessage_proto_rawDescGZIP(), []int{261}
 }
 
 type AvaliableTask struct {
@@ -21157,7 +21196,7 @@ type AvaliableTask struct {
 
 func (x *AvaliableTask) Reset() {
 	*x = AvaliableTask{}
-	mi := &file_EQMessage_proto_msgTypes[261]
+	mi := &file_EQMessage_proto_msgTypes[262]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21169,7 +21208,7 @@ func (x *AvaliableTask) String() string {
 func (*AvaliableTask) ProtoMessage() {}
 
 func (x *AvaliableTask) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[261]
+	mi := &file_EQMessage_proto_msgTypes[262]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21182,7 +21221,7 @@ func (x *AvaliableTask) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AvaliableTask.ProtoReflect.Descriptor instead.
 func (*AvaliableTask) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{261}
+	return file_EQMessage_proto_rawDescGZIP(), []int{262}
 }
 
 func (x *AvaliableTask) GetTaskIndex() int32 {
@@ -21271,7 +21310,7 @@ type BankerChange struct {
 
 func (x *BankerChange) Reset() {
 	*x = BankerChange{}
-	mi := &file_EQMessage_proto_msgTypes[262]
+	mi := &file_EQMessage_proto_msgTypes[263]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21283,7 +21322,7 @@ func (x *BankerChange) String() string {
 func (*BankerChange) ProtoMessage() {}
 
 func (x *BankerChange) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[262]
+	mi := &file_EQMessage_proto_msgTypes[263]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21296,7 +21335,7 @@ func (x *BankerChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BankerChange.ProtoReflect.Descriptor instead.
 func (*BankerChange) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{262}
+	return file_EQMessage_proto_rawDescGZIP(), []int{263}
 }
 
 func (x *BankerChange) GetPlatinum() int32 {
@@ -21367,7 +21406,7 @@ type LeadershipExpUpdate struct {
 
 func (x *LeadershipExpUpdate) Reset() {
 	*x = LeadershipExpUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[263]
+	mi := &file_EQMessage_proto_msgTypes[264]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21379,7 +21418,7 @@ func (x *LeadershipExpUpdate) String() string {
 func (*LeadershipExpUpdate) ProtoMessage() {}
 
 func (x *LeadershipExpUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[263]
+	mi := &file_EQMessage_proto_msgTypes[264]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21392,7 +21431,7 @@ func (x *LeadershipExpUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LeadershipExpUpdate.ProtoReflect.Descriptor instead.
 func (*LeadershipExpUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{263}
+	return file_EQMessage_proto_rawDescGZIP(), []int{264}
 }
 
 func (x *LeadershipExpUpdate) GetGroupLeadershipExp() float64 {
@@ -21434,7 +21473,7 @@ type UpdateLeadershipAA struct {
 
 func (x *UpdateLeadershipAA) Reset() {
 	*x = UpdateLeadershipAA{}
-	mi := &file_EQMessage_proto_msgTypes[264]
+	mi := &file_EQMessage_proto_msgTypes[265]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21446,7 +21485,7 @@ func (x *UpdateLeadershipAA) String() string {
 func (*UpdateLeadershipAA) ProtoMessage() {}
 
 func (x *UpdateLeadershipAA) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[264]
+	mi := &file_EQMessage_proto_msgTypes[265]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21459,7 +21498,7 @@ func (x *UpdateLeadershipAA) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateLeadershipAA.ProtoReflect.Descriptor instead.
 func (*UpdateLeadershipAA) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{264}
+	return file_EQMessage_proto_rawDescGZIP(), []int{265}
 }
 
 func (x *UpdateLeadershipAA) GetAbilityId() int32 {
@@ -21495,7 +21534,7 @@ type LeadExpUpdate struct {
 
 func (x *LeadExpUpdate) Reset() {
 	*x = LeadExpUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[265]
+	mi := &file_EQMessage_proto_msgTypes[266]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21507,7 +21546,7 @@ func (x *LeadExpUpdate) String() string {
 func (*LeadExpUpdate) ProtoMessage() {}
 
 func (x *LeadExpUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[265]
+	mi := &file_EQMessage_proto_msgTypes[266]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21520,7 +21559,7 @@ func (x *LeadExpUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LeadExpUpdate.ProtoReflect.Descriptor instead.
 func (*LeadExpUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{265}
+	return file_EQMessage_proto_rawDescGZIP(), []int{266}
 }
 
 func (x *LeadExpUpdate) GetGroupLeadershipExp() int32 {
@@ -21563,7 +21602,7 @@ type RaidGeneral struct {
 
 func (x *RaidGeneral) Reset() {
 	*x = RaidGeneral{}
-	mi := &file_EQMessage_proto_msgTypes[266]
+	mi := &file_EQMessage_proto_msgTypes[267]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21575,7 +21614,7 @@ func (x *RaidGeneral) String() string {
 func (*RaidGeneral) ProtoMessage() {}
 
 func (x *RaidGeneral) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[266]
+	mi := &file_EQMessage_proto_msgTypes[267]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21588,7 +21627,7 @@ func (x *RaidGeneral) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidGeneral.ProtoReflect.Descriptor instead.
 func (*RaidGeneral) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{266}
+	return file_EQMessage_proto_rawDescGZIP(), []int{267}
 }
 
 func (x *RaidGeneral) GetAction() int32 {
@@ -21631,7 +21670,7 @@ type RaidAddMember struct {
 
 func (x *RaidAddMember) Reset() {
 	*x = RaidAddMember{}
-	mi := &file_EQMessage_proto_msgTypes[267]
+	mi := &file_EQMessage_proto_msgTypes[268]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21643,7 +21682,7 @@ func (x *RaidAddMember) String() string {
 func (*RaidAddMember) ProtoMessage() {}
 
 func (x *RaidAddMember) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[267]
+	mi := &file_EQMessage_proto_msgTypes[268]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21656,7 +21695,7 @@ func (x *RaidAddMember) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidAddMember.ProtoReflect.Descriptor instead.
 func (*RaidAddMember) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{267}
+	return file_EQMessage_proto_rawDescGZIP(), []int{268}
 }
 
 func (x *RaidAddMember) GetRaidGen() *RaidGeneral {
@@ -21697,7 +21736,7 @@ type RaidNote struct {
 
 func (x *RaidNote) Reset() {
 	*x = RaidNote{}
-	mi := &file_EQMessage_proto_msgTypes[268]
+	mi := &file_EQMessage_proto_msgTypes[269]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21709,7 +21748,7 @@ func (x *RaidNote) String() string {
 func (*RaidNote) ProtoMessage() {}
 
 func (x *RaidNote) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[268]
+	mi := &file_EQMessage_proto_msgTypes[269]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21722,7 +21761,7 @@ func (x *RaidNote) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidNote.ProtoReflect.Descriptor instead.
 func (*RaidNote) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{268}
+	return file_EQMessage_proto_rawDescGZIP(), []int{269}
 }
 
 func (x *RaidNote) GetGeneral() *RaidGeneral {
@@ -21749,7 +21788,7 @@ type RaidMOTD struct {
 
 func (x *RaidMOTD) Reset() {
 	*x = RaidMOTD{}
-	mi := &file_EQMessage_proto_msgTypes[269]
+	mi := &file_EQMessage_proto_msgTypes[270]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21761,7 +21800,7 @@ func (x *RaidMOTD) String() string {
 func (*RaidMOTD) ProtoMessage() {}
 
 func (x *RaidMOTD) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[269]
+	mi := &file_EQMessage_proto_msgTypes[270]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21774,7 +21813,7 @@ func (x *RaidMOTD) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidMOTD.ProtoReflect.Descriptor instead.
 func (*RaidMOTD) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{269}
+	return file_EQMessage_proto_rawDescGZIP(), []int{270}
 }
 
 func (x *RaidMOTD) GetGeneral() *RaidGeneral {
@@ -21804,7 +21843,7 @@ type RaidLeadershipUpdate struct {
 
 func (x *RaidLeadershipUpdate) Reset() {
 	*x = RaidLeadershipUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[270]
+	mi := &file_EQMessage_proto_msgTypes[271]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21816,7 +21855,7 @@ func (x *RaidLeadershipUpdate) String() string {
 func (*RaidLeadershipUpdate) ProtoMessage() {}
 
 func (x *RaidLeadershipUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[270]
+	mi := &file_EQMessage_proto_msgTypes[271]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21829,7 +21868,7 @@ func (x *RaidLeadershipUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidLeadershipUpdate.ProtoReflect.Descriptor instead.
 func (*RaidLeadershipUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{270}
+	return file_EQMessage_proto_rawDescGZIP(), []int{271}
 }
 
 func (x *RaidLeadershipUpdate) GetAction() int32 {
@@ -21878,7 +21917,7 @@ type RaidCreate struct {
 
 func (x *RaidCreate) Reset() {
 	*x = RaidCreate{}
-	mi := &file_EQMessage_proto_msgTypes[271]
+	mi := &file_EQMessage_proto_msgTypes[272]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21890,7 +21929,7 @@ func (x *RaidCreate) String() string {
 func (*RaidCreate) ProtoMessage() {}
 
 func (x *RaidCreate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[271]
+	mi := &file_EQMessage_proto_msgTypes[272]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21903,7 +21942,7 @@ func (x *RaidCreate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidCreate.ProtoReflect.Descriptor instead.
 func (*RaidCreate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{271}
+	return file_EQMessage_proto_rawDescGZIP(), []int{272}
 }
 
 func (x *RaidCreate) GetAction() int32 {
@@ -21942,7 +21981,7 @@ type RaidMemberInfo struct {
 
 func (x *RaidMemberInfo) Reset() {
 	*x = RaidMemberInfo{}
-	mi := &file_EQMessage_proto_msgTypes[272]
+	mi := &file_EQMessage_proto_msgTypes[273]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -21954,7 +21993,7 @@ func (x *RaidMemberInfo) String() string {
 func (*RaidMemberInfo) ProtoMessage() {}
 
 func (x *RaidMemberInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[272]
+	mi := &file_EQMessage_proto_msgTypes[273]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -21967,7 +22006,7 @@ func (x *RaidMemberInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidMemberInfo.ProtoReflect.Descriptor instead.
 func (*RaidMemberInfo) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{272}
+	return file_EQMessage_proto_rawDescGZIP(), []int{273}
 }
 
 func (x *RaidMemberInfo) GetGroupNumber() int32 {
@@ -22031,7 +22070,7 @@ type RaidDetails struct {
 
 func (x *RaidDetails) Reset() {
 	*x = RaidDetails{}
-	mi := &file_EQMessage_proto_msgTypes[273]
+	mi := &file_EQMessage_proto_msgTypes[274]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22043,7 +22082,7 @@ func (x *RaidDetails) String() string {
 func (*RaidDetails) ProtoMessage() {}
 
 func (x *RaidDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[273]
+	mi := &file_EQMessage_proto_msgTypes[274]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22056,7 +22095,7 @@ func (x *RaidDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidDetails.ProtoReflect.Descriptor instead.
 func (*RaidDetails) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{273}
+	return file_EQMessage_proto_rawDescGZIP(), []int{274}
 }
 
 func (x *RaidDetails) GetAction() int32 {
@@ -22099,7 +22138,7 @@ type RaidMembers struct {
 
 func (x *RaidMembers) Reset() {
 	*x = RaidMembers{}
-	mi := &file_EQMessage_proto_msgTypes[274]
+	mi := &file_EQMessage_proto_msgTypes[275]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22111,7 +22150,7 @@ func (x *RaidMembers) String() string {
 func (*RaidMembers) ProtoMessage() {}
 
 func (x *RaidMembers) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[274]
+	mi := &file_EQMessage_proto_msgTypes[275]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22124,7 +22163,7 @@ func (x *RaidMembers) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaidMembers.ProtoReflect.Descriptor instead.
 func (*RaidMembers) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{274}
+	return file_EQMessage_proto_rawDescGZIP(), []int{275}
 }
 
 func (x *RaidMembers) GetDetails() *RaidDetails {
@@ -22168,7 +22207,7 @@ type DynamicWall struct {
 
 func (x *DynamicWall) Reset() {
 	*x = DynamicWall{}
-	mi := &file_EQMessage_proto_msgTypes[275]
+	mi := &file_EQMessage_proto_msgTypes[276]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22180,7 +22219,7 @@ func (x *DynamicWall) String() string {
 func (*DynamicWall) ProtoMessage() {}
 
 func (x *DynamicWall) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[275]
+	mi := &file_EQMessage_proto_msgTypes[276]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22193,7 +22232,7 @@ func (x *DynamicWall) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicWall.ProtoReflect.Descriptor instead.
 func (*DynamicWall) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{275}
+	return file_EQMessage_proto_rawDescGZIP(), []int{276}
 }
 
 func (x *DynamicWall) GetName() string {
@@ -22242,7 +22281,7 @@ type BandolierCreate struct {
 
 func (x *BandolierCreate) Reset() {
 	*x = BandolierCreate{}
-	mi := &file_EQMessage_proto_msgTypes[276]
+	mi := &file_EQMessage_proto_msgTypes[277]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22254,7 +22293,7 @@ func (x *BandolierCreate) String() string {
 func (*BandolierCreate) ProtoMessage() {}
 
 func (x *BandolierCreate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[276]
+	mi := &file_EQMessage_proto_msgTypes[277]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22267,7 +22306,7 @@ func (x *BandolierCreate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BandolierCreate.ProtoReflect.Descriptor instead.
 func (*BandolierCreate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{276}
+	return file_EQMessage_proto_rawDescGZIP(), []int{277}
 }
 
 func (x *BandolierCreate) GetAction() int32 {
@@ -22301,7 +22340,7 @@ type BandolierDelete struct {
 
 func (x *BandolierDelete) Reset() {
 	*x = BandolierDelete{}
-	mi := &file_EQMessage_proto_msgTypes[277]
+	mi := &file_EQMessage_proto_msgTypes[278]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22313,7 +22352,7 @@ func (x *BandolierDelete) String() string {
 func (*BandolierDelete) ProtoMessage() {}
 
 func (x *BandolierDelete) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[277]
+	mi := &file_EQMessage_proto_msgTypes[278]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22326,7 +22365,7 @@ func (x *BandolierDelete) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BandolierDelete.ProtoReflect.Descriptor instead.
 func (*BandolierDelete) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{277}
+	return file_EQMessage_proto_rawDescGZIP(), []int{278}
 }
 
 func (x *BandolierDelete) GetAction() int32 {
@@ -22353,7 +22392,7 @@ type BandolierSet struct {
 
 func (x *BandolierSet) Reset() {
 	*x = BandolierSet{}
-	mi := &file_EQMessage_proto_msgTypes[278]
+	mi := &file_EQMessage_proto_msgTypes[279]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22365,7 +22404,7 @@ func (x *BandolierSet) String() string {
 func (*BandolierSet) ProtoMessage() {}
 
 func (x *BandolierSet) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[278]
+	mi := &file_EQMessage_proto_msgTypes[279]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22378,7 +22417,7 @@ func (x *BandolierSet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BandolierSet.ProtoReflect.Descriptor instead.
 func (*BandolierSet) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{278}
+	return file_EQMessage_proto_rawDescGZIP(), []int{279}
 }
 
 func (x *BandolierSet) GetAction() int32 {
@@ -22415,7 +22454,7 @@ type Arrow struct {
 
 func (x *Arrow) Reset() {
 	*x = Arrow{}
-	mi := &file_EQMessage_proto_msgTypes[279]
+	mi := &file_EQMessage_proto_msgTypes[280]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22427,7 +22466,7 @@ func (x *Arrow) String() string {
 func (*Arrow) ProtoMessage() {}
 
 func (x *Arrow) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[279]
+	mi := &file_EQMessage_proto_msgTypes[280]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22440,7 +22479,7 @@ func (x *Arrow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Arrow.ProtoReflect.Descriptor instead.
 func (*Arrow) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{279}
+	return file_EQMessage_proto_rawDescGZIP(), []int{280}
 }
 
 func (x *Arrow) GetType() int32 {
@@ -22536,7 +22575,7 @@ type Consent struct {
 
 func (x *Consent) Reset() {
 	*x = Consent{}
-	mi := &file_EQMessage_proto_msgTypes[280]
+	mi := &file_EQMessage_proto_msgTypes[281]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22548,7 +22587,7 @@ func (x *Consent) String() string {
 func (*Consent) ProtoMessage() {}
 
 func (x *Consent) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[280]
+	mi := &file_EQMessage_proto_msgTypes[281]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22561,7 +22600,7 @@ func (x *Consent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Consent.ProtoReflect.Descriptor instead.
 func (*Consent) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{280}
+	return file_EQMessage_proto_rawDescGZIP(), []int{281}
 }
 
 func (x *Consent) GetName() string {
@@ -22580,7 +22619,7 @@ type AdventureMerchant struct {
 
 func (x *AdventureMerchant) Reset() {
 	*x = AdventureMerchant{}
-	mi := &file_EQMessage_proto_msgTypes[281]
+	mi := &file_EQMessage_proto_msgTypes[282]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22592,7 +22631,7 @@ func (x *AdventureMerchant) String() string {
 func (*AdventureMerchant) ProtoMessage() {}
 
 func (x *AdventureMerchant) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[281]
+	mi := &file_EQMessage_proto_msgTypes[282]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22605,7 +22644,7 @@ func (x *AdventureMerchant) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureMerchant.ProtoReflect.Descriptor instead.
 func (*AdventureMerchant) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{281}
+	return file_EQMessage_proto_rawDescGZIP(), []int{282}
 }
 
 func (x *AdventureMerchant) GetEntityId() int32 {
@@ -22623,7 +22662,7 @@ type Save struct {
 
 func (x *Save) Reset() {
 	*x = Save{}
-	mi := &file_EQMessage_proto_msgTypes[282]
+	mi := &file_EQMessage_proto_msgTypes[283]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22635,7 +22674,7 @@ func (x *Save) String() string {
 func (*Save) ProtoMessage() {}
 
 func (x *Save) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[282]
+	mi := &file_EQMessage_proto_msgTypes[283]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22648,7 +22687,7 @@ func (x *Save) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Save.ProtoReflect.Descriptor instead.
 func (*Save) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{282}
+	return file_EQMessage_proto_rawDescGZIP(), []int{283}
 }
 
 type GMtoggle struct {
@@ -22660,7 +22699,7 @@ type GMtoggle struct {
 
 func (x *GMtoggle) Reset() {
 	*x = GMtoggle{}
-	mi := &file_EQMessage_proto_msgTypes[283]
+	mi := &file_EQMessage_proto_msgTypes[284]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22672,7 +22711,7 @@ func (x *GMtoggle) String() string {
 func (*GMtoggle) ProtoMessage() {}
 
 func (x *GMtoggle) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[283]
+	mi := &file_EQMessage_proto_msgTypes[284]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22685,7 +22724,7 @@ func (x *GMtoggle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GMtoggle.ProtoReflect.Descriptor instead.
 func (*GMtoggle) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{283}
+	return file_EQMessage_proto_rawDescGZIP(), []int{284}
 }
 
 func (x *GMtoggle) GetToggle() int32 {
@@ -22705,7 +22744,7 @@ type GroupInvite struct {
 
 func (x *GroupInvite) Reset() {
 	*x = GroupInvite{}
-	mi := &file_EQMessage_proto_msgTypes[284]
+	mi := &file_EQMessage_proto_msgTypes[285]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22717,7 +22756,7 @@ func (x *GroupInvite) String() string {
 func (*GroupInvite) ProtoMessage() {}
 
 func (x *GroupInvite) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[284]
+	mi := &file_EQMessage_proto_msgTypes[285]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22730,7 +22769,7 @@ func (x *GroupInvite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GroupInvite.ProtoReflect.Descriptor instead.
 func (*GroupInvite) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{284}
+	return file_EQMessage_proto_rawDescGZIP(), []int{285}
 }
 
 func (x *GroupInvite) GetInviteeName() string {
@@ -22757,7 +22796,7 @@ type ColoredText struct {
 
 func (x *ColoredText) Reset() {
 	*x = ColoredText{}
-	mi := &file_EQMessage_proto_msgTypes[285]
+	mi := &file_EQMessage_proto_msgTypes[286]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22769,7 +22808,7 @@ func (x *ColoredText) String() string {
 func (*ColoredText) ProtoMessage() {}
 
 func (x *ColoredText) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[285]
+	mi := &file_EQMessage_proto_msgTypes[286]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22782,7 +22821,7 @@ func (x *ColoredText) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ColoredText.ProtoReflect.Descriptor instead.
 func (*ColoredText) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{285}
+	return file_EQMessage_proto_rawDescGZIP(), []int{286}
 }
 
 func (x *ColoredText) GetColor() int32 {
@@ -22810,7 +22849,7 @@ type UseAA struct {
 
 func (x *UseAA) Reset() {
 	*x = UseAA{}
-	mi := &file_EQMessage_proto_msgTypes[286]
+	mi := &file_EQMessage_proto_msgTypes[287]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22822,7 +22861,7 @@ func (x *UseAA) String() string {
 func (*UseAA) ProtoMessage() {}
 
 func (x *UseAA) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[286]
+	mi := &file_EQMessage_proto_msgTypes[287]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22835,7 +22874,7 @@ func (x *UseAA) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UseAA.ProtoReflect.Descriptor instead.
 func (*UseAA) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{286}
+	return file_EQMessage_proto_rawDescGZIP(), []int{287}
 }
 
 func (x *UseAA) GetBegin() int32 {
@@ -22871,7 +22910,7 @@ type AA_Ability struct {
 
 func (x *AA_Ability) Reset() {
 	*x = AA_Ability{}
-	mi := &file_EQMessage_proto_msgTypes[287]
+	mi := &file_EQMessage_proto_msgTypes[288]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22883,7 +22922,7 @@ func (x *AA_Ability) String() string {
 func (*AA_Ability) ProtoMessage() {}
 
 func (x *AA_Ability) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[287]
+	mi := &file_EQMessage_proto_msgTypes[288]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22896,7 +22935,7 @@ func (x *AA_Ability) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AA_Ability.ProtoReflect.Descriptor instead.
 func (*AA_Ability) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{287}
+	return file_EQMessage_proto_rawDescGZIP(), []int{288}
 }
 
 func (x *AA_Ability) GetSkillId() int32 {
@@ -22957,7 +22996,7 @@ type SendAA struct {
 
 func (x *SendAA) Reset() {
 	*x = SendAA{}
-	mi := &file_EQMessage_proto_msgTypes[288]
+	mi := &file_EQMessage_proto_msgTypes[289]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -22969,7 +23008,7 @@ func (x *SendAA) String() string {
 func (*SendAA) ProtoMessage() {}
 
 func (x *SendAA) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[288]
+	mi := &file_EQMessage_proto_msgTypes[289]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -22982,7 +23021,7 @@ func (x *SendAA) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendAA.ProtoReflect.Descriptor instead.
 func (*SendAA) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{288}
+	return file_EQMessage_proto_rawDescGZIP(), []int{289}
 }
 
 func (x *SendAA) GetId() int32 {
@@ -23149,7 +23188,7 @@ type AA_List struct {
 
 func (x *AA_List) Reset() {
 	*x = AA_List{}
-	mi := &file_EQMessage_proto_msgTypes[289]
+	mi := &file_EQMessage_proto_msgTypes[290]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23161,7 +23200,7 @@ func (x *AA_List) String() string {
 func (*AA_List) ProtoMessage() {}
 
 func (x *AA_List) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[289]
+	mi := &file_EQMessage_proto_msgTypes[290]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23174,7 +23213,7 @@ func (x *AA_List) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AA_List.ProtoReflect.Descriptor instead.
 func (*AA_List) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{289}
+	return file_EQMessage_proto_rawDescGZIP(), []int{290}
 }
 
 func (x *AA_List) GetCount() int32 {
@@ -23203,7 +23242,7 @@ type AA_Action struct {
 
 func (x *AA_Action) Reset() {
 	*x = AA_Action{}
-	mi := &file_EQMessage_proto_msgTypes[290]
+	mi := &file_EQMessage_proto_msgTypes[291]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23215,7 +23254,7 @@ func (x *AA_Action) String() string {
 func (*AA_Action) ProtoMessage() {}
 
 func (x *AA_Action) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[290]
+	mi := &file_EQMessage_proto_msgTypes[291]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23228,7 +23267,7 @@ func (x *AA_Action) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AA_Action.ProtoReflect.Descriptor instead.
 func (*AA_Action) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{290}
+	return file_EQMessage_proto_rawDescGZIP(), []int{291}
 }
 
 func (x *AA_Action) GetAction() int32 {
@@ -23269,7 +23308,7 @@ type AAExpUpdate struct {
 
 func (x *AAExpUpdate) Reset() {
 	*x = AAExpUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[291]
+	mi := &file_EQMessage_proto_msgTypes[292]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23281,7 +23320,7 @@ func (x *AAExpUpdate) String() string {
 func (*AAExpUpdate) ProtoMessage() {}
 
 func (x *AAExpUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[291]
+	mi := &file_EQMessage_proto_msgTypes[292]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23294,7 +23333,7 @@ func (x *AAExpUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AAExpUpdate.ProtoReflect.Descriptor instead.
 func (*AAExpUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{291}
+	return file_EQMessage_proto_rawDescGZIP(), []int{292}
 }
 
 func (x *AAExpUpdate) GetAapointsUnspent() int32 {
@@ -23322,7 +23361,7 @@ type AltAdvStats struct {
 
 func (x *AltAdvStats) Reset() {
 	*x = AltAdvStats{}
-	mi := &file_EQMessage_proto_msgTypes[292]
+	mi := &file_EQMessage_proto_msgTypes[293]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23334,7 +23373,7 @@ func (x *AltAdvStats) String() string {
 func (*AltAdvStats) ProtoMessage() {}
 
 func (x *AltAdvStats) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[292]
+	mi := &file_EQMessage_proto_msgTypes[293]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23347,7 +23386,7 @@ func (x *AltAdvStats) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AltAdvStats.ProtoReflect.Descriptor instead.
 func (*AltAdvStats) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{292}
+	return file_EQMessage_proto_rawDescGZIP(), []int{293}
 }
 
 func (x *AltAdvStats) GetExperience() int32 {
@@ -23380,7 +23419,7 @@ type PlayerAA struct {
 
 func (x *PlayerAA) Reset() {
 	*x = PlayerAA{}
-	mi := &file_EQMessage_proto_msgTypes[293]
+	mi := &file_EQMessage_proto_msgTypes[294]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23392,7 +23431,7 @@ func (x *PlayerAA) String() string {
 func (*PlayerAA) ProtoMessage() {}
 
 func (x *PlayerAA) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[293]
+	mi := &file_EQMessage_proto_msgTypes[294]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23405,7 +23444,7 @@ func (x *PlayerAA) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlayerAA.ProtoReflect.Descriptor instead.
 func (*PlayerAA) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{293}
+	return file_EQMessage_proto_rawDescGZIP(), []int{294}
 }
 
 func (x *PlayerAA) GetAaList() []*AA_Array {
@@ -23424,7 +23463,7 @@ type AATable struct {
 
 func (x *AATable) Reset() {
 	*x = AATable{}
-	mi := &file_EQMessage_proto_msgTypes[294]
+	mi := &file_EQMessage_proto_msgTypes[295]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23436,7 +23475,7 @@ func (x *AATable) String() string {
 func (*AATable) ProtoMessage() {}
 
 func (x *AATable) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[294]
+	mi := &file_EQMessage_proto_msgTypes[295]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23449,7 +23488,7 @@ func (x *AATable) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AATable.ProtoReflect.Descriptor instead.
 func (*AATable) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{294}
+	return file_EQMessage_proto_rawDescGZIP(), []int{295}
 }
 
 func (x *AATable) GetAaList() []*AA_Array {
@@ -23470,7 +23509,7 @@ type Weather struct {
 
 func (x *Weather) Reset() {
 	*x = Weather{}
-	mi := &file_EQMessage_proto_msgTypes[295]
+	mi := &file_EQMessage_proto_msgTypes[296]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23482,7 +23521,7 @@ func (x *Weather) String() string {
 func (*Weather) ProtoMessage() {}
 
 func (x *Weather) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[295]
+	mi := &file_EQMessage_proto_msgTypes[296]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23495,7 +23534,7 @@ func (x *Weather) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Weather.ProtoReflect.Descriptor instead.
 func (*Weather) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{295}
+	return file_EQMessage_proto_rawDescGZIP(), []int{296}
 }
 
 func (x *Weather) GetVal() int32 {
@@ -23528,7 +23567,7 @@ type LoadSpellSet struct {
 
 func (x *LoadSpellSet) Reset() {
 	*x = LoadSpellSet{}
-	mi := &file_EQMessage_proto_msgTypes[296]
+	mi := &file_EQMessage_proto_msgTypes[297]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23540,7 +23579,7 @@ func (x *LoadSpellSet) String() string {
 func (*LoadSpellSet) ProtoMessage() {}
 
 func (x *LoadSpellSet) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[296]
+	mi := &file_EQMessage_proto_msgTypes[297]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23553,7 +23592,7 @@ func (x *LoadSpellSet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoadSpellSet.ProtoReflect.Descriptor instead.
 func (*LoadSpellSet) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{296}
+	return file_EQMessage_proto_rawDescGZIP(), []int{297}
 }
 
 func (x *LoadSpellSet) GetSpell() []int32 {
@@ -23573,7 +23612,7 @@ type ApplyPoison struct {
 
 func (x *ApplyPoison) Reset() {
 	*x = ApplyPoison{}
-	mi := &file_EQMessage_proto_msgTypes[297]
+	mi := &file_EQMessage_proto_msgTypes[298]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23585,7 +23624,7 @@ func (x *ApplyPoison) String() string {
 func (*ApplyPoison) ProtoMessage() {}
 
 func (x *ApplyPoison) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[297]
+	mi := &file_EQMessage_proto_msgTypes[298]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23598,7 +23637,7 @@ func (x *ApplyPoison) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplyPoison.ProtoReflect.Descriptor instead.
 func (*ApplyPoison) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{297}
+	return file_EQMessage_proto_rawDescGZIP(), []int{298}
 }
 
 func (x *ApplyPoison) GetInventorySlot() int32 {
@@ -23627,7 +23666,7 @@ type GuildMemberUpdate struct {
 
 func (x *GuildMemberUpdate) Reset() {
 	*x = GuildMemberUpdate{}
-	mi := &file_EQMessage_proto_msgTypes[298]
+	mi := &file_EQMessage_proto_msgTypes[299]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23639,7 +23678,7 @@ func (x *GuildMemberUpdate) String() string {
 func (*GuildMemberUpdate) ProtoMessage() {}
 
 func (x *GuildMemberUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[298]
+	mi := &file_EQMessage_proto_msgTypes[299]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23652,7 +23691,7 @@ func (x *GuildMemberUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GuildMemberUpdate.ProtoReflect.Descriptor instead.
 func (*GuildMemberUpdate) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{298}
+	return file_EQMessage_proto_rawDescGZIP(), []int{299}
 }
 
 func (x *GuildMemberUpdate) GetGuildId() int32 {
@@ -23693,7 +23732,7 @@ type VeteranRewardItem struct {
 
 func (x *VeteranRewardItem) Reset() {
 	*x = VeteranRewardItem{}
-	mi := &file_EQMessage_proto_msgTypes[299]
+	mi := &file_EQMessage_proto_msgTypes[300]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23705,7 +23744,7 @@ func (x *VeteranRewardItem) String() string {
 func (*VeteranRewardItem) ProtoMessage() {}
 
 func (x *VeteranRewardItem) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[299]
+	mi := &file_EQMessage_proto_msgTypes[300]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23718,7 +23757,7 @@ func (x *VeteranRewardItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VeteranRewardItem.ProtoReflect.Descriptor instead.
 func (*VeteranRewardItem) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{299}
+	return file_EQMessage_proto_rawDescGZIP(), []int{300}
 }
 
 func (x *VeteranRewardItem) GetItemId() int32 {
@@ -23745,7 +23784,7 @@ type VeteranReward struct {
 
 func (x *VeteranReward) Reset() {
 	*x = VeteranReward{}
-	mi := &file_EQMessage_proto_msgTypes[300]
+	mi := &file_EQMessage_proto_msgTypes[301]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23757,7 +23796,7 @@ func (x *VeteranReward) String() string {
 func (*VeteranReward) ProtoMessage() {}
 
 func (x *VeteranReward) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[300]
+	mi := &file_EQMessage_proto_msgTypes[301]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23770,7 +23809,7 @@ func (x *VeteranReward) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VeteranReward.ProtoReflect.Descriptor instead.
 func (*VeteranReward) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{300}
+	return file_EQMessage_proto_rawDescGZIP(), []int{301}
 }
 
 func (x *VeteranReward) GetClaimId() int32 {
@@ -23803,7 +23842,7 @@ type ExpeditionInvite struct {
 
 func (x *ExpeditionInvite) Reset() {
 	*x = ExpeditionInvite{}
-	mi := &file_EQMessage_proto_msgTypes[301]
+	mi := &file_EQMessage_proto_msgTypes[302]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23815,7 +23854,7 @@ func (x *ExpeditionInvite) String() string {
 func (*ExpeditionInvite) ProtoMessage() {}
 
 func (x *ExpeditionInvite) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[301]
+	mi := &file_EQMessage_proto_msgTypes[302]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23828,7 +23867,7 @@ func (x *ExpeditionInvite) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpeditionInvite.ProtoReflect.Descriptor instead.
 func (*ExpeditionInvite) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{301}
+	return file_EQMessage_proto_rawDescGZIP(), []int{302}
 }
 
 func (x *ExpeditionInvite) GetClientId() int32 {
@@ -23900,7 +23939,7 @@ type ExpeditionInviteResponse struct {
 
 func (x *ExpeditionInviteResponse) Reset() {
 	*x = ExpeditionInviteResponse{}
-	mi := &file_EQMessage_proto_msgTypes[302]
+	mi := &file_EQMessage_proto_msgTypes[303]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23912,7 +23951,7 @@ func (x *ExpeditionInviteResponse) String() string {
 func (*ExpeditionInviteResponse) ProtoMessage() {}
 
 func (x *ExpeditionInviteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[302]
+	mi := &file_EQMessage_proto_msgTypes[303]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -23925,7 +23964,7 @@ func (x *ExpeditionInviteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpeditionInviteResponse.ProtoReflect.Descriptor instead.
 func (*ExpeditionInviteResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{302}
+	return file_EQMessage_proto_rawDescGZIP(), []int{303}
 }
 
 func (x *ExpeditionInviteResponse) GetDzZoneId() int32 {
@@ -23976,7 +24015,7 @@ type DynamicZoneInfo struct {
 
 func (x *DynamicZoneInfo) Reset() {
 	*x = DynamicZoneInfo{}
-	mi := &file_EQMessage_proto_msgTypes[303]
+	mi := &file_EQMessage_proto_msgTypes[304]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -23988,7 +24027,7 @@ func (x *DynamicZoneInfo) String() string {
 func (*DynamicZoneInfo) ProtoMessage() {}
 
 func (x *DynamicZoneInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[303]
+	mi := &file_EQMessage_proto_msgTypes[304]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24001,7 +24040,7 @@ func (x *DynamicZoneInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneInfo.ProtoReflect.Descriptor instead.
 func (*DynamicZoneInfo) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{303}
+	return file_EQMessage_proto_rawDescGZIP(), []int{304}
 }
 
 func (x *DynamicZoneInfo) GetClientId() int32 {
@@ -24049,7 +24088,7 @@ type DynamicZoneMemberEntry struct {
 
 func (x *DynamicZoneMemberEntry) Reset() {
 	*x = DynamicZoneMemberEntry{}
-	mi := &file_EQMessage_proto_msgTypes[304]
+	mi := &file_EQMessage_proto_msgTypes[305]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24061,7 +24100,7 @@ func (x *DynamicZoneMemberEntry) String() string {
 func (*DynamicZoneMemberEntry) ProtoMessage() {}
 
 func (x *DynamicZoneMemberEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[304]
+	mi := &file_EQMessage_proto_msgTypes[305]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24074,7 +24113,7 @@ func (x *DynamicZoneMemberEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneMemberEntry.ProtoReflect.Descriptor instead.
 func (*DynamicZoneMemberEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{304}
+	return file_EQMessage_proto_rawDescGZIP(), []int{305}
 }
 
 func (x *DynamicZoneMemberEntry) GetName() string {
@@ -24102,7 +24141,7 @@ type DynamicZoneMemberList struct {
 
 func (x *DynamicZoneMemberList) Reset() {
 	*x = DynamicZoneMemberList{}
-	mi := &file_EQMessage_proto_msgTypes[305]
+	mi := &file_EQMessage_proto_msgTypes[306]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24114,7 +24153,7 @@ func (x *DynamicZoneMemberList) String() string {
 func (*DynamicZoneMemberList) ProtoMessage() {}
 
 func (x *DynamicZoneMemberList) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[305]
+	mi := &file_EQMessage_proto_msgTypes[306]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24127,7 +24166,7 @@ func (x *DynamicZoneMemberList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneMemberList.ProtoReflect.Descriptor instead.
 func (*DynamicZoneMemberList) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{305}
+	return file_EQMessage_proto_rawDescGZIP(), []int{306}
 }
 
 func (x *DynamicZoneMemberList) GetClientId() int32 {
@@ -24162,7 +24201,7 @@ type DynamicZoneMemberListName struct {
 
 func (x *DynamicZoneMemberListName) Reset() {
 	*x = DynamicZoneMemberListName{}
-	mi := &file_EQMessage_proto_msgTypes[306]
+	mi := &file_EQMessage_proto_msgTypes[307]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24174,7 +24213,7 @@ func (x *DynamicZoneMemberListName) String() string {
 func (*DynamicZoneMemberListName) ProtoMessage() {}
 
 func (x *DynamicZoneMemberListName) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[306]
+	mi := &file_EQMessage_proto_msgTypes[307]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24187,7 +24226,7 @@ func (x *DynamicZoneMemberListName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneMemberListName.ProtoReflect.Descriptor instead.
 func (*DynamicZoneMemberListName) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{306}
+	return file_EQMessage_proto_rawDescGZIP(), []int{307}
 }
 
 func (x *DynamicZoneMemberListName) GetClientId() int32 {
@@ -24223,7 +24262,7 @@ type ExpeditionLockoutTimerEntry struct {
 
 func (x *ExpeditionLockoutTimerEntry) Reset() {
 	*x = ExpeditionLockoutTimerEntry{}
-	mi := &file_EQMessage_proto_msgTypes[307]
+	mi := &file_EQMessage_proto_msgTypes[308]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24235,7 +24274,7 @@ func (x *ExpeditionLockoutTimerEntry) String() string {
 func (*ExpeditionLockoutTimerEntry) ProtoMessage() {}
 
 func (x *ExpeditionLockoutTimerEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[307]
+	mi := &file_EQMessage_proto_msgTypes[308]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24248,7 +24287,7 @@ func (x *ExpeditionLockoutTimerEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpeditionLockoutTimerEntry.ProtoReflect.Descriptor instead.
 func (*ExpeditionLockoutTimerEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{307}
+	return file_EQMessage_proto_rawDescGZIP(), []int{308}
 }
 
 func (x *ExpeditionLockoutTimerEntry) GetExpeditionName() string {
@@ -24290,7 +24329,7 @@ type ExpeditionLockoutTimers struct {
 
 func (x *ExpeditionLockoutTimers) Reset() {
 	*x = ExpeditionLockoutTimers{}
-	mi := &file_EQMessage_proto_msgTypes[308]
+	mi := &file_EQMessage_proto_msgTypes[309]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24302,7 +24341,7 @@ func (x *ExpeditionLockoutTimers) String() string {
 func (*ExpeditionLockoutTimers) ProtoMessage() {}
 
 func (x *ExpeditionLockoutTimers) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[308]
+	mi := &file_EQMessage_proto_msgTypes[309]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24315,7 +24354,7 @@ func (x *ExpeditionLockoutTimers) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpeditionLockoutTimers.ProtoReflect.Descriptor instead.
 func (*ExpeditionLockoutTimers) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{308}
+	return file_EQMessage_proto_rawDescGZIP(), []int{309}
 }
 
 func (x *ExpeditionLockoutTimers) GetClientId() int32 {
@@ -24349,7 +24388,7 @@ type DynamicZoneLeaderName struct {
 
 func (x *DynamicZoneLeaderName) Reset() {
 	*x = DynamicZoneLeaderName{}
-	mi := &file_EQMessage_proto_msgTypes[309]
+	mi := &file_EQMessage_proto_msgTypes[310]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24361,7 +24400,7 @@ func (x *DynamicZoneLeaderName) String() string {
 func (*DynamicZoneLeaderName) ProtoMessage() {}
 
 func (x *DynamicZoneLeaderName) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[309]
+	mi := &file_EQMessage_proto_msgTypes[310]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24374,7 +24413,7 @@ func (x *DynamicZoneLeaderName) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneLeaderName.ProtoReflect.Descriptor instead.
 func (*DynamicZoneLeaderName) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{309}
+	return file_EQMessage_proto_rawDescGZIP(), []int{310}
 }
 
 func (x *DynamicZoneLeaderName) GetClientId() int32 {
@@ -24400,7 +24439,7 @@ type ExpeditionCommand struct {
 
 func (x *ExpeditionCommand) Reset() {
 	*x = ExpeditionCommand{}
-	mi := &file_EQMessage_proto_msgTypes[310]
+	mi := &file_EQMessage_proto_msgTypes[311]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24412,7 +24451,7 @@ func (x *ExpeditionCommand) String() string {
 func (*ExpeditionCommand) ProtoMessage() {}
 
 func (x *ExpeditionCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[310]
+	mi := &file_EQMessage_proto_msgTypes[311]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24425,7 +24464,7 @@ func (x *ExpeditionCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpeditionCommand.ProtoReflect.Descriptor instead.
 func (*ExpeditionCommand) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{310}
+	return file_EQMessage_proto_rawDescGZIP(), []int{311}
 }
 
 func (x *ExpeditionCommand) GetName() string {
@@ -24445,7 +24484,7 @@ type ExpeditionCommandSwap struct {
 
 func (x *ExpeditionCommandSwap) Reset() {
 	*x = ExpeditionCommandSwap{}
-	mi := &file_EQMessage_proto_msgTypes[311]
+	mi := &file_EQMessage_proto_msgTypes[312]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24457,7 +24496,7 @@ func (x *ExpeditionCommandSwap) String() string {
 func (*ExpeditionCommandSwap) ProtoMessage() {}
 
 func (x *ExpeditionCommandSwap) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[311]
+	mi := &file_EQMessage_proto_msgTypes[312]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24470,7 +24509,7 @@ func (x *ExpeditionCommandSwap) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpeditionCommandSwap.ProtoReflect.Descriptor instead.
 func (*ExpeditionCommandSwap) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{311}
+	return file_EQMessage_proto_rawDescGZIP(), []int{312}
 }
 
 func (x *ExpeditionCommandSwap) GetAddPlayerName() string {
@@ -24497,7 +24536,7 @@ type ExpeditionExpireWarning struct {
 
 func (x *ExpeditionExpireWarning) Reset() {
 	*x = ExpeditionExpireWarning{}
-	mi := &file_EQMessage_proto_msgTypes[312]
+	mi := &file_EQMessage_proto_msgTypes[313]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24509,7 +24548,7 @@ func (x *ExpeditionExpireWarning) String() string {
 func (*ExpeditionExpireWarning) ProtoMessage() {}
 
 func (x *ExpeditionExpireWarning) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[312]
+	mi := &file_EQMessage_proto_msgTypes[313]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24522,7 +24561,7 @@ func (x *ExpeditionExpireWarning) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExpeditionExpireWarning.ProtoReflect.Descriptor instead.
 func (*ExpeditionExpireWarning) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{312}
+	return file_EQMessage_proto_rawDescGZIP(), []int{313}
 }
 
 func (x *ExpeditionExpireWarning) GetClientId() int32 {
@@ -24554,7 +24593,7 @@ type DynamicZoneCompassEntry struct {
 
 func (x *DynamicZoneCompassEntry) Reset() {
 	*x = DynamicZoneCompassEntry{}
-	mi := &file_EQMessage_proto_msgTypes[313]
+	mi := &file_EQMessage_proto_msgTypes[314]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24566,7 +24605,7 @@ func (x *DynamicZoneCompassEntry) String() string {
 func (*DynamicZoneCompassEntry) ProtoMessage() {}
 
 func (x *DynamicZoneCompassEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[313]
+	mi := &file_EQMessage_proto_msgTypes[314]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24579,7 +24618,7 @@ func (x *DynamicZoneCompassEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneCompassEntry.ProtoReflect.Descriptor instead.
 func (*DynamicZoneCompassEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{313}
+	return file_EQMessage_proto_rawDescGZIP(), []int{314}
 }
 
 func (x *DynamicZoneCompassEntry) GetDzZoneId() int32 {
@@ -24642,7 +24681,7 @@ type DynamicZoneCompass struct {
 
 func (x *DynamicZoneCompass) Reset() {
 	*x = DynamicZoneCompass{}
-	mi := &file_EQMessage_proto_msgTypes[314]
+	mi := &file_EQMessage_proto_msgTypes[315]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24654,7 +24693,7 @@ func (x *DynamicZoneCompass) String() string {
 func (*DynamicZoneCompass) ProtoMessage() {}
 
 func (x *DynamicZoneCompass) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[314]
+	mi := &file_EQMessage_proto_msgTypes[315]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24667,7 +24706,7 @@ func (x *DynamicZoneCompass) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneCompass.ProtoReflect.Descriptor instead.
 func (*DynamicZoneCompass) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{314}
+	return file_EQMessage_proto_rawDescGZIP(), []int{315}
 }
 
 func (x *DynamicZoneCompass) GetClientId() int32 {
@@ -24704,7 +24743,7 @@ type DynamicZoneChooseZoneEntry struct {
 
 func (x *DynamicZoneChooseZoneEntry) Reset() {
 	*x = DynamicZoneChooseZoneEntry{}
-	mi := &file_EQMessage_proto_msgTypes[315]
+	mi := &file_EQMessage_proto_msgTypes[316]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24716,7 +24755,7 @@ func (x *DynamicZoneChooseZoneEntry) String() string {
 func (*DynamicZoneChooseZoneEntry) ProtoMessage() {}
 
 func (x *DynamicZoneChooseZoneEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[315]
+	mi := &file_EQMessage_proto_msgTypes[316]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24729,7 +24768,7 @@ func (x *DynamicZoneChooseZoneEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneChooseZoneEntry.ProtoReflect.Descriptor instead.
 func (*DynamicZoneChooseZoneEntry) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{315}
+	return file_EQMessage_proto_rawDescGZIP(), []int{316}
 }
 
 func (x *DynamicZoneChooseZoneEntry) GetDzZoneId() int32 {
@@ -24778,7 +24817,7 @@ type DynamicZoneChooseZone struct {
 
 func (x *DynamicZoneChooseZone) Reset() {
 	*x = DynamicZoneChooseZone{}
-	mi := &file_EQMessage_proto_msgTypes[316]
+	mi := &file_EQMessage_proto_msgTypes[317]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24790,7 +24829,7 @@ func (x *DynamicZoneChooseZone) String() string {
 func (*DynamicZoneChooseZone) ProtoMessage() {}
 
 func (x *DynamicZoneChooseZone) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[316]
+	mi := &file_EQMessage_proto_msgTypes[317]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24803,7 +24842,7 @@ func (x *DynamicZoneChooseZone) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneChooseZone.ProtoReflect.Descriptor instead.
 func (*DynamicZoneChooseZone) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{316}
+	return file_EQMessage_proto_rawDescGZIP(), []int{317}
 }
 
 func (x *DynamicZoneChooseZone) GetClientId() int32 {
@@ -24838,7 +24877,7 @@ type DynamicZoneChooseZoneReply struct {
 
 func (x *DynamicZoneChooseZoneReply) Reset() {
 	*x = DynamicZoneChooseZoneReply{}
-	mi := &file_EQMessage_proto_msgTypes[317]
+	mi := &file_EQMessage_proto_msgTypes[318]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24850,7 +24889,7 @@ func (x *DynamicZoneChooseZoneReply) String() string {
 func (*DynamicZoneChooseZoneReply) ProtoMessage() {}
 
 func (x *DynamicZoneChooseZoneReply) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[317]
+	mi := &file_EQMessage_proto_msgTypes[318]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24863,7 +24902,7 @@ func (x *DynamicZoneChooseZoneReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicZoneChooseZoneReply.ProtoReflect.Descriptor instead.
 func (*DynamicZoneChooseZoneReply) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{317}
+	return file_EQMessage_proto_rawDescGZIP(), []int{318}
 }
 
 func (x *DynamicZoneChooseZoneReply) GetDzZoneId() int32 {
@@ -24901,7 +24940,7 @@ type LFGuild_SearchPlayer struct {
 
 func (x *LFGuild_SearchPlayer) Reset() {
 	*x = LFGuild_SearchPlayer{}
-	mi := &file_EQMessage_proto_msgTypes[318]
+	mi := &file_EQMessage_proto_msgTypes[319]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24913,7 +24952,7 @@ func (x *LFGuild_SearchPlayer) String() string {
 func (*LFGuild_SearchPlayer) ProtoMessage() {}
 
 func (x *LFGuild_SearchPlayer) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[318]
+	mi := &file_EQMessage_proto_msgTypes[319]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -24926,7 +24965,7 @@ func (x *LFGuild_SearchPlayer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LFGuild_SearchPlayer.ProtoReflect.Descriptor instead.
 func (*LFGuild_SearchPlayer) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{318}
+	return file_EQMessage_proto_rawDescGZIP(), []int{319}
 }
 
 func (x *LFGuild_SearchPlayer) GetCommand() int32 {
@@ -24984,7 +25023,7 @@ type LFGuild_SearchGuild struct {
 
 func (x *LFGuild_SearchGuild) Reset() {
 	*x = LFGuild_SearchGuild{}
-	mi := &file_EQMessage_proto_msgTypes[319]
+	mi := &file_EQMessage_proto_msgTypes[320]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -24996,7 +25035,7 @@ func (x *LFGuild_SearchGuild) String() string {
 func (*LFGuild_SearchGuild) ProtoMessage() {}
 
 func (x *LFGuild_SearchGuild) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[319]
+	mi := &file_EQMessage_proto_msgTypes[320]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25009,7 +25048,7 @@ func (x *LFGuild_SearchGuild) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LFGuild_SearchGuild.ProtoReflect.Descriptor instead.
 func (*LFGuild_SearchGuild) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{319}
+	return file_EQMessage_proto_rawDescGZIP(), []int{320}
 }
 
 func (x *LFGuild_SearchGuild) GetCommand() int32 {
@@ -25060,7 +25099,7 @@ type LFGuild_Playertoggle struct {
 
 func (x *LFGuild_Playertoggle) Reset() {
 	*x = LFGuild_Playertoggle{}
-	mi := &file_EQMessage_proto_msgTypes[320]
+	mi := &file_EQMessage_proto_msgTypes[321]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25072,7 +25111,7 @@ func (x *LFGuild_Playertoggle) String() string {
 func (*LFGuild_Playertoggle) ProtoMessage() {}
 
 func (x *LFGuild_Playertoggle) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[320]
+	mi := &file_EQMessage_proto_msgTypes[321]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25085,7 +25124,7 @@ func (x *LFGuild_Playertoggle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LFGuild_Playertoggle.ProtoReflect.Descriptor instead.
 func (*LFGuild_Playertoggle) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{320}
+	return file_EQMessage_proto_rawDescGZIP(), []int{321}
 }
 
 func (x *LFGuild_Playertoggle) GetCommand() int32 {
@@ -25141,7 +25180,7 @@ type LFGuild_Guildtoggle struct {
 
 func (x *LFGuild_Guildtoggle) Reset() {
 	*x = LFGuild_Guildtoggle{}
-	mi := &file_EQMessage_proto_msgTypes[321]
+	mi := &file_EQMessage_proto_msgTypes[322]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25153,7 +25192,7 @@ func (x *LFGuild_Guildtoggle) String() string {
 func (*LFGuild_Guildtoggle) ProtoMessage() {}
 
 func (x *LFGuild_Guildtoggle) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[321]
+	mi := &file_EQMessage_proto_msgTypes[322]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25166,7 +25205,7 @@ func (x *LFGuild_Guildtoggle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LFGuild_Guildtoggle.ProtoReflect.Descriptor instead.
 func (*LFGuild_Guildtoggle) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{321}
+	return file_EQMessage_proto_rawDescGZIP(), []int{322}
 }
 
 func (x *LFGuild_Guildtoggle) GetCommand() int32 {
@@ -25258,7 +25297,7 @@ type SayLinkBodyFrame struct {
 
 func (x *SayLinkBodyFrame) Reset() {
 	*x = SayLinkBodyFrame{}
-	mi := &file_EQMessage_proto_msgTypes[322]
+	mi := &file_EQMessage_proto_msgTypes[323]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25270,7 +25309,7 @@ func (x *SayLinkBodyFrame) String() string {
 func (*SayLinkBodyFrame) ProtoMessage() {}
 
 func (x *SayLinkBodyFrame) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[322]
+	mi := &file_EQMessage_proto_msgTypes[323]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25283,7 +25322,7 @@ func (x *SayLinkBodyFrame) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SayLinkBodyFrame.ProtoReflect.Descriptor instead.
 func (*SayLinkBodyFrame) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{322}
+	return file_EQMessage_proto_rawDescGZIP(), []int{323}
 }
 
 func (x *SayLinkBodyFrame) GetActionId() string {
@@ -25373,7 +25412,7 @@ type WebLogin struct {
 
 func (x *WebLogin) Reset() {
 	*x = WebLogin{}
-	mi := &file_EQMessage_proto_msgTypes[323]
+	mi := &file_EQMessage_proto_msgTypes[324]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25385,7 +25424,7 @@ func (x *WebLogin) String() string {
 func (*WebLogin) ProtoMessage() {}
 
 func (x *WebLogin) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[323]
+	mi := &file_EQMessage_proto_msgTypes[324]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25398,7 +25437,7 @@ func (x *WebLogin) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebLogin.ProtoReflect.Descriptor instead.
 func (*WebLogin) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{323}
+	return file_EQMessage_proto_rawDescGZIP(), []int{324}
 }
 
 func (x *WebLogin) GetUsername() string {
@@ -25424,7 +25463,7 @@ type WebLoginServerRequest struct {
 
 func (x *WebLoginServerRequest) Reset() {
 	*x = WebLoginServerRequest{}
-	mi := &file_EQMessage_proto_msgTypes[324]
+	mi := &file_EQMessage_proto_msgTypes[325]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25436,7 +25475,7 @@ func (x *WebLoginServerRequest) String() string {
 func (*WebLoginServerRequest) ProtoMessage() {}
 
 func (x *WebLoginServerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[324]
+	mi := &file_EQMessage_proto_msgTypes[325]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25449,7 +25488,7 @@ func (x *WebLoginServerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebLoginServerRequest.ProtoReflect.Descriptor instead.
 func (*WebLoginServerRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{324}
+	return file_EQMessage_proto_rawDescGZIP(), []int{325}
 }
 
 func (x *WebLoginServerRequest) GetSequence() int32 {
@@ -25473,7 +25512,7 @@ type WebLoginReply struct {
 
 func (x *WebLoginReply) Reset() {
 	*x = WebLoginReply{}
-	mi := &file_EQMessage_proto_msgTypes[325]
+	mi := &file_EQMessage_proto_msgTypes[326]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25485,7 +25524,7 @@ func (x *WebLoginReply) String() string {
 func (*WebLoginReply) ProtoMessage() {}
 
 func (x *WebLoginReply) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[325]
+	mi := &file_EQMessage_proto_msgTypes[326]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25498,7 +25537,7 @@ func (x *WebLoginReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebLoginReply.ProtoReflect.Descriptor instead.
 func (*WebLoginReply) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{325}
+	return file_EQMessage_proto_rawDescGZIP(), []int{326}
 }
 
 func (x *WebLoginReply) GetKey() string {
@@ -25560,7 +25599,7 @@ type WebLoginWorldServer struct {
 
 func (x *WebLoginWorldServer) Reset() {
 	*x = WebLoginWorldServer{}
-	mi := &file_EQMessage_proto_msgTypes[326]
+	mi := &file_EQMessage_proto_msgTypes[327]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25572,7 +25611,7 @@ func (x *WebLoginWorldServer) String() string {
 func (*WebLoginWorldServer) ProtoMessage() {}
 
 func (x *WebLoginWorldServer) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[326]
+	mi := &file_EQMessage_proto_msgTypes[327]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25585,7 +25624,7 @@ func (x *WebLoginWorldServer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebLoginWorldServer.ProtoReflect.Descriptor instead.
 func (*WebLoginWorldServer) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{326}
+	return file_EQMessage_proto_rawDescGZIP(), []int{327}
 }
 
 func (x *WebLoginWorldServer) GetBuffer() string {
@@ -25661,7 +25700,7 @@ type WebLoginServerResponse struct {
 
 func (x *WebLoginServerResponse) Reset() {
 	*x = WebLoginServerResponse{}
-	mi := &file_EQMessage_proto_msgTypes[327]
+	mi := &file_EQMessage_proto_msgTypes[328]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25673,7 +25712,7 @@ func (x *WebLoginServerResponse) String() string {
 func (*WebLoginServerResponse) ProtoMessage() {}
 
 func (x *WebLoginServerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[327]
+	mi := &file_EQMessage_proto_msgTypes[328]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25686,7 +25725,7 @@ func (x *WebLoginServerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebLoginServerResponse.ProtoReflect.Descriptor instead.
 func (*WebLoginServerResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{327}
+	return file_EQMessage_proto_rawDescGZIP(), []int{328}
 }
 
 func (x *WebLoginServerResponse) GetServerCount() int32 {
@@ -25712,7 +25751,7 @@ type WebPlayEverquestRequest struct {
 
 func (x *WebPlayEverquestRequest) Reset() {
 	*x = WebPlayEverquestRequest{}
-	mi := &file_EQMessage_proto_msgTypes[328]
+	mi := &file_EQMessage_proto_msgTypes[329]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25724,7 +25763,7 @@ func (x *WebPlayEverquestRequest) String() string {
 func (*WebPlayEverquestRequest) ProtoMessage() {}
 
 func (x *WebPlayEverquestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[328]
+	mi := &file_EQMessage_proto_msgTypes[329]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25737,7 +25776,7 @@ func (x *WebPlayEverquestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebPlayEverquestRequest.ProtoReflect.Descriptor instead.
 func (*WebPlayEverquestRequest) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{328}
+	return file_EQMessage_proto_rawDescGZIP(), []int{329}
 }
 
 func (x *WebPlayEverquestRequest) GetServerId() int32 {
@@ -25758,7 +25797,7 @@ type WebPlayEverquestResponse struct {
 
 func (x *WebPlayEverquestResponse) Reset() {
 	*x = WebPlayEverquestResponse{}
-	mi := &file_EQMessage_proto_msgTypes[329]
+	mi := &file_EQMessage_proto_msgTypes[330]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25770,7 +25809,7 @@ func (x *WebPlayEverquestResponse) String() string {
 func (*WebPlayEverquestResponse) ProtoMessage() {}
 
 func (x *WebPlayEverquestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[329]
+	mi := &file_EQMessage_proto_msgTypes[330]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25783,7 +25822,7 @@ func (x *WebPlayEverquestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebPlayEverquestResponse.ProtoReflect.Descriptor instead.
 func (*WebPlayEverquestResponse) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{329}
+	return file_EQMessage_proto_rawDescGZIP(), []int{330}
 }
 
 func (x *WebPlayEverquestResponse) GetServerId() int32 {
@@ -25818,7 +25857,7 @@ type WebSession struct {
 
 func (x *WebSession) Reset() {
 	*x = WebSession{}
-	mi := &file_EQMessage_proto_msgTypes[330]
+	mi := &file_EQMessage_proto_msgTypes[331]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25830,7 +25869,7 @@ func (x *WebSession) String() string {
 func (*WebSession) ProtoMessage() {}
 
 func (x *WebSession) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[330]
+	mi := &file_EQMessage_proto_msgTypes[331]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25843,7 +25882,7 @@ func (x *WebSession) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebSession.ProtoReflect.Descriptor instead.
 func (*WebSession) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{330}
+	return file_EQMessage_proto_rawDescGZIP(), []int{331}
 }
 
 func (x *WebSession) GetRemoteAddr() string {
@@ -25875,7 +25914,7 @@ type Zero struct {
 
 func (x *Zero) Reset() {
 	*x = Zero{}
-	mi := &file_EQMessage_proto_msgTypes[331]
+	mi := &file_EQMessage_proto_msgTypes[332]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25887,7 +25926,7 @@ func (x *Zero) String() string {
 func (*Zero) ProtoMessage() {}
 
 func (x *Zero) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[331]
+	mi := &file_EQMessage_proto_msgTypes[332]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25900,7 +25939,7 @@ func (x *Zero) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Zero.ProtoReflect.Descriptor instead.
 func (*Zero) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{331}
+	return file_EQMessage_proto_rawDescGZIP(), []int{332}
 }
 
 type Int struct {
@@ -25912,7 +25951,7 @@ type Int struct {
 
 func (x *Int) Reset() {
 	*x = Int{}
-	mi := &file_EQMessage_proto_msgTypes[332]
+	mi := &file_EQMessage_proto_msgTypes[333]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25924,7 +25963,7 @@ func (x *Int) String() string {
 func (*Int) ProtoMessage() {}
 
 func (x *Int) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[332]
+	mi := &file_EQMessage_proto_msgTypes[333]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25937,7 +25976,7 @@ func (x *Int) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Int.ProtoReflect.Descriptor instead.
 func (*Int) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{332}
+	return file_EQMessage_proto_rawDescGZIP(), []int{333}
 }
 
 func (x *Int) GetValue() int32 {
@@ -25956,7 +25995,7 @@ type Bool struct {
 
 func (x *Bool) Reset() {
 	*x = Bool{}
-	mi := &file_EQMessage_proto_msgTypes[333]
+	mi := &file_EQMessage_proto_msgTypes[334]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -25968,7 +26007,7 @@ func (x *Bool) String() string {
 func (*Bool) ProtoMessage() {}
 
 func (x *Bool) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[333]
+	mi := &file_EQMessage_proto_msgTypes[334]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -25981,7 +26020,7 @@ func (x *Bool) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Bool.ProtoReflect.Descriptor instead.
 func (*Bool) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{333}
+	return file_EQMessage_proto_rawDescGZIP(), []int{334}
 }
 
 func (x *Bool) GetValue() bool {
@@ -26000,7 +26039,7 @@ type String struct {
 
 func (x *String) Reset() {
 	*x = String{}
-	mi := &file_EQMessage_proto_msgTypes[334]
+	mi := &file_EQMessage_proto_msgTypes[335]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -26012,7 +26051,7 @@ func (x *String) String() string {
 func (*String) ProtoMessage() {}
 
 func (x *String) ProtoReflect() protoreflect.Message {
-	mi := &file_EQMessage_proto_msgTypes[334]
+	mi := &file_EQMessage_proto_msgTypes[335]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -26025,7 +26064,7 @@ func (x *String) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use String.ProtoReflect.Descriptor instead.
 func (*String) Descriptor() ([]byte, []int) {
-	return file_EQMessage_proto_rawDescGZIP(), []int{334}
+	return file_EQMessage_proto_rawDescGZIP(), []int{335}
 }
 
 func (x *String) GetValue() string {
@@ -26066,10 +26105,11 @@ var File_EQMessage_proto protoreflect.FileDescriptor
 
 const file_EQMessage_proto_rawDesc = "" +
 	"\n" +
-	"\x0fEQMessage.proto\x12\x02eq\x1a google/protobuf/descriptor.proto\"F\n" +
-	"\fLoginMessage\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"\xc3\x01\n" +
+	"\x0fEQMessage.proto\x12\x02eq\x1a google/protobuf/descriptor.proto\" \n" +
+	"\bJWTLogin\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"%\n" +
+	"\vJWTResponse\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\x05R\x06status\"\xc3\x01\n" +
 	"\n" +
 	"LoginReply\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12 \n" +
@@ -28144,275 +28184,276 @@ const file_EQMessage_proto_rawDesc = "" +
 	"\x14ItemPacketSummonItem\x10j\x12\x19\n" +
 	"\x15ItemPacketTributeItem\x10l\x12\x16\n" +
 	"\x12ItemPacketMerchant\x10d\x12\x1c\n" +
-	"\x18ItemPacketWorldContainer\x10\x06*ԛ\x01\n" +
+	"\x18ItemPacketWorldContainer\x10\x06*\xfb\x9b\x01\n" +
 	"\aOpCodes\x12\x0e\n" +
 	"\n" +
-	"OP_Unknown\x10\x00\x12%\n" +
-	"\vOP_LoginWeb\x10\xb0\x02\x1a\x13\xa2\x99\x02\x0feq.LoginMessage\x12(\n" +
-	"\x10OP_LoginAccepted\x10\xb1\x02\x1a\x11\xa2\x99\x02\req.LoginReply\x122\n" +
-	"\x17OP_PlayEverquestRequest\x10\x81\x03\x1a\x14\xa2\x99\x02\x10eq.PlayEverquest\x12;\n" +
-	"\x18OP_PlayEverquestResponse\x10\x82\x03\x1a\x1c\xa2\x99\x02\x18eq.PlayEverquestResponse\x12.\n" +
-	"\x14OP_ServerListRequest\x10\xca\x03\x1a\x13\xa2\x99\x02\x0feq.LoginRequest\x126\n" +
-	"\x15OP_ServerListResponse\x10\xcb\x03\x1a\x1a\xa2\x99\x02\x16eq.LoginServerResponse\x12&\n" +
+	"OP_Unknown\x10\x00\x12!\n" +
+	"\vOP_JWTLogin\x10\xf5\x04\x1a\x0f\xa2\x99\x02\veq.JWTLogin\x12'\n" +
+	"\x0eOP_JWTResponse\x10\xa1\x06\x1a\x12\xa2\x99\x02\x0eeq.JWTResponse\x12(\n" +
+	"\x10OP_LoginAccepted\x10\xcb\x02\x1a\x11\xa2\x99\x02\req.LoginReply\x122\n" +
+	"\x17OP_PlayEverquestRequest\x10\x9d\x03\x1a\x14\xa2\x99\x02\x10eq.PlayEverquest\x12;\n" +
+	"\x18OP_PlayEverquestResponse\x10\x9e\x03\x1a\x1c\xa2\x99\x02\x18eq.PlayEverquestResponse\x12.\n" +
+	"\x14OP_ServerListRequest\x10\xe7\x03\x1a\x13\xa2\x99\x02\x0feq.LoginRequest\x126\n" +
+	"\x15OP_ServerListResponse\x10\xe8\x03\x1a\x1a\xa2\x99\x02\x16eq.LoginServerResponse\x12&\n" +
 	"\x0eOP_ApproveName\x10(\x1a\x12\xa2\x99\x02\x0eeq.NameApprove\x12)\n" +
-	"\x12OP_CharacterCreate\x10M\x1a\x11\xa2\x99\x02\req.CharCreate\x12%\n" +
-	"\x12OP_DeleteCharacter\x10w\x1a\r\xa2\x99\x02\teq.String\x12&\n" +
+	"\x12OP_CharacterCreate\x10O\x1a\x11\xa2\x99\x02\req.CharCreate\x12%\n" +
+	"\x12OP_DeleteCharacter\x10y\x1a\r\xa2\x99\x02\teq.String\x12&\n" +
 	"\x15OP_ApproveName_Server\x10\xb0'\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12%\n" +
-	"\rOP_EnterWorld\x10\xa0\x01\x1a\x11\xa2\x99\x02\req.EnterWorld\x12!\n" +
-	"\x10OP_ExpansionInfo\x10\xa2\x01\x1a\n" +
+	"\rOP_EnterWorld\x10\xa2\x01\x1a\x11\xa2\x99\x02\req.EnterWorld\x12!\n" +
+	"\x10OP_ExpansionInfo\x10\xa5\x01\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12%\n" +
-	"\rOP_GuildsList\x10\xf5\x01\x1a\x11\xa2\x99\x02\req.GuildsList\x12\"\n" +
-	"\x11OP_PostEnterWorld\x10\x87\x03\x1a\n" +
+	"\rOP_GuildsList\x10\x89\x02\x1a\x11\xa2\x99\x02\req.GuildsList\x12\"\n" +
+	"\x11OP_PostEnterWorld\x10\xa3\x03\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12,\n" +
-	"\x0fOP_SendCharInfo\x10\xbc\x03\x1a\x16\xa2\x99\x02\x12eq.CharacterSelect\x12'\n" +
-	"\x10OP_SendLoginInfo\x10\xc0\x03\x1a\x10\xa2\x99\x02\feq.LoginInfo\x12%\n" +
-	"\x14OP_SendMaxCharacters\x10\xc1\x03\x1a\n" +
+	"\x0fOP_SendCharInfo\x10\xd9\x03\x1a\x16\xa2\x99\x02\x12eq.CharacterSelect\x12'\n" +
+	"\x10OP_SendLoginInfo\x10\xdd\x03\x1a\x10\xa2\x99\x02\feq.LoginInfo\x12%\n" +
+	"\x14OP_SendMaxCharacters\x10\xde\x03\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12#\n" +
-	"\x11OP_SendMembership\x10\xc2\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12*\n" +
-	"\x18OP_SendMembershipDetails\x10\xc3\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12-\n" +
-	"\x11OP_ZoneServerInfo\x10\xc9\x04\x1a\x15\xa2\x99\x02\x11eq.ZoneServerInfo\x12;\n" +
-	"\x18OP_WebInitiateConnection\x10\xcf\x04\x1a\x1c\xa2\x99\x02\x18eq.WebInitiateConnection\x12)\n" +
-	"\fOP_ZoneEntry\x10\xc5\x04\x1a\x16\xa2\x99\x02\x12eq.ClientZoneEntry\x12/\n" +
-	"\x12OP_SetServerFilter\x10\xd4\x03\x1a\x16\xa2\x99\x02\x12eq.SetServerFilter\x12 \n" +
-	"\x0eOP_SendAATable\x10\xbb\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
-	"\x0fOP_SendTributes\x10\xc6\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
-	"\x14OP_SendGuildTributes\x10\xbf\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12 \n" +
-	"\x0eOP_SendAAStats\x10\xba\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12#\n" +
-	"\x11OP_ReqClientSpawn\x10\xa7\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
-	"\rOP_ReqNewZone\x10\xa8\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\"\n" +
-	"\x10OP_SendExpZonein\x10\xbd\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
-	"\x0eOP_ClientReady\x10\\\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
-	"\x0eOP_ClientError\x10[\x1a\x12\xa2\x99\x02\x0eeq.ClientError\x12&\n" +
+	"\x11OP_SendMembership\x10\xdf\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12*\n" +
+	"\x18OP_SendMembershipDetails\x10\xe0\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12-\n" +
+	"\x11OP_ZoneServerInfo\x10\xee\x04\x1a\x15\xa2\x99\x02\x11eq.ZoneServerInfo\x12;\n" +
+	"\x18OP_WebInitiateConnection\x10\xf4\x04\x1a\x1c\xa2\x99\x02\x18eq.WebInitiateConnection\x12)\n" +
+	"\fOP_ZoneEntry\x10\xea\x04\x1a\x16\xa2\x99\x02\x12eq.ClientZoneEntry\x12/\n" +
+	"\x12OP_SetServerFilter\x10\xf1\x03\x1a\x16\xa2\x99\x02\x12eq.SetServerFilter\x12 \n" +
+	"\x0eOP_SendAATable\x10\xd8\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
+	"\x0fOP_SendTributes\x10\xe3\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
+	"\x14OP_SendGuildTributes\x10\xdc\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12 \n" +
+	"\x0eOP_SendAAStats\x10\xd7\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12#\n" +
+	"\x11OP_ReqClientSpawn\x10\xc3\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
+	"\rOP_ReqNewZone\x10\xc4\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\"\n" +
+	"\x10OP_SendExpZonein\x10\xda\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
+	"\x0eOP_ClientReady\x10^\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
+	"\x0eOP_ClientError\x10]\x1a\x12\xa2\x99\x02\x0eeq.ClientError\x12&\n" +
 	"\x0eOP_ApproveZone\x10*\x1a\x12\xa2\x99\x02\x0eeq.ApproveZone\x12\x17\n" +
-	"\x06OP_TGB\x10\x8c\x04\x1a\n" +
+	"\x06OP_TGB\x10\xaf\x04\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12\x1c\n" +
 	"\fOP_AckPacket\x10\a\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x126\n" +
-	"\x0fOP_ClientUpdate\x10^\x1a!\xa2\x99\x02\x1deq.PlayerPositionUpdateServer\x12\x1d\n" +
+	"\x0fOP_ClientUpdate\x10`\x1a!\xa2\x99\x02\x1deq.PlayerPositionUpdateServer\x12\x1d\n" +
 	"\rOP_AutoAttack\x10/\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12\x1e\n" +
 	"\x0eOP_AutoAttack2\x100\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12\x1e\n" +
 	"\n" +
-	"OP_Consent\x10f\x1a\x0e\xa2\x99\x02\n" +
+	"OP_Consent\x10h\x1a\x0e\xa2\x99\x02\n" +
 	"eq.Consent\x12\"\n" +
-	"\x0eOP_ConsentDeny\x10g\x1a\x0e\xa2\x99\x02\n" +
+	"\x0eOP_ConsentDeny\x10i\x1a\x0e\xa2\x99\x02\n" +
 	"eq.Consent\x12(\n" +
-	"\x0eOP_TargetMouse\x10\x81\x04\x1a\x13\xa2\x99\x02\x0feq.ClientTarget\x12*\n" +
-	"\x10OP_TargetCommand\x10\xff\x03\x1a\x13\xa2\x99\x02\x0feq.ClientTarget\x12#\n" +
-	"\fOP_Shielding\x10\xe5\x03\x1a\x10\xa2\x99\x02\feq.Shielding\x12\x19\n" +
-	"\aOP_Jump\x10\x92\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12,\n" +
+	"\x0eOP_TargetMouse\x10\xa4\x04\x1a\x13\xa2\x99\x02\x0feq.ClientTarget\x12*\n" +
+	"\x10OP_TargetCommand\x10\xa2\x04\x1a\x13\xa2\x99\x02\x0feq.ClientTarget\x12#\n" +
+	"\fOP_Shielding\x10\x82\x04\x1a\x10\xa2\x99\x02\feq.Shielding\x12\x19\n" +
+	"\aOP_Jump\x10\xad\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12,\n" +
 	"\x17OP_AdventureInfoRequest\x10\x0f\x1a\x0f\xa2\x99\x02\veq.EntityId\x120\n" +
 	"\x13OP_AdventureRequest\x10\x17\x1a\x17\xa2\x99\x02\x13eq.AdventureRequest\x12 \n" +
-	"\rOP_LDoNButton\x10\x96\x02\x1a\f\xa2\x99\x02\beq.Bool\t\x12#\n" +
-	"\x11OP_LeaveAdventure\x10\x9e\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1e\n" +
+	"\rOP_LDoNButton\x10\xb1\x02\x1a\f\xa2\x99\x02\beq.Bool\t\x12#\n" +
+	"\x11OP_LeaveAdventure\x10\xb9\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1e\n" +
 	"\n" +
-	"OP_Consume\x10k\x1a\x0e\xa2\x99\x02\n" +
+	"OP_Consume\x10m\x1a\x0e\xa2\x99\x02\n" +
 	"eq.Consume\x129\n" +
 	"\x1bOP_AdventureMerchantRequest\x10\x13\x1a\x18\xa2\x99\x02\x14eq.AdventureMerchant\x12;\n" +
 	"\x1cOP_AdventureMerchantPurchase\x10\x12\x1a\x19\xa2\x99\x02\x15eq.Adventure_Purchase\x12&\n" +
-	"\x11OP_ConsiderCorpse\x10j\x1a\x0f\xa2\x99\x02\veq.Consider\x12 \n" +
-	"\vOP_Consider\x10i\x1a\x0f\xa2\x99\x02\veq.Consider\x12\x1b\n" +
+	"\x11OP_ConsiderCorpse\x10l\x1a\x0f\xa2\x99\x02\veq.Consider\x12 \n" +
+	"\vOP_Consider\x10k\x1a\x0f\xa2\x99\x02\veq.Consider\x12\x1b\n" +
 	"\n" +
 	"OP_Begging\x10:\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1d\n" +
-	"\vOP_TestBuff\x10\x8b\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
+	"\vOP_TestBuff\x10\xae\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
 	"\n" +
-	"OP_Surname\x10\xfc\x03\x1a\x0e\xa2\x99\x02\n" +
+	"OP_Surname\x10\x9e\x04\x1a\x0e\xa2\x99\x02\n" +
 	"eq.Surname\x12 \n" +
-	"\x0eOP_YellForHelp\x10\xc2\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12 \n" +
+	"\x0eOP_YellForHelp\x10\xe7\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12 \n" +
 	"\tOP_Assist\x10+\x1a\x11\xa2\x99\x02\req.EntityId\t\t\x12$\n" +
-	"\rOP_GMTraining\x10\xc9\x01\x1a\x10\xa2\x99\x02\feq.GMTrainee\x12(\n" +
-	"\x10OP_GMEndTraining\x10\xbc\x01\x1a\x11\xa2\x99\x02\req.GMTrainEnd\x12*\n" +
-	"\x0fOP_GMTrainSkill\x10\xca\x01\x1a\x14\xa2\x99\x02\x10eq.GMSkillChange\x12 \n" +
-	"\x0eOP_RequestDuel\x10\xaa\x03\x1a\v\xa2\x99\x02\aeq.Duel\x12(\n" +
-	"\x0eOP_DuelDecline\x10\x84\x01\x1a\x13\xa2\x99\x02\x0feq.DuelResponse\x12\x1f\n" +
-	"\rOP_DuelAccept\x10\x85\x01\x1a\v\xa2\x99\x02\aeq.Duel\x12/\n" +
-	"\x12OP_SpawnAppearance\x10\xf4\x03\x1a\x16\xa2\x99\x02\x12eq.SpawnAppearance\x12*\n" +
+	"\rOP_GMTraining\x10\xcc\x01\x1a\x10\xa2\x99\x02\feq.GMTrainee\x12(\n" +
+	"\x10OP_GMEndTraining\x10\xbf\x01\x1a\x11\xa2\x99\x02\req.GMTrainEnd\x12*\n" +
+	"\x0fOP_GMTrainSkill\x10\xcd\x01\x1a\x14\xa2\x99\x02\x10eq.GMSkillChange\x12 \n" +
+	"\x0eOP_RequestDuel\x10\xc6\x03\x1a\v\xa2\x99\x02\aeq.Duel\x12(\n" +
+	"\x0eOP_DuelDecline\x10\x86\x01\x1a\x13\xa2\x99\x02\x0feq.DuelResponse\x12\x1f\n" +
+	"\rOP_DuelAccept\x10\x87\x01\x1a\v\xa2\x99\x02\aeq.Duel\x12/\n" +
+	"\x12OP_SpawnAppearance\x10\x96\x04\x1a\x16\xa2\x99\x02\x12eq.SpawnAppearance\x12*\n" +
 	"\x10OP_BazaarInspect\x106\x1a\x14\xa2\x99\x02\x10eq.BazaarInspect\x12\x1a\n" +
-	"\bOP_Death\x10u\x1a\f\xa2\x99\x02\beq.Death\x12!\n" +
-	"\vOP_MoveCoin\x10\xda\x02\x1a\x0f\xa2\x99\x02\veq.MoveCoin\x12-\n" +
-	"\x10OP_ItemLinkClick\x10\x88\x02\x1a\x16\xa2\x99\x02\x12eq.ItemViewRequest\x12!\n" +
-	"\vOP_MoveItem\x10\xdc\x02\x1a\x0f\xa2\x99\x02\veq.MoveItem\x12\x18\n" +
-	"\aOP_Camp\x10E\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1b\n" +
-	"\tOP_Logout\x10\xb6\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
-	"\x0fOP_SenseHeading\x10\xc8\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
-	"\rOP_FeignDeath\x10\xa6\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1a\n" +
-	"\bOP_Sneak\x10\xef\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x19\n" +
-	"\aOP_Hide\x10\xfb\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12,\n" +
-	"\x11OP_ChannelMessage\x10L\x1a\x15\xa2\x99\x02\x11eq.ChannelMessage\x12%\n" +
-	"\rOP_WearChange\x10\xb0\x04\x1a\x11\xa2\x99\x02\req.WearChange\x12$\n" +
-	"\x0eOP_DeleteSpawn\x10{\x1a\x10\xa2\x99\x02\feq.EntityId\t\x12$\n" +
-	"\x10OP_SaveOnZoneReq\x10\xb8\x03\x1a\r\xa2\x99\x02\teq.Save\t\t\x12\x19\n" +
-	"\aOP_Save\x10\xb7\x03\x1a\v\xa2\x99\x02\aeq.Save\x12%\n" +
-	"\x10OP_WhoAllRequest\x10\xb3\x04\x1a\x0e\xa2\x99\x02\n" +
+	"\bOP_Death\x10w\x1a\f\xa2\x99\x02\beq.Death\x12!\n" +
+	"\vOP_MoveCoin\x10\xf4\x02\x1a\x0f\xa2\x99\x02\veq.MoveCoin\x12-\n" +
+	"\x10OP_ItemLinkClick\x10\xa2\x02\x1a\x16\xa2\x99\x02\x12eq.ItemViewRequest\x12!\n" +
+	"\vOP_MoveItem\x10\xf6\x02\x1a\x0f\xa2\x99\x02\veq.MoveItem\x12\x18\n" +
+	"\aOP_Camp\x10F\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1b\n" +
+	"\tOP_Logout\x10\xd0\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
+	"\x0fOP_SenseHeading\x10\xe5\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
+	"\rOP_FeignDeath\x10\xa9\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1a\n" +
+	"\bOP_Sneak\x10\x91\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12\x19\n" +
+	"\aOP_Hide\x10\x91\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12,\n" +
+	"\x11OP_ChannelMessage\x10M\x1a\x15\xa2\x99\x02\x11eq.ChannelMessage\x12%\n" +
+	"\rOP_WearChange\x10\xd5\x04\x1a\x11\xa2\x99\x02\req.WearChange\x12$\n" +
+	"\x0eOP_DeleteSpawn\x10}\x1a\x10\xa2\x99\x02\feq.EntityId\t\x12$\n" +
+	"\x10OP_SaveOnZoneReq\x10\xd5\x03\x1a\r\xa2\x99\x02\teq.Save\t\t\x12\x19\n" +
+	"\aOP_Save\x10\xd4\x03\x1a\v\xa2\x99\x02\aeq.Save\x12%\n" +
+	"\x10OP_WhoAllRequest\x10\xd8\x04\x1a\x0e\xa2\x99\x02\n" +
 	"eq.Who_All\x12+\n" +
-	"\x10OP_GMZoneRequest\x10\xcc\x01\x1a\x14\xa2\x99\x02\x10eq.GMZoneRequest\x12\"\n" +
-	"\x11OP_GMZoneRequest2\x10\xcd\x01\x1a\n" +
+	"\x10OP_GMZoneRequest\x10\xcf\x01\x1a\x14\xa2\x99\x02\x10eq.GMZoneRequest\x12\"\n" +
+	"\x11OP_GMZoneRequest2\x10\xd0\x01\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12(\n" +
-	"\x11OP_EndLootRequest\x10\x9d\x01\x1a\x10\xa2\x99\x02\feq.EntityId\t\x12%\n" +
-	"\x0eOP_LootRequest\x10\xbb\x02\x1a\x10\xa2\x99\x02\feq.EntityId\t\x12\x1d\n" +
-	"\x06OP_Dye\x10\x87\x01\x1a\x10\xa2\x99\x02\feq.DyeStruct\x12!\n" +
-	"\x10OP_ConfirmDelete\x10e\x1a\v\xa2\x99\x02\aeq.Zero\x12$\n" +
-	"\vOP_LootItem\x10\xba\x02\x1a\x12\xa2\x99\x02\x0eeq.LootingItem\x12 \n" +
-	"\x0eOP_GuildDelete\x10\xe4\x01\x1a\v\xa2\x99\x02\aeq.Zero\x126\n" +
-	"\x12OP_GuildPublicNote\x10\xf3\x01\x1a\x1d\xa2\x99\x02\x19eq.GuildUpdate_PublicNote\x12\"\n" +
-	"\x10OP_GetGuildsList\x10\xb6\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
-	"\x0fOP_SetGuildMOTD\x10\xd1\x03\x1a\x10\xa2\x99\x02\feq.GuildMOTD\x12%\n" +
-	"\rOP_SetRunMode\x10\xd3\x03\x1a\x11\xa2\x99\x02\req.SetRunMode\x12\x1f\n" +
-	"\rOP_GuildPeace\x10\xf1\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1d\n" +
-	"\vOP_GuildWar\x10\xf9\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12+\n" +
-	"\x0eOP_GuildLeader\x10\xe8\x01\x1a\x16\xa2\x99\x02\x12eq.GuildMakeLeader\x12-\n" +
-	"\x0eOP_GuildDemote\x10\xe5\x01\x1a\x18\xa2\x99\x02\x14eq.GuildDemoteStruct\x12(\n" +
-	"\x0eOP_GuildInvite\x10\xe6\x01\x1a\x13\xa2\x99\x02\x0feq.GuildCommand\x12(\n" +
-	"\x0eOP_GuildRemove\x10\xf4\x01\x1a\x13\xa2\x99\x02\x0feq.GuildCommand\x123\n" +
-	"\x14OP_GuildInviteAccept\x10\xe7\x01\x1a\x18\xa2\x99\x02\x14eq.GuildInviteAccept\x12&\n" +
-	"\rOP_ManaChange\x10\xbc\x02\x1a\x12\xa2\x99\x02\x0eeq.ManaChange\t\x12+\n" +
-	"\x10OP_MemorizeSpell\x10\xc1\x02\x1a\x14\xa2\x99\x02\x10eq.MemorizeSpell\x12#\n" +
-	"\fOP_SwapSpell\x10\xfd\x03\x1a\x10\xa2\x99\x02\feq.SwapSpell\x12\"\n" +
-	"\fOP_CastSpell\x10J\x1a\x10\xa2\x99\x02\feq.CastSpell\x12$\n" +
-	"\rOP_DeleteItem\x10y\x1a\x11\xa2\x99\x02\req.DeleteItem\x12*\n" +
-	"\x10OP_CombatAbility\x10b\x1a\x14\xa2\x99\x02\x10eq.CombatAbility\x12\"\n" +
-	"\bOP_Taunt\x10\x8a\x04\x1a\x13\xa2\x99\x02\x0feq.ClientTarget\x12!\n" +
-	"\x0fOP_InstillDoubt\x10\x86\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12$\n" +
-	"\rOP_RezzAnswer\x10\xb1\x03\x1a\x10\xa2\x99\x02\feq.Resurrect\x12!\n" +
-	"\vOP_GMSummon\x10\xc7\x01\x1a\x0f\xa2\x99\x02\veq.GMSummon\x12#\n" +
-	"\fOP_TradeBusy\x10\x92\x04\x1a\x10\xa2\x99\x02\feq.TradeBusy\x12)\n" +
-	"\x0fOP_TradeRequest\x10\x98\x04\x1a\x13\xa2\x99\x02\x0feq.TradeRequest\x12-\n" +
-	"\x12OP_TradeRequestAck\x10\x99\x04\x1a\x14\xa2\x99\x02\x10eq.TradeRequest\t\x12&\n" +
-	"\x0eOP_CancelTrade\x10H\x1a\x12\xa2\x99\x02\x0eeq.CancelTrade\x12,\n" +
-	"\x13OP_TradeAcceptClick\x10\x91\x04\x1a\x12\xa2\x99\x02\x0eeq.TradeAccept\x12#\n" +
+	"\x11OP_EndLootRequest\x10\x9f\x01\x1a\x10\xa2\x99\x02\feq.EntityId\t\x12%\n" +
+	"\x0eOP_LootRequest\x10\xd5\x02\x1a\x10\xa2\x99\x02\feq.EntityId\t\x12\x1d\n" +
+	"\x06OP_Dye\x10\x89\x01\x1a\x10\xa2\x99\x02\feq.DyeStruct\x12!\n" +
+	"\x10OP_ConfirmDelete\x10g\x1a\v\xa2\x99\x02\aeq.Zero\x12$\n" +
+	"\vOP_LootItem\x10\xd4\x02\x1a\x12\xa2\x99\x02\x0eeq.LootingItem\x12 \n" +
+	"\x0eOP_GuildDelete\x10\xe7\x01\x1a\v\xa2\x99\x02\aeq.Zero\x126\n" +
+	"\x12OP_GuildPublicNote\x10\xff\x01\x1a\x1d\xa2\x99\x02\x19eq.GuildUpdate_PublicNote\x12\"\n" +
+	"\x10OP_GetGuildsList\x10\xb9\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
+	"\x0fOP_SetGuildMOTD\x10\xee\x03\x1a\x10\xa2\x99\x02\feq.GuildMOTD\x12%\n" +
+	"\rOP_SetRunMode\x10\xf0\x03\x1a\x11\xa2\x99\x02\req.SetRunMode\x12\x1f\n" +
+	"\rOP_GuildPeace\x10\xfd\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1d\n" +
+	"\vOP_GuildWar\x10\x8f\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12+\n" +
+	"\x0eOP_GuildLeader\x10\xec\x01\x1a\x16\xa2\x99\x02\x12eq.GuildMakeLeader\x12-\n" +
+	"\x0eOP_GuildDemote\x10\xe9\x01\x1a\x18\xa2\x99\x02\x14eq.GuildDemoteStruct\x12(\n" +
+	"\x0eOP_GuildInvite\x10\xea\x01\x1a\x13\xa2\x99\x02\x0feq.GuildCommand\x12(\n" +
+	"\x0eOP_GuildRemove\x10\x80\x02\x1a\x13\xa2\x99\x02\x0feq.GuildCommand\x123\n" +
+	"\x14OP_GuildInviteAccept\x10\xeb\x01\x1a\x18\xa2\x99\x02\x14eq.GuildInviteAccept\x12&\n" +
+	"\rOP_ManaChange\x10\xd6\x02\x1a\x12\xa2\x99\x02\x0eeq.ManaChange\t\x12+\n" +
+	"\x10OP_MemorizeSpell\x10\xdb\x02\x1a\x14\xa2\x99\x02\x10eq.MemorizeSpell\x12#\n" +
+	"\fOP_SwapSpell\x10\x9f\x04\x1a\x10\xa2\x99\x02\feq.SwapSpell\x12\"\n" +
+	"\fOP_CastSpell\x10K\x1a\x10\xa2\x99\x02\feq.CastSpell\x12$\n" +
+	"\rOP_DeleteItem\x10{\x1a\x11\xa2\x99\x02\req.DeleteItem\x12*\n" +
+	"\x10OP_CombatAbility\x10d\x1a\x14\xa2\x99\x02\x10eq.CombatAbility\x12\"\n" +
+	"\bOP_Taunt\x10\xad\x04\x1a\x13\xa2\x99\x02\x0feq.ClientTarget\x12!\n" +
+	"\x0fOP_InstillDoubt\x10\x9c\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12$\n" +
+	"\rOP_RezzAnswer\x10\xce\x03\x1a\x10\xa2\x99\x02\feq.Resurrect\x12!\n" +
+	"\vOP_GMSummon\x10\xca\x01\x1a\x0f\xa2\x99\x02\veq.GMSummon\x12#\n" +
+	"\fOP_TradeBusy\x10\xb5\x04\x1a\x10\xa2\x99\x02\feq.TradeBusy\x12)\n" +
+	"\x0fOP_TradeRequest\x10\xbc\x04\x1a\x13\xa2\x99\x02\x0feq.TradeRequest\x12-\n" +
+	"\x12OP_TradeRequestAck\x10\xbd\x04\x1a\x14\xa2\x99\x02\x10eq.TradeRequest\t\x12&\n" +
+	"\x0eOP_CancelTrade\x10I\x1a\x12\xa2\x99\x02\x0eeq.CancelTrade\x12,\n" +
+	"\x13OP_TradeAcceptClick\x10\xb4\x04\x1a\x12\xa2\x99\x02\x0eeq.TradeAccept\x12#\n" +
 	"\fOP_BoardBoat\x10>\x1a\x11\xa2\x99\x02\req.EntityId\t\t\x12\x1e\n" +
-	"\fOP_LeaveBoat\x10\x9f\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12#\n" +
-	"\fOP_RandomReq\x10\x99\x03\x1a\x10\xa2\x99\x02\feq.RandomReq\x12#\n" +
+	"\fOP_LeaveBoat\x10\xba\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12#\n" +
+	"\fOP_RandomReq\x10\xb5\x03\x1a\x10\xa2\x99\x02\feq.RandomReq\x12#\n" +
 	"\aOP_Buff\x10@\x1a\x16\xa2\x99\x02\x12eq.SpellBuffPacket\x12(\n" +
-	"\vOP_GMHideMe\x10\xc0\x01\x1a\x16\xa2\x99\x02\x12eq.SpawnAppearance\x12#\n" +
-	"\x0fOP_GMNameChange\x10\xc4\x01\x1a\r\xa2\x99\x02\teq.GMName\x12\x1d\n" +
-	"\tOP_GMKill\x10\xc2\x01\x1a\r\xa2\x99\x02\teq.GMKill\x12%\n" +
-	"\rOP_GMLastName\x10\xc3\x01\x1a\x11\xa2\x99\x02\req.GMLastName\x12!\n" +
-	"\vOP_GMToggle\x10\xc8\x01\x1a\x0f\xa2\x99\x02\veq.GMToggle\x12\x1e\n" +
-	"\rOP_LFGCommand\x10\xa3\x02\x1a\n" +
+	"\vOP_GMHideMe\x10\xc3\x01\x1a\x16\xa2\x99\x02\x12eq.SpawnAppearance\x12#\n" +
+	"\x0fOP_GMNameChange\x10\xc7\x01\x1a\r\xa2\x99\x02\teq.GMName\x12\x1d\n" +
+	"\tOP_GMKill\x10\xc5\x01\x1a\r\xa2\x99\x02\teq.GMKill\x12%\n" +
+	"\rOP_GMLastName\x10\xc6\x01\x1a\x11\xa2\x99\x02\req.GMLastName\x12!\n" +
+	"\vOP_GMToggle\x10\xcb\x01\x1a\x0f\xa2\x99\x02\veq.GMToggle\x12\x1e\n" +
+	"\rOP_LFGCommand\x10\xbe\x02\x1a\n" +
 	"\xa2\x99\x02\x06eq.LFG\x12\x1f\n" +
-	"\tOP_GMGoto\x10\xbf\x01\x1a\x0f\xa2\x99\x02\veq.GMSummon\x12&\n" +
-	"\rOP_TraderShop\x10\x9b\x04\x1a\x12\xa2\x99\x02\x0eeq.TraderClick\x12*\n" +
-	"\x0eOP_ShopRequest\x10\xec\x03\x1a\x15\xa2\x99\x02\x11eq.Merchant_Click\x12\"\n" +
+	"\tOP_GMGoto\x10\xc2\x01\x1a\x0f\xa2\x99\x02\veq.GMSummon\x12&\n" +
+	"\rOP_TraderShop\x10\xbf\x04\x1a\x12\xa2\x99\x02\x0eeq.TraderClick\x12*\n" +
+	"\x0eOP_ShopRequest\x10\x8e\x04\x1a\x15\xa2\x99\x02\x11eq.Merchant_Click\x12\"\n" +
 	"\tOP_Bazaar\x105\x1a\x13\xa2\x99\x02\x0feq.BazaarSearch\x12+\n" +
-	"\x10OP_ShopPlayerBuy\x10\xea\x03\x1a\x14\xa2\x99\x02\x10eq.Merchant_Sell\x120\n" +
-	"\x11OP_ShopPlayerSell\x10\xeb\x03\x1a\x18\xa2\x99\x02\x14eq.Merchant_Purchase\x12\x1c\n" +
+	"\x10OP_ShopPlayerBuy\x10\x87\x04\x1a\x14\xa2\x99\x02\x10eq.Merchant_Sell\x120\n" +
+	"\x11OP_ShopPlayerSell\x10\x88\x04\x1a\x18\xa2\x99\x02\x14eq.Merchant_Purchase\x12\x1c\n" +
 	"\n" +
-	"OP_ShopEnd\x10\xe7\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12/\n" +
-	"\x11OP_CloseContainer\x10_\x1a\x18\xa2\x99\x02\x14eq.ClickObjectAction\x122\n" +
-	"\x14OP_ClickObjectAction\x10Z\x1a\x18\xa2\x99\x02\x14eq.ClickObjectAction\x12&\n" +
-	"\x0eOP_ClickObject\x10Y\x1a\x12\xa2\x99\x02\x0eeq.ClickObject\x123\n" +
-	"\x12OP_RecipesFavorite\x10\x9e\x03\x1a\x1a\xa2\x99\x02\x16eq.TradeskillFavorites\x12+\n" +
-	"\x10OP_RecipesSearch\x10\x9f\x03\x1a\x14\xa2\x99\x02\x10eq.RecipesSearch\x12!\n" +
-	"\x10OP_RecipeDetails\x10\x9c\x03\x1a\n" +
+	"OP_ShopEnd\x10\x84\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12/\n" +
+	"\x11OP_CloseContainer\x10a\x1a\x18\xa2\x99\x02\x14eq.ClickObjectAction\x122\n" +
+	"\x14OP_ClickObjectAction\x10\\\x1a\x18\xa2\x99\x02\x14eq.ClickObjectAction\x12&\n" +
+	"\x0eOP_ClickObject\x10[\x1a\x12\xa2\x99\x02\x0eeq.ClickObject\x123\n" +
+	"\x12OP_RecipesFavorite\x10\xba\x03\x1a\x1a\xa2\x99\x02\x16eq.TradeskillFavorites\x12+\n" +
+	"\x10OP_RecipesSearch\x10\xbb\x03\x1a\x14\xa2\x99\x02\x10eq.RecipesSearch\x12!\n" +
+	"\x10OP_RecipeDetails\x10\xb8\x03\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x123\n" +
-	"\x14OP_RecipeAutoCombine\x10\x9b\x03\x1a\x18\xa2\x99\x02\x14eq.RecipeAutoCombine\x12,\n" +
-	"\x14OP_TradeSkillCombine\x10\x9c\x04\x1a\x11\xa2\x99\x02\req.NewCombine\x12'\n" +
-	"\vOP_ItemName\x10\x8b\x02\x1a\x15\xa2\x99\x02\x11eq.ItemNamePacket\x12&\n" +
+	"\x14OP_RecipeAutoCombine\x10\xb7\x03\x1a\x18\xa2\x99\x02\x14eq.RecipeAutoCombine\x12,\n" +
+	"\x14OP_TradeSkillCombine\x10\xc0\x04\x1a\x11\xa2\x99\x02\req.NewCombine\x12'\n" +
+	"\vOP_ItemName\x10\xa5\x02\x1a\x15\xa2\x99\x02\x11eq.ItemNamePacket\x12&\n" +
 	"\x0eOP_AugmentItem\x10.\x1a\x12\xa2\x99\x02\x0eeq.AugmentItem\x12\"\n" +
-	"\fOP_ClickDoor\x10X\x1a\x10\xa2\x99\x02\feq.ClickDoor\x12%\n" +
-	"\rOP_FaceChange\x10\xa4\x01\x1a\x11\xa2\x99\x02\req.FaceChange\x12'\n" +
-	"\x0eOP_GroupInvite\x10\xd7\x01\x1a\x12\xa2\x99\x02\x0eeq.GroupInvite\x12)\n" +
-	"\x0fOP_GroupInvite2\x10\xd8\x01\x1a\x13\xa2\x99\x02\x0feq.GroupInvite\t\x12)\n" +
-	"\x0eOP_GroupFollow\x10\xd5\x01\x1a\x14\xa2\x99\x02\x10eq.GroupGeneric\t\x12*\n" +
-	"\x0fOP_GroupFollow2\x10\xd6\x01\x1a\x14\xa2\x99\x02\x10eq.GroupGeneric\t\x12%\n" +
-	"\x13OP_GroupAcknowledge\x10\xcf\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12/\n" +
-	"\x14OP_GroupCancelInvite\x10\xd0\x01\x1a\x14\xa2\x99\x02\x10eq.GroupGeneric\t\x12)\n" +
-	"\x0fOP_GroupDisband\x10\xd2\x01\x1a\x13\xa2\x99\x02\x0feq.GroupGeneric\x12 \n" +
-	"\x0eOP_GroupDelete\x10\xd1\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12'\n" +
-	"\x0eOP_GMEmoteZone\x10\xbb\x01\x1a\x12\xa2\x99\x02\x0eeq.GMEmoteZone\x12&\n" +
-	"\x11OP_InspectRequest\x10\x85\x02\x1a\x0e\xa2\x99\x02\n" +
+	"\fOP_ClickDoor\x10Z\x1a\x10\xa2\x99\x02\feq.ClickDoor\x12%\n" +
+	"\rOP_FaceChange\x10\xa7\x01\x1a\x11\xa2\x99\x02\req.FaceChange\x12'\n" +
+	"\x0eOP_GroupInvite\x10\xda\x01\x1a\x12\xa2\x99\x02\x0eeq.GroupInvite\x12)\n" +
+	"\x0fOP_GroupInvite2\x10\xdb\x01\x1a\x13\xa2\x99\x02\x0feq.GroupInvite\t\x12)\n" +
+	"\x0eOP_GroupFollow\x10\xd8\x01\x1a\x14\xa2\x99\x02\x10eq.GroupGeneric\t\x12*\n" +
+	"\x0fOP_GroupFollow2\x10\xd9\x01\x1a\x14\xa2\x99\x02\x10eq.GroupGeneric\t\x12%\n" +
+	"\x13OP_GroupAcknowledge\x10\xd2\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12/\n" +
+	"\x14OP_GroupCancelInvite\x10\xd3\x01\x1a\x14\xa2\x99\x02\x10eq.GroupGeneric\t\x12)\n" +
+	"\x0fOP_GroupDisband\x10\xd5\x01\x1a\x13\xa2\x99\x02\x0feq.GroupGeneric\x12 \n" +
+	"\x0eOP_GroupDelete\x10\xd4\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12'\n" +
+	"\x0eOP_GMEmoteZone\x10\xbe\x01\x1a\x12\xa2\x99\x02\x0eeq.GMEmoteZone\x12&\n" +
+	"\x11OP_InspectRequest\x10\x9b\x02\x1a\x0e\xa2\x99\x02\n" +
 	"eq.Inspect\x12&\n" +
-	"\x10OP_InspectAnswer\x10\x82\x02\x1a\x0f\xa2\x99\x02\veq.Inspect\t\x12&\n" +
-	"\x0eOP_DeleteSpell\x10|\x1a\x12\xa2\x99\x02\x0eeq.DeleteSpell\x12'\n" +
-	"\x0eOP_PetitionBug\x10\xf0\x02\x1a\x12\xa2\x99\x02\x0eeq.PetitionBug\x12\x1c\n" +
+	"\x10OP_InspectAnswer\x10\x98\x02\x1a\x0f\xa2\x99\x02\veq.Inspect\t\x12&\n" +
+	"\x0eOP_DeleteSpell\x10~\x1a\x12\xa2\x99\x02\x0eeq.DeleteSpell\x12'\n" +
+	"\x0eOP_PetitionBug\x10\x8a\x03\x1a\x12\xa2\x99\x02\x0eeq.PetitionBug\x12\x1c\n" +
 	"\x06OP_Bug\x10C\x1a\x10\xa2\x99\x02\feq.BugStruct\x12\x1f\n" +
-	"\vOP_Petition\x10\xef\x02\x1a\r\xa2\x99\x02\teq.String\x12(\n" +
-	"\x12OP_PetitionCheckIn\x10\xf1\x02\x1a\x0f\xa2\x99\x02\veq.Petition\x12.\n" +
-	"\x12OP_PetitionResolve\x10\xf7\x02\x1a\x15\xa2\x99\x02\x11eq.PetitionUpdate\x12-\n" +
-	"\x11OP_PetitionDelete\x10\xf4\x02\x1a\x15\xa2\x99\x02\x11eq.PetitionUpdate\x12&\n" +
-	"\x15OP_PetitionUnCheckout\x10\xfb\x02\x1a\n" +
+	"\vOP_Petition\x10\x89\x03\x1a\r\xa2\x99\x02\teq.String\x12(\n" +
+	"\x12OP_PetitionCheckIn\x10\x8b\x03\x1a\x0f\xa2\x99\x02\veq.Petition\x12.\n" +
+	"\x12OP_PetitionResolve\x10\x91\x03\x1a\x15\xa2\x99\x02\x11eq.PetitionUpdate\x12-\n" +
+	"\x11OP_PetitionDelete\x10\x8e\x03\x1a\x15\xa2\x99\x02\x11eq.PetitionUpdate\x12&\n" +
+	"\x15OP_PetitionUnCheckout\x10\x95\x03\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12 \n" +
-	"\x0eOP_PetitionQue\x10\xf5\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
-	"\x12OP_PDeletePetition\x10\xea\x02\x1a\r\xa2\x99\x02\teq.String\x12$\n" +
-	"\x13OP_PetitionCheckout\x10\xf2\x02\x1a\n" +
+	"\x0eOP_PetitionQue\x10\x8f\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
+	"\x12OP_PDeletePetition\x10\x84\x03\x1a\r\xa2\x99\x02\teq.String\x12$\n" +
+	"\x13OP_PetitionCheckout\x10\x8c\x03\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12$\n" +
-	"\x12OP_PetitionRefresh\x10\xf6\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
-	"\x0eOP_PetCommands\x10\xec\x02\x1a\x11\xa2\x99\x02\req.PetCommand\x12$\n" +
-	"\vOP_ReadBook\x10\x9a\x03\x1a\x12\xa2\x99\x02\x0eeq.BookRequest\x12\x1b\n" +
-	"\bOP_Emote\x10\x9c\x01\x1a\f\xa2\x99\x02\beq.Emote\x12'\n" +
-	"\x0eOP_GMDelCorpse\x10\xba\x01\x1a\x12\xa2\x99\x02\x0eeq.GMDelCorpse\x12\x1d\n" +
-	"\tOP_GMKick\x10\xc1\x01\x1a\r\xa2\x99\x02\teq.GMKick\x12\x1e\n" +
-	"\fOP_GMServers\x10\xc6\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
-	"\vOP_Illusion\x10\xfe\x01\x1a\x0f\xa2\x99\x02\veq.Illusion\x12%\n" +
-	"\x0eOP_GMBecomeNPC\x10\xb9\x01\x1a\x10\xa2\x99\x02\feq.BecomeNPC\x12\x1c\n" +
+	"\x12OP_PetitionRefresh\x10\x90\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
+	"\x0eOP_PetCommands\x10\x86\x03\x1a\x11\xa2\x99\x02\req.PetCommand\x12$\n" +
+	"\vOP_ReadBook\x10\xb6\x03\x1a\x12\xa2\x99\x02\x0eeq.BookRequest\x12\x1b\n" +
+	"\bOP_Emote\x10\x9e\x01\x1a\f\xa2\x99\x02\beq.Emote\x12'\n" +
+	"\x0eOP_GMDelCorpse\x10\xbd\x01\x1a\x12\xa2\x99\x02\x0eeq.GMDelCorpse\x12\x1d\n" +
+	"\tOP_GMKick\x10\xc4\x01\x1a\r\xa2\x99\x02\teq.GMKick\x12\x1e\n" +
+	"\fOP_GMServers\x10\xc9\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
+	"\vOP_Illusion\x10\x94\x02\x1a\x0f\xa2\x99\x02\veq.Illusion\x12%\n" +
+	"\x0eOP_GMBecomeNPC\x10\xbc\x01\x1a\x10\xa2\x99\x02\feq.BecomeNPC\x12\x1c\n" +
 	"\n" +
-	"OP_Fishing\x10\xad\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1b\n" +
-	"\tOP_Forage\x10\xb0\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x19\n" +
-	"\aOP_Mend\x10\xc2\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12$\n" +
-	"\fOP_EnvDamage\x10\xa1\x01\x1a\x11\xa2\x99\x02\req.EnvDamage2\x12\"\n" +
-	"\tOP_Damage\x10t\x1a\x13\xa2\x99\x02\x0feq.CombatDamage\x12!\n" +
+	"OP_Fishing\x10\xb0\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1b\n" +
+	"\tOP_Forage\x10\xb3\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x19\n" +
+	"\aOP_Mend\x10\xdc\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12$\n" +
+	"\fOP_EnvDamage\x10\xa3\x01\x1a\x11\xa2\x99\x02\req.EnvDamage2\x12\"\n" +
+	"\tOP_Damage\x10v\x1a\x13\xa2\x99\x02\x0feq.CombatDamage\x12!\n" +
 	"\vOP_AAAction\x10\x04\x1a\x10\xa2\x99\x02\feq.AA_Action\x12#\n" +
-	"\fOP_TraderBuy\x10\x96\x04\x1a\x10\xa2\x99\x02\feq.TraderBuy\x12'\n" +
-	"\tOP_Trader\x10\x95\x04\x1a\x17\xa2\x99\x02\x13eq.Trader_ShowItems\x12\x1f\n" +
-	"\tOP_GMFind\x10\xbe\x01\x1a\x0f\xa2\x99\x02\veq.GMSummon\x12%\n" +
-	"\rOP_PickPocket\x10\xfd\x02\x1a\x11\xa2\x99\x02\req.PickPocket\x12#\n" +
+	"\fOP_TraderBuy\x10\xba\x04\x1a\x10\xa2\x99\x02\feq.TraderBuy\x12'\n" +
+	"\tOP_Trader\x10\xb8\x04\x1a\x17\xa2\x99\x02\x13eq.Trader_ShowItems\x12\x1f\n" +
+	"\tOP_GMFind\x10\xc1\x01\x1a\x0f\xa2\x99\x02\veq.GMSummon\x12%\n" +
+	"\rOP_PickPocket\x10\x97\x03\x1a\x11\xa2\x99\x02\req.PickPocket\x12#\n" +
 	"\rOP_Bind_Wound\x10<\x1a\x10\xa2\x99\x02\feq.BindWound\x12'\n" +
-	"\x0eOP_TrackTarget\x10\x8f\x04\x1a\x12\xa2\x99\x02\x0eeq.TrackTarget\x12\x1a\n" +
-	"\bOP_Track\x10\x8e\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
-	"\x0fOP_TrackUnknown\x10\x90\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1d\n" +
-	"\vOP_ReloadUI\x10\xa1\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1b\n" +
-	"\bOP_Split\x10\xf9\x03\x1a\f\xa2\x99\x02\beq.Split\x12\x1f\n" +
-	"\rOP_SenseTraps\x10\xc9\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1f\n" +
-	"\x0eOP_DisarmTraps\x10\x7f\x1a\v\xa2\x99\x02\aeq.Zero\x12.\n" +
-	"\x14OP_OpenTributeMaster\x10\xe9\x02\x1a\x13\xa2\x99\x02\x0feq.StartTribute\x123\n" +
-	"\x19OP_OpenGuildTributeMaster\x10\xe7\x02\x1a\x13\xa2\x99\x02\x0feq.StartTribute\x12'\n" +
-	"\x0eOP_TributeItem\x10\x9f\x04\x1a\x12\xa2\x99\x02\x0eeq.TributeItem\x12)\n" +
-	"\x0fOP_TributeMoney\x10\xa0\x04\x1a\x13\xa2\x99\x02\x0feq.TributeMoney\x12.\n" +
-	"\x10OP_SelectTribute\x10\xb9\x03\x1a\x17\xa2\x99\x02\x13eq.SelectTributeReq\x12)\n" +
-	"\x10OP_TributeUpdate\x10\xa5\x04\x1a\x12\xa2\x99\x02\x0eeq.TributeInfo\x12$\n" +
-	"\x10OP_TributeToggle\x10\xa4\x04\x1a\r\xa2\x99\x02\teq.uint32\x12!\n" +
-	"\rOP_TributeNPC\x10\xa1\x04\x1a\r\xa2\x99\x02\teq.uint32\x12\x1d\n" +
-	"\fOP_CrashDump\x10o\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
-	"\x0eOP_ControlBoat\x10l\x1a\x12\xa2\x99\x02\x0eeq.ControlBoat\x12\x1d\n" +
-	"\vOP_DumpName\x10\x86\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12$\n" +
-	"\x12OP_SafeFallSuccess\x10\xb5\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1e\n" +
-	"\fOP_Heartbeat\x10\xfa\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1e\n" +
-	"\fOP_SafePoint\x10\xb6\x03\x1a\v\xa2\x99\x02\aeq.Zero\x123\n" +
-	"\x14OP_FindPersonRequest\x10\xa9\x01\x1a\x18\xa2\x99\x02\x14eq.FindPersonRequest\x12'\n" +
-	"\x16OP_LeadershipExpToggle\x10\x9c\x02\x1a\n" +
+	"\x0eOP_TrackTarget\x10\xb2\x04\x1a\x12\xa2\x99\x02\x0eeq.TrackTarget\x12\x1a\n" +
+	"\bOP_Track\x10\xb1\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
+	"\x0fOP_TrackUnknown\x10\xb3\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1d\n" +
+	"\vOP_ReloadUI\x10\xbd\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1b\n" +
+	"\bOP_Split\x10\x9b\x04\x1a\f\xa2\x99\x02\beq.Split\x12\x1f\n" +
+	"\rOP_SenseTraps\x10\xe6\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12 \n" +
+	"\x0eOP_DisarmTraps\x10\x81\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12.\n" +
+	"\x14OP_OpenTributeMaster\x10\x83\x03\x1a\x13\xa2\x99\x02\x0feq.StartTribute\x123\n" +
+	"\x19OP_OpenGuildTributeMaster\x10\x81\x03\x1a\x13\xa2\x99\x02\x0feq.StartTribute\x12'\n" +
+	"\x0eOP_TributeItem\x10\xc4\x04\x1a\x12\xa2\x99\x02\x0eeq.TributeItem\x12)\n" +
+	"\x0fOP_TributeMoney\x10\xc5\x04\x1a\x13\xa2\x99\x02\x0feq.TributeMoney\x12.\n" +
+	"\x10OP_SelectTribute\x10\xd6\x03\x1a\x17\xa2\x99\x02\x13eq.SelectTributeReq\x12)\n" +
+	"\x10OP_TributeUpdate\x10\xca\x04\x1a\x12\xa2\x99\x02\x0eeq.TributeInfo\x12$\n" +
+	"\x10OP_TributeToggle\x10\xc9\x04\x1a\r\xa2\x99\x02\teq.uint32\x12!\n" +
+	"\rOP_TributeNPC\x10\xc6\x04\x1a\r\xa2\x99\x02\teq.uint32\x12\x1d\n" +
+	"\fOP_CrashDump\x10q\x1a\v\xa2\x99\x02\aeq.Zero\x12&\n" +
+	"\x0eOP_ControlBoat\x10n\x1a\x12\xa2\x99\x02\x0eeq.ControlBoat\x12\x1d\n" +
+	"\vOP_DumpName\x10\x88\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12$\n" +
+	"\x12OP_SafeFallSuccess\x10\xd2\x03\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1e\n" +
+	"\fOP_Heartbeat\x10\x90\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12\x1e\n" +
+	"\fOP_SafePoint\x10\xd3\x03\x1a\v\xa2\x99\x02\aeq.Zero\x123\n" +
+	"\x14OP_FindPersonRequest\x10\xac\x01\x1a\x18\xa2\x99\x02\x14eq.FindPersonRequest\x12'\n" +
+	"\x16OP_LeadershipExpToggle\x10\xb7\x02\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12(\n" +
-	"\x17OP_PurchaseLeadershipAA\x10\x8a\x03\x1a\n" +
+	"\x17OP_PurchaseLeadershipAA\x10\xa6\x03\x1a\n" +
 	"\xa2\x99\x02\x06eq.Int\x12(\n" +
 	"\x0fOP_BankerChange\x103\x1a\x13\xa2\x99\x02\x0feq.BankerChange\x12!\n" +
-	"\vOP_SetTitle\x10\xd6\x03\x1a\x0f\xa2\x99\x02\veq.SetTitle\x12\"\n" +
-	"\x10OP_RequestTitles\x10\xac\x03\x1a\v\xa2\x99\x02\aeq.Zero\x123\n" +
-	"\x14OP_ItemVerifyRequest\x10\x90\x02\x1a\x18\xa2\x99\x02\x14eq.ItemVerifyRequest\x12\x1f\n" +
-	"\x0eOP_ClearObject\x10V\x1a\v\xa2\x99\x02\aeq.Zero\x12 \n" +
-	"\x0eOP_FinishTrade\x10\xaa\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12*\n" +
-	"\x18OP_GMEndTrainingResponse\x10\xbd\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
-	"\x0fOP_LootComplete\x10\xb9\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12%\n" +
-	"\x13OP_WorldObjectsSent\x10\xbb\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
-	"\x0fOP_FinishWindow\x10\xab\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\"\n" +
-	"\x10OP_FinishWindow2\x10\xac\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12%\n" +
-	"\rOP_ItemPacket\x10\x8c\x02\x1a\x11\xa2\x99\x02\req.ItemPacket\x12&\n" +
-	"\x0eOP_ColoredText\x10a\x1a\x12\xa2\x99\x02\x0eeq.ColoredText\x12/\n" +
-	"\x12OP_ItemRecastDelay\x10\x8e\x02\x1a\x16\xa2\x99\x02\x12eq.ItemRecastDelay\x121\n" +
-	"\x13OP_FormattedMessage\x10\xb2\x01\x1a\x17\xa2\x99\x02\x13eq.FormattedMessage\x12&\n" +
-	"\x12OP_GuildMemberList\x10\xee\x01\x1a\r\xa2\x99\x02\teq.uint32\x12+\n" +
-	"\x10OP_InterruptCast\x10\x87\x02\x1a\x14\xa2\x99\x02\x10eq.InterruptCast\x12+\n" +
-	"\x13OP_ItemLinkResponse\x10\x89\x02\x1a\x11\xa2\x99\x02\req.ItemPacket\x12+\n" +
-	"\rOP_ZoneSpawns\x10\xcb\x04\x1a\x17\xa2\x99\x02\teq.Spawns\xaa\x99\x02\x06spawns\x12)\n" +
-	"\x11OP_CompletedTasks\x10d\x1a\x12\xa2\x99\x02\x0eeq.TaskHistory\x12'\n" +
-	"\x10OP_CharInventory\x10O\x1a\x11\xa2\x99\x02\req.ItemPacket\x12\"\n" +
-	"\x0fOP_CustomTitles\x10s\x1a\r\xa2\x99\x02\teq.Titles\x12\x1e\n" +
-	"\fOP_SpawnDoor\x10\xf5\x03\x1a\v\xa2\x99\x02\aeq.Door\x12)\n" +
-	"\x11OP_SendZonepoints\x10\xc7\x03\x1a\x11\xa2\x99\x02\req.ZonePoints\x12*\n" +
-	"\x0eOP_TributeInfo\x10\x9e\x04\x1a\x15\xa2\x99\x02\x11eq.TributeAbility\x124\n" +
-	"\x13OP_GuildTributeInfo\x10\xf7\x01\x1a\x1a\xa2\x99\x02\x16eq.GuildTributeAbility\x12'\n" +
-	"\x10OP_SendTitleList\x10\xc5\x03\x1a\x10\xa2\x99\x02\feq.TitleList\x12&\n" +
+	"\vOP_SetTitle\x10\xf3\x03\x1a\x0f\xa2\x99\x02\veq.SetTitle\x12\"\n" +
+	"\x10OP_RequestTitles\x10\xc9\x03\x1a\v\xa2\x99\x02\aeq.Zero\x123\n" +
+	"\x14OP_ItemVerifyRequest\x10\xab\x02\x1a\x18\xa2\x99\x02\x14eq.ItemVerifyRequest\x12\x1f\n" +
+	"\x0eOP_ClearObject\x10X\x1a\v\xa2\x99\x02\aeq.Zero\x12 \n" +
+	"\x0eOP_FinishTrade\x10\xad\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12*\n" +
+	"\x18OP_GMEndTrainingResponse\x10\xc0\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
+	"\x0fOP_LootComplete\x10\xd3\x02\x1a\v\xa2\x99\x02\aeq.Zero\x12%\n" +
+	"\x13OP_WorldObjectsSent\x10\xe0\x04\x1a\v\xa2\x99\x02\aeq.Zero\x12!\n" +
+	"\x0fOP_FinishWindow\x10\xae\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12\"\n" +
+	"\x10OP_FinishWindow2\x10\xaf\x01\x1a\v\xa2\x99\x02\aeq.Zero\x12%\n" +
+	"\rOP_ItemPacket\x10\xa6\x02\x1a\x11\xa2\x99\x02\req.ItemPacket\x12&\n" +
+	"\x0eOP_ColoredText\x10c\x1a\x12\xa2\x99\x02\x0eeq.ColoredText\x12/\n" +
+	"\x12OP_ItemRecastDelay\x10\xa9\x02\x1a\x16\xa2\x99\x02\x12eq.ItemRecastDelay\x121\n" +
+	"\x13OP_FormattedMessage\x10\xb5\x01\x1a\x17\xa2\x99\x02\x13eq.FormattedMessage\x12&\n" +
+	"\x12OP_GuildMemberList\x10\xf2\x01\x1a\r\xa2\x99\x02\teq.uint32\x12+\n" +
+	"\x10OP_InterruptCast\x10\x9d\x02\x1a\x14\xa2\x99\x02\x10eq.InterruptCast\x12+\n" +
+	"\x13OP_ItemLinkResponse\x10\xa3\x02\x1a\x11\xa2\x99\x02\req.ItemPacket\x12+\n" +
+	"\rOP_ZoneSpawns\x10\xf0\x04\x1a\x17\xa2\x99\x02\teq.Spawns\xaa\x99\x02\x06spawns\x12)\n" +
+	"\x11OP_CompletedTasks\x10f\x1a\x12\xa2\x99\x02\x0eeq.TaskHistory\x12'\n" +
+	"\x10OP_CharInventory\x10Q\x1a\x11\xa2\x99\x02\req.ItemPacket\x12\"\n" +
+	"\x0fOP_CustomTitles\x10u\x1a\r\xa2\x99\x02\teq.Titles\x12\x1e\n" +
+	"\fOP_SpawnDoor\x10\x97\x04\x1a\v\xa2\x99\x02\aeq.Door\x12)\n" +
+	"\x11OP_SendZonepoints\x10\xe4\x03\x1a\x11\xa2\x99\x02\req.ZonePoints\x12*\n" +
+	"\x0eOP_TributeInfo\x10\xc3\x04\x1a\x15\xa2\x99\x02\x11eq.TributeAbility\x124\n" +
+	"\x13OP_GuildTributeInfo\x10\x8b\x02\x1a\x1a\xa2\x99\x02\x16eq.GuildTributeAbility\x12'\n" +
+	"\x10OP_SendTitleList\x10\xe2\x03\x1a\x10\xa2\x99\x02\feq.TitleList\x12&\n" +
 	"\x0eOP_AAExpUpdate\x10\x05\x1a\x12\xa2\x99\x02\x0eeq.AAExpUpdate\x12\x1c\n" +
 	"\tOP_Action\x10\b\x1a\r\xa2\x99\x02\teq.Action\x125\n" +
 	"\x10OP_AdventureData\x10\v\x1a\x1f\xa2\x99\x02\x1beq.AdventureRequestResponse\x12.\n" +
@@ -28422,69 +28463,69 @@ const file_EQMessage_proto_rawDesc = "" +
 	"\x16OP_AnnoyingZoneUnknown\x10&\x1a\x1a\xa2\x99\x02\x16eq.AnnoyingZoneUnknown\x12(\n" +
 	"\x0fOP_BecomeTrader\x109\x1a\x13\xa2\x99\x02\x0feq.BecomeTrader\x12\"\n" +
 	"\fOP_BeginCast\x10;\x1a\x10\xa2\x99\x02\feq.BeginCast\x12\x1a\n" +
-	"\bOP_Charm\x10P\x1a\f\xa2\x99\x02\beq.Charm\x12\"\n" +
-	"\x0fOP_CameraEffect\x10D\x1a\r\xa2\x99\x02\teq.Camera\x12.\n" +
-	"\x12OP_ConsentResponse\x10h\x1a\x16\xa2\x99\x02\x12eq.ConsentResponse\x12/\n" +
-	"\x12OP_EnduranceUpdate\x10\x9e\x01\x1a\x16\xa2\x99\x02\x12eq.EnduranceUpdate\x12#\n" +
-	"\fOP_ExpUpdate\x10\xa3\x01\x1a\x10\xa2\x99\x02\feq.ExpUpdate\x12\"\n" +
-	"\x0eOP_GroundSpawn\x10\xce\x01\x1a\r\xa2\x99\x02\teq.Object\x12&\n" +
-	"\x0eOP_GroupUpdate\x10\xde\x01\x1a\x11\xa2\x99\x02\req.GroupJoin\t\x12#\n" +
-	"\fOP_GuildMOTD\x10\xf0\x01\x1a\x10\xa2\x99\x02\feq.GuildMOTD\x12(\n" +
-	"\x11OP_GuildManageAdd\x10\xe9\x01\x1a\x10\xa2\x99\x02\feq.GuildJoin\x123\n" +
-	"\x14OP_GuildManageRemove\x10\xeb\x01\x1a\x18\xa2\x99\x02\x14eq.GuildManageRemove\x123\n" +
-	"\x14OP_GuildManageStatus\x10\xec\x01\x1a\x18\xa2\x99\x02\x14eq.GuildManageStatus\x123\n" +
-	"\x14OP_GuildMemberUpdate\x10\xef\x01\x1a\x18\xa2\x99\x02\x14eq.GuildMemberUpdate\x12&\n" +
-	"\vOP_HPUpdate\x10\xfd\x01\x1a\x14\xa2\x99\x02\x10eq.SpawnHPUpdate\x12*\n" +
-	"\x10OP_IncreaseStats\x10\xff\x01\x1a\x13\xa2\x99\x02\x0feq.IncreaseStat\x12/\n" +
-	"\x12OP_ItemVerifyReply\x10\x8f\x02\x1a\x16\xa2\x99\x02\x12eq.ItemVerifyReply\x12,\n" +
-	"\x10OP_LFGAppearance\x10\xa2\x02\x1a\x15\xa2\x99\x02\x11eq.LFG_Appearance\x127\n" +
-	"\x16OP_LeadershipExpUpdate\x10\x9d\x02\x1a\x1a\xa2\x99\x02\x16eq.LeadershipExpUpdate\x12/\n" +
-	"\x12OP_LevelAppearance\x10\xa0\x02\x1a\x16\xa2\x99\x02\x12eq.LevelAppearance\x12'\n" +
-	"\x0eOP_LevelUpdate\x10\xa1\x02\x1a\x12\xa2\x99\x02\x0eeq.LevelUpdate\x12%\n" +
-	"\rOP_ManaUpdate\x10\xbd\x02\x1a\x11\xa2\x99\x02\req.ManaUpdate\x125\n" +
-	"\x15OP_MobEnduranceUpdate\x10\xd2\x02\x1a\x19\xa2\x99\x02\x15eq.MobEnduranceUpdate\x12#\n" +
-	"\fOP_MobHealth\x10\xd3\x02\x1a\x10\xa2\x99\x02\feq.MobHealth\x12+\n" +
-	"\x10OP_MobManaUpdate\x10\xd4\x02\x1a\x14\xa2\x99\x02\x10eq.MobManaUpdate\x12#\n" +
-	"\fOP_MobRename\x10\xd5\x02\x1a\x10\xa2\x99\x02\feq.MobRename\x121\n" +
-	"\x10OP_MoneyOnCorpse\x10\xd7\x02\x1a\x1a\xa2\x99\x02\x16eq.moneyOnCorpseStruct\x12'\n" +
-	"\x0eOP_MoneyUpdate\x10\xd8\x02\x1a\x12\xa2\x99\x02\x0eeq.MoneyUpdate\x12!\n" +
-	"\vOP_MoveDoor\x10\xdb\x02\x1a\x0f\xa2\x99\x02\veq.MoveDoor\x12)\n" +
-	"\vOP_NewSpawn\x10\xe1\x02\x1a\x17\xa2\x99\x02\teq.Spawns\xaa\x99\x02\x06spawns\x12\x1f\n" +
+	"\bOP_Charm\x10R\x1a\f\xa2\x99\x02\beq.Charm\x12\"\n" +
+	"\x0fOP_CameraEffect\x10E\x1a\r\xa2\x99\x02\teq.Camera\x12.\n" +
+	"\x12OP_ConsentResponse\x10j\x1a\x16\xa2\x99\x02\x12eq.ConsentResponse\x12/\n" +
+	"\x12OP_EnduranceUpdate\x10\xa0\x01\x1a\x16\xa2\x99\x02\x12eq.EnduranceUpdate\x12#\n" +
+	"\fOP_ExpUpdate\x10\xa6\x01\x1a\x10\xa2\x99\x02\feq.ExpUpdate\x12\"\n" +
+	"\x0eOP_GroundSpawn\x10\xd1\x01\x1a\r\xa2\x99\x02\teq.Object\x12&\n" +
+	"\x0eOP_GroupUpdate\x10\xe1\x01\x1a\x11\xa2\x99\x02\req.GroupJoin\t\x12#\n" +
+	"\fOP_GuildMOTD\x10\xfc\x01\x1a\x10\xa2\x99\x02\feq.GuildMOTD\x12(\n" +
+	"\x11OP_GuildManageAdd\x10\xed\x01\x1a\x10\xa2\x99\x02\feq.GuildJoin\x123\n" +
+	"\x14OP_GuildManageRemove\x10\xef\x01\x1a\x18\xa2\x99\x02\x14eq.GuildManageRemove\x123\n" +
+	"\x14OP_GuildManageStatus\x10\xf0\x01\x1a\x18\xa2\x99\x02\x14eq.GuildManageStatus\x123\n" +
+	"\x14OP_GuildMemberUpdate\x10\xf3\x01\x1a\x18\xa2\x99\x02\x14eq.GuildMemberUpdate\x12&\n" +
+	"\vOP_HPUpdate\x10\x93\x02\x1a\x14\xa2\x99\x02\x10eq.SpawnHPUpdate\x12*\n" +
+	"\x10OP_IncreaseStats\x10\x95\x02\x1a\x13\xa2\x99\x02\x0feq.IncreaseStat\x12/\n" +
+	"\x12OP_ItemVerifyReply\x10\xaa\x02\x1a\x16\xa2\x99\x02\x12eq.ItemVerifyReply\x12,\n" +
+	"\x10OP_LFGAppearance\x10\xbd\x02\x1a\x15\xa2\x99\x02\x11eq.LFG_Appearance\x127\n" +
+	"\x16OP_LeadershipExpUpdate\x10\xb8\x02\x1a\x1a\xa2\x99\x02\x16eq.LeadershipExpUpdate\x12/\n" +
+	"\x12OP_LevelAppearance\x10\xbb\x02\x1a\x16\xa2\x99\x02\x12eq.LevelAppearance\x12'\n" +
+	"\x0eOP_LevelUpdate\x10\xbc\x02\x1a\x12\xa2\x99\x02\x0eeq.LevelUpdate\x12%\n" +
+	"\rOP_ManaUpdate\x10\xd7\x02\x1a\x11\xa2\x99\x02\req.ManaUpdate\x125\n" +
+	"\x15OP_MobEnduranceUpdate\x10\xec\x02\x1a\x19\xa2\x99\x02\x15eq.MobEnduranceUpdate\x12#\n" +
+	"\fOP_MobHealth\x10\xed\x02\x1a\x10\xa2\x99\x02\feq.MobHealth\x12+\n" +
+	"\x10OP_MobManaUpdate\x10\xee\x02\x1a\x14\xa2\x99\x02\x10eq.MobManaUpdate\x12#\n" +
+	"\fOP_MobRename\x10\xef\x02\x1a\x10\xa2\x99\x02\feq.MobRename\x121\n" +
+	"\x10OP_MoneyOnCorpse\x10\xf1\x02\x1a\x1a\xa2\x99\x02\x16eq.moneyOnCorpseStruct\x12'\n" +
+	"\x0eOP_MoneyUpdate\x10\xf2\x02\x1a\x12\xa2\x99\x02\x0eeq.MoneyUpdate\x12!\n" +
+	"\vOP_MoveDoor\x10\xf5\x02\x1a\x0f\xa2\x99\x02\veq.MoveDoor\x12)\n" +
+	"\vOP_NewSpawn\x10\xfb\x02\x1a\x17\xa2\x99\x02\teq.Spawns\xaa\x99\x02\x06spawns\x12\x1f\n" +
 	"\n" +
-	"OP_NewZone\x10\xe3\x02\x1a\x0e\xa2\x99\x02\n" +
+	"OP_NewZone\x10\xfd\x02\x1a\x0e\xa2\x99\x02\n" +
 	"eq.NewZone\x12-\n" +
-	"\x11OP_PetitionUpdate\x10\xfc\x02\x1a\x15\xa2\x99\x02\x11eq.PetitionUpdate\x12+\n" +
-	"\x10OP_PlayerProfile\x10\xfe\x02\x1a\x14\xa2\x99\x02\x10eq.PlayerProfile\x12)\n" +
-	"\rOP_RaidUpdate\x10\x96\x03\x1a\x15\xa2\x99\x02\x11eq.ZoneInSendName\x12'\n" +
-	"\x0eOP_RandomReply\x10\x98\x03\x1a\x12\xa2\x99\x02\x0eeq.RandomReply\x12'\n" +
-	"\x0eOP_RecipeReply\x10\x9d\x03\x1a\x12\xa2\x99\x02\x0eeq.RecipeReply\x12?\n" +
-	"\x1aOP_RequestClientZoneChange\x10\xa9\x03\x1a\x1e\xa2\x99\x02\x1aeq.RequestClientZoneChange\x12!\n" +
-	"\fOP_RespondAA\x10\xae\x03\x1a\x0e\xa2\x99\x02\n" +
+	"\x11OP_PetitionUpdate\x10\x96\x03\x1a\x15\xa2\x99\x02\x11eq.PetitionUpdate\x12+\n" +
+	"\x10OP_PlayerProfile\x10\x9a\x03\x1a\x14\xa2\x99\x02\x10eq.PlayerProfile\x12)\n" +
+	"\rOP_RaidUpdate\x10\xb2\x03\x1a\x15\xa2\x99\x02\x11eq.ZoneInSendName\x12'\n" +
+	"\x0eOP_RandomReply\x10\xb4\x03\x1a\x12\xa2\x99\x02\x0eeq.RandomReply\x12'\n" +
+	"\x0eOP_RecipeReply\x10\xb9\x03\x1a\x12\xa2\x99\x02\x0eeq.RecipeReply\x12?\n" +
+	"\x1aOP_RequestClientZoneChange\x10\xc5\x03\x1a\x1e\xa2\x99\x02\x1aeq.RequestClientZoneChange\x12!\n" +
+	"\fOP_RespondAA\x10\xcb\x03\x1a\x0e\xa2\x99\x02\n" +
 	"eq.AATable\x12%\n" +
-	"\x0eOP_RezzRequest\x10\xb3\x03\x1a\x10\xa2\x99\x02\feq.Resurrect\x12+\n" +
-	"\x10OP_SetTitleReply\x10\xd7\x03\x1a\x14\xa2\x99\x02\x10eq.SetTitleReply\x12,\n" +
-	"\x0eOP_ShopDelItem\x10\xe6\x03\x1a\x17\xa2\x99\x02\x13eq.Merchant_DelItem\x12+\n" +
-	"\x10OP_SimpleMessage\x10\xed\x03\x1a\x14\xa2\x99\x02\x10eq.SimpleMessage\x12'\n" +
-	"\x0eOP_SkillUpdate\x10\xee\x03\x1a\x12\xa2\x99\x02\x0eeq.SkillUpdate\x12)\n" +
-	"\x16OP_SomeItemPacketMaybe\x10\xf2\x03\x1a\f\xa2\x99\x02\beq.Arrow\x12'\n" +
-	"\x0eOP_SpellEffect\x10\xf8\x03\x1a\x12\xa2\x99\x02\x0eeq.SpellEffect\x12\x1f\n" +
+	"\x0eOP_RezzRequest\x10\xd0\x03\x1a\x10\xa2\x99\x02\feq.Resurrect\x12+\n" +
+	"\x10OP_SetTitleReply\x10\xf4\x03\x1a\x14\xa2\x99\x02\x10eq.SetTitleReply\x12,\n" +
+	"\x0eOP_ShopDelItem\x10\x83\x04\x1a\x17\xa2\x99\x02\x13eq.Merchant_DelItem\x12+\n" +
+	"\x10OP_SimpleMessage\x10\x8f\x04\x1a\x14\xa2\x99\x02\x10eq.SimpleMessage\x12'\n" +
+	"\x0eOP_SkillUpdate\x10\x90\x04\x1a\x12\xa2\x99\x02\x0eeq.SkillUpdate\x12)\n" +
+	"\x16OP_SomeItemPacketMaybe\x10\x94\x04\x1a\f\xa2\x99\x02\beq.Arrow\x12'\n" +
+	"\x0eOP_SpellEffect\x10\x9a\x04\x1a\x12\xa2\x99\x02\x0eeq.SpellEffect\x12\x1f\n" +
 	"\n" +
-	"OP_Stamina\x10\xfa\x03\x1a\x0e\xa2\x99\x02\n" +
+	"OP_Stamina\x10\x9c\x04\x1a\x0e\xa2\x99\x02\n" +
 	"eq.Stamina\x12\x19\n" +
-	"\aOP_Stun\x10\xfb\x03\x1a\v\xa2\x99\x02\aeq.Stun\x12)\n" +
-	"\x0fOP_TargetReject\x10\x82\x04\x1a\x13\xa2\x99\x02\x0feq.TargetReject\x12#\n" +
-	"\fOP_TimeOfDay\x10\x8d\x04\x1a\x10\xa2\x99\x02\feq.TimeOfDay\x12$\n" +
-	"\rOP_TradeCoins\x10\x93\x04\x1a\x10\xa2\x99\x02\feq.TradeCoin\x121\n" +
-	"\x13OP_TradeMoneyUpdate\x10\x94\x04\x1a\x17\xa2\x99\x02\x13eq.TradeMoneyUpdate\x12+\n" +
-	"\x10OP_TraderDelItem\x10\x97\x04\x1a\x14\xa2\x99\x02\x10eq.TraderDelItem\x121\n" +
-	"\x13OP_TraderItemUpdate\x10\x9a\x04\x1a\x17\xa2\x99\x02\x13eq.TraderItemUpdate\x12!\n" +
-	"\x0fOP_TributeTimer\x10\xa3\x04\x1a\v\xa2\x99\x02\aeq.Bool\x125\n" +
-	"\x15OP_UpdateLeadershipAA\x10\xa9\x04\x1a\x19\xa2\x99\x02\x15eq.UpdateLeadershipAA\x12\x1f\n" +
+	"\aOP_Stun\x10\x9d\x04\x1a\v\xa2\x99\x02\aeq.Stun\x12)\n" +
+	"\x0fOP_TargetReject\x10\xa5\x04\x1a\x13\xa2\x99\x02\x0feq.TargetReject\x12#\n" +
+	"\fOP_TimeOfDay\x10\xb0\x04\x1a\x10\xa2\x99\x02\feq.TimeOfDay\x12$\n" +
+	"\rOP_TradeCoins\x10\xb6\x04\x1a\x10\xa2\x99\x02\feq.TradeCoin\x121\n" +
+	"\x13OP_TradeMoneyUpdate\x10\xb7\x04\x1a\x17\xa2\x99\x02\x13eq.TradeMoneyUpdate\x12+\n" +
+	"\x10OP_TraderDelItem\x10\xbb\x04\x1a\x14\xa2\x99\x02\x10eq.TraderDelItem\x121\n" +
+	"\x13OP_TraderItemUpdate\x10\xbe\x04\x1a\x17\xa2\x99\x02\x13eq.TraderItemUpdate\x12!\n" +
+	"\x0fOP_TributeTimer\x10\xc8\x04\x1a\v\xa2\x99\x02\aeq.Bool\x125\n" +
+	"\x15OP_UpdateLeadershipAA\x10\xce\x04\x1a\x19\xa2\x99\x02\x15eq.UpdateLeadershipAA\x12\x1f\n" +
 	"\n" +
-	"OP_Weather\x10\xb1\x04\x1a\x0e\xa2\x99\x02\n" +
+	"OP_Weather\x10\xd6\x04\x1a\x0e\xa2\x99\x02\n" +
 	"eq.Weather\x12%\n" +
-	"\rOP_ZoneChange\x10\xc3\x04\x1a\x11\xa2\x99\x02\req.ZoneChange\x12+\n" +
-	"\x10OP_ZoneInUnknown\x10\xc7\x04\x1a\x14\xa2\x99\x02\x10eq.ZoneInUnknown\x12*\n" +
+	"\rOP_ZoneChange\x10\xe8\x04\x1a\x11\xa2\x99\x02\req.ZoneChange\x12+\n" +
+	"\x10OP_ZoneInUnknown\x10\xec\x04\x1a\x14\xa2\x99\x02\x10eq.ZoneInUnknown\x12*\n" +
 	"\x10OP_AcceptNewTask\x10\x06\x1a\x14\xa2\x99\x02\x10eq.AcceptNewTask\x12*\n" +
 	"\x10OP_AdventureInfo\x10\x0e\x1a\x14\xa2\x99\x02\x10eq.AdventureInfo\x12&\n" +
 	"\x0eOP_ApplyPoison\x10'\x1a\x12\xa2\x99\x02\x0eeq.ApplyPoison\x12(\n" +
@@ -28492,26 +28533,26 @@ const file_EQMessage_proto_rawDesc = "" +
 	"\fOP_Bandolier\x102\x1a\x14\xa2\x99\x02\x10eq.BandolierItem\x12(\n" +
 	"\x0fOP_BazaarSearch\x107\x1a\x13\xa2\x99\x02\x0feq.BazaarSearch\x12(\n" +
 	"\x0fOP_BecomeCorpse\x108\x1a\x13\xa2\x99\x02\x0feq.BecomeCorpse\x12$\n" +
-	"\rOP_CancelTask\x10G\x1a\x11\xa2\x99\x02\req.CancelTask\x12!\n" +
+	"\rOP_CancelTask\x10H\x1a\x11\xa2\x99\x02\req.CancelTask\x12!\n" +
 	"\n" +
-	"OP_Command\x10c\x1a\x11\xa2\x99\x02\req.PetCommand\x12'\n" +
-	"\x0eOP_DynamicWall\x10\x88\x01\x1a\x12\xa2\x99\x02\x0eeq.DynamicWall\x12,\n" +
+	"OP_Command\x10e\x1a\x11\xa2\x99\x02\req.PetCommand\x12'\n" +
+	"\x0eOP_DynamicWall\x10\x8a\x01\x1a\x12\xa2\x99\x02\x0eeq.DynamicWall\x12,\n" +
 	"\n" +
-	"OP_LFGuild\x10\xa7\x02\x1a\x1b\xa2\x99\x02\x17eq.LFGuild_SearchPlayer\x12)\n" +
-	"\x0fOP_LoadSpellSet\x10\xac\x02\x1a\x13\xa2\x99\x02\x0feq.LoadSpellSet\x12#\n" +
-	"\fOP_LogServer\x10\xb8\x02\x1a\x10\xa2\x99\x02\feq.LogServer\x12\x1e\n" +
-	"\aOP_MOTD\x10\xd9\x02\x1a\x10\xa2\x99\x02\feq.GuildMOTD\x12-\n" +
-	"\x11OP_OnLevelMessage\x10\xe4\x02\x1a\x15\xa2\x99\x02\x11eq.OnLevelMessage\x12\x1f\n" +
+	"OP_LFGuild\x10\xc2\x02\x1a\x1b\xa2\x99\x02\x17eq.LFGuild_SearchPlayer\x12)\n" +
+	"\x0fOP_LoadSpellSet\x10\xc7\x02\x1a\x13\xa2\x99\x02\x0feq.LoadSpellSet\x12#\n" +
+	"\fOP_LogServer\x10\xd2\x02\x1a\x10\xa2\x99\x02\feq.LogServer\x12\x1e\n" +
+	"\aOP_MOTD\x10\xf3\x02\x1a\x10\xa2\x99\x02\feq.GuildMOTD\x12-\n" +
+	"\x11OP_OnLevelMessage\x10\xfe\x02\x1a\x15\xa2\x99\x02\x11eq.OnLevelMessage\x12\x1f\n" +
 	"\n" +
-	"OP_PlayMP3\x10\x83\x03\x1a\x0e\xa2\x99\x02\n" +
+	"OP_PlayMP3\x10\x9f\x03\x1a\x0e\xa2\x99\x02\n" +
 	"eq.PlayMP3\x12)\n" +
-	"\rOP_PotionBelt\x10\x88\x03\x1a\x15\xa2\x99\x02\x11eq.PotionBeltItem\x12&\n" +
-	"\vOP_PVPStats\x10\x8f\x03\x1a\x14\xa2\x99\x02\x10eq.PVPStatsEntry\x12 \n" +
-	"\tOP_Report\x10\xa6\x03\x1a\x10\xa2\x99\x02\feq.BugReport\x12'\n" +
-	"\x0eOP_SpecialMesg\x10\xf7\x03\x1a\x12\xa2\x99\x02\x0eeq.SpecialMesg\x12)\n" +
-	"\x0fOP_TaskActivity\x10\x83\x04\x1a\x13\xa2\x99\x02\x0feq.TaskActivity\x12/\n" +
-	"\x12OP_TaskDescription\x10\x85\x04\x1a\x16\xa2\x99\x02\x12eq.TaskDescription\x12'\n" +
-	"\x0eOP_ZoneUnavail\x10\xcc\x04\x1a\x12\xa2\x99\x02\x0eeq.ZoneUnavail\x126\n" +
+	"\rOP_PotionBelt\x10\xa4\x03\x1a\x15\xa2\x99\x02\x11eq.PotionBeltItem\x12&\n" +
+	"\vOP_PVPStats\x10\xab\x03\x1a\x14\xa2\x99\x02\x10eq.PVPStatsEntry\x12 \n" +
+	"\tOP_Report\x10\xc2\x03\x1a\x10\xa2\x99\x02\feq.BugReport\x12'\n" +
+	"\x0eOP_SpecialMesg\x10\x99\x04\x1a\x12\xa2\x99\x02\x0eeq.SpecialMesg\x12)\n" +
+	"\x0fOP_TaskActivity\x10\xa6\x04\x1a\x13\xa2\x99\x02\x0feq.TaskActivity\x12/\n" +
+	"\x12OP_TaskDescription\x10\xa8\x04\x1a\x16\xa2\x99\x02\x12eq.TaskDescription\x12'\n" +
+	"\x0eOP_ZoneUnavail\x10\xf1\x04\x1a\x12\xa2\x99\x02\x0eeq.ZoneUnavail\x126\n" +
 	"\x12Nested_WorldServer\x10\xe8\a\x1a\x1d\xa2\x99\x02\x0eeq.WorldServer\xaa\x99\x02\aservers\x12K\n" +
 	"\x1bNested_CharacterSelectEntry\x10\xe9\a\x1a)\xa2\x99\x02\x17eq.CharacterSelectEntry\xaa\x99\x02\n" +
 	"characters\x12<\n" +
@@ -28551,249 +28592,249 @@ const file_EQMessage_proto_rawDesc = "" +
 	"\rOP_BookButton\x10?\x12\x11\n" +
 	"\rOP_BuffCreate\x10A\x12\x18\n" +
 	"\x14OP_BuffRemoveRequest\x10B\x12\x16\n" +
-	"\x12OP_CancelSneakHide\x10F\x12\x11\n" +
-	"\rOP_CashReward\x10I\x12\x11\n" +
-	"\rOP_ChangeSize\x10K\x12\x1d\n" +
-	"\x19OP_CharacterCreateRequest\x10N\x12\x12\n" +
-	"\x0eOP_ChatMessage\x10Q\x12\x0e\n" +
+	"\x12OP_CancelSneakHide\x10G\x12\x11\n" +
+	"\rOP_CashReward\x10J\x12\x11\n" +
+	"\rOP_ChangeSize\x10L\x12\x1d\n" +
+	"\x19OP_CharacterCreateRequest\x10P\x12\x12\n" +
+	"\x0eOP_ChatMessage\x10S\x12\x0e\n" +
 	"\n" +
-	"OP_ClearAA\x10R\x12\x18\n" +
-	"\x14OP_ClearBlockedBuffs\x10S\x12\x1f\n" +
-	"\x1bOP_ClearLeadershipAbilities\x10T\x12\x14\n" +
-	"\x10OP_ClearNPCMarks\x10U\x12\x13\n" +
-	"\x0fOP_ClearSurname\x10W\x12\x16\n" +
-	"\x12OP_ClientTimeStamp\x10]\x12\x19\n" +
-	"\x15OP_CloseTributeMaster\x10`\x12\x11\n" +
-	"\rOP_CorpseDrag\x10m\x12\x11\n" +
-	"\rOP_CorpseDrop\x10n\x12\x19\n" +
-	"\x15OP_CrystalCountUpdate\x10p\x12\x14\n" +
-	"\x10OP_CrystalCreate\x10q\x12\x15\n" +
-	"\x11OP_CrystalReclaim\x10r\x12\x16\n" +
-	"\x12OP_DelegateAbility\x10v\x12\x13\n" +
-	"\x0fOP_DeleteCharge\x10x\x12\x15\n" +
-	"\x11OP_DeletePetition\x10z\x12\x13\n" +
-	"\x0fOP_DenyResponse\x10}\x12\r\n" +
-	"\tOP_Disarm\x10~\x12\x17\n" +
-	"\x12OP_DisciplineTimer\x10\x80\x01\x12\x18\n" +
-	"\x13OP_DisciplineUpdate\x10\x81\x01\x12 \n" +
-	"\x1bOP_DiscordMerchantInventory\x10\x82\x01\x12 \n" +
-	"\x1bOP_DoGroupLeadershipAbility\x10\x83\x01\x12\x13\n" +
-	"\x0eOP_DzAddPlayer\x10\x89\x01\x12\x14\n" +
-	"\x0fOP_DzChooseZone\x10\x8a\x01\x12\x19\n" +
-	"\x14OP_DzChooseZoneReply\x10\x8b\x01\x12\x11\n" +
-	"\fOP_DzCompass\x10\x8c\x01\x12\x1f\n" +
-	"\x1aOP_DzExpeditionEndsWarning\x10\x8d\x01\x12\x18\n" +
-	"\x13OP_DzExpeditionInfo\x10\x8e\x01\x12\x1a\n" +
-	"\x15OP_DzExpeditionInvite\x10\x8f\x01\x12\"\n" +
-	"\x1dOP_DzExpeditionInviteResponse\x10\x90\x01\x12!\n" +
-	"\x1cOP_DzExpeditionLockoutTimers\x10\x91\x01\x12\x14\n" +
-	"\x0fOP_DzListTimers\x10\x92\x01\x12\x14\n" +
-	"\x0fOP_DzMakeLeader\x10\x93\x01\x12\x14\n" +
-	"\x0fOP_DzMemberList\x10\x94\x01\x12\x18\n" +
-	"\x13OP_DzMemberListName\x10\x95\x01\x12\x1a\n" +
-	"\x15OP_DzMemberListStatus\x10\x96\x01\x12\x14\n" +
-	"\x0fOP_DzPlayerList\x10\x97\x01\x12\x0e\n" +
-	"\tOP_DzQuit\x10\x98\x01\x12\x16\n" +
-	"\x11OP_DzRemovePlayer\x10\x99\x01\x12\x17\n" +
-	"\x12OP_DzSetLeaderName\x10\x9a\x01\x12\x14\n" +
-	"\x0fOP_DzSwapPlayer\x10\x9b\x01\x12\x11\n" +
-	"\fOP_EnterChat\x10\x9f\x01\x12\x10\n" +
-	"\vOP_Feedback\x10\xa5\x01\x12\x18\n" +
-	"\x13OP_FellowshipUpdate\x10\xa7\x01\x12\x17\n" +
-	"\x12OP_FindPersonReply\x10\xa8\x01\x12\r\n" +
-	"\bOP_Fling\x10\xae\x01\x12\x16\n" +
-	"\x11OP_FloatListThing\x10\xaf\x01\x12\x17\n" +
-	"\x12OP_ForceFindPerson\x10\xb1\x01\x12\x12\n" +
-	"\rOP_FriendsWho\x10\xb3\x01\x12\x14\n" +
-	"\x0fOP_GetGuildMOTD\x10\xb4\x01\x12\x19\n" +
-	"\x14OP_GetGuildMOTDReply\x10\xb5\x01\x12\x11\n" +
-	"\fOP_GiveMoney\x10\xb7\x01\x12\x12\n" +
-	"\rOP_GMApproval\x10\xb8\x01\x12\x1b\n" +
-	"\x16OP_GMTrainSkillConfirm\x10\xcb\x01\x12\x19\n" +
-	"\x14OP_GroupDisbandOther\x10\xd3\x01\x12\x17\n" +
-	"\x12OP_GroupDisbandYou\x10\xd4\x01\x12\x19\n" +
-	"\x14OP_GroupLeaderChange\x10\xd9\x01\x12\x1f\n" +
-	"\x1aOP_GroupLeadershipAAUpdate\x10\xda\x01\x12\x17\n" +
-	"\x12OP_GroupMakeLeader\x10\xdb\x01\x12\x13\n" +
-	"\x0eOP_GroupMentor\x10\xdc\x01\x12\x12\n" +
-	"\rOP_GroupRoles\x10\xdd\x01\x12\x14\n" +
-	"\x0fOP_GroupUpdateB\x10\xdf\x01\x12\x1b\n" +
-	"\x16OP_GroupUpdateLeaderAA\x10\xe0\x01\x12\x11\n" +
-	"\fOP_GuildBank\x10\xe1\x01\x12\x19\n" +
-	"\x14OP_GuildBankItemList\x10\xe2\x01\x12\x13\n" +
-	"\x0eOP_GuildCreate\x10\xe3\x01\x12\x19\n" +
-	"\x14OP_GuildManageBanker\x10\xea\x01\x12\x1e\n" +
-	"\x19OP_GuildMemberLevelUpdate\x10\xed\x01\x12\x14\n" +
-	"\x0fOP_GuildPromote\x10\xf2\x01\x12\x13\n" +
-	"\x0eOP_GuildStatus\x10\xf6\x01\x12 \n" +
-	"\x1bOP_GuildUpdateURLAndChannel\x10\xf8\x01\x12\x12\n" +
-	"\rOP_HideCorpse\x10\xfc\x01\x12\x17\n" +
-	"\x12OP_InitialHPUpdate\x10\x80\x02\x12\x18\n" +
-	"\x13OP_InitialMobHealth\x10\x81\x02\x12\x14\n" +
-	"\x0fOP_InspectBuffs\x10\x83\x02\x12\x1c\n" +
-	"\x17OP_InspectMessageUpdate\x10\x84\x02\x12\x14\n" +
-	"\x0fOP_ItemLinkText\x10\x8a\x02\x12\x13\n" +
-	"\x0eOP_ItemPreview\x10\x8d\x02\x12\x17\n" +
-	"\x12OP_ItemViewUnknown\x10\x91\x02\x12\x0f\n" +
+	"OP_ClearAA\x10T\x12\x18\n" +
+	"\x14OP_ClearBlockedBuffs\x10U\x12\x1f\n" +
+	"\x1bOP_ClearLeadershipAbilities\x10V\x12\x14\n" +
+	"\x10OP_ClearNPCMarks\x10W\x12\x13\n" +
+	"\x0fOP_ClearSurname\x10Y\x12\x16\n" +
+	"\x12OP_ClientTimeStamp\x10_\x12\x19\n" +
+	"\x15OP_CloseTributeMaster\x10b\x12\x11\n" +
+	"\rOP_CorpseDrag\x10o\x12\x11\n" +
+	"\rOP_CorpseDrop\x10p\x12\x19\n" +
+	"\x15OP_CrystalCountUpdate\x10r\x12\x14\n" +
+	"\x10OP_CrystalCreate\x10s\x12\x15\n" +
+	"\x11OP_CrystalReclaim\x10t\x12\x16\n" +
+	"\x12OP_DelegateAbility\x10x\x12\x13\n" +
+	"\x0fOP_DeleteCharge\x10z\x12\x15\n" +
+	"\x11OP_DeletePetition\x10|\x12\x13\n" +
+	"\x0fOP_DenyResponse\x10\x7f\x12\x0e\n" +
+	"\tOP_Disarm\x10\x80\x01\x12\x17\n" +
+	"\x12OP_DisciplineTimer\x10\x82\x01\x12\x18\n" +
+	"\x13OP_DisciplineUpdate\x10\x83\x01\x12 \n" +
+	"\x1bOP_DiscordMerchantInventory\x10\x84\x01\x12 \n" +
+	"\x1bOP_DoGroupLeadershipAbility\x10\x85\x01\x12\x13\n" +
+	"\x0eOP_DzAddPlayer\x10\x8b\x01\x12\x14\n" +
+	"\x0fOP_DzChooseZone\x10\x8c\x01\x12\x19\n" +
+	"\x14OP_DzChooseZoneReply\x10\x8d\x01\x12\x11\n" +
+	"\fOP_DzCompass\x10\x8e\x01\x12\x1f\n" +
+	"\x1aOP_DzExpeditionEndsWarning\x10\x8f\x01\x12\x18\n" +
+	"\x13OP_DzExpeditionInfo\x10\x90\x01\x12\x1a\n" +
+	"\x15OP_DzExpeditionInvite\x10\x91\x01\x12\"\n" +
+	"\x1dOP_DzExpeditionInviteResponse\x10\x92\x01\x12!\n" +
+	"\x1cOP_DzExpeditionLockoutTimers\x10\x93\x01\x12\x14\n" +
+	"\x0fOP_DzListTimers\x10\x94\x01\x12\x14\n" +
+	"\x0fOP_DzMakeLeader\x10\x95\x01\x12\x14\n" +
+	"\x0fOP_DzMemberList\x10\x96\x01\x12\x18\n" +
+	"\x13OP_DzMemberListName\x10\x97\x01\x12\x1a\n" +
+	"\x15OP_DzMemberListStatus\x10\x98\x01\x12\x14\n" +
+	"\x0fOP_DzPlayerList\x10\x99\x01\x12\x0e\n" +
+	"\tOP_DzQuit\x10\x9a\x01\x12\x16\n" +
+	"\x11OP_DzRemovePlayer\x10\x9b\x01\x12\x17\n" +
+	"\x12OP_DzSetLeaderName\x10\x9c\x01\x12\x14\n" +
+	"\x0fOP_DzSwapPlayer\x10\x9d\x01\x12\x11\n" +
+	"\fOP_EnterChat\x10\xa1\x01\x12\x10\n" +
+	"\vOP_Feedback\x10\xa8\x01\x12\x18\n" +
+	"\x13OP_FellowshipUpdate\x10\xaa\x01\x12\x17\n" +
+	"\x12OP_FindPersonReply\x10\xab\x01\x12\r\n" +
+	"\bOP_Fling\x10\xb1\x01\x12\x16\n" +
+	"\x11OP_FloatListThing\x10\xb2\x01\x12\x17\n" +
+	"\x12OP_ForceFindPerson\x10\xb4\x01\x12\x12\n" +
+	"\rOP_FriendsWho\x10\xb6\x01\x12\x14\n" +
+	"\x0fOP_GetGuildMOTD\x10\xb7\x01\x12\x19\n" +
+	"\x14OP_GetGuildMOTDReply\x10\xb8\x01\x12\x11\n" +
+	"\fOP_GiveMoney\x10\xba\x01\x12\x12\n" +
+	"\rOP_GMApproval\x10\xbb\x01\x12\x1b\n" +
+	"\x16OP_GMTrainSkillConfirm\x10\xce\x01\x12\x19\n" +
+	"\x14OP_GroupDisbandOther\x10\xd6\x01\x12\x17\n" +
+	"\x12OP_GroupDisbandYou\x10\xd7\x01\x12\x19\n" +
+	"\x14OP_GroupLeaderChange\x10\xdc\x01\x12\x1f\n" +
+	"\x1aOP_GroupLeadershipAAUpdate\x10\xdd\x01\x12\x17\n" +
+	"\x12OP_GroupMakeLeader\x10\xde\x01\x12\x13\n" +
+	"\x0eOP_GroupMentor\x10\xdf\x01\x12\x12\n" +
+	"\rOP_GroupRoles\x10\xe0\x01\x12\x14\n" +
+	"\x0fOP_GroupUpdateB\x10\xe2\x01\x12\x1b\n" +
+	"\x16OP_GroupUpdateLeaderAA\x10\xe3\x01\x12\x11\n" +
+	"\fOP_GuildBank\x10\xe4\x01\x12\x19\n" +
+	"\x14OP_GuildBankItemList\x10\xe5\x01\x12\x13\n" +
+	"\x0eOP_GuildCreate\x10\xe6\x01\x12\x19\n" +
+	"\x14OP_GuildManageBanker\x10\xee\x01\x12\x1e\n" +
+	"\x19OP_GuildMemberLevelUpdate\x10\xf1\x01\x12\x14\n" +
+	"\x0fOP_GuildPromote\x10\xfe\x01\x12\x13\n" +
+	"\x0eOP_GuildStatus\x10\x8a\x02\x12 \n" +
+	"\x1bOP_GuildUpdateURLAndChannel\x10\x8c\x02\x12\x12\n" +
+	"\rOP_HideCorpse\x10\x92\x02\x12\x17\n" +
+	"\x12OP_InitialHPUpdate\x10\x96\x02\x12\x18\n" +
+	"\x13OP_InitialMobHealth\x10\x97\x02\x12\x14\n" +
+	"\x0fOP_InspectBuffs\x10\x99\x02\x12\x1c\n" +
+	"\x17OP_InspectMessageUpdate\x10\x9a\x02\x12\x14\n" +
+	"\x0fOP_ItemLinkText\x10\xa4\x02\x12\x13\n" +
+	"\x0eOP_ItemPreview\x10\xa7\x02\x12\x17\n" +
+	"\x12OP_ItemViewUnknown\x10\xac\x02\x12\x0f\n" +
 	"\n" +
-	"OP_KeyRing\x10\x93\x02\x12\x13\n" +
-	"\x0eOP_KickPlayers\x10\x94\x02\x12\x15\n" +
-	"\x10OP_KnowledgeBase\x10\x95\x02\x12\x17\n" +
-	"\x12OP_LDoNDisarmTraps\x10\x97\x02\x12\x13\n" +
-	"\x0eOP_LDoNInspect\x10\x98\x02\x12\x10\n" +
-	"\vOP_LDoNOpen\x10\x99\x02\x12\x14\n" +
-	"\x0fOP_LDoNPickLock\x10\x9a\x02\x12\x16\n" +
-	"\x11OP_LDoNSenseTraps\x10\x9b\x02\x12\x1c\n" +
-	"\x17OP_LFGGetMatchesRequest\x10\xa4\x02\x12\x1d\n" +
-	"\x18OP_LFGGetMatchesResponse\x10\xa5\x02\x12\x13\n" +
-	"\x0eOP_LFGResponse\x10\xa6\x02\x12\x12\n" +
-	"\rOP_LFPCommand\x10\xa8\x02\x12\x1c\n" +
-	"\x17OP_LFPGetMatchesRequest\x10\xa9\x02\x12\x1d\n" +
-	"\x18OP_LFPGetMatchesResponse\x10\xaa\x02\x12\x13\n" +
-	"\x0eOP_LinkedReuse\x10\xab\x02\x12\x0f\n" +
+	"OP_KeyRing\x10\xae\x02\x12\x13\n" +
+	"\x0eOP_KickPlayers\x10\xaf\x02\x12\x15\n" +
+	"\x10OP_KnowledgeBase\x10\xb0\x02\x12\x17\n" +
+	"\x12OP_LDoNDisarmTraps\x10\xb2\x02\x12\x13\n" +
+	"\x0eOP_LDoNInspect\x10\xb3\x02\x12\x10\n" +
+	"\vOP_LDoNOpen\x10\xb4\x02\x12\x14\n" +
+	"\x0fOP_LDoNPickLock\x10\xb5\x02\x12\x16\n" +
+	"\x11OP_LDoNSenseTraps\x10\xb6\x02\x12\x1c\n" +
+	"\x17OP_LFGGetMatchesRequest\x10\xbf\x02\x12\x1d\n" +
+	"\x18OP_LFGGetMatchesResponse\x10\xc0\x02\x12\x13\n" +
+	"\x0eOP_LFGResponse\x10\xc1\x02\x12\x12\n" +
+	"\rOP_LFPCommand\x10\xc3\x02\x12\x1c\n" +
+	"\x17OP_LFPGetMatchesRequest\x10\xc4\x02\x12\x1d\n" +
+	"\x18OP_LFPGetMatchesResponse\x10\xc5\x02\x12\x13\n" +
+	"\x0eOP_LinkedReuse\x10\xc6\x02\x12\x0f\n" +
 	"\n" +
-	"OP_LocInfo\x10\xad\x02\x12\x18\n" +
-	"\x13OP_LockoutTimerInfo\x10\xae\x02\x12\r\n" +
-	"\bOP_Login\x10\xaf\x02\x12\x15\n" +
-	"\x10OP_LoginComplete\x10\xb2\x02\x12 \n" +
-	"\x1bOP_LoginExpansionPacketData\x10\xb3\x02\x12\x15\n" +
-	"\x10OP_LoginUnknown1\x10\xb4\x02\x12\x15\n" +
-	"\x10OP_LoginUnknown2\x10\xb5\x02\x12\x13\n" +
-	"\x0eOP_LogoutReply\x10\xb7\x02\x12\x0f\n" +
+	"OP_LocInfo\x10\xc8\x02\x12\x18\n" +
+	"\x13OP_LockoutTimerInfo\x10\xc9\x02\x12\r\n" +
+	"\bOP_Login\x10\xca\x02\x12\x15\n" +
+	"\x10OP_LoginComplete\x10\xcc\x02\x12 \n" +
+	"\x1bOP_LoginExpansionPacketData\x10\xcd\x02\x12\x15\n" +
+	"\x10OP_LoginUnknown1\x10\xce\x02\x12\x15\n" +
+	"\x10OP_LoginUnknown2\x10\xcf\x02\x12\x13\n" +
+	"\x0eOP_LogoutReply\x10\xd1\x02\x12\x0f\n" +
 	"\n" +
-	"OP_MarkNPC\x10\xbe\x02\x12\x13\n" +
-	"\x0eOP_MarkRaidNPC\x10\xbf\x02\x12\x0f\n" +
+	"OP_MarkNPC\x10\xd8\x02\x12\x13\n" +
+	"\x0eOP_MarkRaidNPC\x10\xd9\x02\x12\x0f\n" +
 	"\n" +
-	"OP_Marquee\x10\xc0\x02\x12\x14\n" +
-	"\x0fOP_MendHPUpdate\x10\xc3\x02\x12\x17\n" +
-	"\x12OP_MercenaryAssign\x10\xc4\x02\x12\x18\n" +
-	"\x13OP_MercenaryCommand\x10\xc5\x02\x12\x1c\n" +
-	"\x17OP_MercenaryDataRequest\x10\xc6\x02\x12\x1d\n" +
-	"\x18OP_MercenaryDataResponse\x10\xc7\x02\x12\x1b\n" +
-	"\x16OP_MercenaryDataUpdate\x10\xc8\x02\x12\"\n" +
-	"\x1dOP_MercenaryDataUpdateRequest\x10\xc9\x02\x12\x18\n" +
-	"\x13OP_MercenaryDismiss\x10\xca\x02\x12\x15\n" +
-	"\x10OP_MercenaryHire\x10\xcb\x02\x12\x1f\n" +
-	"\x1aOP_MercenarySuspendRequest\x10\xcc\x02\x12 \n" +
-	"\x1bOP_MercenarySuspendResponse\x10\xcd\x02\x12\x16\n" +
-	"\x11OP_MercenaryTimer\x10\xce\x02\x12\x1d\n" +
-	"\x18OP_MercenaryTimerRequest\x10\xcf\x02\x12\x19\n" +
-	"\x14OP_MercenaryUnknown1\x10\xd0\x02\x12\"\n" +
-	"\x1dOP_MercenaryUnsuspendResponse\x10\xd1\x02\x12\x11\n" +
-	"\fOP_MobUpdate\x10\xd6\x02\x12\x19\n" +
-	"\x14OP_MoveMultipleItems\x10\xdd\x02\x12\x18\n" +
-	"\x13OP_MoveLogDisregard\x10\xde\x02\x12\x16\n" +
-	"\x11OP_MoveLogRequest\x10\xdf\x02\x12\x14\n" +
-	"\x0fOP_MultiLineMsg\x10\xe0\x02\x12\x1a\n" +
-	"\x15OP_NewTitlesAvailable\x10\xe2\x02\x12\x15\n" +
-	"\x10OP_OpenContainer\x10\xe5\x02\x12\x1b\n" +
-	"\x16OP_OpenDiscordMerchant\x10\xe6\x02\x12\x15\n" +
-	"\x10OP_OpenInventory\x10\xe8\x02\x12\x15\n" +
-	"\x10OP_PetBuffWindow\x10\xeb\x02\x12\x17\n" +
-	"\x12OP_PetCommandState\x10\xed\x02\x12\x0f\n" +
+	"OP_Marquee\x10\xda\x02\x12\x14\n" +
+	"\x0fOP_MendHPUpdate\x10\xdd\x02\x12\x17\n" +
+	"\x12OP_MercenaryAssign\x10\xde\x02\x12\x18\n" +
+	"\x13OP_MercenaryCommand\x10\xdf\x02\x12\x1c\n" +
+	"\x17OP_MercenaryDataRequest\x10\xe0\x02\x12\x1d\n" +
+	"\x18OP_MercenaryDataResponse\x10\xe1\x02\x12\x1b\n" +
+	"\x16OP_MercenaryDataUpdate\x10\xe2\x02\x12\"\n" +
+	"\x1dOP_MercenaryDataUpdateRequest\x10\xe3\x02\x12\x18\n" +
+	"\x13OP_MercenaryDismiss\x10\xe4\x02\x12\x15\n" +
+	"\x10OP_MercenaryHire\x10\xe5\x02\x12\x1f\n" +
+	"\x1aOP_MercenarySuspendRequest\x10\xe6\x02\x12 \n" +
+	"\x1bOP_MercenarySuspendResponse\x10\xe7\x02\x12\x16\n" +
+	"\x11OP_MercenaryTimer\x10\xe8\x02\x12\x1d\n" +
+	"\x18OP_MercenaryTimerRequest\x10\xe9\x02\x12\x19\n" +
+	"\x14OP_MercenaryUnknown1\x10\xea\x02\x12\"\n" +
+	"\x1dOP_MercenaryUnsuspendResponse\x10\xeb\x02\x12\x11\n" +
+	"\fOP_MobUpdate\x10\xf0\x02\x12\x19\n" +
+	"\x14OP_MoveMultipleItems\x10\xf7\x02\x12\x18\n" +
+	"\x13OP_MoveLogDisregard\x10\xf8\x02\x12\x16\n" +
+	"\x11OP_MoveLogRequest\x10\xf9\x02\x12\x14\n" +
+	"\x0fOP_MultiLineMsg\x10\xfa\x02\x12\x1a\n" +
+	"\x15OP_NewTitlesAvailable\x10\xfc\x02\x12\x15\n" +
+	"\x10OP_OpenContainer\x10\xff\x02\x12\x1b\n" +
+	"\x16OP_OpenDiscordMerchant\x10\x80\x03\x12\x15\n" +
+	"\x10OP_OpenInventory\x10\x82\x03\x12\x15\n" +
+	"\x10OP_PetBuffWindow\x10\x85\x03\x12\x17\n" +
+	"\x12OP_PetCommandState\x10\x87\x03\x12\x0f\n" +
 	"\n" +
-	"OP_PetHoTT\x10\xee\x02\x12\x19\n" +
-	"\x14OP_PetitionCheckout2\x10\xf3\x02\x12\x16\n" +
-	"\x11OP_PetitionSearch\x10\xf8\x02\x12\x1d\n" +
-	"\x18OP_PetitionSearchResults\x10\xf9\x02\x12\x1a\n" +
-	"\x15OP_PetitionSearchText\x10\xfa\x02\x12\x16\n" +
-	"\x11OP_PlayerStateAdd\x10\xff\x02\x12\x19\n" +
-	"\x14OP_PlayerStateRemove\x10\x80\x03\x12\f\n" +
-	"\aOP_Poll\x10\x84\x03\x12\x14\n" +
-	"\x0fOP_PollResponse\x10\x85\x03\x12\x15\n" +
-	"\x10OP_PopupResponse\x10\x86\x03\x12\x16\n" +
-	"\x11OP_PreLogoutReply\x10\x89\x03\x12\"\n" +
-	"\x1dOP_PVPLeaderBoardDetailsReply\x10\x8b\x03\x12$\n" +
-	"\x1fOP_PVPLeaderBoardDetailsRequest\x10\x8c\x03\x12\x1b\n" +
-	"\x16OP_PVPLeaderBoardReply\x10\x8d\x03\x12\x1d\n" +
-	"\x18OP_PVPLeaderBoardRequest\x10\x8e\x03\x12\x1a\n" +
-	"\x15OP_QueryResponseThing\x10\x90\x03\x12\x1c\n" +
-	"\x17OP_QueryUCSServerStatus\x10\x91\x03\x12\x1b\n" +
-	"\x16OP_RaidDelegateAbility\x10\x92\x03\x12\x19\n" +
-	"\x14OP_RaidClearNPCMarks\x10\x93\x03\x12\x12\n" +
-	"\rOP_RaidInvite\x10\x94\x03\x12\x10\n" +
-	"\vOP_RaidJoin\x10\x95\x03\x12\x1b\n" +
-	"\x16OP_RandomNameGenerator\x10\x97\x03\x12\x17\n" +
-	"\x12OP_ReclaimCrystals\x10\xa0\x03\x12\x16\n" +
-	"\x11OP_RemoveAllDoors\x10\xa2\x03\x12\x1a\n" +
-	"\x15OP_RemoveBlockedBuffs\x10\xa3\x03\x12\x1a\n" +
-	"\x15OP_RemoveNimbusEffect\x10\xa4\x03\x12\x12\n" +
-	"\rOP_RemoveTrap\x10\xa5\x03\x12\x1c\n" +
-	"\x17OP_RequestKnowledgeBase\x10\xab\x03\x12\x15\n" +
-	"\x10OP_RespawnWindow\x10\xad\x03\x12\x11\n" +
-	"\fOP_RestState\x10\xaf\x03\x12\x0e\n" +
-	"\tOP_Rewind\x10\xb0\x03\x12\x14\n" +
-	"\x0fOP_RezzComplete\x10\xb2\x03\x12\x11\n" +
-	"\fOP_Sacrifice\x10\xb4\x03\x12\x18\n" +
-	"\x13OP_SendFindableNPCs\x10\xbe\x03\x12\x17\n" +
-	"\x12OP_SendSystemStats\x10\xc4\x03\x12\x14\n" +
-	"\x0fOP_SessionReady\x10\xcc\x03\x12\x15\n" +
-	"\x10OP_SetChatServer\x10\xcd\x03\x12\x16\n" +
-	"\x11OP_SetChatServer2\x10\xce\x03\x12\x0f\n" +
+	"OP_PetHoTT\x10\x88\x03\x12\x19\n" +
+	"\x14OP_PetitionCheckout2\x10\x8d\x03\x12\x16\n" +
+	"\x11OP_PetitionSearch\x10\x92\x03\x12\x1d\n" +
+	"\x18OP_PetitionSearchResults\x10\x93\x03\x12\x1a\n" +
+	"\x15OP_PetitionSearchText\x10\x94\x03\x12\x16\n" +
+	"\x11OP_PlayerStateAdd\x10\x9b\x03\x12\x19\n" +
+	"\x14OP_PlayerStateRemove\x10\x9c\x03\x12\f\n" +
+	"\aOP_Poll\x10\xa0\x03\x12\x14\n" +
+	"\x0fOP_PollResponse\x10\xa1\x03\x12\x15\n" +
+	"\x10OP_PopupResponse\x10\xa2\x03\x12\x16\n" +
+	"\x11OP_PreLogoutReply\x10\xa5\x03\x12\"\n" +
+	"\x1dOP_PVPLeaderBoardDetailsReply\x10\xa7\x03\x12$\n" +
+	"\x1fOP_PVPLeaderBoardDetailsRequest\x10\xa8\x03\x12\x1b\n" +
+	"\x16OP_PVPLeaderBoardReply\x10\xa9\x03\x12\x1d\n" +
+	"\x18OP_PVPLeaderBoardRequest\x10\xaa\x03\x12\x1a\n" +
+	"\x15OP_QueryResponseThing\x10\xac\x03\x12\x1c\n" +
+	"\x17OP_QueryUCSServerStatus\x10\xad\x03\x12\x1b\n" +
+	"\x16OP_RaidDelegateAbility\x10\xae\x03\x12\x19\n" +
+	"\x14OP_RaidClearNPCMarks\x10\xaf\x03\x12\x12\n" +
+	"\rOP_RaidInvite\x10\xb0\x03\x12\x10\n" +
+	"\vOP_RaidJoin\x10\xb1\x03\x12\x1b\n" +
+	"\x16OP_RandomNameGenerator\x10\xb3\x03\x12\x17\n" +
+	"\x12OP_ReclaimCrystals\x10\xbc\x03\x12\x16\n" +
+	"\x11OP_RemoveAllDoors\x10\xbe\x03\x12\x1a\n" +
+	"\x15OP_RemoveBlockedBuffs\x10\xbf\x03\x12\x1a\n" +
+	"\x15OP_RemoveNimbusEffect\x10\xc0\x03\x12\x12\n" +
+	"\rOP_RemoveTrap\x10\xc1\x03\x12\x1c\n" +
+	"\x17OP_RequestKnowledgeBase\x10\xc8\x03\x12\x15\n" +
+	"\x10OP_RespawnWindow\x10\xca\x03\x12\x11\n" +
+	"\fOP_RestState\x10\xcc\x03\x12\x0e\n" +
+	"\tOP_Rewind\x10\xcd\x03\x12\x14\n" +
+	"\x0fOP_RezzComplete\x10\xcf\x03\x12\x11\n" +
+	"\fOP_Sacrifice\x10\xd1\x03\x12\x18\n" +
+	"\x13OP_SendFindableNPCs\x10\xdb\x03\x12\x17\n" +
+	"\x12OP_SendSystemStats\x10\xe1\x03\x12\x14\n" +
+	"\x0fOP_SessionReady\x10\xe9\x03\x12\x15\n" +
+	"\x10OP_SetChatServer\x10\xea\x03\x12\x16\n" +
+	"\x11OP_SetChatServer2\x10\xeb\x03\x12\x0f\n" +
 	"\n" +
-	"OP_SetFace\x10\xcf\x03\x12\x16\n" +
-	"\x11OP_SetGroupTarget\x10\xd0\x03\x12\x14\n" +
-	"\x0fOP_SetGuildRank\x10\xd2\x03\x12\x14\n" +
-	"\x0fOP_SetStartCity\x10\xd5\x03\x12\x1c\n" +
-	"\x17OP_SharedTaskMemberList\x10\xd8\x03\x12\x1b\n" +
-	"\x16OP_SharedTaskAddPlayer\x10\xd9\x03\x12\x1e\n" +
-	"\x19OP_SharedTaskRemovePlayer\x10\xda\x03\x12\x1c\n" +
-	"\x17OP_SharedTaskMakeLeader\x10\xdb\x03\x12\x1e\n" +
-	"\x19OP_SharedTaskMemberInvite\x10\xdc\x03\x12\x18\n" +
-	"\x13OP_SharedTaskInvite\x10\xdd\x03\x12 \n" +
-	"\x1bOP_SharedTaskInviteResponse\x10\xde\x03\x12\x1b\n" +
-	"\x16OP_SharedTaskAcceptNew\x10\xdf\x03\x12\x1e\n" +
-	"\x19OP_SharedTaskMemberChange\x10\xe0\x03\x12\x1c\n" +
-	"\x17OP_SharedTaskPlayerList\x10\xe1\x03\x12\x1e\n" +
-	"\x19OP_SharedTaskSelectWindow\x10\xe2\x03\x12\x16\n" +
-	"\x11OP_SharedTaskQuit\x10\xe3\x03\x12\x12\n" +
-	"\rOP_TaskTimers\x10\xe4\x03\x12\x16\n" +
-	"\x11OP_ShopEndConfirm\x10\xe8\x03\x12\x10\n" +
-	"\vOP_ShopItem\x10\xe9\x03\x12\x19\n" +
-	"\x14OP_Some3ByteHPUpdate\x10\xf0\x03\x12\x19\n" +
-	"\x14OP_Some6ByteHPUpdate\x10\xf1\x03\x12\r\n" +
-	"\bOP_Sound\x10\xf3\x03\x12\x1b\n" +
-	"\x16OP_SpawnPositionUpdate\x10\xf6\x03\x12\x13\n" +
-	"\x0eOP_TargetBuffs\x10\xfe\x03\x12\x12\n" +
-	"\rOP_TargetHoTT\x10\x80\x04\x12\x1c\n" +
-	"\x17OP_TaskActivityComplete\x10\x84\x04\x12\x18\n" +
-	"\x13OP_TaskHistoryReply\x10\x86\x04\x12\x1a\n" +
-	"\x15OP_TaskHistoryRequest\x10\x87\x04\x12\x18\n" +
-	"\x13OP_TaskRequestTimer\x10\x88\x04\x12\x18\n" +
-	"\x13OP_TaskSelectWindow\x10\x89\x04\x12\x13\n" +
-	"\x0eOP_Translocate\x10\x9d\x04\x12\x1a\n" +
-	"\x15OP_TributePointUpdate\x10\xa2\x04\x12\x14\n" +
-	"\x0fOP_Untargetable\x10\xa6\x04\x12\x10\n" +
-	"\vOP_UpdateAA\x10\xa7\x04\x12\x12\n" +
-	"\rOP_UpdateAura\x10\xa8\x04\x12\x15\n" +
-	"\x10OP_VetClaimReply\x10\xaa\x04\x12\x17\n" +
-	"\x12OP_VetClaimRequest\x10\xab\x04\x12\x1b\n" +
-	"\x16OP_VetRewardsAvaliable\x10\xac\x04\x12\x14\n" +
-	"\x0fOP_VoiceMacroIn\x10\xad\x04\x12\x15\n" +
-	"\x10OP_VoiceMacroOut\x10\xae\x04\x12\x14\n" +
-	"\x0fOP_WeaponEquip1\x10\xaf\x04\x12\x0f\n" +
+	"OP_SetFace\x10\xec\x03\x12\x16\n" +
+	"\x11OP_SetGroupTarget\x10\xed\x03\x12\x14\n" +
+	"\x0fOP_SetGuildRank\x10\xef\x03\x12\x14\n" +
+	"\x0fOP_SetStartCity\x10\xf2\x03\x12\x1c\n" +
+	"\x17OP_SharedTaskMemberList\x10\xf5\x03\x12\x1b\n" +
+	"\x16OP_SharedTaskAddPlayer\x10\xf6\x03\x12\x1e\n" +
+	"\x19OP_SharedTaskRemovePlayer\x10\xf7\x03\x12\x1c\n" +
+	"\x17OP_SharedTaskMakeLeader\x10\xf8\x03\x12\x1e\n" +
+	"\x19OP_SharedTaskMemberInvite\x10\xf9\x03\x12\x18\n" +
+	"\x13OP_SharedTaskInvite\x10\xfa\x03\x12 \n" +
+	"\x1bOP_SharedTaskInviteResponse\x10\xfb\x03\x12\x1b\n" +
+	"\x16OP_SharedTaskAcceptNew\x10\xfc\x03\x12\x1e\n" +
+	"\x19OP_SharedTaskMemberChange\x10\xfd\x03\x12\x1c\n" +
+	"\x17OP_SharedTaskPlayerList\x10\xfe\x03\x12\x1e\n" +
+	"\x19OP_SharedTaskSelectWindow\x10\xff\x03\x12\x16\n" +
+	"\x11OP_SharedTaskQuit\x10\x80\x04\x12\x12\n" +
+	"\rOP_TaskTimers\x10\x81\x04\x12\x16\n" +
+	"\x11OP_ShopEndConfirm\x10\x85\x04\x12\x10\n" +
+	"\vOP_ShopItem\x10\x86\x04\x12\x19\n" +
+	"\x14OP_Some3ByteHPUpdate\x10\x92\x04\x12\x19\n" +
+	"\x14OP_Some6ByteHPUpdate\x10\x93\x04\x12\r\n" +
+	"\bOP_Sound\x10\x95\x04\x12\x1b\n" +
+	"\x16OP_SpawnPositionUpdate\x10\x98\x04\x12\x13\n" +
+	"\x0eOP_TargetBuffs\x10\xa1\x04\x12\x12\n" +
+	"\rOP_TargetHoTT\x10\xa3\x04\x12\x1c\n" +
+	"\x17OP_TaskActivityComplete\x10\xa7\x04\x12\x18\n" +
+	"\x13OP_TaskHistoryReply\x10\xa9\x04\x12\x1a\n" +
+	"\x15OP_TaskHistoryRequest\x10\xaa\x04\x12\x18\n" +
+	"\x13OP_TaskRequestTimer\x10\xab\x04\x12\x18\n" +
+	"\x13OP_TaskSelectWindow\x10\xac\x04\x12\x13\n" +
+	"\x0eOP_Translocate\x10\xc2\x04\x12\x1a\n" +
+	"\x15OP_TributePointUpdate\x10\xc7\x04\x12\x14\n" +
+	"\x0fOP_Untargetable\x10\xcb\x04\x12\x10\n" +
+	"\vOP_UpdateAA\x10\xcc\x04\x12\x12\n" +
+	"\rOP_UpdateAura\x10\xcd\x04\x12\x15\n" +
+	"\x10OP_VetClaimReply\x10\xcf\x04\x12\x17\n" +
+	"\x12OP_VetClaimRequest\x10\xd0\x04\x12\x1b\n" +
+	"\x16OP_VetRewardsAvaliable\x10\xd1\x04\x12\x14\n" +
+	"\x0fOP_VoiceMacroIn\x10\xd2\x04\x12\x15\n" +
+	"\x10OP_VoiceMacroOut\x10\xd3\x04\x12\x14\n" +
+	"\x0fOP_WeaponEquip1\x10\xd4\x04\x12\x0f\n" +
 	"\n" +
-	"OP_Weblink\x10\xb2\x04\x12\x16\n" +
-	"\x11OP_WhoAllResponse\x10\xb4\x04\x12\x19\n" +
-	"\x14OP_World_Client_CRC1\x10\xb5\x04\x12\x19\n" +
-	"\x14OP_World_Client_CRC2\x10\xb6\x04\x12\x19\n" +
-	"\x14OP_World_Client_CRC3\x10\xb7\x04\x12\x18\n" +
-	"\x13OP_WorldClientReady\x10\xb8\x04\x12\x15\n" +
-	"\x10OP_WorldComplete\x10\xb9\x04\x12\x13\n" +
-	"\x0eOP_WorldLogout\x10\xba\x04\x12\x17\n" +
-	"\x12OP_WorldUnknown001\x10\xbc\x04\x12\x1c\n" +
-	"\x17OP_XTargetAutoAddHaters\x10\xbd\x04\x12\x13\n" +
-	"\x0eOP_XTargetOpen\x10\xbe\x04\x12\x1b\n" +
-	"\x16OP_XTargetOpenResponse\x10\xbf\x04\x12\x16\n" +
-	"\x11OP_XTargetRequest\x10\xc0\x04\x12\x17\n" +
-	"\x12OP_XTargetResponse\x10\xc1\x04\x12\x14\n" +
-	"\x0fOP_ZoneComplete\x10\xc4\x04\x12\x15\n" +
-	"\x10OP_ZoneGuildList\x10\xc6\x04\x12\x18\n" +
-	"\x13OP_ZonePlayerToBind\x10\xc8\x04\x12\x17\n" +
-	"\x12OP_ZoneServerReady\x10\xca\x04\x12\x0f\n" +
+	"OP_Weblink\x10\xd7\x04\x12\x16\n" +
+	"\x11OP_WhoAllResponse\x10\xd9\x04\x12\x19\n" +
+	"\x14OP_World_Client_CRC1\x10\xda\x04\x12\x19\n" +
+	"\x14OP_World_Client_CRC2\x10\xdb\x04\x12\x19\n" +
+	"\x14OP_World_Client_CRC3\x10\xdc\x04\x12\x18\n" +
+	"\x13OP_WorldClientReady\x10\xdd\x04\x12\x15\n" +
+	"\x10OP_WorldComplete\x10\xde\x04\x12\x13\n" +
+	"\x0eOP_WorldLogout\x10\xdf\x04\x12\x17\n" +
+	"\x12OP_WorldUnknown001\x10\xe1\x04\x12\x1c\n" +
+	"\x17OP_XTargetAutoAddHaters\x10\xe2\x04\x12\x13\n" +
+	"\x0eOP_XTargetOpen\x10\xe3\x04\x12\x1b\n" +
+	"\x16OP_XTargetOpenResponse\x10\xe4\x04\x12\x16\n" +
+	"\x11OP_XTargetRequest\x10\xe5\x04\x12\x17\n" +
+	"\x12OP_XTargetResponse\x10\xe6\x04\x12\x14\n" +
+	"\x0fOP_ZoneComplete\x10\xe9\x04\x12\x15\n" +
+	"\x10OP_ZoneGuildList\x10\xeb\x04\x12\x18\n" +
+	"\x13OP_ZonePlayerToBind\x10\xed\x04\x12\x17\n" +
+	"\x12OP_ZoneServerReady\x10\xef\x04\x12\x0f\n" +
 	"\n" +
-	"OP_ResetAA\x10\xcd\x04\x12\x12\n" +
-	"\rOP_UnderWorld\x10\xce\x04:G\n" +
+	"OP_ResetAA\x10\xf2\x04\x12\x12\n" +
+	"\rOP_UnderWorld\x10\xf3\x04:G\n" +
 	"\vmessageType\x12!.google.protobuf.EnumValueOptions\x18\x94# \x01(\tR\vmessageType\x88\x01\x01:K\n" +
 	"\rrepeatedField\x12!.google.protobuf.EnumValueOptions\x18\x95# \x01(\tR\rrepeatedField\x88\x01\x01B\bZ\x06./mainb\x06proto3"
 
@@ -28810,418 +28851,419 @@ func file_EQMessage_proto_rawDescGZIP() []byte {
 }
 
 var file_EQMessage_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_EQMessage_proto_msgTypes = make([]protoimpl.MessageInfo, 335)
+var file_EQMessage_proto_msgTypes = make([]protoimpl.MessageInfo, 336)
 var file_EQMessage_proto_goTypes = []any{
 	(ItemPacketType)(0),                   // 0: eq.ItemPacketType
 	(OpCodes)(0),                          // 1: eq.OpCodes
-	(*LoginMessage)(nil),                  // 2: eq.LoginMessage
-	(*LoginReply)(nil),                    // 3: eq.LoginReply
-	(*LoginRequest)(nil),                  // 4: eq.LoginRequest
-	(*WorldServer)(nil),                   // 5: eq.WorldServer
-	(*LoginServerResponse)(nil),           // 6: eq.LoginServerResponse
-	(*PlayEverquest)(nil),                 // 7: eq.PlayEverquest
-	(*PlayEverquestResponse)(nil),         // 8: eq.PlayEverquestResponse
-	(*WebInitiateConnection)(nil),         // 9: eq.WebInitiateConnection
-	(*LoginInfo)(nil),                     // 10: eq.LoginInfo
-	(*Tint)(nil),                          // 11: eq.Tint
-	(*CharSelectEquip)(nil),               // 12: eq.CharSelectEquip
-	(*CharacterSelectEntry)(nil),          // 13: eq.CharacterSelectEntry
-	(*CharacterSelect)(nil),               // 14: eq.CharacterSelect
-	(*EnterWorld)(nil),                    // 15: eq.EnterWorld
-	(*InventorySlot)(nil),                 // 16: eq.InventorySlot
-	(*TypelessInventorySlot)(nil),         // 17: eq.TypelessInventorySlot
-	(*NameApproval)(nil),                  // 18: eq.NameApproval
-	(*EntityId)(nil),                      // 19: eq.EntityId
-	(*Duel)(nil),                          // 20: eq.Duel
-	(*DuelResponse)(nil),                  // 21: eq.DuelResponse
-	(*AdventureInfo)(nil),                 // 22: eq.AdventureInfo
-	(*TextureProfile)(nil),                // 23: eq.TextureProfile
-	(*TintProfile)(nil),                   // 24: eq.TintProfile
-	(*Spawns)(nil),                        // 25: eq.Spawns
-	(*Spawn)(nil),                         // 26: eq.Spawn
-	(*NewSpawn)(nil),                      // 27: eq.NewSpawn
-	(*ClientZoneEntry)(nil),               // 28: eq.ClientZoneEntry
-	(*ServerZoneEntry)(nil),               // 29: eq.ServerZoneEntry
-	(*NewZone)(nil),                       // 30: eq.NewZone
-	(*MemorizeSpell)(nil),                 // 31: eq.MemorizeSpell
-	(*Charm)(nil),                         // 32: eq.Charm
-	(*InterruptCast)(nil),                 // 33: eq.InterruptCast
-	(*DeleteSpell)(nil),                   // 34: eq.DeleteSpell
-	(*ManaChange)(nil),                    // 35: eq.ManaChange
-	(*SwapSpell)(nil),                     // 36: eq.SwapSpell
-	(*BeginCast)(nil),                     // 37: eq.BeginCast
-	(*CastSpell)(nil),                     // 38: eq.CastSpell
-	(*SpawnAppearance)(nil),               // 39: eq.SpawnAppearance
-	(*SpellBuff)(nil),                     // 40: eq.SpellBuff
-	(*SpellBuffPacket)(nil),               // 41: eq.SpellBuffPacket
-	(*ItemNamePacket)(nil),                // 42: eq.ItemNamePacket
-	(*ItemProperties)(nil),                // 43: eq.ItemProperties
-	(*GMTrainee)(nil),                     // 44: eq.GMTrainee
-	(*GMTrainEnd)(nil),                    // 45: eq.GMTrainEnd
-	(*GMSkillChange)(nil),                 // 46: eq.GMSkillChange
-	(*ConsentResponse)(nil),               // 47: eq.ConsentResponse
-	(*NameGeneration)(nil),                // 48: eq.NameGeneration
-	(*NameApprove)(nil),                   // 49: eq.NameApprove
-	(*CharCreate)(nil),                    // 50: eq.CharCreate
-	(*AA_Array)(nil),                      // 51: eq.AA_Array
-	(*Disciplines)(nil),                   // 52: eq.Disciplines
-	(*Tribute)(nil),                       // 53: eq.Tribute
-	(*BandolierItem)(nil),                 // 54: eq.BandolierItem
-	(*Bandolier)(nil),                     // 55: eq.Bandolier
-	(*PotionBeltItem)(nil),                // 56: eq.PotionBeltItem
-	(*PotionBelt)(nil),                    // 57: eq.PotionBelt
-	(*StringList)(nil),                    // 58: eq.StringList
-	(*GroupLeadershipAA)(nil),             // 59: eq.GroupLeadershipAA
-	(*RaidLeadershipAA)(nil),              // 60: eq.RaidLeadershipAA
-	(*LeadershipAA)(nil),                  // 61: eq.LeadershipAA
-	(*Bind)(nil),                          // 62: eq.Bind
-	(*PVPStatsEntry)(nil),                 // 63: eq.PVPStatsEntry
-	(*PlayerProfile)(nil),                 // 64: eq.PlayerProfile
-	(*ClientTarget)(nil),                  // 65: eq.ClientTarget
-	(*TargetReject)(nil),                  // 66: eq.TargetReject
-	(*PetCommand)(nil),                    // 67: eq.PetCommand
-	(*DeleteSpawn)(nil),                   // 68: eq.DeleteSpawn
-	(*ChannelMessage)(nil),                // 69: eq.ChannelMessage
-	(*SpecialMesg)(nil),                   // 70: eq.SpecialMesg
-	(*WearChange)(nil),                    // 71: eq.WearChange
-	(*BindWound)(nil),                     // 72: eq.BindWound
-	(*ZoneChange)(nil),                    // 73: eq.ZoneChange
-	(*RequestClientZoneChange)(nil),       // 74: eq.RequestClientZoneChange
-	(*Animation)(nil),                     // 75: eq.Animation
-	(*Action)(nil),                        // 76: eq.Action
-	(*CombatDamage)(nil),                  // 77: eq.CombatDamage
-	(*Consider)(nil),                      // 78: eq.Consider
-	(*Death)(nil),                         // 79: eq.Death
-	(*BecomeCorpse)(nil),                  // 80: eq.BecomeCorpse
-	(*PlayerPositionUpdateServer)(nil),    // 81: eq.PlayerPositionUpdateServer
-	(*PlayerPositionUpdateClient)(nil),    // 82: eq.PlayerPositionUpdateClient
-	(*SpawnHPUpdate)(nil),                 // 83: eq.SpawnHPUpdate
-	(*SpawnHPUpdate2)(nil),                // 84: eq.SpawnHPUpdate2
-	(*Stamina)(nil),                       // 85: eq.Stamina
-	(*LevelUpdate)(nil),                   // 86: eq.LevelUpdate
-	(*ExpUpdate)(nil),                     // 87: eq.ExpUpdate
-	(*ItemPacket)(nil),                    // 88: eq.ItemPacket
-	(*BulkItemPacket)(nil),                // 89: eq.BulkItemPacket
-	(*Consume)(nil),                       // 90: eq.Consume
-	(*DeleteItem)(nil),                    // 91: eq.DeleteItem
-	(*MoveItem)(nil),                      // 92: eq.MoveItem
-	(*MultiMoveItemSub)(nil),              // 93: eq.MultiMoveItemSub
-	(*MultiMoveItem)(nil),                 // 94: eq.MultiMoveItem
-	(*MoveCoin)(nil),                      // 95: eq.MoveCoin
-	(*TradeBusy)(nil),                     // 96: eq.TradeBusy
-	(*TradeCoin)(nil),                     // 97: eq.TradeCoin
-	(*TradeMoneyUpdate)(nil),              // 98: eq.TradeMoneyUpdate
-	(*Surname)(nil),                       // 99: eq.Surname
-	(*GuildsList)(nil),                    // 100: eq.GuildsList
-	(*MoneyOnCorpse)(nil),                 // 101: eq.MoneyOnCorpse
-	(*LootingItem)(nil),                   // 102: eq.LootingItem
-	(*GuildManageStatus)(nil),             // 103: eq.GuildManageStatus
-	(*GuildJoin)(nil),                     // 104: eq.GuildJoin
-	(*GuildInviteAccept)(nil),             // 105: eq.GuildInviteAccept
-	(*GuildManageRemove)(nil),             // 106: eq.GuildManageRemove
-	(*Guildcommand)(nil),                  // 107: eq.Guildcommand
-	(*OnLevelMessage)(nil),                // 108: eq.OnLevelMessage
-	(*GMZoneRequest)(nil),                 // 109: eq.GMZoneRequest
-	(*GMSummon)(nil),                      // 110: eq.GMSummon
-	(*GMGoto)(nil),                        // 111: eq.GMGoto
-	(*GMLastName)(nil),                    // 112: eq.GMLastName
-	(*CombatAbility)(nil),                 // 113: eq.CombatAbility
-	(*Instill_Doubt)(nil),                 // 114: eq.Instill_Doubt
-	(*GiveItem)(nil),                      // 115: eq.GiveItem
-	(*RandomReq)(nil),                     // 116: eq.RandomReq
-	(*RandomReply)(nil),                   // 117: eq.RandomReply
-	(*LFG)(nil),                           // 118: eq.LFG
-	(*LFG_Appearance)(nil),                // 119: eq.LFG_Appearance
-	(*TimeOfDay)(nil),                     // 120: eq.TimeOfDay
-	(*Merchant_Click)(nil),                // 121: eq.Merchant_Click
-	(*Merchant_Sell)(nil),                 // 122: eq.Merchant_Sell
-	(*Merchant_Purchase)(nil),             // 123: eq.Merchant_Purchase
-	(*Merchant_DelItem)(nil),              // 124: eq.Merchant_DelItem
-	(*Adventure_Purchase)(nil),            // 125: eq.Adventure_Purchase
-	(*Adventure_Sell)(nil),                // 126: eq.Adventure_Sell
-	(*AdventurePoints_Update)(nil),        // 127: eq.AdventurePoints_Update
-	(*AdventureFinish)(nil),               // 128: eq.AdventureFinish
-	(*AdventureRequest)(nil),              // 129: eq.AdventureRequest
-	(*AdventureRequestResponse)(nil),      // 130: eq.AdventureRequestResponse
-	(*Illusion)(nil),                      // 131: eq.Illusion
-	(*ZonePoint_Entry)(nil),               // 132: eq.ZonePoint_Entry
-	(*ZonePoints)(nil),                    // 133: eq.ZonePoints
-	(*SkillUpdate)(nil),                   // 134: eq.SkillUpdate
-	(*ZoneUnavail)(nil),                   // 135: eq.ZoneUnavail
-	(*GroupGeneric)(nil),                  // 136: eq.GroupGeneric
-	(*GroupCancel)(nil),                   // 137: eq.GroupCancel
-	(*GroupUpdate)(nil),                   // 138: eq.GroupUpdate
-	(*GroupUpdate2)(nil),                  // 139: eq.GroupUpdate2
-	(*GroupJoin)(nil),                     // 140: eq.GroupJoin
-	(*FaceChange)(nil),                    // 141: eq.FaceChange
-	(*TradeRequest)(nil),                  // 142: eq.TradeRequest
-	(*TradeAccept)(nil),                   // 143: eq.TradeAccept
-	(*CancelTrade)(nil),                   // 144: eq.CancelTrade
-	(*PetitionUpdate)(nil),                // 145: eq.PetitionUpdate
-	(*Petition)(nil),                      // 146: eq.Petition
-	(*Who_All)(nil),                       // 147: eq.Who_All
-	(*Stun)(nil),                          // 148: eq.Stun
-	(*AugmentItem)(nil),                   // 149: eq.AugmentItem
-	(*Emote)(nil),                         // 150: eq.Emote
-	(*Inspect)(nil),                       // 151: eq.Inspect
-	(*InspectResponse)(nil),               // 152: eq.InspectResponse
-	(*SetDataRate)(nil),                   // 153: eq.SetDataRate
-	(*SetServerFilter)(nil),               // 154: eq.SetServerFilter
-	(*SetServerFilterAck)(nil),            // 155: eq.SetServerFilterAck
-	(*IncreaseStat)(nil),                  // 156: eq.IncreaseStat
-	(*GMName)(nil),                        // 157: eq.GMName
-	(*GMDelCorpse)(nil),                   // 158: eq.GMDelCorpse
-	(*GMKick)(nil),                        // 159: eq.GMKick
-	(*GMKill)(nil),                        // 160: eq.GMKill
-	(*GMEmoteZone)(nil),                   // 161: eq.GMEmoteZone
-	(*BookText)(nil),                      // 162: eq.BookText
-	(*BookRequest)(nil),                   // 163: eq.BookRequest
-	(*Object)(nil),                        // 164: eq.Object
-	(*ClickObject)(nil),                   // 165: eq.ClickObject
-	(*ClickObjectAction)(nil),             // 166: eq.ClickObjectAction
-	(*Shielding)(nil),                     // 167: eq.Shielding
-	(*ClickObjectAck)(nil),                // 168: eq.ClickObjectAck
-	(*CloseContainer)(nil),                // 169: eq.CloseContainer
-	(*Door)(nil),                          // 170: eq.Door
-	(*DoorSpawns)(nil),                    // 171: eq.DoorSpawns
-	(*ClickDoor)(nil),                     // 172: eq.ClickDoor
-	(*MoveDoor)(nil),                      // 173: eq.MoveDoor
-	(*ControlBoat)(nil),                   // 174: eq.ControlBoat
-	(*BecomeNPC)(nil),                     // 175: eq.BecomeNPC
-	(*Underworld)(nil),                    // 176: eq.Underworld
-	(*Resurrect)(nil),                     // 177: eq.Resurrect
-	(*SetRunMode)(nil),                    // 178: eq.SetRunMode
-	(*EnvDamage2)(nil),                    // 179: eq.EnvDamage2
-	(*BazaarWindowStart)(nil),             // 180: eq.BazaarWindowStart
-	(*BazaarWelcome)(nil),                 // 181: eq.BazaarWelcome
-	(*BazaarSearch)(nil),                  // 182: eq.BazaarSearch
-	(*BazaarInspect)(nil),                 // 183: eq.BazaarInspect
-	(*BazaarReturnDone)(nil),              // 184: eq.BazaarReturnDone
-	(*BazaarSearchResults)(nil),           // 185: eq.BazaarSearchResults
-	(*ServerSideFilters)(nil),             // 186: eq.ServerSideFilters
-	(*ItemViewRequest)(nil),               // 187: eq.ItemViewRequest
-	(*ItemVerifyRequest)(nil),             // 188: eq.ItemVerifyRequest
-	(*PickPocket)(nil),                    // 189: eq.PickPocket
-	(*SPickPocket)(nil),                   // 190: eq.sPickPocket
-	(*LogServer)(nil),                     // 191: eq.LogServer
-	(*ApproveWorld)(nil),                  // 192: eq.ApproveWorld
-	(*ClientError)(nil),                   // 193: eq.ClientError
-	(*MobHealth)(nil),                     // 194: eq.MobHealth
-	(*Track)(nil),                         // 195: eq.Track
-	(*TrackTarget)(nil),                   // 196: eq.TrackTarget
-	(*Tracking)(nil),                      // 197: eq.Tracking
-	(*ZoneServerInfo)(nil),                // 198: eq.ZoneServerInfo
-	(*WhoAllPlayer)(nil),                  // 199: eq.WhoAllPlayer
-	(*WhoAllReturn)(nil),                  // 200: eq.WhoAllReturn
-	(*Trader)(nil),                        // 201: eq.Trader
-	(*ClickTrader)(nil),                   // 202: eq.ClickTrader
-	(*GetItems)(nil),                      // 203: eq.GetItems
-	(*BecomeTrader)(nil),                  // 204: eq.BecomeTrader
-	(*Trader_ShowItems)(nil),              // 205: eq.Trader_ShowItems
-	(*TraderBuy)(nil),                     // 206: eq.TraderBuy
-	(*TraderItemUpdate)(nil),              // 207: eq.TraderItemUpdate
-	(*MoneyUpdate)(nil),                   // 208: eq.MoneyUpdate
-	(*TraderDelItem)(nil),                 // 209: eq.TraderDelItem
-	(*TraderClick)(nil),                   // 210: eq.TraderClick
-	(*FormattedMessage)(nil),              // 211: eq.FormattedMessage
-	(*SimpleMessage)(nil),                 // 212: eq.SimpleMessage
-	(*GuildMemberEntry)(nil),              // 213: eq.GuildMemberEntry
-	(*GuildMembers)(nil),                  // 214: eq.GuildMembers
-	(*GuildMOTD)(nil),                     // 215: eq.GuildMOTD
-	(*GuildUpdate_PublicNote)(nil),        // 216: eq.GuildUpdate_PublicNote
-	(*GuildDemote)(nil),                   // 217: eq.GuildDemote
-	(*GuildRemove)(nil),                   // 218: eq.GuildRemove
-	(*GuildMakeLeader)(nil),               // 219: eq.GuildMakeLeader
-	(*Make_Pet)(nil),                      // 220: eq.Make_Pet
-	(*Ground_Spawn)(nil),                  // 221: eq.Ground_Spawn
-	(*Ground_Spawns)(nil),                 // 222: eq.Ground_Spawns
-	(*ApproveZone)(nil),                   // 223: eq.ApproveZone
-	(*ZoneInSendName)(nil),                // 224: eq.ZoneInSendName
-	(*ZoneInSendName2)(nil),               // 225: eq.ZoneInSendName2
-	(*StartTribute)(nil),                  // 226: eq.StartTribute
-	(*TributeLevel)(nil),                  // 227: eq.TributeLevel
-	(*TributeAbility)(nil),                // 228: eq.TributeAbility
-	(*GuildTributeAbility)(nil),           // 229: eq.GuildTributeAbility
-	(*SelectTributeReq)(nil),              // 230: eq.SelectTributeReq
-	(*SelectTributeReply)(nil),            // 231: eq.SelectTributeReply
-	(*TributeInfo)(nil),                   // 232: eq.TributeInfo
-	(*TributeItem)(nil),                   // 233: eq.TributeItem
-	(*TributePoint)(nil),                  // 234: eq.TributePoint
-	(*TributeMoney)(nil),                  // 235: eq.TributeMoney
-	(*Split)(nil),                         // 236: eq.Split
-	(*NewCombine)(nil),                    // 237: eq.NewCombine
-	(*TradeskillFavorites)(nil),           // 238: eq.TradeskillFavorites
-	(*RecipesSearch)(nil),                 // 239: eq.RecipesSearch
-	(*RecipeReply)(nil),                   // 240: eq.RecipeReply
-	(*RecipeAutoCombine)(nil),             // 241: eq.RecipeAutoCombine
-	(*LevelAppearance)(nil),               // 242: eq.LevelAppearance
-	(*MerchantList)(nil),                  // 243: eq.MerchantList
-	(*TempMerchantList)(nil),              // 244: eq.TempMerchantList
-	(*FindPerson_Point)(nil),              // 245: eq.FindPerson_Point
-	(*FindPersonRequest)(nil),             // 246: eq.FindPersonRequest
-	(*FindPersonResult)(nil),              // 247: eq.FindPersonResult
-	(*MobRename)(nil),                     // 248: eq.MobRename
-	(*PlayMP3)(nil),                       // 249: eq.PlayMP3
-	(*TitleEntry)(nil),                    // 250: eq.TitleEntry
-	(*Titles)(nil),                        // 251: eq.Titles
-	(*TitleListEntry)(nil),                // 252: eq.TitleListEntry
-	(*TitleList)(nil),                     // 253: eq.TitleList
-	(*SetTitle)(nil),                      // 254: eq.SetTitle
-	(*SetTitleReply)(nil),                 // 255: eq.SetTitleReply
-	(*TaskDescription)(nil),               // 256: eq.TaskDescription
-	(*TaskMemberList)(nil),                // 257: eq.TaskMemberList
-	(*TaskActivity)(nil),                  // 258: eq.TaskActivity
-	(*TaskHistoryEntry)(nil),              // 259: eq.TaskHistoryEntry
-	(*TaskHistory)(nil),                   // 260: eq.TaskHistory
-	(*AcceptNewTask)(nil),                 // 261: eq.AcceptNewTask
-	(*CancelTask)(nil),                    // 262: eq.CancelTask
-	(*AvaliableTask)(nil),                 // 263: eq.AvaliableTask
-	(*BankerChange)(nil),                  // 264: eq.BankerChange
-	(*LeadershipExpUpdate)(nil),           // 265: eq.LeadershipExpUpdate
-	(*UpdateLeadershipAA)(nil),            // 266: eq.UpdateLeadershipAA
-	(*LeadExpUpdate)(nil),                 // 267: eq.LeadExpUpdate
-	(*RaidGeneral)(nil),                   // 268: eq.RaidGeneral
-	(*RaidAddMember)(nil),                 // 269: eq.RaidAddMember
-	(*RaidNote)(nil),                      // 270: eq.RaidNote
-	(*RaidMOTD)(nil),                      // 271: eq.RaidMOTD
-	(*RaidLeadershipUpdate)(nil),          // 272: eq.RaidLeadershipUpdate
-	(*RaidCreate)(nil),                    // 273: eq.RaidCreate
-	(*RaidMemberInfo)(nil),                // 274: eq.RaidMemberInfo
-	(*RaidDetails)(nil),                   // 275: eq.RaidDetails
-	(*RaidMembers)(nil),                   // 276: eq.RaidMembers
-	(*DynamicWall)(nil),                   // 277: eq.DynamicWall
-	(*BandolierCreate)(nil),               // 278: eq.BandolierCreate
-	(*BandolierDelete)(nil),               // 279: eq.BandolierDelete
-	(*BandolierSet)(nil),                  // 280: eq.BandolierSet
-	(*Arrow)(nil),                         // 281: eq.Arrow
-	(*Consent)(nil),                       // 282: eq.Consent
-	(*AdventureMerchant)(nil),             // 283: eq.AdventureMerchant
-	(*Save)(nil),                          // 284: eq.Save
-	(*GMtoggle)(nil),                      // 285: eq.GMtoggle
-	(*GroupInvite)(nil),                   // 286: eq.GroupInvite
-	(*ColoredText)(nil),                   // 287: eq.ColoredText
-	(*UseAA)(nil),                         // 288: eq.UseAA
-	(*AA_Ability)(nil),                    // 289: eq.AA_Ability
-	(*SendAA)(nil),                        // 290: eq.SendAA
-	(*AA_List)(nil),                       // 291: eq.AA_List
-	(*AA_Action)(nil),                     // 292: eq.AA_Action
-	(*AAExpUpdate)(nil),                   // 293: eq.AAExpUpdate
-	(*AltAdvStats)(nil),                   // 294: eq.AltAdvStats
-	(*PlayerAA)(nil),                      // 295: eq.PlayerAA
-	(*AATable)(nil),                       // 296: eq.AATable
-	(*Weather)(nil),                       // 297: eq.Weather
-	(*LoadSpellSet)(nil),                  // 298: eq.LoadSpellSet
-	(*ApplyPoison)(nil),                   // 299: eq.ApplyPoison
-	(*GuildMemberUpdate)(nil),             // 300: eq.GuildMemberUpdate
-	(*VeteranRewardItem)(nil),             // 301: eq.VeteranRewardItem
-	(*VeteranReward)(nil),                 // 302: eq.VeteranReward
-	(*ExpeditionInvite)(nil),              // 303: eq.ExpeditionInvite
-	(*ExpeditionInviteResponse)(nil),      // 304: eq.ExpeditionInviteResponse
-	(*DynamicZoneInfo)(nil),               // 305: eq.DynamicZoneInfo
-	(*DynamicZoneMemberEntry)(nil),        // 306: eq.DynamicZoneMemberEntry
-	(*DynamicZoneMemberList)(nil),         // 307: eq.DynamicZoneMemberList
-	(*DynamicZoneMemberListName)(nil),     // 308: eq.DynamicZoneMemberListName
-	(*ExpeditionLockoutTimerEntry)(nil),   // 309: eq.ExpeditionLockoutTimerEntry
-	(*ExpeditionLockoutTimers)(nil),       // 310: eq.ExpeditionLockoutTimers
-	(*DynamicZoneLeaderName)(nil),         // 311: eq.DynamicZoneLeaderName
-	(*ExpeditionCommand)(nil),             // 312: eq.ExpeditionCommand
-	(*ExpeditionCommandSwap)(nil),         // 313: eq.ExpeditionCommandSwap
-	(*ExpeditionExpireWarning)(nil),       // 314: eq.ExpeditionExpireWarning
-	(*DynamicZoneCompassEntry)(nil),       // 315: eq.DynamicZoneCompassEntry
-	(*DynamicZoneCompass)(nil),            // 316: eq.DynamicZoneCompass
-	(*DynamicZoneChooseZoneEntry)(nil),    // 317: eq.DynamicZoneChooseZoneEntry
-	(*DynamicZoneChooseZone)(nil),         // 318: eq.DynamicZoneChooseZone
-	(*DynamicZoneChooseZoneReply)(nil),    // 319: eq.DynamicZoneChooseZoneReply
-	(*LFGuild_SearchPlayer)(nil),          // 320: eq.LFGuild_SearchPlayer
-	(*LFGuild_SearchGuild)(nil),           // 321: eq.LFGuild_SearchGuild
-	(*LFGuild_Playertoggle)(nil),          // 322: eq.LFGuild_Playertoggle
-	(*LFGuild_Guildtoggle)(nil),           // 323: eq.LFGuild_Guildtoggle
-	(*SayLinkBodyFrame)(nil),              // 324: eq.SayLinkBodyFrame
-	(*WebLogin)(nil),                      // 325: eq.WebLogin
-	(*WebLoginServerRequest)(nil),         // 326: eq.WebLoginServerRequest
-	(*WebLoginReply)(nil),                 // 327: eq.WebLoginReply
-	(*WebLoginWorldServer)(nil),           // 328: eq.WebLoginWorldServer
-	(*WebLoginServerResponse)(nil),        // 329: eq.WebLoginServerResponse
-	(*WebPlayEverquestRequest)(nil),       // 330: eq.WebPlayEverquestRequest
-	(*WebPlayEverquestResponse)(nil),      // 331: eq.WebPlayEverquestResponse
-	(*WebSession)(nil),                    // 332: eq.WebSession
-	(*Zero)(nil),                          // 333: eq.Zero
-	(*Int)(nil),                           // 334: eq.Int
-	(*Bool)(nil),                          // 335: eq.Bool
-	(*String)(nil),                        // 336: eq.String
-	(*descriptorpb.EnumValueOptions)(nil), // 337: google.protobuf.EnumValueOptions
+	(*JWTLogin)(nil),                      // 2: eq.JWTLogin
+	(*JWTResponse)(nil),                   // 3: eq.JWTResponse
+	(*LoginReply)(nil),                    // 4: eq.LoginReply
+	(*LoginRequest)(nil),                  // 5: eq.LoginRequest
+	(*WorldServer)(nil),                   // 6: eq.WorldServer
+	(*LoginServerResponse)(nil),           // 7: eq.LoginServerResponse
+	(*PlayEverquest)(nil),                 // 8: eq.PlayEverquest
+	(*PlayEverquestResponse)(nil),         // 9: eq.PlayEverquestResponse
+	(*WebInitiateConnection)(nil),         // 10: eq.WebInitiateConnection
+	(*LoginInfo)(nil),                     // 11: eq.LoginInfo
+	(*Tint)(nil),                          // 12: eq.Tint
+	(*CharSelectEquip)(nil),               // 13: eq.CharSelectEquip
+	(*CharacterSelectEntry)(nil),          // 14: eq.CharacterSelectEntry
+	(*CharacterSelect)(nil),               // 15: eq.CharacterSelect
+	(*EnterWorld)(nil),                    // 16: eq.EnterWorld
+	(*InventorySlot)(nil),                 // 17: eq.InventorySlot
+	(*TypelessInventorySlot)(nil),         // 18: eq.TypelessInventorySlot
+	(*NameApproval)(nil),                  // 19: eq.NameApproval
+	(*EntityId)(nil),                      // 20: eq.EntityId
+	(*Duel)(nil),                          // 21: eq.Duel
+	(*DuelResponse)(nil),                  // 22: eq.DuelResponse
+	(*AdventureInfo)(nil),                 // 23: eq.AdventureInfo
+	(*TextureProfile)(nil),                // 24: eq.TextureProfile
+	(*TintProfile)(nil),                   // 25: eq.TintProfile
+	(*Spawns)(nil),                        // 26: eq.Spawns
+	(*Spawn)(nil),                         // 27: eq.Spawn
+	(*NewSpawn)(nil),                      // 28: eq.NewSpawn
+	(*ClientZoneEntry)(nil),               // 29: eq.ClientZoneEntry
+	(*ServerZoneEntry)(nil),               // 30: eq.ServerZoneEntry
+	(*NewZone)(nil),                       // 31: eq.NewZone
+	(*MemorizeSpell)(nil),                 // 32: eq.MemorizeSpell
+	(*Charm)(nil),                         // 33: eq.Charm
+	(*InterruptCast)(nil),                 // 34: eq.InterruptCast
+	(*DeleteSpell)(nil),                   // 35: eq.DeleteSpell
+	(*ManaChange)(nil),                    // 36: eq.ManaChange
+	(*SwapSpell)(nil),                     // 37: eq.SwapSpell
+	(*BeginCast)(nil),                     // 38: eq.BeginCast
+	(*CastSpell)(nil),                     // 39: eq.CastSpell
+	(*SpawnAppearance)(nil),               // 40: eq.SpawnAppearance
+	(*SpellBuff)(nil),                     // 41: eq.SpellBuff
+	(*SpellBuffPacket)(nil),               // 42: eq.SpellBuffPacket
+	(*ItemNamePacket)(nil),                // 43: eq.ItemNamePacket
+	(*ItemProperties)(nil),                // 44: eq.ItemProperties
+	(*GMTrainee)(nil),                     // 45: eq.GMTrainee
+	(*GMTrainEnd)(nil),                    // 46: eq.GMTrainEnd
+	(*GMSkillChange)(nil),                 // 47: eq.GMSkillChange
+	(*ConsentResponse)(nil),               // 48: eq.ConsentResponse
+	(*NameGeneration)(nil),                // 49: eq.NameGeneration
+	(*NameApprove)(nil),                   // 50: eq.NameApprove
+	(*CharCreate)(nil),                    // 51: eq.CharCreate
+	(*AA_Array)(nil),                      // 52: eq.AA_Array
+	(*Disciplines)(nil),                   // 53: eq.Disciplines
+	(*Tribute)(nil),                       // 54: eq.Tribute
+	(*BandolierItem)(nil),                 // 55: eq.BandolierItem
+	(*Bandolier)(nil),                     // 56: eq.Bandolier
+	(*PotionBeltItem)(nil),                // 57: eq.PotionBeltItem
+	(*PotionBelt)(nil),                    // 58: eq.PotionBelt
+	(*StringList)(nil),                    // 59: eq.StringList
+	(*GroupLeadershipAA)(nil),             // 60: eq.GroupLeadershipAA
+	(*RaidLeadershipAA)(nil),              // 61: eq.RaidLeadershipAA
+	(*LeadershipAA)(nil),                  // 62: eq.LeadershipAA
+	(*Bind)(nil),                          // 63: eq.Bind
+	(*PVPStatsEntry)(nil),                 // 64: eq.PVPStatsEntry
+	(*PlayerProfile)(nil),                 // 65: eq.PlayerProfile
+	(*ClientTarget)(nil),                  // 66: eq.ClientTarget
+	(*TargetReject)(nil),                  // 67: eq.TargetReject
+	(*PetCommand)(nil),                    // 68: eq.PetCommand
+	(*DeleteSpawn)(nil),                   // 69: eq.DeleteSpawn
+	(*ChannelMessage)(nil),                // 70: eq.ChannelMessage
+	(*SpecialMesg)(nil),                   // 71: eq.SpecialMesg
+	(*WearChange)(nil),                    // 72: eq.WearChange
+	(*BindWound)(nil),                     // 73: eq.BindWound
+	(*ZoneChange)(nil),                    // 74: eq.ZoneChange
+	(*RequestClientZoneChange)(nil),       // 75: eq.RequestClientZoneChange
+	(*Animation)(nil),                     // 76: eq.Animation
+	(*Action)(nil),                        // 77: eq.Action
+	(*CombatDamage)(nil),                  // 78: eq.CombatDamage
+	(*Consider)(nil),                      // 79: eq.Consider
+	(*Death)(nil),                         // 80: eq.Death
+	(*BecomeCorpse)(nil),                  // 81: eq.BecomeCorpse
+	(*PlayerPositionUpdateServer)(nil),    // 82: eq.PlayerPositionUpdateServer
+	(*PlayerPositionUpdateClient)(nil),    // 83: eq.PlayerPositionUpdateClient
+	(*SpawnHPUpdate)(nil),                 // 84: eq.SpawnHPUpdate
+	(*SpawnHPUpdate2)(nil),                // 85: eq.SpawnHPUpdate2
+	(*Stamina)(nil),                       // 86: eq.Stamina
+	(*LevelUpdate)(nil),                   // 87: eq.LevelUpdate
+	(*ExpUpdate)(nil),                     // 88: eq.ExpUpdate
+	(*ItemPacket)(nil),                    // 89: eq.ItemPacket
+	(*BulkItemPacket)(nil),                // 90: eq.BulkItemPacket
+	(*Consume)(nil),                       // 91: eq.Consume
+	(*DeleteItem)(nil),                    // 92: eq.DeleteItem
+	(*MoveItem)(nil),                      // 93: eq.MoveItem
+	(*MultiMoveItemSub)(nil),              // 94: eq.MultiMoveItemSub
+	(*MultiMoveItem)(nil),                 // 95: eq.MultiMoveItem
+	(*MoveCoin)(nil),                      // 96: eq.MoveCoin
+	(*TradeBusy)(nil),                     // 97: eq.TradeBusy
+	(*TradeCoin)(nil),                     // 98: eq.TradeCoin
+	(*TradeMoneyUpdate)(nil),              // 99: eq.TradeMoneyUpdate
+	(*Surname)(nil),                       // 100: eq.Surname
+	(*GuildsList)(nil),                    // 101: eq.GuildsList
+	(*MoneyOnCorpse)(nil),                 // 102: eq.MoneyOnCorpse
+	(*LootingItem)(nil),                   // 103: eq.LootingItem
+	(*GuildManageStatus)(nil),             // 104: eq.GuildManageStatus
+	(*GuildJoin)(nil),                     // 105: eq.GuildJoin
+	(*GuildInviteAccept)(nil),             // 106: eq.GuildInviteAccept
+	(*GuildManageRemove)(nil),             // 107: eq.GuildManageRemove
+	(*Guildcommand)(nil),                  // 108: eq.Guildcommand
+	(*OnLevelMessage)(nil),                // 109: eq.OnLevelMessage
+	(*GMZoneRequest)(nil),                 // 110: eq.GMZoneRequest
+	(*GMSummon)(nil),                      // 111: eq.GMSummon
+	(*GMGoto)(nil),                        // 112: eq.GMGoto
+	(*GMLastName)(nil),                    // 113: eq.GMLastName
+	(*CombatAbility)(nil),                 // 114: eq.CombatAbility
+	(*Instill_Doubt)(nil),                 // 115: eq.Instill_Doubt
+	(*GiveItem)(nil),                      // 116: eq.GiveItem
+	(*RandomReq)(nil),                     // 117: eq.RandomReq
+	(*RandomReply)(nil),                   // 118: eq.RandomReply
+	(*LFG)(nil),                           // 119: eq.LFG
+	(*LFG_Appearance)(nil),                // 120: eq.LFG_Appearance
+	(*TimeOfDay)(nil),                     // 121: eq.TimeOfDay
+	(*Merchant_Click)(nil),                // 122: eq.Merchant_Click
+	(*Merchant_Sell)(nil),                 // 123: eq.Merchant_Sell
+	(*Merchant_Purchase)(nil),             // 124: eq.Merchant_Purchase
+	(*Merchant_DelItem)(nil),              // 125: eq.Merchant_DelItem
+	(*Adventure_Purchase)(nil),            // 126: eq.Adventure_Purchase
+	(*Adventure_Sell)(nil),                // 127: eq.Adventure_Sell
+	(*AdventurePoints_Update)(nil),        // 128: eq.AdventurePoints_Update
+	(*AdventureFinish)(nil),               // 129: eq.AdventureFinish
+	(*AdventureRequest)(nil),              // 130: eq.AdventureRequest
+	(*AdventureRequestResponse)(nil),      // 131: eq.AdventureRequestResponse
+	(*Illusion)(nil),                      // 132: eq.Illusion
+	(*ZonePoint_Entry)(nil),               // 133: eq.ZonePoint_Entry
+	(*ZonePoints)(nil),                    // 134: eq.ZonePoints
+	(*SkillUpdate)(nil),                   // 135: eq.SkillUpdate
+	(*ZoneUnavail)(nil),                   // 136: eq.ZoneUnavail
+	(*GroupGeneric)(nil),                  // 137: eq.GroupGeneric
+	(*GroupCancel)(nil),                   // 138: eq.GroupCancel
+	(*GroupUpdate)(nil),                   // 139: eq.GroupUpdate
+	(*GroupUpdate2)(nil),                  // 140: eq.GroupUpdate2
+	(*GroupJoin)(nil),                     // 141: eq.GroupJoin
+	(*FaceChange)(nil),                    // 142: eq.FaceChange
+	(*TradeRequest)(nil),                  // 143: eq.TradeRequest
+	(*TradeAccept)(nil),                   // 144: eq.TradeAccept
+	(*CancelTrade)(nil),                   // 145: eq.CancelTrade
+	(*PetitionUpdate)(nil),                // 146: eq.PetitionUpdate
+	(*Petition)(nil),                      // 147: eq.Petition
+	(*Who_All)(nil),                       // 148: eq.Who_All
+	(*Stun)(nil),                          // 149: eq.Stun
+	(*AugmentItem)(nil),                   // 150: eq.AugmentItem
+	(*Emote)(nil),                         // 151: eq.Emote
+	(*Inspect)(nil),                       // 152: eq.Inspect
+	(*InspectResponse)(nil),               // 153: eq.InspectResponse
+	(*SetDataRate)(nil),                   // 154: eq.SetDataRate
+	(*SetServerFilter)(nil),               // 155: eq.SetServerFilter
+	(*SetServerFilterAck)(nil),            // 156: eq.SetServerFilterAck
+	(*IncreaseStat)(nil),                  // 157: eq.IncreaseStat
+	(*GMName)(nil),                        // 158: eq.GMName
+	(*GMDelCorpse)(nil),                   // 159: eq.GMDelCorpse
+	(*GMKick)(nil),                        // 160: eq.GMKick
+	(*GMKill)(nil),                        // 161: eq.GMKill
+	(*GMEmoteZone)(nil),                   // 162: eq.GMEmoteZone
+	(*BookText)(nil),                      // 163: eq.BookText
+	(*BookRequest)(nil),                   // 164: eq.BookRequest
+	(*Object)(nil),                        // 165: eq.Object
+	(*ClickObject)(nil),                   // 166: eq.ClickObject
+	(*ClickObjectAction)(nil),             // 167: eq.ClickObjectAction
+	(*Shielding)(nil),                     // 168: eq.Shielding
+	(*ClickObjectAck)(nil),                // 169: eq.ClickObjectAck
+	(*CloseContainer)(nil),                // 170: eq.CloseContainer
+	(*Door)(nil),                          // 171: eq.Door
+	(*DoorSpawns)(nil),                    // 172: eq.DoorSpawns
+	(*ClickDoor)(nil),                     // 173: eq.ClickDoor
+	(*MoveDoor)(nil),                      // 174: eq.MoveDoor
+	(*ControlBoat)(nil),                   // 175: eq.ControlBoat
+	(*BecomeNPC)(nil),                     // 176: eq.BecomeNPC
+	(*Underworld)(nil),                    // 177: eq.Underworld
+	(*Resurrect)(nil),                     // 178: eq.Resurrect
+	(*SetRunMode)(nil),                    // 179: eq.SetRunMode
+	(*EnvDamage2)(nil),                    // 180: eq.EnvDamage2
+	(*BazaarWindowStart)(nil),             // 181: eq.BazaarWindowStart
+	(*BazaarWelcome)(nil),                 // 182: eq.BazaarWelcome
+	(*BazaarSearch)(nil),                  // 183: eq.BazaarSearch
+	(*BazaarInspect)(nil),                 // 184: eq.BazaarInspect
+	(*BazaarReturnDone)(nil),              // 185: eq.BazaarReturnDone
+	(*BazaarSearchResults)(nil),           // 186: eq.BazaarSearchResults
+	(*ServerSideFilters)(nil),             // 187: eq.ServerSideFilters
+	(*ItemViewRequest)(nil),               // 188: eq.ItemViewRequest
+	(*ItemVerifyRequest)(nil),             // 189: eq.ItemVerifyRequest
+	(*PickPocket)(nil),                    // 190: eq.PickPocket
+	(*SPickPocket)(nil),                   // 191: eq.sPickPocket
+	(*LogServer)(nil),                     // 192: eq.LogServer
+	(*ApproveWorld)(nil),                  // 193: eq.ApproveWorld
+	(*ClientError)(nil),                   // 194: eq.ClientError
+	(*MobHealth)(nil),                     // 195: eq.MobHealth
+	(*Track)(nil),                         // 196: eq.Track
+	(*TrackTarget)(nil),                   // 197: eq.TrackTarget
+	(*Tracking)(nil),                      // 198: eq.Tracking
+	(*ZoneServerInfo)(nil),                // 199: eq.ZoneServerInfo
+	(*WhoAllPlayer)(nil),                  // 200: eq.WhoAllPlayer
+	(*WhoAllReturn)(nil),                  // 201: eq.WhoAllReturn
+	(*Trader)(nil),                        // 202: eq.Trader
+	(*ClickTrader)(nil),                   // 203: eq.ClickTrader
+	(*GetItems)(nil),                      // 204: eq.GetItems
+	(*BecomeTrader)(nil),                  // 205: eq.BecomeTrader
+	(*Trader_ShowItems)(nil),              // 206: eq.Trader_ShowItems
+	(*TraderBuy)(nil),                     // 207: eq.TraderBuy
+	(*TraderItemUpdate)(nil),              // 208: eq.TraderItemUpdate
+	(*MoneyUpdate)(nil),                   // 209: eq.MoneyUpdate
+	(*TraderDelItem)(nil),                 // 210: eq.TraderDelItem
+	(*TraderClick)(nil),                   // 211: eq.TraderClick
+	(*FormattedMessage)(nil),              // 212: eq.FormattedMessage
+	(*SimpleMessage)(nil),                 // 213: eq.SimpleMessage
+	(*GuildMemberEntry)(nil),              // 214: eq.GuildMemberEntry
+	(*GuildMembers)(nil),                  // 215: eq.GuildMembers
+	(*GuildMOTD)(nil),                     // 216: eq.GuildMOTD
+	(*GuildUpdate_PublicNote)(nil),        // 217: eq.GuildUpdate_PublicNote
+	(*GuildDemote)(nil),                   // 218: eq.GuildDemote
+	(*GuildRemove)(nil),                   // 219: eq.GuildRemove
+	(*GuildMakeLeader)(nil),               // 220: eq.GuildMakeLeader
+	(*Make_Pet)(nil),                      // 221: eq.Make_Pet
+	(*Ground_Spawn)(nil),                  // 222: eq.Ground_Spawn
+	(*Ground_Spawns)(nil),                 // 223: eq.Ground_Spawns
+	(*ApproveZone)(nil),                   // 224: eq.ApproveZone
+	(*ZoneInSendName)(nil),                // 225: eq.ZoneInSendName
+	(*ZoneInSendName2)(nil),               // 226: eq.ZoneInSendName2
+	(*StartTribute)(nil),                  // 227: eq.StartTribute
+	(*TributeLevel)(nil),                  // 228: eq.TributeLevel
+	(*TributeAbility)(nil),                // 229: eq.TributeAbility
+	(*GuildTributeAbility)(nil),           // 230: eq.GuildTributeAbility
+	(*SelectTributeReq)(nil),              // 231: eq.SelectTributeReq
+	(*SelectTributeReply)(nil),            // 232: eq.SelectTributeReply
+	(*TributeInfo)(nil),                   // 233: eq.TributeInfo
+	(*TributeItem)(nil),                   // 234: eq.TributeItem
+	(*TributePoint)(nil),                  // 235: eq.TributePoint
+	(*TributeMoney)(nil),                  // 236: eq.TributeMoney
+	(*Split)(nil),                         // 237: eq.Split
+	(*NewCombine)(nil),                    // 238: eq.NewCombine
+	(*TradeskillFavorites)(nil),           // 239: eq.TradeskillFavorites
+	(*RecipesSearch)(nil),                 // 240: eq.RecipesSearch
+	(*RecipeReply)(nil),                   // 241: eq.RecipeReply
+	(*RecipeAutoCombine)(nil),             // 242: eq.RecipeAutoCombine
+	(*LevelAppearance)(nil),               // 243: eq.LevelAppearance
+	(*MerchantList)(nil),                  // 244: eq.MerchantList
+	(*TempMerchantList)(nil),              // 245: eq.TempMerchantList
+	(*FindPerson_Point)(nil),              // 246: eq.FindPerson_Point
+	(*FindPersonRequest)(nil),             // 247: eq.FindPersonRequest
+	(*FindPersonResult)(nil),              // 248: eq.FindPersonResult
+	(*MobRename)(nil),                     // 249: eq.MobRename
+	(*PlayMP3)(nil),                       // 250: eq.PlayMP3
+	(*TitleEntry)(nil),                    // 251: eq.TitleEntry
+	(*Titles)(nil),                        // 252: eq.Titles
+	(*TitleListEntry)(nil),                // 253: eq.TitleListEntry
+	(*TitleList)(nil),                     // 254: eq.TitleList
+	(*SetTitle)(nil),                      // 255: eq.SetTitle
+	(*SetTitleReply)(nil),                 // 256: eq.SetTitleReply
+	(*TaskDescription)(nil),               // 257: eq.TaskDescription
+	(*TaskMemberList)(nil),                // 258: eq.TaskMemberList
+	(*TaskActivity)(nil),                  // 259: eq.TaskActivity
+	(*TaskHistoryEntry)(nil),              // 260: eq.TaskHistoryEntry
+	(*TaskHistory)(nil),                   // 261: eq.TaskHistory
+	(*AcceptNewTask)(nil),                 // 262: eq.AcceptNewTask
+	(*CancelTask)(nil),                    // 263: eq.CancelTask
+	(*AvaliableTask)(nil),                 // 264: eq.AvaliableTask
+	(*BankerChange)(nil),                  // 265: eq.BankerChange
+	(*LeadershipExpUpdate)(nil),           // 266: eq.LeadershipExpUpdate
+	(*UpdateLeadershipAA)(nil),            // 267: eq.UpdateLeadershipAA
+	(*LeadExpUpdate)(nil),                 // 268: eq.LeadExpUpdate
+	(*RaidGeneral)(nil),                   // 269: eq.RaidGeneral
+	(*RaidAddMember)(nil),                 // 270: eq.RaidAddMember
+	(*RaidNote)(nil),                      // 271: eq.RaidNote
+	(*RaidMOTD)(nil),                      // 272: eq.RaidMOTD
+	(*RaidLeadershipUpdate)(nil),          // 273: eq.RaidLeadershipUpdate
+	(*RaidCreate)(nil),                    // 274: eq.RaidCreate
+	(*RaidMemberInfo)(nil),                // 275: eq.RaidMemberInfo
+	(*RaidDetails)(nil),                   // 276: eq.RaidDetails
+	(*RaidMembers)(nil),                   // 277: eq.RaidMembers
+	(*DynamicWall)(nil),                   // 278: eq.DynamicWall
+	(*BandolierCreate)(nil),               // 279: eq.BandolierCreate
+	(*BandolierDelete)(nil),               // 280: eq.BandolierDelete
+	(*BandolierSet)(nil),                  // 281: eq.BandolierSet
+	(*Arrow)(nil),                         // 282: eq.Arrow
+	(*Consent)(nil),                       // 283: eq.Consent
+	(*AdventureMerchant)(nil),             // 284: eq.AdventureMerchant
+	(*Save)(nil),                          // 285: eq.Save
+	(*GMtoggle)(nil),                      // 286: eq.GMtoggle
+	(*GroupInvite)(nil),                   // 287: eq.GroupInvite
+	(*ColoredText)(nil),                   // 288: eq.ColoredText
+	(*UseAA)(nil),                         // 289: eq.UseAA
+	(*AA_Ability)(nil),                    // 290: eq.AA_Ability
+	(*SendAA)(nil),                        // 291: eq.SendAA
+	(*AA_List)(nil),                       // 292: eq.AA_List
+	(*AA_Action)(nil),                     // 293: eq.AA_Action
+	(*AAExpUpdate)(nil),                   // 294: eq.AAExpUpdate
+	(*AltAdvStats)(nil),                   // 295: eq.AltAdvStats
+	(*PlayerAA)(nil),                      // 296: eq.PlayerAA
+	(*AATable)(nil),                       // 297: eq.AATable
+	(*Weather)(nil),                       // 298: eq.Weather
+	(*LoadSpellSet)(nil),                  // 299: eq.LoadSpellSet
+	(*ApplyPoison)(nil),                   // 300: eq.ApplyPoison
+	(*GuildMemberUpdate)(nil),             // 301: eq.GuildMemberUpdate
+	(*VeteranRewardItem)(nil),             // 302: eq.VeteranRewardItem
+	(*VeteranReward)(nil),                 // 303: eq.VeteranReward
+	(*ExpeditionInvite)(nil),              // 304: eq.ExpeditionInvite
+	(*ExpeditionInviteResponse)(nil),      // 305: eq.ExpeditionInviteResponse
+	(*DynamicZoneInfo)(nil),               // 306: eq.DynamicZoneInfo
+	(*DynamicZoneMemberEntry)(nil),        // 307: eq.DynamicZoneMemberEntry
+	(*DynamicZoneMemberList)(nil),         // 308: eq.DynamicZoneMemberList
+	(*DynamicZoneMemberListName)(nil),     // 309: eq.DynamicZoneMemberListName
+	(*ExpeditionLockoutTimerEntry)(nil),   // 310: eq.ExpeditionLockoutTimerEntry
+	(*ExpeditionLockoutTimers)(nil),       // 311: eq.ExpeditionLockoutTimers
+	(*DynamicZoneLeaderName)(nil),         // 312: eq.DynamicZoneLeaderName
+	(*ExpeditionCommand)(nil),             // 313: eq.ExpeditionCommand
+	(*ExpeditionCommandSwap)(nil),         // 314: eq.ExpeditionCommandSwap
+	(*ExpeditionExpireWarning)(nil),       // 315: eq.ExpeditionExpireWarning
+	(*DynamicZoneCompassEntry)(nil),       // 316: eq.DynamicZoneCompassEntry
+	(*DynamicZoneCompass)(nil),            // 317: eq.DynamicZoneCompass
+	(*DynamicZoneChooseZoneEntry)(nil),    // 318: eq.DynamicZoneChooseZoneEntry
+	(*DynamicZoneChooseZone)(nil),         // 319: eq.DynamicZoneChooseZone
+	(*DynamicZoneChooseZoneReply)(nil),    // 320: eq.DynamicZoneChooseZoneReply
+	(*LFGuild_SearchPlayer)(nil),          // 321: eq.LFGuild_SearchPlayer
+	(*LFGuild_SearchGuild)(nil),           // 322: eq.LFGuild_SearchGuild
+	(*LFGuild_Playertoggle)(nil),          // 323: eq.LFGuild_Playertoggle
+	(*LFGuild_Guildtoggle)(nil),           // 324: eq.LFGuild_Guildtoggle
+	(*SayLinkBodyFrame)(nil),              // 325: eq.SayLinkBodyFrame
+	(*WebLogin)(nil),                      // 326: eq.WebLogin
+	(*WebLoginServerRequest)(nil),         // 327: eq.WebLoginServerRequest
+	(*WebLoginReply)(nil),                 // 328: eq.WebLoginReply
+	(*WebLoginWorldServer)(nil),           // 329: eq.WebLoginWorldServer
+	(*WebLoginServerResponse)(nil),        // 330: eq.WebLoginServerResponse
+	(*WebPlayEverquestRequest)(nil),       // 331: eq.WebPlayEverquestRequest
+	(*WebPlayEverquestResponse)(nil),      // 332: eq.WebPlayEverquestResponse
+	(*WebSession)(nil),                    // 333: eq.WebSession
+	(*Zero)(nil),                          // 334: eq.Zero
+	(*Int)(nil),                           // 335: eq.Int
+	(*Bool)(nil),                          // 336: eq.Bool
+	(*String)(nil),                        // 337: eq.String
+	(*descriptorpb.EnumValueOptions)(nil), // 338: google.protobuf.EnumValueOptions
 }
 var file_EQMessage_proto_depIdxs = []int32{
-	5,   // 0: eq.LoginServerResponse.servers:type_name -> eq.WorldServer
-	11,  // 1: eq.CharSelectEquip.color:type_name -> eq.Tint
-	12,  // 2: eq.CharacterSelectEntry.equip:type_name -> eq.CharSelectEquip
-	13,  // 3: eq.CharacterSelect.characters:type_name -> eq.CharacterSelectEntry
-	26,  // 4: eq.Spawns.spawns:type_name -> eq.Spawn
-	23,  // 5: eq.Spawn.equipment:type_name -> eq.TextureProfile
-	26,  // 6: eq.NewSpawn.spawn:type_name -> eq.Spawn
-	27,  // 7: eq.ServerZoneEntry.player:type_name -> eq.NewSpawn
-	40,  // 8: eq.SpellBuffPacket.buff:type_name -> eq.SpellBuff
-	54,  // 9: eq.Bandolier.items:type_name -> eq.BandolierItem
-	56,  // 10: eq.PotionBelt.items:type_name -> eq.PotionBeltItem
-	59,  // 11: eq.LeadershipAA.group:type_name -> eq.GroupLeadershipAA
-	60,  // 12: eq.LeadershipAA.raid:type_name -> eq.RaidLeadershipAA
-	62,  // 13: eq.PlayerProfile.binds:type_name -> eq.Bind
-	23,  // 14: eq.PlayerProfile.item_material:type_name -> eq.TextureProfile
-	51,  // 15: eq.PlayerProfile.aa_array:type_name -> eq.AA_Array
-	40,  // 16: eq.PlayerProfile.buffs:type_name -> eq.SpellBuff
-	52,  // 17: eq.PlayerProfile.disciplines:type_name -> eq.Disciplines
-	55,  // 18: eq.PlayerProfile.bandoliers:type_name -> eq.Bandolier
-	57,  // 19: eq.PlayerProfile.potionbelt:type_name -> eq.PotionBelt
-	58,  // 20: eq.PlayerProfile.group_members:type_name -> eq.StringList
-	53,  // 21: eq.PlayerProfile.tributes:type_name -> eq.Tribute
-	61,  // 22: eq.PlayerProfile.leader_abilities:type_name -> eq.LeadershipAA
-	63,  // 23: eq.PlayerProfile.pvp_last_kill:type_name -> eq.PVPStatsEntry
-	63,  // 24: eq.PlayerProfile.pvp_last_death:type_name -> eq.PVPStatsEntry
-	63,  // 25: eq.PlayerProfile.pvp_recent_kills:type_name -> eq.PVPStatsEntry
+	6,   // 0: eq.LoginServerResponse.servers:type_name -> eq.WorldServer
+	12,  // 1: eq.CharSelectEquip.color:type_name -> eq.Tint
+	13,  // 2: eq.CharacterSelectEntry.equip:type_name -> eq.CharSelectEquip
+	14,  // 3: eq.CharacterSelect.characters:type_name -> eq.CharacterSelectEntry
+	27,  // 4: eq.Spawns.spawns:type_name -> eq.Spawn
+	24,  // 5: eq.Spawn.equipment:type_name -> eq.TextureProfile
+	27,  // 6: eq.NewSpawn.spawn:type_name -> eq.Spawn
+	28,  // 7: eq.ServerZoneEntry.player:type_name -> eq.NewSpawn
+	41,  // 8: eq.SpellBuffPacket.buff:type_name -> eq.SpellBuff
+	55,  // 9: eq.Bandolier.items:type_name -> eq.BandolierItem
+	57,  // 10: eq.PotionBelt.items:type_name -> eq.PotionBeltItem
+	60,  // 11: eq.LeadershipAA.group:type_name -> eq.GroupLeadershipAA
+	61,  // 12: eq.LeadershipAA.raid:type_name -> eq.RaidLeadershipAA
+	63,  // 13: eq.PlayerProfile.binds:type_name -> eq.Bind
+	24,  // 14: eq.PlayerProfile.item_material:type_name -> eq.TextureProfile
+	52,  // 15: eq.PlayerProfile.aa_array:type_name -> eq.AA_Array
+	41,  // 16: eq.PlayerProfile.buffs:type_name -> eq.SpellBuff
+	53,  // 17: eq.PlayerProfile.disciplines:type_name -> eq.Disciplines
+	56,  // 18: eq.PlayerProfile.bandoliers:type_name -> eq.Bandolier
+	58,  // 19: eq.PlayerProfile.potionbelt:type_name -> eq.PotionBelt
+	59,  // 20: eq.PlayerProfile.group_members:type_name -> eq.StringList
+	54,  // 21: eq.PlayerProfile.tributes:type_name -> eq.Tribute
+	62,  // 22: eq.PlayerProfile.leader_abilities:type_name -> eq.LeadershipAA
+	64,  // 23: eq.PlayerProfile.pvp_last_kill:type_name -> eq.PVPStatsEntry
+	64,  // 24: eq.PlayerProfile.pvp_last_death:type_name -> eq.PVPStatsEntry
+	64,  // 25: eq.PlayerProfile.pvp_recent_kills:type_name -> eq.PVPStatsEntry
 	0,   // 26: eq.ItemPacket.packet_type:type_name -> eq.ItemPacketType
-	16,  // 27: eq.MultiMoveItemSub.from_slot:type_name -> eq.InventorySlot
-	16,  // 28: eq.MultiMoveItemSub.to_slot:type_name -> eq.InventorySlot
-	93,  // 29: eq.MultiMoveItem.moves:type_name -> eq.MultiMoveItemSub
-	58,  // 30: eq.GuildsList.guilds:type_name -> eq.StringList
-	132, // 31: eq.ZonePoints.zpe:type_name -> eq.ZonePoint_Entry
-	58,  // 32: eq.GroupUpdate.membername:type_name -> eq.StringList
-	58,  // 33: eq.GroupUpdate2.membername:type_name -> eq.StringList
-	59,  // 34: eq.GroupUpdate2.leader_aas:type_name -> eq.GroupLeadershipAA
-	58,  // 35: eq.InspectResponse.itemnames:type_name -> eq.StringList
-	170, // 36: eq.DoorSpawns.doors:type_name -> eq.Door
-	180, // 37: eq.BazaarWelcome.beginning:type_name -> eq.BazaarWindowStart
-	180, // 38: eq.BazaarSearch.beginning:type_name -> eq.BazaarWindowStart
-	180, // 39: eq.BazaarSearchResults.beginning:type_name -> eq.BazaarWindowStart
-	195, // 40: eq.Tracking.entries:type_name -> eq.Track
-	199, // 41: eq.WhoAllReturn.player:type_name -> eq.WhoAllPlayer
-	213, // 42: eq.GuildMembers.member:type_name -> eq.GuildMemberEntry
-	221, // 43: eq.Ground_Spawns.spawn:type_name -> eq.Ground_Spawn
-	227, // 44: eq.TributeAbility.tiers:type_name -> eq.TributeLevel
-	228, // 45: eq.GuildTributeAbility.ability:type_name -> eq.TributeAbility
-	250, // 46: eq.Titles.titles:type_name -> eq.TitleEntry
-	252, // 47: eq.TitleList.titles:type_name -> eq.TitleListEntry
-	259, // 48: eq.TaskHistory.entries:type_name -> eq.TaskHistoryEntry
-	268, // 49: eq.RaidAddMember.raid_gen:type_name -> eq.RaidGeneral
-	268, // 50: eq.RaidNote.general:type_name -> eq.RaidGeneral
-	268, // 51: eq.RaidMOTD.general:type_name -> eq.RaidGeneral
-	59,  // 52: eq.RaidLeadershipUpdate.group:type_name -> eq.GroupLeadershipAA
-	60,  // 53: eq.RaidLeadershipUpdate.raid:type_name -> eq.RaidLeadershipAA
-	61,  // 54: eq.RaidDetails.abilities:type_name -> eq.LeadershipAA
-	275, // 55: eq.RaidMembers.details:type_name -> eq.RaidDetails
-	274, // 56: eq.RaidMembers.members:type_name -> eq.RaidMemberInfo
-	274, // 57: eq.RaidMembers.empty:type_name -> eq.RaidMemberInfo
-	289, // 58: eq.SendAA.abilities:type_name -> eq.AA_Ability
-	290, // 59: eq.AA_List.aa:type_name -> eq.SendAA
-	51,  // 60: eq.PlayerAA.aa_list:type_name -> eq.AA_Array
-	51,  // 61: eq.AATable.aa_list:type_name -> eq.AA_Array
-	301, // 62: eq.VeteranReward.item:type_name -> eq.VeteranRewardItem
-	306, // 63: eq.DynamicZoneMemberList.members:type_name -> eq.DynamicZoneMemberEntry
-	309, // 64: eq.ExpeditionLockoutTimers.timers:type_name -> eq.ExpeditionLockoutTimerEntry
-	315, // 65: eq.DynamicZoneCompass.entries:type_name -> eq.DynamicZoneCompassEntry
-	317, // 66: eq.DynamicZoneChooseZone.choices:type_name -> eq.DynamicZoneChooseZoneEntry
-	328, // 67: eq.WebLoginServerResponse.servers:type_name -> eq.WebLoginWorldServer
-	337, // 68: eq.messageType:extendee -> google.protobuf.EnumValueOptions
-	337, // 69: eq.repeatedField:extendee -> google.protobuf.EnumValueOptions
+	17,  // 27: eq.MultiMoveItemSub.from_slot:type_name -> eq.InventorySlot
+	17,  // 28: eq.MultiMoveItemSub.to_slot:type_name -> eq.InventorySlot
+	94,  // 29: eq.MultiMoveItem.moves:type_name -> eq.MultiMoveItemSub
+	59,  // 30: eq.GuildsList.guilds:type_name -> eq.StringList
+	133, // 31: eq.ZonePoints.zpe:type_name -> eq.ZonePoint_Entry
+	59,  // 32: eq.GroupUpdate.membername:type_name -> eq.StringList
+	59,  // 33: eq.GroupUpdate2.membername:type_name -> eq.StringList
+	60,  // 34: eq.GroupUpdate2.leader_aas:type_name -> eq.GroupLeadershipAA
+	59,  // 35: eq.InspectResponse.itemnames:type_name -> eq.StringList
+	171, // 36: eq.DoorSpawns.doors:type_name -> eq.Door
+	181, // 37: eq.BazaarWelcome.beginning:type_name -> eq.BazaarWindowStart
+	181, // 38: eq.BazaarSearch.beginning:type_name -> eq.BazaarWindowStart
+	181, // 39: eq.BazaarSearchResults.beginning:type_name -> eq.BazaarWindowStart
+	196, // 40: eq.Tracking.entries:type_name -> eq.Track
+	200, // 41: eq.WhoAllReturn.player:type_name -> eq.WhoAllPlayer
+	214, // 42: eq.GuildMembers.member:type_name -> eq.GuildMemberEntry
+	222, // 43: eq.Ground_Spawns.spawn:type_name -> eq.Ground_Spawn
+	228, // 44: eq.TributeAbility.tiers:type_name -> eq.TributeLevel
+	229, // 45: eq.GuildTributeAbility.ability:type_name -> eq.TributeAbility
+	251, // 46: eq.Titles.titles:type_name -> eq.TitleEntry
+	253, // 47: eq.TitleList.titles:type_name -> eq.TitleListEntry
+	260, // 48: eq.TaskHistory.entries:type_name -> eq.TaskHistoryEntry
+	269, // 49: eq.RaidAddMember.raid_gen:type_name -> eq.RaidGeneral
+	269, // 50: eq.RaidNote.general:type_name -> eq.RaidGeneral
+	269, // 51: eq.RaidMOTD.general:type_name -> eq.RaidGeneral
+	60,  // 52: eq.RaidLeadershipUpdate.group:type_name -> eq.GroupLeadershipAA
+	61,  // 53: eq.RaidLeadershipUpdate.raid:type_name -> eq.RaidLeadershipAA
+	62,  // 54: eq.RaidDetails.abilities:type_name -> eq.LeadershipAA
+	276, // 55: eq.RaidMembers.details:type_name -> eq.RaidDetails
+	275, // 56: eq.RaidMembers.members:type_name -> eq.RaidMemberInfo
+	275, // 57: eq.RaidMembers.empty:type_name -> eq.RaidMemberInfo
+	290, // 58: eq.SendAA.abilities:type_name -> eq.AA_Ability
+	291, // 59: eq.AA_List.aa:type_name -> eq.SendAA
+	52,  // 60: eq.PlayerAA.aa_list:type_name -> eq.AA_Array
+	52,  // 61: eq.AATable.aa_list:type_name -> eq.AA_Array
+	302, // 62: eq.VeteranReward.item:type_name -> eq.VeteranRewardItem
+	307, // 63: eq.DynamicZoneMemberList.members:type_name -> eq.DynamicZoneMemberEntry
+	310, // 64: eq.ExpeditionLockoutTimers.timers:type_name -> eq.ExpeditionLockoutTimerEntry
+	316, // 65: eq.DynamicZoneCompass.entries:type_name -> eq.DynamicZoneCompassEntry
+	318, // 66: eq.DynamicZoneChooseZone.choices:type_name -> eq.DynamicZoneChooseZoneEntry
+	329, // 67: eq.WebLoginServerResponse.servers:type_name -> eq.WebLoginWorldServer
+	338, // 68: eq.messageType:extendee -> google.protobuf.EnumValueOptions
+	338, // 69: eq.repeatedField:extendee -> google.protobuf.EnumValueOptions
 	70,  // [70:70] is the sub-list for method output_type
 	70,  // [70:70] is the sub-list for method input_type
 	70,  // [70:70] is the sub-list for extension type_name
@@ -29240,7 +29282,7 @@ func file_EQMessage_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_EQMessage_proto_rawDesc), len(file_EQMessage_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   335,
+			NumMessages:   336,
 			NumExtensions: 2,
 			NumServices:   0,
 		},

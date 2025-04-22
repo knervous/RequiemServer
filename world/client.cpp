@@ -36,6 +36,7 @@
 #include "../common/shareddb.h"
 #include "../common/opcodemgr.h"
 #include "../common/data_verification.h"
+#include "../common/patches/web_structs.h"
 
 #include "client.h"
 #include "worlddb.h"
@@ -56,6 +57,7 @@
 #include "../common/repositories/group_id_repository.h"
 #include "../common/repositories/character_data_repository.h"
 #include "../common/skill_caps.h"
+#include "../webtransport/web.h"
 
 #include <iostream>
 #include <iomanip>
@@ -443,6 +445,41 @@ void Client::SendPostEnterWorld() {
 	outapp->size=0;
 	QueuePacket(outapp);
 	safe_delete(outapp);
+}
+
+bool Client::HandleJWTLogin(const EQApplicationPacket *app) {
+	if (app->size != sizeof(Web::structs::JWTLogin_Struct) || !eqs->IsWebstream()) {
+		LogInfo("Was not WebStream or bad payload");
+		return false;
+	}
+	auto *r = (Web::structs::JWTLogin_Struct *) app->pBuffer;
+	auto account_id = database.GetOrCreateAccount(r->token);
+	if (account_id == 0) {
+		LogError("Account JWT ({}) Failed Creating Account", r->token);
+		return false;
+	}
+	// discord_auth should be a kConstant
+	client_list.CLEAdd(
+		1,
+		r->token,
+		r->token,
+		r->token,
+		0,
+		eqs->GetRemoteIP(),
+		false
+	);
+
+	cle = client_list.FindCLEByAccountID(account_id);
+
+	if (!cle) {
+		return false;
+	}
+
+	cle->SetOnline(CLE_Status::CharSelect);
+	SendExpansionInfo();
+	SendCharInfo();
+	database.LoginIP(cle->AccountID(), long2ip(GetIP()));
+	return true;
 }
 
 bool Client::HandleSendLoginInfoPacket(const EQApplicationPacket *app)
@@ -1113,7 +1150,7 @@ bool Client::HandlePacket(const EQApplicationPacket *app) {
 		}
 	}
 
-	if (GetAccountID() == 0 && opcode != OP_SendLoginInfo) {
+	if (GetAccountID() == 0 && !(opcode == OP_SendLoginInfo || opcode == OP_JWTLogin)) {
 		// Got a packet other than OP_SendLoginInfo when not logged in
 		LogInfo("Expecting OP_SendLoginInfo, got [{}]", OpcodeNames[opcode]);
 		return false;
@@ -1136,6 +1173,10 @@ bool Client::HandlePacket(const EQApplicationPacket *app) {
 
 			return HandleChecksumPacket(app);
 
+		}
+		case OP_JWTLogin:
+		{
+			return HandleJWTLogin(app);
 		}
 		case OP_SendLoginInfo:
 		{

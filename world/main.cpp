@@ -382,8 +382,8 @@ int main(int argc, char **argv)
 		}
 	);
 
-	EQStreamManagerInterfaceOptions web_opts(3009, false, false);
-	EQ::Net::EQWebStreamManager eqWebStreamManager(web_opts);
+	EQStreamManagerInterfaceOptions web_opts(8000, false, false);
+	EQ::Net::EQWebStreamManager eqWebStreamManager(web_opts, true);
 	eqWebStreamManager.OnNewConnection(
 		[&stream_identifier](std::shared_ptr<EQ::Net::EQWebStream> stream) {
 			stream_identifier.AddStream(stream);
@@ -426,6 +426,7 @@ int main(int argc, char **argv)
 					auto client = new Client(eqsi);
 					// @merth: client->zoneattempt=0;
 					client_list.Add(client);
+
 				}
 				else {
 					LogInfo("Connection from [{}] failed banned IPs check. Closing connection", inet_ntoa(in));

@@ -8,6 +8,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"crypto/x509/pkix"
+	"embed"
 	_ "embed"
 	b64 "encoding/base64"
 	"encoding/binary"
@@ -18,16 +19,24 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/quic-go/quic-go/http3"
 )
 
-func GenerateCertAndStartServer(port int) ([]byte, []byte) {
+//go:embed keys/key.pem
+var keyPEMData embed.FS
+
+// GenerateCertAndStartServer generates a certificate and starts an HTTP server with the hash
+func GenerateCertAndStartServer(worldServer bool) ([]byte, []byte) {
 	tlsConf, x509AsBytes, err := getTLSConf(time.Now(), time.Now().Add(10*24*time.Hour))
 	if err != nil {
 		log.Fatal(err)
 	}
 	cert := tlsConf.Certificates[0]
 	hash := sha256.Sum256(cert.Leaf.Raw)
-	go runHTTPServer(port, hash)
+	if worldServer {
+		go runHTTPServer(443, hash)
+	}
 
 	derBuf, _ := x509.MarshalECPrivateKey(cert.PrivateKey.(*ecdsa.PrivateKey))
 
@@ -44,9 +53,91 @@ func GenerateCertAndStartServer(port int) ([]byte, []byte) {
 	return pem1, priv
 }
 
+// GenerateTLSConfig creates a tls.Config from certificate and key PEM data.
+func GenerateTLSConfig(certPEM, keyPEM []byte) (*tls.Config, error) {
+	cert, err := tls.X509KeyPair(certPEM, keyPEM)
+	if err != nil {
+		return nil, err
+	}
+	return &tls.Config{
+		Certificates: []tls.Certificate{cert},
+		NextProtos:   []string{http3.NextProtoH3, "h2", "http/1.1"},
+	}, nil
+}
+
+// LoadTLSConfig loads TLS config, preferring embedded key.pem if available, falling back to dynamic generation
+func LoadTLSConfig(worldServer bool) (*tls.Config, error) {
+	// Try embedded key.pem first
+	tlsConf, err := loadEmbeddedTLSConfig()
+	if err == nil {
+		LogEQInfo("Successfully loaded TLS config from embedded key.pem")
+		return tlsConf, nil
+	}
+	LogEQInfo("Failed to load embedded TLS config: %v, falling back to dynamic generation", err)
+
+	// Fallback to dynamic generation
+	certPEM, keyPEM := GenerateCertAndStartServer(worldServer)
+	tlsConf, err = GenerateTLSConfig(certPEM, keyPEM)
+	if err != nil {
+		return nil, fmt.Errorf("failed to generate dynamic TLS config: %v", err)
+	}
+	return tlsConf, nil
+}
+
+// loadEmbeddedTLSConfig loads TLS config from embedded key.pem, supporting both single cert and PEM chain
+func loadEmbeddedTLSConfig() (*tls.Config, error) {
+	// Read the embedded file
+	pemData, err := keyPEMData.ReadFile("keys/key.pem")
+	if err != nil {
+		return nil, fmt.Errorf("failed to read embedded key.pem: %v", err)
+	}
+
+	// Parse all PEM blocks
+	var certPEM, keyPEM []byte
+	var certCount int
+	rest := pemData
+	for {
+		block, next := pem.Decode(rest)
+		if block == nil {
+			if len(rest) > 0 {
+				return nil, fmt.Errorf("invalid PEM block in key.pem, remaining data: %s", string(rest))
+			}
+			break
+		}
+		switch block.Type {
+		case "CERTIFICATE":
+			// Append to certPEM, supporting multiple certificates in a chain
+			certPEM = append(certPEM, pem.EncodeToMemory(block)...)
+			certCount++
+		case "PRIVATE KEY", "RSA PRIVATE KEY", "EC PRIVATE KEY":
+			// Only one key expected, use the last one if multiple (unlikely)
+			keyPEM = pem.EncodeToMemory(block)
+		default:
+			return nil, fmt.Errorf("unexpected PEM block type: %s", block.Type)
+		}
+		rest = next
+	}
+
+	if certCount == 0 {
+		return nil, fmt.Errorf("no CERTIFICATE block found in key.pem")
+	}
+	if len(keyPEM) == 0 {
+		return nil, fmt.Errorf("no PRIVATE KEY block found in key.pem")
+	}
+
+	// Log the parsed data and whether it's a chain
+	if certCount > 1 {
+		LogEQInfo("Detected PEM chain with %d certificates", certCount)
+	} else {
+		LogEQInfo("Detected single certificate")
+	}
+
+	return GenerateTLSConfig(certPEM, keyPEM)
+}
+
 func runHTTPServer(port int, certHash [32]byte) {
 	mux := http.NewServeMux()
-	fmt.Printf("Starting hash server on port %d", port)
+	fmt.Printf("Starting hash server on port %d\n", port)
 	mux.HandleFunc("/hash", func(w http.ResponseWriter, _ *http.Request) {
 		w.Write([]byte(b64.StdEncoding.EncodeToString(certHash[:])))
 	})

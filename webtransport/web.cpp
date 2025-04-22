@@ -44,12 +44,14 @@
 using namespace Web::structs;
 
 typedef void (*Go_CloseConnection)(GoInt sessionId);
+typedef void (*Go_RegisterZoneId)(GoInt zoneId);
 typedef void (*Go_SendPacket)(GoInt sessionId, GoInt opcode, void* structPtr, GoInt structSize);
-typedef void (*Go_StartServer)(int port, void* webstreamManager, OnNewConnection onNewConnection, OnConnectionClosed onConnectionClosed, OnClientPacket onClientPacket, OnError onError, OnLogMessage logFunc);
+typedef void (*Go_StartServer)(bool world_server, void* webstreamManager, OnNewConnection onNewConnection, OnConnectionClosed onConnectionClosed, OnClientPacket onClientPacket, OnError onError, OnLogMessage logFunc);
 typedef void (*Go_StopServer)();
 
 
 static Go_CloseConnection Loaded_CloseConnection;
+static Go_RegisterZoneId Loaded_RegisterZoneId;
 static Go_SendPacket Loaded_SendPacket;
 static Go_StartServer Loaded_StartServer;
 static Go_StopServer Loaded_StopServer;
@@ -80,11 +82,16 @@ extern "C"
 	void Go_LogMessage(char* msg) {
 		LogInfo("{}", msg);
 	}
+	void Go_InitiateSession(char* id) {
+
+	}
 }
 
 
-EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOptions &options) : EQStreamManagerInterface(options)
+EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOptions &options, bool world_server) : EQStreamManagerInterface(options)
 {
+
+	world_server_ = world_server;
 	#ifdef _WINDOWS
 	HINSTANCE web_go_dll = LoadLibraryA("web_go.dll");
 	auto err = GetLastError();
@@ -96,6 +103,7 @@ EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOp
 	Loaded_StartServer = reinterpret_cast<Go_StartServer>(GetProcAddress(web_go_dll, "StartServer"));
 	Loaded_SendPacket = reinterpret_cast<Go_SendPacket>(GetProcAddress(web_go_dll, "SendPacket"));
 	Loaded_CloseConnection = reinterpret_cast<Go_CloseConnection>(GetProcAddress(web_go_dll, "CloseConnection"));
+	Loaded_RegisterZoneId = reinterpret_cast<Go_RegisterZoneId>(GetProcAddress(web_go_dll, "RegisterZoneId"));
 	Loaded_StopServer = reinterpret_cast<Go_StopServer>(GetProcAddress(web_go_dll, "StopServer"));
 
 	#else
@@ -110,10 +118,11 @@ EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOp
 		Loaded_StartServer = reinterpret_cast<Go_StartServer>(dlsym(go_webtransport_lib, "StartServer"));
 		Loaded_SendPacket = reinterpret_cast<Go_SendPacket>(dlsym(go_webtransport_lib, "SendPacket"));
 		Loaded_CloseConnection = reinterpret_cast<Go_CloseConnection>(dlsym(go_webtransport_lib, "CloseConnection"));
+		Loaded_RegisterZoneId = reinterpret_cast<Go_RegisterZoneId>(dlsym(go_webtransport_lib, "RegisterZoneId"));
 		Loaded_StopServer = reinterpret_cast<Go_StopServer>(dlsym(go_webtransport_lib, "StopServer"));
 
 		// Optional: Check for dlsym errors
-		if (!Loaded_StartServer || !Loaded_SendPacket || !Loaded_CloseConnection || !Loaded_StopServer) {
+		if (!Loaded_StartServer || !Loaded_SendPacket || !Loaded_CloseConnection || !Loaded_StopServer || !Loaded_RegisterZoneId) {
 			const char* dlsym_error = dlerror();
 			LogWarning("Failed to load one or more symbols from web_go.so: {}", dlsym_error ? dlsym_error : "Unknown error");
 			dlclose(go_webtransport_lib); // Clean up if symbols fail
@@ -121,7 +130,7 @@ EQ::Net::EQWebStreamManager::EQWebStreamManager(const EQStreamManagerInterfaceOp
 		}
 	#endif
 	if (Loaded_StartServer != NULL) {
-		Loaded_StartServer(options.daybreak_options.port, this, &Go_OnNewConnection, &Go_OnConnectionClosed, &Go_OnClientPacket, &Go_OnError, &Go_LogMessage);
+		Loaded_StartServer(world_server, this, &Go_OnNewConnection, &Go_OnConnectionClosed, &Go_OnClientPacket, &Go_OnError, &Go_LogMessage);
 	} else {
 		LogWarning("Could not start server for webtransport");
 	}
@@ -132,7 +141,15 @@ EQ::Net::EQWebStreamManager::~EQWebStreamManager()
 	if (Loaded_StopServer != NULL) {
 		Loaded_StopServer();
 	}
-	
+
+}
+
+
+void EQ::Net::EQWebStreamManager::RegisterZone(int zone_id) {
+	if (!Loaded_RegisterZoneId) {
+		return;
+	}
+	Loaded_RegisterZoneId(zone_id);
 }
 
 void EQ::Net::EQWebStreamManager::SetOptions(const EQStreamManagerInterfaceOptions &options)
@@ -206,7 +223,7 @@ void EQ::Net::EQWebStream::FastQueuePacket(EQApplicationPacket **p, bool ack_req
 
 void EQ::Net::EQWebStream::SendDatagram(uint16 opcode, EQApplicationPacket *p)
 {
-	Loaded_SendPacket(m_connection, opcode, p->pBuffer, p->size); 
+	Loaded_SendPacket(m_connection, opcode, p->pBuffer, p->size);
 	delete p;
 	p = nullptr;
 }

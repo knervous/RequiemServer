@@ -628,4 +628,5 @@ N(OP_ZoneUnavail),
 N(OP_ResetAA),
 N(OP_UnderWorld),
 N(OP_WebInitiateConnection),
+N(OP_JWTLogin),
 // mail and chat opcodes located in ../mail_oplist.h

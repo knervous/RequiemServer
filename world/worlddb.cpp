@@ -942,3 +942,32 @@ bool WorldDatabase::GetCharSelInventory(uint32 account_id, char *name, EQ::Inven
 
 	return true;
 }
+
+uint32 WorldDatabase::GetOrCreateAccount(const std::string &discord_id) {
+    std::string query = fmt::format("SELECT id FROM `account` WHERE discord_id = '{}'", discord_id);
+    auto results = QueryDatabase(query);
+    if (results.Success() && results.RowCount() > 0) {
+        auto row = results.begin();
+        return Strings::ToUnsignedInt(row[0]);
+    }
+    std::string insert_query = fmt::format(
+        "INSERT INTO `account` (discord_id, name, primary_auth, ls_id, lsaccount_id) VALUES ('{}', '{}', 1, '{}', 1)",
+        discord_id,
+        discord_id,
+		discord_id
+    );
+    auto insert_results = QueryDatabase(insert_query);
+    if (!insert_results.Success()) {
+        LogError("WorldDatabase::GetOrCreateAccount: Failed to insert account for discord_id '{}': {}", discord_id, insert_results.ErrorMessage());
+        return 0;
+    }
+
+    std::string id_query = "SELECT LAST_INSERT_ID()";
+    auto id_results = QueryDatabase(id_query);
+    if (id_results.Success() && id_results.RowCount() > 0) {
+        auto row = id_results.begin();
+        return Strings::ToUnsignedInt(row[0]);
+    }
+
+    return 0;
+}

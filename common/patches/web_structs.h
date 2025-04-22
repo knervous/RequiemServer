@@ -61,6 +61,10 @@ namespace Web
 		static const uint32 MAX_TRIBUTE_TIERS = 10;
 #endif
 
+		struct JWTLogin_Struct {
+			char *token;
+		};
+
 		struct LoginInfo_Struct
 		{
 			char *name;

@@ -14,3 +14,13 @@ void bridge_log_message(char* message, OnLogMessage f);
 
 void * ptr_at(void **ptr, int idx);
 int ptr_size();
+
+// typedef void (*GenericCallback)(void* webstream_manager, int session_id, void* data, int size);
+
+// typedef struct CallbackEntry {
+//     char* name;
+//     GenericCallback callback;
+// };
+
+// void register_callback(const char* name, GenericCallback callback);
+// void invoke_callback(const char* name, void* webstream_manager, int session_id, void* data, int size);

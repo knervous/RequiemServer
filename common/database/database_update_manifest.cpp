@@ -7001,6 +7001,28 @@ TRUNCATE TABLE zone_state_spawns;
 )",
 		.content_schema_update = false
 	},
+		ManifestEntry{
+		.version = 9315,
+		.description = "2025_04_02_add_discord_account_fields.sql",
+		.check = "SELECT 1 FROM (SHOW COLUMNS FROM `account` LIKE 'discord_id' UNION SHOW COLUMNS FROM `account` LIKE 'primary_auth') AS temp",		.condition = "empty",
+		.match = "",
+		.sql = R"(
+ALTER TABLE `account`
+ADD COLUMN `primary_auth` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+ADD COLUMN `discord_id` varchar(32) NOT NULL DEFAULT "";
+	)"
+	},
+	ManifestEntry{
+		.version = 9316,
+		.description = "2025_04_02_add_index_on_discord_id.sql",
+		.check = "SHOW INDEXES FROM `account` WHERE Key_name = 'discord_id_index'",
+		.condition = "empty",
+		.match = "",
+		.sql = R"(
+		CREATE INDEX discord_id_index ON `account` (discord_id);
+			)"
+	},
+
 // -- template; copy/paste this when you need to create a new entry
 //	ManifestEntry{
 //		.version = 9228,

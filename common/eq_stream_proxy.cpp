@@ -113,3 +113,7 @@ OpcodeManager *EQStreamProxy::GetOpcodeManager() const
 	return (*m_opcodes);
 }
 
+const bool EQStreamProxy::IsWebstream() const
+{
+	return m_stream->IsWebstream();
+}

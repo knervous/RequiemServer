@@ -563,6 +563,22 @@ func applyFields(reflectEQStruct reflect.Value, protoMessage protoreflect.ProtoM
 	}
 }
 
+func SendProtoPacket(sessionId int, opcode int, message proto.Message) {
+	session := sessionMap[sessionId]
+
+	messageBytes := make([]byte, 2)
+	binary.LittleEndian.PutUint16(messageBytes, uint16(opcode))
+
+	bytes, err := proto.Marshal(message)
+	if err != nil {
+		LogEQInfo("Error serializing proto message %v :: %v", opcode, err)
+		return
+	}
+
+	messageBytes = append(messageBytes, bytes...)
+	session.session.SendDatagram(messageBytes)
+}
+
 func SendEQPacket(sessionId int, opcode int, structPtr unsafe.Pointer, structSize int) {
 	session := sessionMap[sessionId]
 	if session.session == nil {

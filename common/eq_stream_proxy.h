@@ -35,6 +35,7 @@ public:
 	virtual void ResetStats();
 	virtual EQStreamManagerInterface* GetManager() const;
 	virtual OpcodeManager* GetOpcodeManager() const;
+	virtual const bool IsWebstream() const;
 
 protected:
 	std::shared_ptr<EQStreamInterface> const m_stream;	//we own this stream object.
